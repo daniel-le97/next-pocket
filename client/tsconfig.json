@@ -17,6 +17,13 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.cjs",
+    "**/*.mjs",
+    "util/pocketBase.js"
+  ],
+  "exclude": ["node_modules", "util/pocketBase.js"]
 }
