@@ -16,6 +16,7 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  POCKET_URL: z.string()
 });
 
 /**
@@ -25,6 +26,7 @@ const client = z.object({
  */
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
+  POCKET_URL: process.env.POCKET_URL
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
