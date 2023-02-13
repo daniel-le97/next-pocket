@@ -1,22 +1,31 @@
-import React from "react";
 import { BsPlus, BsFillLightningFill, BsGearFill } from "react-icons/bs";
-import { FaFire, FaPoo } from "react-icons/fa";
-export default function SideBar() {
+import { FaAirbnb, FaFire, FaHome, FaPoo } from "react-icons/fa";
+
+const SideBar = () => {
   return (
     <div
-      className="    "
+      className="fixed top-0 left-0 flex h-screen w-16 flex-col
+                  bg-white shadow-lg dark:bg-gray-900"
     >
-      <div className=" group">
-        <img
-          src="https://images.unsplash.com/photo-1546182208-1e70985e2bf3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=654&q=80"
-          alt=""
-          width={40}
-        />
-        <span className="  ">testing</span>
-      </div>
-
-   
+      <SideBarIcon icon={<FaHome size="28" />} text={"home"} />
+      <Divider />
+      <SideBarIcon icon={<BsPlus size="32" />} text={"home"} />
+      <SideBarIcon icon={<BsFillLightningFill size="20" />} text={"home"} />
+      <SideBarIcon icon={<FaPoo size="20" />} text={"home"} />
+      <Divider />
+      <SideBarIcon icon={<BsGearFill size="22" />} text={"home"} />
     </div>
   );
-}
+};
 
+// @ts-ignore
+const SideBarIcon = ({ icon, text }) => (
+  <div className=" group sidebar-icon ">
+    {icon}
+    <span className=" sidebar-tooltip group-hover:scale-100">{text} </span>
+  </div>
+);
+
+const Divider = () => <hr className="sidebar-hr" />;
+
+export default SideBar;

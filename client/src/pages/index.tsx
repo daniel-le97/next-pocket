@@ -2,6 +2,8 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import SideBar from '../../components/SideBar'
+import ChannelsBar from '../../components/ChannelsBar'
+import ContentContainer from '../../components/ContentContainer'
 const Home: NextPage = () => {
   return (
     <>
@@ -13,6 +15,8 @@ const Home: NextPage = () => {
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
         <div className="flex  ">
        <SideBar />
+       <ChannelsBar/>
+       <ContentContainer/>
         </div>
       </main>
     </>
