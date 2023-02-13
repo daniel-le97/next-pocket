@@ -1,12 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 @layer components {
+
+  .sidebar{
+    @apply fixed top-0 left-0 flex h-screen w-16 flex-col shadow-lg bg-zinc-900
+  }
+  .sidebar-hr{
+    @apply bg-gray-800 border border-gray-700 rounded-full mx-2
+  }
   .sidebar-icon {
     @apply relative mx-auto mt-2 mb-2 
     flex h-12 w-12 cursor-pointer items-center  
-  justify-center rounded-3xl bg-gray-400 
+    justify-center rounded-3xl bg-gray-400 
   text-green-500 shadow-lg
     transition-all duration-300
     ease-linear hover:rounded-xl hover:bg-green-600
@@ -14,14 +27,161 @@
   }
   .sidebar-tooltip {
     @apply absolute left-14 m-2 w-auto min-w-max origin-left scale-0 rounded-md
-    bg-gray-900 p-2 
+    bg-zinc-900 p-2 
     text-xs font-bold 
     text-white shadow-md transition-all duration-100;
   }
 
-  .content-container{
-    @apply p-3  
-    
-    
+
+
+
+.top-navigation {
+    @apply flex flex-row items-center justify-evenly 
+    bg-gray-300 dark:bg-zinc-800 rounded-lg bg-opacity-90 
+    w-full h-16 
+    m-0 
+    shadow-lg;
+  }
+
+  .top-navigation-icon {
+    @apply text-gray-500
+    mr-3 ml-4
+    transition duration-300 ease-in-out 
+    hover:text-pink-400 
+    cursor-pointer;
+  }
+
+  .top-navigation-icon:first {
+    @apply ml-auto mr-4;
+  }
+
+  .title-hashtag {
+    @apply text-lg tracking-wider font-semibold text-gray-500 
+    ml-2 my-auto;
+  }
+
+  .title-text {
+    @apply text-xl text-gray-500 tracking-wider font-semibold text-opacity-80 
+    mr-auto ml-2 my-auto 
+    transition duration-300 ease-in-out;
+  }
+
+  .search {
+    @apply w-1/5 flex items-center justify-start 
+    bg-gray-400 dark:bg-gray-600
+    text-gray-500
+    px-2 h-9 ml-0 mr-0 
+    rounded-md shadow-md
+    transition duration-300 ease-in-out;
+  }
+
+  .search-input {
+    @apply w-full font-sans font-semibold
+    bg-transparent outline-none 
+    text-gray-500  placeholder-gray-500
+    pl-1 rounded;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .channel-bar {
+    @apply m-0 ml-16 h-screen w-2/3 overflow-hidden bg-zinc-800 shadow-lg;
+  }
+
+  .channel-container {
+    @apply m-0 flex h-16 flex-col items-center justify-start p-0;
+  }
+
+  .channel-block {
+    @apply m-0 flex h-16 items-center justify-center p-0;
+  }
+
+  .channel-block-text {
+    @apply my-auto  mr-auto ml-4 align-middle text-lg font-bold tracking-wide text-gray-400;
+  }
+
+  .dropdown {
+    @apply m-0 w-full px-2 pb-2 transition duration-300 ease-in-out;
+  }
+
+  .dropdown-header {
+    @apply mx-0 flex cursor-pointer flex-row items-center justify-evenly text-gray-500;
+  }
+
+  .dropdown-header-text {
+    @apply cursor-default  text-lg 
+    font-semibold text-gray-500
+    text-opacity-90;
+  }
+
+  .dropdown-header-text-selected {
+    @apply text-lg font-bold text-blue-500 text-opacity-90;
+  }
+
+  .dropdown-selection {
+    @apply mt-1 mr-auto ml-2 flex
+    cursor-pointer flex-row items-center
+    justify-evenly transition duration-300
+    ease-in-out;
+  }
+
+  .dropdown-selection-text {
+    @apply mr-auto cursor-pointer font-semibold
+    tracking-wide 
+    text-gray-500 transition duration-300 
+    ease-in-out hover:text-pink-500
+    dark:hover:text-gray-500;
+  }
+
+  .content-container {
+    @apply p-3 bg-zinc-700;
+  }
+   .bottom-bar{
+    @apply flex flex-row items-center justify-between fixed left-80 right-8 bottom-2 rounded-lg  bg-gray-600 px-2 h-12
+   }
+   .bottom-bar-input{
+    @apply font-semibold w-full bg-transparent outline-none ml-0 mr-auto text-gray-400 placeholder-gray-400 cursor-text
+   }
+
+
+  .post {
+    @apply m-0  flex w-full cursor-pointer flex-row items-center justify-evenly py-4 px-8 transition-all hover:bg-zinc-800
+    hover:bg-opacity-50
+    hover:shadow-md
+    hover:transition-all;
+  }
+
+  .post-content {
+    @apply ml-auto flex w-4/5 flex-col justify-start;
+  }
+
+  .avatar-wrapper {
+    @apply m-0 ml-auto mb-auto flex w-12 flex-col items-center;
+  }
+
+  .avatar {
+    @apply mx-0 mb-auto mt-0 w-12 cursor-pointer rounded-full bg-gray-100 object-cover shadow-md;
+  }
+
+  .post-owner {
+    @apply font-bold  text-red-500;
+  }
+
+  .timestamp {
+    @apply ml-3 font-normal text-gray-300;
+  }
+
+  .post-text {
+    @apply text-lg font-semibold text-gray-300;
   }
 }
