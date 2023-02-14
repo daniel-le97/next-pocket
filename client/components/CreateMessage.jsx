@@ -26,19 +26,19 @@ const CreateMessage = () => {
 
 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    // example create data
-    const data = {
-      text: text,
-      user: "20lbeavoen33ngd",
-    };
-    const record = await pb.collection("messages").create(data);
-    console.log(record);
-    return record;
-    // You can add the logic here to save the post information to your database
-    //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);
-  };
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   // example create data
+  //   const data = {
+  //     text: text,
+  //     user: "20lbeavoen33ngd",
+  //   };
+  //   const record = await pb.collection("messages").create(data);
+  //   console.log(record);
+  //   return record;
+  //   // You can add the logic here to save the post information to your database
+  //   //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);
+  // };
 
   return (
     <div className="bottom-bar  ">
