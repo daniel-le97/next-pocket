@@ -72,7 +72,19 @@ const Messages = () => {
           </div>
         </div>
       ))}
-      <form onSubmit={sendMessage}>
+
+      <div className="bottom-bar  ">
+        
+        <form onSubmit={sendMessage}>
+          <input
+            value={newMessage}
+            onChange={(event) => setNewMessage(event.target.value)}
+            placeholder="Enter message..."
+            className="bottom-bar-input"
+          />
+        </form>
+      </div>
+      {/* <form onSubmit={sendMessage}>
         <input
           placeholder="Message"
           type="text"
@@ -80,7 +92,7 @@ const Messages = () => {
           onChange={(event) => setNewMessage(event.target.value)}
         />
         <button type="submit">Send</button>
-      </form>
+      </form> */}
     </div>
   );
 };
