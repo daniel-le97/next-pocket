@@ -17,7 +17,11 @@ const CreateMessage = () => {
 
  const handleSubmit = async(event) => {
    event.preventDefault();
-  const message = await messageService.sendMessage(text)
+    const data = {
+      text: text,
+      user: "20lbeavoen33ngd",
+    };
+  await messageService.sendMessage(data)
   
    // You can add the logic here to save the post information to your database
   //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);

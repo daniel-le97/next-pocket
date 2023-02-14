@@ -11,14 +11,12 @@ const ResultsList = () => {
 
   useEffect(() => {
     const fetchMessages = async () => {
-     const records = await pb
-       .collection("messages")
-       .getFullList(200 /* batch size */, {
-         sort: "-created",
-         expand:'user'
-       });
-      console.log(records);
-        setMessages(records);
+     await pb.collection("messages").subscribe("*", function (e) {
+     const list = e.record
+     console.log(list);
+    });
+     
+      //   setMessages(resultList.items);
     };
     fetchMessages();
   }, []);
@@ -26,62 +24,28 @@ const ResultsList = () => {
   return (
     <ul>
       {messages.map((message) => (
+        <div key={message.id} className="post">
+          <div className="avatar-wrapper">
+            <img
+              src={
+                `https://nextcord.apps.devopportunities.dev/api/files/_pb_users_auth_/${message.user}/${message.expand.user.avatar}` ||
+                `https://avatars.dicebear.com/api/open-peeps/.svg`
+              }
+              alt=""
+              className="avatar"
+              width={100}
+              height={100}
+            />
+          </div>
 
- <div   key={message.id} className="post">
-      <div className="avatar-wrapper">
-        <img
-          src={`https://avatars.dicebear.com/api/open-peeps/.svg`}
-          alt=""
-          className="avatar"
-          width={100}
-          height={100}
-        />
-      </div>
-
-      <div className="post-content">
-        <p className="post-owner">
-          
-          <small className="timestamp">{message.created}</small>
-        </p>
-        <p className="post-text">{message.text}</p>
-      </div>
-
-      
-    </div>
-
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+          <div className="post-content">
+            <p className="post-owner">
+              {message.expand.user.name}
+              <small className="timestamp">{message.created}</small>
+            </p>
+            <p className="post-text">{message.text}</p>
+          </div>
+        </div>
       ))}
     </ul>
   );
