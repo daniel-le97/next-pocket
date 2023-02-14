@@ -4,6 +4,10 @@ import { BsPlusCircleFill } from "react-icons/bs";
 
 const Post = ({ name, timestamp, text }) => {
   const seed = Math.round(Math.random() * 100);
+
+
+
+  
   return (
     <div className="post">
       <div className="avatar-wrapper">

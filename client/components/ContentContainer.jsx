@@ -1,5 +1,6 @@
 import React from "react";
-import { BsPlusCircleFill } from "react-icons/bs";
+
+import CreateMessage from './CreateMessage.jsx'
 // import { useState } from 'react';
 import TopNavigation from '../components/TopNavigation.jsx'
 import Post from '../components/Post.jsx'
@@ -9,6 +10,28 @@ const ContentContainer = () => {
     <TopNavigation/>
       <div className="content-list">
         <Post
+          name="Ada"
+          timestamp="one week ago"
+          text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit
+          amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem
+          ipsum dolor sit amet consectetur adipisicing elit.`}
+        />
+       
+      
+      </div>
+      <CreateMessage />
+    </div>
+  );
+};
+
+
+
+export default ContentContainer;
+
+/**
+ * 
+ *    <Post
           name="Ada"
           timestamp="one week ago"
           text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit
@@ -64,28 +87,5 @@ const ContentContainer = () => {
           adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem
           ipsum dolor sit amet consectetur adipisicing elit.`}
         />
-      </div>
-      <BottomBar />
-    </div>
-  );
-};
-
-const BottomBar = () => (
-  <div className="bottom-bar">
-    <PlusIcon />
-    <input
-      type="text"
-      placeholder="Enter message..."
-      className="bottom-bar-input"
-    />
-  </div>
-);
-
-const PlusIcon = () => (
-  <BsPlusCircleFill
-    size="22"
-    className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
-  />
-);
-
-export default ContentContainer;
+ * 
+ */

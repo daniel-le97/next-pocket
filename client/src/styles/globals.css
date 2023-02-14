@@ -147,7 +147,7 @@
     @apply p-3 bg-zinc-700;
   }
    .bottom-bar{
-    @apply flex flex-row items-center justify-between fixed left-80 right-8 bottom-2 rounded-lg  bg-gray-600 px-2 h-12
+    @apply flex  flex-row items-center justify-start fixed left-96 right-8 bottom-2 rounded-lg  bg-gray-600 px-2 h-12
    }
    .bottom-bar-input{
     @apply font-semibold w-full bg-transparent outline-none ml-0 mr-auto text-gray-400 placeholder-gray-400 cursor-text

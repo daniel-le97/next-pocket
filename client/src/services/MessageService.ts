@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // import type pocketbase from "pocketbase";
-import { pb, } from "../../util/pocketBase";
+import { pb } from "../../util/pocketBase";
 
 class MessageService {
   //
  async sendMessage() {
     const res = await pb.collection('messages').create()
+    console.log(res);
+    
     return res
   }
 }
