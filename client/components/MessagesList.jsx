@@ -59,22 +59,26 @@ const Messages = () => {
   return (
     <div className="messages">
       {messages.map((message) => (
-        <div className="msg" key={message.id}>
-          <img
-            className="avatar"
-            src={`https://avatars.dicebear.com/api/identicon/${message.expand?.user?.username}.svg`}
-            alt="avatar"
-            width="40px"
-          />
-          <div>
-            <small>Sent by @{message.expand?.user?.username}</small>
-            <p className="msg-text">{message.text}</p>
+        <div className="post" key={message.id}>
+          <div className="avatar-wrapper">
+            <img
+              className="avatar"
+              src={`https://avatars.dicebear.com/api/identicon/${message.expand?.user?.username}.svg`}
+              alt="avatar"
+              width="40px"
+            />
+          </div>
+          <div className="post-content">
+            <p className="post-owner">
+              {message.expand?.user?.username}
+              <small className="timestamp">{message.created}</small>
+            </p>
+            <p className="post-text">{message.text}</p>
           </div>
         </div>
       ))}
 
       <div className="bottom-bar  ">
-        
         <form onSubmit={sendMessage}>
           <input
             value={newMessage}
