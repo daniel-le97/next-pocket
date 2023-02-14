@@ -144,10 +144,10 @@
   }
 
   .content-container {
-    @apply p-3 bg-zinc-700  h-screen  overflow-y-scroll  flex flex-col snap-y  pb-14;
+    @apply p-3 bg-zinc-700  h-screen   overflow-y-scroll  flex flex-col snap-y snap-end  pb-14;
   }
   .content-list{
-    @apply pt-20
+    @apply pt-20 w-full
   }
    .bottom-bar{
     @apply flex  flex-row items-center justify-start fixed left-96 right-8 bottom-2 rounded-lg  bg-gray-600 px-2 h-12
