@@ -4,6 +4,7 @@ import Link from "next/link";
 import SideBar from '../../components/SideBar'
 import ChannelsBar from '../../components/ChannelsBar'
 import ContentContainer from '../../components/ContentContainer'
+import React from "react";
 const Home: NextPage = () => {
   return (
     <>
