@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { currentUser, pb } from "../util/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
@@ -6,11 +6,15 @@ import { currentUser, pb } from "../util/pocketBase";
 const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const listRef = useRef(null);
   let unsubscribe = null;
-
+  const checkForDuplicate = (messages, newMessage) => {
+    const messageIds = messages.map((message) => message.id);
+    return !messageIds.includes(newMessage.id);
+  };
   useEffect(() => {
     const fetchMessages = async () => {
-      const resultList = await pb.collection("messages").getList(1, 50, {
+      const resultList = await pb.collection("messages").getList(1, 100, {
         sort: "created",
         expand: "user",
       });
@@ -20,9 +24,13 @@ const Messages = () => {
 
     const handleRealtimeMessages = async ({ action, record }) => {
       if (action === "create") {
-        const user = await pb.collection("users").getOne(record.user);
-        record.expand = { user };
-        setMessages((prevMessages) => [...prevMessages, record]);
+        // const user = await pb.collection("users").getOne(record.user);
+        // record.expand = { user };
+        fetchMessages();
+document.querySelector('.messages')?.classList.toggle('snap-end')
+        //  if (checkForDuplicate(messages, record)) {
+        //    setMessages((prevMessages) => [...prevMessages, record]);
+        //  }
       }
       if (action === "delete") {
         setMessages((prevMessages) =>
@@ -35,7 +43,7 @@ const Messages = () => {
       .subscribe("*", handleRealtimeMessages)
       .then((subscription) => {
         unsubscribe = () => {
-          subscription.unsubscribe();
+          subscription?.unsubscribe();
         };
       });
 
@@ -57,9 +65,9 @@ const Messages = () => {
   };
 
   return (
-    <div className="messages">
+    <div className="messages snap-end pb-14" ref={listRef}>
       {messages.map((message) => (
-        <div className="post" key={message.id}>
+        <div className=" post  " key={message.id}>
           <div className="avatar-wrapper">
             <img
               className="avatar"
@@ -78,7 +86,7 @@ const Messages = () => {
         </div>
       ))}
 
-      <div className="bottom-bar  ">
+      <div className="bottom-bar   ">
         <form onSubmit={sendMessage}>
           <input
             value={newMessage}
