@@ -1,30 +1,31 @@
 import { useState } from "react";
 import { BsPlusCircleFill } from "react-icons/bs";
 
+import PocketBase from "pocketbase";
 
-
-
+const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKET_URL);
 
 // import { pb } from "../util/pocketBase.js";
 // import { messageService } from "../src/services/MessageService";
 
-
 const CreateMessage = () => {
- const [name, setName] = useState("");
- const [timestamp, setTimestamp] = useState(new Date().toLocaleString());
- const [text, setText] = useState("");
+  const [name, setName] = useState("");
+  const [timestamp, setTimestamp] = useState(new Date().toLocaleString());
+  const [text, setText] = useState("");
 
- const handleSubmit = (event) => {
-   event.preventDefault();
- 
-
-   // You can add the logic here to save the post information to your database
-  //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);
- };
-
-
-
-
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // example create data
+    const data = {
+      text: text,
+      user: "20lbeavoen33ngd",
+    };
+    const record = await pb.collection("messages").create(data);
+    console.log(record);
+    return record;
+    // You can add the logic here to save the post information to your database
+    //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);
+  };
 
   return (
     <div className="bottom-bar  ">
@@ -44,7 +45,7 @@ const CreateMessage = () => {
       </form>
     </div>
   );
-  };
+};
 
 const PlusIcon = () => (
   <BsPlusCircleFill

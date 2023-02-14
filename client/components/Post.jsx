@@ -10,7 +10,7 @@ const Post = ({ name, timestamp, text }) => {
     <div className="post">
       <div className="avatar-wrapper">
         <Image
-          src={`https://avatars.dicebear.com/api/open-peeps/${seed}.svg`}
+          src={`https://avatars.dicebear.com/api/open-peeps/.svg`}
           alt=""
           className="avatar"
           width={100}
