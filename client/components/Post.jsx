@@ -1,17 +1,15 @@
 
+import Image from "next/image";
 import React from "react";
 import { BsPlusCircleFill } from "react-icons/bs";
+import { messageService } from "../src/services/MessageService";
 
 const Post = ({ name, timestamp, text }) => {
   const seed = Math.round(Math.random() * 100);
-
-
-
-  
   return (
     <div className="post">
       <div className="avatar-wrapper">
-        <img
+        <Image
           src={`https://avatars.dicebear.com/api/open-peeps/${seed}.svg`}
           alt=""
           className="avatar "
