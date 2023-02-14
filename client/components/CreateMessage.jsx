@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BsPlusCircleFill } from "react-icons/bs";
+import { messageService } from "../src/services/MessageService";
 
 import PocketBase from "pocketbase";
 
@@ -9,9 +10,21 @@ const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKET_URL);
 // import { messageService } from "../src/services/MessageService";
 
 const CreateMessage = () => {
-  const [name, setName] = useState("");
-  const [timestamp, setTimestamp] = useState(new Date().toLocaleString());
-  const [text, setText] = useState("");
+ const [name, setName] = useState("");
+ const [timestamp, setTimestamp] = useState(new Date().toLocaleString());
+ const [text, setText] = useState("");
+//  const messageService = messageService
+
+ const handleSubmit = async(event) => {
+   event.preventDefault();
+  const message = await messageService.sendMessage(text)
+  
+   // You can add the logic here to save the post information to your database
+  //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);
+ };
+
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
