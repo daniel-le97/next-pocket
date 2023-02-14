@@ -22,13 +22,13 @@ const CreateMessage = () => {
       user: "20lbeavoen33ngd",
     };
     await messageService.sendMessage(data);
+    setText("");
   };
 
   return (
     <div className="bottom-bar  ">
       <PlusIcon />
       <form onSubmit={handleSubmit}>
-    
         <input
           value={text}
           onChange={(event) => setText(event.target.value)}

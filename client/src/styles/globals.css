@@ -36,9 +36,9 @@
 
 
 .top-navigation {
-    @apply flex flex-row items-center justify-evenly 
+    @apply flex flex-row   fixed items-center justify-evenly 
     bg-gray-300 dark:bg-zinc-800 rounded-lg bg-opacity-90 
-    w-full h-16 
+    w-2/3 h-16 
     m-0 
     shadow-lg;
   }
@@ -95,7 +95,7 @@
 
 
   .channel-bar {
-    @apply m-0 ml-16 h-screen w-2/3 overflow-hidden bg-zinc-800 shadow-lg;
+    @apply m-0 ml-16 h-auto w-2/3 overflow-hidden bg-zinc-800 shadow-lg;
   }
 
   .channel-container {
@@ -144,7 +144,10 @@
   }
 
   .content-container {
-    @apply p-3 bg-zinc-700;
+    @apply p-3 bg-zinc-700 overflow-auto h-screen  pb-14;
+  }
+  .content-list{
+    @apply pt-20
   }
    .bottom-bar{
     @apply flex  flex-row items-center justify-start fixed left-96 right-8 bottom-2 rounded-lg  bg-gray-600 px-2 h-12
@@ -162,7 +165,7 @@
   }
 
   .post-content {
-    @apply ml-auto flex w-4/5 flex-col justify-start;
+    @apply ml-auto flex w-4/5 flex-col justify-start ;
   }
 
   .avatar-wrapper {
