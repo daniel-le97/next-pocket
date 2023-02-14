@@ -42,7 +42,7 @@ useEffect(() => {
     return unsubscribe;
   };
 
-  fetchMessages();
+  const unsubscribe = fetchMessages();
 
  
 }, []);
