@@ -1,4 +1,5 @@
 import { type AppType } from "next/dist/shared/lib/utils";
+import React from 'react'
 
 import "../styles/globals.css";
 

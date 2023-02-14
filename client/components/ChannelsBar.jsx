@@ -49,7 +49,7 @@ const Dropdown = ({ header, selections }) => {
       </div>
       {expanded &&
         selections &&
-        selections.map((selection) => <TopicSelection selection={selection} />)}
+        selections.map((selection) => <TopicSelection selection={selection} key={selection} />)}
     </div>
   );
 };
@@ -75,5 +75,5 @@ const ChannelBlock = () => (
     <h5 className="channel-block-text">Channels</h5>
   </div>
 );
-// @ts-ignore
+
 export default ChannelsBar;
