@@ -13,6 +13,7 @@ class SingletonPb {
   static getInstance() {
     if (!SingletonPb.instance) {
       SingletonPb.instance = new pocketbase(env.NEXT_PUBLIC_POCKET_URL);
+      SingletonPb.instance.autoCancellation(false)
     }
     return SingletonPb.instance;
   }
