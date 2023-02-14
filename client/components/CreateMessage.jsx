@@ -60,5 +60,5 @@ const PlusIcon = () => (
     className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
   />
 );
-
+}
 export default CreateMessage;
