@@ -15,27 +15,21 @@ const CreateMessage = () => {
  const [text, setText] = useState("");
 //  const messageService = messageService
 
- const handleSubmit = async(event) => {
-   event.preventDefault();
-  const message = await messageService.sendMessage(text)
-  
-   // You can add the logic here to save the post information to your database
-  //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);
- };
 
 
 
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   // example create data
-  //   const data = {
-  //     text: text,
-  //     user: "20lbeavoen33ngd",
-  //   };
-  //   const record = await pb.collection("messages").create(data);
-  //   console.log(record);
-  //   return record;
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // example create data
+    const data = {
+      text: text,
+      user: "20lbeavoen33ngd",
+    };
+    const record = await messageService.sendMessage(data)
+    console.log(record);
+    return record;
   //   // You can add the logic here to save the post information to your database
   //   //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);
   // };
