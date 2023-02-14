@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { BsPlusCircleFill } from "react-icons/bs";
-import { messageService } from "../src/services/MessageService.js";
+
+
+
 
 
 // import { pb } from "../util/pocketBase.js";
@@ -12,10 +14,10 @@ const CreateMessage = () => {
  const [timestamp, setTimestamp] = useState(new Date().toLocaleString());
  const [text, setText] = useState("");
 
- const handleSubmit = async (event) => {
+ const handleSubmit = (event) => {
    event.preventDefault();
  
-await messageService.sendMessage()
+
    // You can add the logic here to save the post information to your database
   //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);
  };
