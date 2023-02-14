@@ -26,4 +26,6 @@ const Post = ({ name, timestamp, text }) => {
 };
 
 
+
+
  export default Post
