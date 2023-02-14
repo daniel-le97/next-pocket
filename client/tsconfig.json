@@ -25,5 +25,5 @@
     "**/*.mjs",
     "util/pocketBase.js"
   ],
-  "exclude": ["node_modules", "util/pocketBase.js"]
+  "exclude": ["node_modules", "util/*.*"]
 }

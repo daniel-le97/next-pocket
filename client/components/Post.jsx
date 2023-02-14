@@ -12,9 +12,9 @@ const Post = ({ name, timestamp, text }) => {
         <Image
           src={`https://avatars.dicebear.com/api/open-peeps/${seed}.svg`}
           alt=""
-          className="avatar "
-       width={12}
-       height={12}
+          className="avatar"
+          width={100}
+          height={100}
         />
       </div>
 
