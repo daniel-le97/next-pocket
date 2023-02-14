@@ -1,75 +1,88 @@
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { pb } from "../util/pocketBase";
+// import { currentUser, pb } from "./pocketbase";
 
-import PocketBase from "pocketbase";
+const Messages = () => {
+  const [newMessage, setNewMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  let unsubscribe = null;
 
-const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKET_URL);
-pb.autoCancellation(false);
-const ResultsList = () => {
-let  [messages, setMessages] = useState([]);
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const resultList = await pb.collection("messages").getList(1, 50, {
+        sort: "created",
+        expand: "user",
+      });
+      setMessages(resultList.items);
+    };
+    fetchMessages();
 
-useEffect(() => {
-  const fetchMessages = async () => {
-    const res = await pb.collection('messages').getFullList(200,{
-      expand:'user',
-    
-    })
-  
-       setMessages(res);
-    const unsubscribe = await pb
-      .collection("messages")
-      .subscribe("*",async  function (e) {
+    const handleRealtimeMessages = async ({ action, record }) => {
+      if (action === "create") {
+        const user = await pb.collection("users").getOne(record.user);
+        record.expand = { user };
+        setMessages((prevMessages) => [...prevMessages, record]);
+      }
+      if (action === "delete") {
+        setMessages((prevMessages) =>
+          prevMessages.filter((m) => m.id !== record.id)
+        );
+      }
+    };
 
-           if (e.action === "create") {
-           
-           
-             const user = await pb.collection("users").getOne(e.record.user);
-             e.record.expand = { user };
-          console.log(messages);
-                setMessages([...messages, e.record]);
-           }    
-       
-        
+    pb.collection("messages")
+      .subscribe("*", handleRealtimeMessages)
+      .then((subscription) => {
+        unsubscribe = () => {
+          subscription.unsubscribe();
+        };
       });
 
-    return unsubscribe;
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, []);
+
+  const sendMessage = async (event) => {
+    event.preventDefault();
+    const data = {
+      text: newMessage,
+      user: currentUser.id,
+    };
+    const createdMessage = await pb.collection("messages").create(data);
+    setNewMessage("");
   };
 
-
-return () => {
- fetchMessages()
-};
- 
-}, []);
   return (
-    <ul>
-    
+    <div className="messages">
       {messages.map((message) => (
-        <div key={message.id} className="post">
-          <div className="avatar-wrapper">
-            <img
-              src={
-                `https://nextcord.apps.devopportunities.dev/api/files/_pb_users_auth_/${message.user}/${message.expand.user.avatar}` ||
-                `https://avatars.dicebear.com/api/open-peeps/.svg`
-              }
-              alt=""
-              className="avatar"
-              width={100}
-              height={100}
-            />
-          </div>
-
-          <div className="post-content">
-            <p className="post-owner">
-              {message.expand.user.name}
-              <small className="timestamp">{message.created}</small>
-            </p>
-            <p className="post-text">{message.text}</p>
+        <div className="msg" key={message.id}>
+          <img
+            className="avatar"
+            src={`https://avatars.dicebear.com/api/identicon/${message.expand?.user?.username}.svg`}
+            alt="avatar"
+            width="40px"
+          />
+          <div>
+            <small>Sent by @{message.expand?.user?.username}</small>
+            <p className="msg-text">{message.text}</p>
           </div>
         </div>
       ))}
-    </ul>
+      <form onSubmit={sendMessage}>
+        <input
+          placeholder="Message"
+          type="text"
+          value={newMessage}
+          onChange={(event) => setNewMessage(event.target.value)}
+        />
+        <button type="submit">Send</button>
+      </form>
+    </div>
   );
 };
- export default ResultsList
+
+export default Messages;
