@@ -29,21 +29,17 @@ useEffect(() => {
           console.log(messages);
                 setMessages([...messages, e.record]);
            }    
-          //  if (e.action === "delete") {
-            
-          //    messages = messages.filter((m) => m.id !== record.id);
-             
-          //       setMessages([...messages]);
-          //  } 
-        // setMessages([...messages, e.record]);
+       
         
       });
 
     return unsubscribe;
   };
 
-  const unsubscribe = fetchMessages();
 
+return () => {
+ fetchMessages()
+};
  
 }, []);
   return (
