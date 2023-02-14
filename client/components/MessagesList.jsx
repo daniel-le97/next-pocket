@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { pb } from "../util/pocketBase";
+import { currentUser, pb } from "../util/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
 
 const Messages = () => {

@@ -19,4 +19,6 @@ class SingletonPb {
   }
 }
 
+
 export const pb = SingletonPb.getInstance();
+export const  currentUser = pb.authStore.model
