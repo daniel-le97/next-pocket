@@ -10,38 +10,25 @@ const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKET_URL);
 // import { messageService } from "../src/services/MessageService";
 
 const CreateMessage = () => {
- const [name, setName] = useState("");
- const [timestamp, setTimestamp] = useState(new Date().toLocaleString());
- const [text, setText] = useState("");
-//  const messageService = messageService
+  const [name, setName] = useState("");
+  const [timestamp, setTimestamp] = useState(new Date().toLocaleString());
+  const [text, setText] = useState("");
+  //  const messageService = messageService
 
- const handleSubmit = async(event) => {
-   event.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const data = {
       text: text,
       user: "20lbeavoen33ngd",
     };
-  await messageService.sendMessage(data)
-  
-   // You can add the logic here to save the post information to your database
-  //  console.log(`Submitting post: ${name} - ${timestamp} - ${text}`);
- };
-
-
-
-
-
- 
+    await messageService.sendMessage(data);
+  };
 
   return (
     <div className="bottom-bar  ">
       <PlusIcon />
       <form onSubmit={handleSubmit}>
-        {/* <input
-          type="text"
-          placeholder="Enter message..."
-          className="bottom-bar-input"
-        /> */}
+    
         <input
           value={text}
           onChange={(event) => setText(event.target.value)}

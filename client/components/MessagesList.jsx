@@ -7,22 +7,48 @@ import PocketBase from "pocketbase";
 const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKET_URL);
 pb.autoCancellation(false);
 const ResultsList = () => {
-  const [messages, setMessages] = useState([]);
+let  [messages, setMessages] = useState([]);
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-     await pb.collection("messages").subscribe("*", function (e) {
-     const list = e.record
-     console.log(list);
-    });
-     
-      //   setMessages(resultList.items);
-    };
-    fetchMessages();
-  }, []);
+useEffect(() => {
+  const fetchMessages = async () => {
+    const res = await pb.collection('messages').getFullList(200,{
+      expand:'user',
+    
+    })
+  
+       setMessages(res);
+    const unsubscribe = await pb
+      .collection("messages")
+      .subscribe("*",async  function (e) {
 
+           if (e.action === "create") {
+           
+           
+             const user = await pb.collection("users").getOne(e.record.user);
+             e.record.expand = { user };
+          console.log(messages);
+                setMessages([...messages, e.record]);
+           }    
+          //  if (e.action === "delete") {
+            
+          //    messages = messages.filter((m) => m.id !== record.id);
+             
+          //       setMessages([...messages]);
+          //  } 
+        // setMessages([...messages, e.record]);
+        
+      });
+
+    return unsubscribe;
+  };
+
+  fetchMessages();
+
+ 
+}, []);
   return (
     <ul>
+    
       {messages.map((message) => (
         <div key={message.id} className="post">
           <div className="avatar-wrapper">
