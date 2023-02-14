@@ -26,7 +26,8 @@ class  AuthsService {
     return 'passwords must match'
 
     try {
-      await pb.collection('users').create({ email, password, passwordConfirm })
+       await pb.collection('users').create({ email, password, passwordConfirm })
+      await this.loginUser(data)
       
     } catch (error) {
       
