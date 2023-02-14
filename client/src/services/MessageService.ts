@@ -16,8 +16,10 @@ class MessageService {
   async getMessages() {
     try {
       const messages = await pb.collection('messages').getFullList()
-    const newMessages =  messages.map(message => new Message(message))
-      return newMessages
+      console.log(messages);
+      
+    // const newMessages =  messages.map(message => new Message(message))
+      // return newMessages
     } catch (error) {
       
     }

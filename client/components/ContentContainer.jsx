@@ -1,5 +1,5 @@
 import React from "react";
-
+import MessagesList from './MessagesList.jsx'
 import CreateMessage from './CreateMessage.jsx'
 // import { useState } from 'react';
 import TopNavigation from '../components/TopNavigation.jsx'
@@ -17,7 +17,7 @@ const ContentContainer = () => {
           adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem
           ipsum dolor sit amet consectetur adipisicing elit.`}
         />
-       
+       <MessagesList/>
       
       </div>
       <CreateMessage />

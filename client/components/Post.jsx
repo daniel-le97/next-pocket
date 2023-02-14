@@ -1,11 +1,13 @@
 
 import Image from "next/image";
-import React from "react";
+
 import { BsPlusCircleFill } from "react-icons/bs";
 import { messageService } from "../src/services/MessageService";
-
+import React, { useState, useEffect } from "react";
 const Post = ({ name, timestamp, text }) => {
   const seed = Math.round(Math.random() * 100);
+
+  
   return (
     <div className="post">
       <div className="avatar-wrapper">
@@ -25,6 +27,8 @@ const Post = ({ name, timestamp, text }) => {
         </p>
         <p className="post-text">{text}</p>
       </div>
+
+      
     </div>
   );
 };
