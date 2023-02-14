@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
+import { BsPlusCircleFill } from "react-icons/bs";
+import { date } from "zod";
 import { currentUser, pb } from "../util/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
 
@@ -27,7 +29,7 @@ const Messages = () => {
         // const user = await pb.collection("users").getOne(record.user);
         // record.expand = { user };
         fetchMessages();
-document.querySelector('.messages')?.classList.toggle('snap-end')
+        document.querySelector(".messages")?.classList.toggle("snap-end");
         //  if (checkForDuplicate(messages, record)) {
         //    setMessages((prevMessages) => [...prevMessages, record]);
         //  }
@@ -58,7 +60,7 @@ document.querySelector('.messages')?.classList.toggle('snap-end')
     event.preventDefault();
     const data = {
       text: newMessage,
-      user: currentUser.id,
+      user: "20lbeavoen33ngd",
     };
     const createdMessage = await pb.collection("messages").create(data);
     setNewMessage("");
@@ -66,12 +68,15 @@ document.querySelector('.messages')?.classList.toggle('snap-end')
 
   return (
     <div className="messages snap-end pb-14" ref={listRef}>
-      {messages.map((message) => (
-        <div className=" post  " key={message.id}>
+      {messages.map((message, index) => (
+        <div className=" post  group  relative" key={message.id}>
           <div className="avatar-wrapper">
             <img
               className="avatar"
-              src={`https://avatars.dicebear.com/api/identicon/${message.expand?.user?.username}.svg`}
+              src={
+                `https://nextcord.apps.devopportunities.dev/api/files/_pb_users_auth_/${message.user}/${message.expand.user.avatar}` ||
+                `https://avatars.dicebear.com/api/identicon/${message.expand?.user?.username}.svg`
+              }
               alt="avatar"
               width="40px"
             />
@@ -79,14 +84,27 @@ document.querySelector('.messages')?.classList.toggle('snap-end')
           <div className="post-content">
             <p className="post-owner">
               {message.expand?.user?.username}
-              <small className="timestamp">{message.created}</small>
+              <small className="timestamp">
+                {new Date(message.created).toLocaleDateString()}
+              </small>
             </p>
             <p className="post-text">{message.text}</p>
+          </div>
+          <div className="absolute bottom-16 right-0 mr-5 ">
+            {index === messages.length - 1 && (
+              <div className="group-hover:opacity-0 transition-all  ">
+                <div className=" relative w-full rounded-lg bg-red-400 px-3 text-sm font-bold text-white">
+                  Newest Message
+                  <hr className=" absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400 " />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ))}
 
       <div className="bottom-bar   ">
+        <PlusIcon />
         <form onSubmit={sendMessage}>
           <input
             value={newMessage}
@@ -108,5 +126,10 @@ document.querySelector('.messages')?.classList.toggle('snap-end')
     </div>
   );
 };
-
+const PlusIcon = () => (
+  <BsPlusCircleFill
+    size="22"
+    className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
+  />
+);
 export default Messages;

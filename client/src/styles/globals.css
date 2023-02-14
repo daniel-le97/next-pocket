@@ -95,7 +95,7 @@
 
 
   .channel-bar {
-    @apply m-0 ml-16 h-auto w-2/3 overflow-hidden bg-zinc-800 shadow-lg;
+    @apply m-0 ml-16 h-auto w-64 overflow-hidden bg-zinc-800 shadow-lg;
   }
 
   .channel-container {
@@ -144,7 +144,7 @@
   }
 
   .content-container {
-    @apply p-3 bg-zinc-700  h-screen   overflow-y-scroll  flex flex-col snap-y snap-end  pb-14;
+    @apply p-3 bg-zinc-700  h-screen w-full  overflow-y-scroll  flex flex-col snap-y snap-end  pb-14;
   }
   .content-list{
     @apply pt-20 w-full
@@ -173,7 +173,7 @@
   }
 
   .avatar {
-    @apply mx-0 mb-auto mt-0 w-12 cursor-pointer rounded-full bg-gray-100 object-cover shadow-md;
+    @apply mx-0 mb-auto mt-0 w-12 h-12  object-top cursor-pointer rounded-full bg-gray-100 object-cover shadow-md;
   }
 
   .post-owner {

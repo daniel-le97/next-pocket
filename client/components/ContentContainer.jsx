@@ -3,24 +3,26 @@ import MessagesList from './MessagesList.jsx'
 import CreateMessage from './CreateMessage.jsx'
 // import { useState } from 'react';
 import TopNavigation from '../components/TopNavigation.jsx'
-import Post from '../components/Post.jsx'
+
 const ContentContainer = () => {
   return (
     <div className="content-container">
     <TopNavigation/>
       <div className="content-list">
-        <Post
+        {/* <Post
           name="Ada"
           timestamp="one week ago"
           text={`Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit
           amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur
           adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem
           ipsum dolor sit amet consectetur adipisicing elit.`}
-        />
+        /> */}
+
+     
        <MessagesList/>
       
       </div>
-      <CreateMessage />
+      {/* <CreateMessage /> */}
     </div>
   );
 };

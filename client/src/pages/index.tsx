@@ -14,7 +14,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
-        <div className="flex  ">
+        <div className="flex  w-full ">
+          
        <SideBar />
        <ChannelsBar/>
        <ContentContainer/>
