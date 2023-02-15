@@ -8,7 +8,6 @@ import {
   FaSun,
 } from "react-icons/fa";
 
-
 const TopNavigation = () => {
   return (
     <div className="top-navigation">

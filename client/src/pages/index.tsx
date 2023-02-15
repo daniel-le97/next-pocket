@@ -1,9 +1,9 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import SideBar from '../../components/SideBar'
-import ChannelsBar from '../../components/ChannelsBar'
-import ContentContainer from '../../components/ContentContainer'
+import SideBar from '../components/SideBar'
+import ChannelsBar from '../components/ChannelsBar'
+import ContentContainer from '../components/ContentContainer'
 import React, {useEffect} from "react";
 import { useRouter } from "next/router";
 import { AppState } from "../../AppState";

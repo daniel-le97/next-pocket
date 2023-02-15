@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react";
-import { pb, useCurrentUser } from "../utils/pocketBase";
+import { pb, } from "../../utils/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
 import { BsPlusCircleFill } from "react-icons/bs";
-import { UserLogin } from "../src/models/user";
-import { AppState } from "../AppState.js";
-import { messageService } from "../src/services/MessageService";
+import { UserLogin } from "../models/user";
+import { AppState } from "../../AppState.js";
+import { messageService } from "../services/MessageService";
 const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
   const  messages = AppState.messages 

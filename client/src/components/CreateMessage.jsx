@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BsPlusCircleFill } from "react-icons/bs";
-import { messageService } from "../src/services/MessageService";
+import { messageService } from "../services/MessageService";
 
 import PocketBase from "pocketbase";
 
