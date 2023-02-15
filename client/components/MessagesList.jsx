@@ -1,6 +1,6 @@
-import { useRef } from "react";
-import { useEffect, useState } from "react";
-import { pb, useCurrentUser } from "../util/pocketBase";
+import { useEffect, useState, useRef } from "react";
+import { observer } from "mobx-react";
+import { pb, useCurrentUser } from "../utils/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { UserLogin } from "../src/models/user";
@@ -23,21 +23,23 @@ const Messages = () => {
     };
     fetchMessages();
 
-    unsubscribe = async() => await pb
-      .collection('messages')
-      .subscribe('*', async ({ action, record }) => {
-        if (action === 'create') {
-          // Fetch associated user
-          const user = await pb.collection('users').getOne(record.user);
-          record.expand = { user };
-          setMessages(prevMessages => [...prevMessages, record]);
-          // messages = [...messages, record];
-        }
-        if (action === 'delete') {
-          setMessages(prevMessages => prevMessages.filter((m) => m.id !== record.id));
-        }
-      });
-
+    unsubscribe = async () =>
+      await pb
+        .collection("messages")
+        .subscribe("*", async ({ action, record }) => {
+          if (action === "create") {
+            // Fetch associated user
+            const user = await pb.collection("users").getOne(record.user);
+            record.expand = { user };
+            setMessages((prevMessages) => [...prevMessages, record]);
+            // messages = [...messages, record];
+          }
+          if (action === "delete") {
+            setMessages((prevMessages) =>
+              prevMessages.filter((m) => m.id !== record.id)
+            );
+          }
+        });
 
     return () => {
       if (unsubscribe) {
@@ -48,7 +50,7 @@ const Messages = () => {
 
   const sendMessage = async (event) => {
     event.preventDefault();
-   const user = pb.authStore.model
+    const user = pb.authStore.model;
     const data = {
       text: newMessage,
       user: user.id,
@@ -123,4 +125,4 @@ const PlusIcon = () => (
     className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
   />
 );
-export default Messages;
+export default observer(Messages);
