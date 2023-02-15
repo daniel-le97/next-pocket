@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react";
-import { pb, } from "../../utils/pocketBase";
+import { pb } from "../../utils/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { UserLogin } from "../models/user";
@@ -8,13 +8,13 @@ import { AppState } from "../../AppState.js";
 import { messageService } from "../services/MessageService";
 const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
-  const  messages = AppState.messages 
+  const messages = AppState.messages;
   const listRef = useRef(null);
   let unsubscribe = null;
- 
+
   useEffect(() => {
     const fetchMessages = async () => {
-     await messageService.getMessages()
+      await messageService.getMessages();
     };
     fetchMessages();
 
@@ -26,14 +26,15 @@ const Messages = () => {
             // Fetch associated user
             const user = await pb.collection("users").getOne(record.user);
             record.expand = { user };
-            setMessages((prevMessages) => [...prevMessages, record]);
+            // setMessages((prevMessages) => [...prevMessages, record]);
+            AppState.messages = [...AppState.messages, record];
             // messages = [...messages, record];
           }
-          if (action === "delete") {
-            setMessages((prevMessages) =>
-              prevMessages.filter((m) => m.id !== record.id)
-            );
-          }
+          // if (action === "delete") {
+          //   setMessages((prevMessages) =>
+          //     prevMessages.filter((m) => m.id !== record.id)
+          //   );
+          // }
         });
 
     return () => {
@@ -45,7 +46,7 @@ const Messages = () => {
 
   const sendMessage = async (event) => {
     event.preventDefault();
-    const user = pb.authStore.model;
+    const user = AppState.user;
     const data = {
       text: newMessage,
       user: user.id,
@@ -56,40 +57,42 @@ const Messages = () => {
 
   return (
     <div className="messages snap-end pb-14" ref={listRef}>
-      {messages && messages.length > 0 ? (messages?.map((message, index) => (
-        <div className=" post  group  relative" key={message.id}>
-          <div className="avatar-wrapper">
-            <img
-              className="avatar"
-              src={
-                `https://nextcord.apps.devopportunities.dev/api/files/_pb_users_auth_/${message.user}/${message.expand.user.avatar}` ||
-                `https://api.dicebear.com/5.x/bottts-neutral/svg`
-              }
-              alt="avatar"
-              width="40px"
-            />
-          </div>
-          <div className="post-content">
-            <p className="post-owner">
-              {message.expand?.user?.username}
-              <small className="timestamp">
-                {new Date(message.created).toLocaleDateString()}
-              </small>
-            </p>
-            <p className="post-text">{message.text}</p>
-          </div>
-          <div className="absolute bottom-16 right-0 mr-5 ">
-            {index === messages.length - 1 && (
-              <div className="transition-all group-hover:opacity-0  ">
-                <div className=" relative w-full rounded-lg bg-red-400 px-3 text-sm font-bold text-white">
-                  Newest Message
-                  <hr className=" absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400 " />
+      {messages && messages.length > 0 ? (
+        messages?.map((message, index) => (
+          <div className=" post  group  relative" key={message.id}>
+            <div className="avatar-wrapper">
+              <img
+                className="avatar"
+                src={
+                  message.expand.user.avatarUrl ||
+                  `https://api.dicebear.com/5.x/bottts-neutral/svg`
+                }
+                alt="avatar"
+                width="40px"
+              />
+            </div>
+            <div className="post-content">
+              <p className="post-owner">
+                {message.expand?.user?.username}
+                <small className="timestamp">
+                  {new Date(message.created).toLocaleDateString()}
+                </small>
+              </p>
+              <p className="post-text">{message.text}</p>
+            </div>
+            <div className="absolute bottom-16 right-0 mr-5 ">
+              {index === messages.length - 1 && (
+                <div className="transition-all group-hover:opacity-0  ">
+                  <div className=" relative w-full rounded-lg bg-red-400 px-3 text-sm font-bold text-white">
+                    Newest Message
+                    <hr className=" absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400 " />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-      ))) : (
+        ))
+      ) : (
         <p>No Messages Found</p>
       )}
 
@@ -104,15 +107,6 @@ const Messages = () => {
           />
         </form>
       </div>
-      {/* <form onSubmit={sendMessage}>
-        <input
-          placeholder="Message"
-          type="text"
-          value={newMessage}
-          onChange={(event) => setNewMessage(event.target.value)}
-        />
-        <button type="submit">Send</button>
-      </form> */}
     </div>
   );
 };

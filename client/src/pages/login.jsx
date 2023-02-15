@@ -1,24 +1,26 @@
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
-import { currentUser, pb } from "../../utils/pocketBase.ts";
+import {  pb } from "../../utils/pocketBase";
 import { AppState } from "../../AppState";
 import Link from "next/link.js";
+import { useRouter } from "next/router.js";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+   const router = useRouter();
   const user = AppState.user;
   async function login() {
     const user = await pb
       .collection("users")
       .authWithPassword(username, password);
+    console.log(user);
     AppState.user = user.record;
     AppState.user.token = user.token;
     console.log(AppState.user);
+        router.push("/");
   }
- 
 
   async function signUp() {
     try {
@@ -32,7 +34,7 @@ function Login() {
       };
       const createdUser = await pb.collection("users").create(data);
       await login();
-      await loginWithGithub();
+      // await loginWithGithub();
     } catch (err) {
       console.error(err);
     }
@@ -76,8 +78,6 @@ function Login() {
           />
           <button onClick={signUp}>Sign Up</button>
           <button onClick={login}>Login</button>
-        
-       
         </form>
       </div>
       <div className="container flex items-center justify-center">
