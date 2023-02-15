@@ -36,7 +36,7 @@
 
 
 .top-navigation {
-    @apply flex flex-row   fixed items-center justify-evenly 
+    @apply flex flex-row  z-10  fixed items-center justify-evenly 
     bg-gray-300 dark:bg-zinc-800 rounded-lg bg-opacity-90 
     w-2/3 h-16 
     m-0 
@@ -67,7 +67,7 @@
   }
 
   .search {
-    @apply w-1/5 flex items-center justify-start 
+    @apply w-1/5 flex z-50 items-center justify-start 
     bg-gray-400 dark:bg-gray-600
     text-gray-500
     px-2 h-9 ml-0 mr-0 
