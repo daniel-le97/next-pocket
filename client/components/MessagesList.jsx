@@ -1,8 +1,6 @@
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
-import { BsPlusCircleFill } from "react-icons/bs";
-import { date } from "zod";
-import { currentUser, pb } from "../util/pocketBase";
+import { pb, useCurrentUser } from "../util/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
 
 const Messages = () => {
@@ -24,30 +22,21 @@ const Messages = () => {
     };
     fetchMessages();
 
-    const handleRealtimeMessages = async ({ action, record }) => {
-      if (action === "create") {
-        // const user = await pb.collection("users").getOne(record.user);
-        // record.expand = { user };
-        fetchMessages();
-        document.querySelector(".messages")?.classList.toggle("snap-end");
-        //  if (checkForDuplicate(messages, record)) {
-        //    setMessages((prevMessages) => [...prevMessages, record]);
-        //  }
-      }
-      if (action === "delete") {
-        setMessages((prevMessages) =>
-          prevMessages.filter((m) => m.id !== record.id)
-        );
-      }
-    };
-
-    pb.collection("messages")
-      .subscribe("*", handleRealtimeMessages)
-      .then((subscription) => {
-        unsubscribe = () => {
-          subscription?.unsubscribe();
-        };
+    unsubscribe = async() => await pb
+      .collection('messages')
+      .subscribe('*', async ({ action, record }) => {
+        if (action === 'create') {
+          // Fetch associated user
+          const user = await pb.collection('users').getOne(record.user);
+          record.expand = { user };
+          setMessages(prevMessages => [...prevMessages, record]);
+          // messages = [...messages, record];
+        }
+        if (action === 'delete') {
+          setMessages(prevMessages => prevMessages.filter((m) => m.id !== record.id));
+        }
       });
+
 
     return () => {
       if (unsubscribe) {
@@ -60,7 +49,7 @@ const Messages = () => {
     event.preventDefault();
     const data = {
       text: newMessage,
-      user: "20lbeavoen33ngd",
+      user: useCurrentUser().id,
     };
     const createdMessage = await pb.collection("messages").create(data);
     setNewMessage("");

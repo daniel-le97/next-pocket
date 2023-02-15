@@ -1,24 +1,27 @@
 import pocketbase from "pocketbase";
 import { env } from "../src/env.mjs";
-// let pb : pocketbase
 
-class SingletonPb {
-  private static instance: pocketbase;
+import { useState, useEffect } from "react";
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {
-    
-  }
+const pBase = new pocketbase(env.NEXT_PUBLIC_POCKET_URL)
+pBase.autoCancellation(false)
+export const pb = pBase
 
-  static getInstance() {
-    if (!SingletonPb.instance) {
-      SingletonPb.instance = new pocketbase(env.NEXT_PUBLIC_POCKET_URL);
-      SingletonPb.instance.autoCancellation(false)
-    }
-    return SingletonPb.instance;
-  }
-}
+export const useCurrentUser = () => {
+  const [currentUser, setCurrentUser] = useState(pb.authStore.model);
 
+  useEffect(() => {
+    const unsubscribe = pb.authStore.onChange((user) => {
+      console.log("authStore changed", user);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setCurrentUser(user);
+    });
 
-export const pb = SingletonPb.getInstance();
-export const  currentUser = pb.authStore.model
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+console.log(currentUser)
+  return currentUser;
+};
