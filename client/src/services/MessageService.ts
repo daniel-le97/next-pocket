@@ -5,12 +5,12 @@ import type { Message } from "../models/Message";
 
 class MessageService {
   //
-  async sendMessage(data : Message) {
+  async sendMessage(data: Message) {
     try {
       const res = await pb.collection("messages").create<Message>(data);
       return res;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
   async getMessages() {

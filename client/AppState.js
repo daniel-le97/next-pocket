@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
-import { isValidProp } from "./util/isValidProp.js";
+import { isValidProp } from "./utils/isValidProp";
 
 class ObservableAppState {
   user = null;

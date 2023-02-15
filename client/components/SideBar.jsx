@@ -22,7 +22,6 @@ const SideBar = () => {
   );
 };
 
-// @ts-ignore
 const SideBarIcon = ({ icon, text, router }) => (
   <Link href={router}>
     <div className=" sidebar-icon group ">

@@ -1,6 +1,6 @@
-import { useRef } from "react";
-import { useEffect, useState } from "react";
-import { pb, useCurrentUser } from "../util/pocketBase";
+import { useEffect, useState, useRef } from "react";
+import { observer } from "mobx-react";
+import { pb, useCurrentUser } from "../utils/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { UserLogin } from "../src/models/user";
@@ -128,4 +128,4 @@ const PlusIcon = () => (
     className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
   />
 );
-export default Messages;
+export default observer(Messages);

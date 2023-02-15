@@ -1,3 +1,10 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 import { logger } from './Logger.js'
@@ -14,6 +21,7 @@ export default class Pop {
  */
   static async confirm(title = 'Are you sure?', text = "You won't be able to revert this!", confirmButtonText = 'Yes', icon = 'warning') {
     try {
+      // @ts-ignore
       const res = await Swal.fire({
         title,
         text,
@@ -44,6 +52,7 @@ export default class Pop {
  * {@link https://sweetalert2.github.io/#configuration|Check out Sweet Alerts}
  */
   static toast(title = 'Warning!', icon = 'warning', position = 'top-end', timer = 3000, progressBar = true) {
+    // @ts-ignore
     Swal.fire({
       title,
       icon,
@@ -60,6 +69,7 @@ export default class Pop {
    * @param { String } eventTrigger Queryable trigger
    */
   static error(error, eventTrigger = '') {
+    // @ts-ignore
     logger.error(eventTrigger, error)
 
     if (error.isAxiosError) {
