@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useEffect, useState } from "react";
 import { pb, useCurrentUser } from "../util/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
 import { BsPlusCircleFill } from "react-icons/bs";
+import { UserLogin } from "../src/models/user";
 const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -47,9 +48,10 @@ const Messages = () => {
 
   const sendMessage = async (event) => {
     event.preventDefault();
+   const user = pb.authStore.model
     const data = {
       text: newMessage,
-      user: useCurrentUser().id,
+      user: user.id,
     };
     const createdMessage = await pb.collection("messages").create(data);
     setNewMessage("");
