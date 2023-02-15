@@ -82,6 +82,12 @@
     pl-1 rounded;
   }
 
+  .login-input{
+     @apply w-full font-sans font-semibold
+    bg-gray-100 p-1 shadow-lg outline-none 
+    text-gray-500  placeholder-gray-500
+    pl-1 rounded;
+  }
 
 
 

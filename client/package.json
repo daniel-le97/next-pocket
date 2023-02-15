@@ -9,6 +9,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "mobx": "^6.8.0",
+    "mobx-react": "^7.6.0",
     "next": "13.1.6",
     "pocketbase": "^0.10.1",
     "react": "18.2.0",

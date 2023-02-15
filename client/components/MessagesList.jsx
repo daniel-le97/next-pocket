@@ -75,7 +75,7 @@ const Messages = () => {
               className="avatar"
               src={
                 `https://nextcord.apps.devopportunities.dev/api/files/_pb_users_auth_/${message.user}/${message.expand.user.avatar}` ||
-                `https://avatars.dicebear.com/api/identicon/${message.expand?.user?.username}.svg`
+                `https://api.dicebear.com/5.x/bottts-neutral/svg`
               }
               alt="avatar"
               width="40px"
@@ -92,7 +92,7 @@ const Messages = () => {
           </div>
           <div className="absolute bottom-16 right-0 mr-5 ">
             {index === messages.length - 1 && (
-              <div className="group-hover:opacity-0 transition-all  ">
+              <div className="transition-all group-hover:opacity-0  ">
                 <div className=" relative w-full rounded-lg bg-red-400 px-3 text-sm font-bold text-white">
                   Newest Message
                   <hr className=" absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400 " />
