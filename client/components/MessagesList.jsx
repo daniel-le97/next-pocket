@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { pb, useCurrentUser } from "../util/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
-
+import { BsPlusCircleFill } from "react-icons/bs";
 const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
