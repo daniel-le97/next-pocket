@@ -4,6 +4,7 @@ import { pb, useCurrentUser } from "../util/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { UserLogin } from "../src/models/user";
+import { AppState } from "../AppState.js";
 const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([]);
@@ -20,24 +21,28 @@ const Messages = () => {
         expand: "user",
       });
       setMessages(resultList.items);
+      AppState.messages = resultList.items
+      console.log(AppState.messages);
     };
     fetchMessages();
 
-    unsubscribe = async() => await pb
-      .collection('messages')
-      .subscribe('*', async ({ action, record }) => {
-        if (action === 'create') {
-          // Fetch associated user
-          const user = await pb.collection('users').getOne(record.user);
-          record.expand = { user };
-          setMessages(prevMessages => [...prevMessages, record]);
-          // messages = [...messages, record];
-        }
-        if (action === 'delete') {
-          setMessages(prevMessages => prevMessages.filter((m) => m.id !== record.id));
-        }
-      });
-
+    unsubscribe = async () =>
+      await pb
+        .collection("messages")
+        .subscribe("*", async ({ action, record }) => {
+          if (action === "create") {
+            // Fetch associated user
+            const user = await pb.collection("users").getOne(record.user);
+            record.expand = { user };
+            setMessages((prevMessages) => [...prevMessages, record]);
+            // messages = [...messages, record];
+          }
+          if (action === "delete") {
+            setMessages((prevMessages) =>
+              prevMessages.filter((m) => m.id !== record.id)
+            );
+          }
+        });
 
     return () => {
       if (unsubscribe) {
@@ -48,7 +53,7 @@ const Messages = () => {
 
   const sendMessage = async (event) => {
     event.preventDefault();
-   const user = pb.authStore.model
+    const user = pb.authStore.model;
     const data = {
       text: newMessage,
       user: user.id,

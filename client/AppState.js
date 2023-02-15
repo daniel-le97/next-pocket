@@ -6,8 +6,9 @@ class ObservableAppState {
   /** @type {import('./src/models/Account.js').Account | null} */
   account = null;
 
-  test = 'hi'
+  test = "hi";
 
+  messages = [];
   constructor() {
     makeAutoObservable(this);
   }
