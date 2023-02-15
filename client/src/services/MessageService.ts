@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // import type pocketbase from "pocketbase";
-import { pb } from "../../util/pocketBase";
+import { AppState } from "../../AppState";
+import { pb } from "../../utils/pocketBase";
 import type { Message } from "../models/Message";
 
 class MessageService {
@@ -15,9 +16,17 @@ class MessageService {
   }
   async getMessages() {
     try {
-      const messages = await pb.collection('messages').getFullList(200,{})
+     const res = await pb
+       .collection("messages")
+       .getList(1,50 , {
+         sort: "-created",
+         expand:'user'
+       });
     // const newMessages =  messages.map(message => new Message(message))
-      return messages
+    AppState.messages = res.items
+  
+    
+     
     } catch (error) {
       
     }

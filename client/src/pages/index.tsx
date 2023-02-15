@@ -8,14 +8,14 @@ import React, {useEffect} from "react";
 import { useRouter } from "next/router";
 import { AppState } from "../../AppState";
 const Home: NextPage = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
-  useEffect(() => {
-    const user = AppState?.user;
-    if (!user) {
-      router.push("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const user = AppState?.user;
+  //   if (!user) {
+  //     router.push("/login");
+  //   }
+  // }, []);
 
 
   return (

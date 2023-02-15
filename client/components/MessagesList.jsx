@@ -5,16 +5,13 @@ import { pb, useCurrentUser } from "../utils/pocketBase";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { UserLogin } from "../src/models/user";
 import { AppState } from "../AppState.js";
-import { messageService } from "../src/services/MessageService.ts";
+import { messageService } from "../src/services/MessageService";
 const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
-  const  messages = AppState.messages
+  const  messages = AppState.messages 
   const listRef = useRef(null);
   let unsubscribe = null;
-  const checkForDuplicate = (messages, newMessage) => {
-    const messageIds = messages.map((message) => message.id);
-    return !messageIds.includes(newMessage.id);
-  };
+ 
   useEffect(() => {
     const fetchMessages = async () => {
      await messageService.getMessages()
@@ -59,7 +56,7 @@ const Messages = () => {
 
   return (
     <div className="messages snap-end pb-14" ref={listRef}>
-      {messages.map((message, index) => (
+      {messages && messages.length > 0 ? (messages?.map((message, index) => (
         <div className=" post  group  relative" key={message.id}>
           <div className="avatar-wrapper">
             <img
@@ -92,7 +89,9 @@ const Messages = () => {
             )}
           </div>
         </div>
-      ))}
+      ))) : (
+        <p>No Messages Found</p>
+      )}
 
       <div className="bottom-bar   ">
         <PlusIcon />
