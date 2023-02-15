@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
-import { currentUser, pb } from "../../util/pocketBase";
+import { currentUser, pb } from "../../utils/pocketBase.ts";
 import { AppState } from "../../AppState";
 import Link from "next/link.js";
 

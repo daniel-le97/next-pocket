@@ -4,8 +4,20 @@ import Link from "next/link";
 import SideBar from '../../components/SideBar'
 import ChannelsBar from '../../components/ChannelsBar'
 import ContentContainer from '../../components/ContentContainer'
-import React from "react";
+import React, {useEffect} from "react";
+import { useRouter } from "next/router";
+import { AppState } from "../../AppState";
 const Home: NextPage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const user = AppState?.user;
+    if (!user) {
+      router.push("/login");
+    }
+  }, []);
+
+
   return (
     <>
       <Head>

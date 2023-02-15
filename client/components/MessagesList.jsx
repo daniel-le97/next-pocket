@@ -5,9 +5,10 @@ import { pb, useCurrentUser } from "../utils/pocketBase";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { UserLogin } from "../src/models/user";
 import { AppState } from "../AppState.js";
+import { messageService } from "../src/services/MessageService.ts";
 const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const  messages = AppState.messages
   const listRef = useRef(null);
   let unsubscribe = null;
   const checkForDuplicate = (messages, newMessage) => {
@@ -16,13 +17,7 @@ const Messages = () => {
   };
   useEffect(() => {
     const fetchMessages = async () => {
-      const resultList = await pb.collection("messages").getList(1, 100, {
-        sort: "created",
-        expand: "user",
-      });
-      setMessages(resultList.items);
-      AppState.messages = resultList.items
-      console.log(AppState.messages);
+     await messageService.getMessages()
     };
     fetchMessages();
 
