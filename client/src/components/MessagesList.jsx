@@ -11,8 +11,9 @@ const Messages = () => {
   const messages = AppState.messages;
   const listRef = useRef(null);
   let unsubscribe = null;
-
+const user = pb.authStore.model;
   useEffect(() => {
+console.log(user);
     const fetchMessages = async () => {
       await messageService.getMessages();
     };
@@ -46,10 +47,10 @@ const Messages = () => {
 
   const sendMessage = async (event) => {
     event.preventDefault();
-    const user = AppState.user;
+    const user = pb.authStore.model
     const data = {
       text: newMessage,
-      user: user.id,
+      user: user?.id,
     };
     const createdMessage = await pb.collection("messages").create(data);
     setNewMessage("");

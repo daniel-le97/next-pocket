@@ -10,7 +10,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
    const router = useRouter();
-  const user = AppState.user;
+  
   async function login() {
     const user = await pb
       .collection("users")
