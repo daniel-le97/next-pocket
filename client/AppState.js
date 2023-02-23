@@ -11,7 +11,7 @@ class ObservableAppState {
 
   test = "hi";
 
-  activeRoom = "lq92qsysrisxvyc";
+  activeRoom = null; //general chat;
   messages = [];
   constructor() {
     makeAutoObservable(this);

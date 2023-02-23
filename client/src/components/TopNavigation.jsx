@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaSearch,
   FaHashtag,
@@ -7,6 +7,7 @@ import {
   FaMoon,
   FaSun,
 } from "react-icons/fa";
+import { AppState } from "../../AppState.js";
 
 const TopNavigation = () => {
   return (
@@ -46,6 +47,15 @@ const UserCircle = () => (
   <FaUserCircle size="24" className="top-navigation-icon" />
 );
 const HashtagIcon = () => <FaHashtag size="20" className="title-hashtag" />;
-const Title = () => <h5 className="title-text">tailwind-css</h5>;
+const Title = () => {
+  const [room,setRoom] = useState(null)
+  useEffect(()=>{
+    console.log(AppState?.activeRoom?.title);
+setRoom(AppState?.activeRoom?.title)
+  },[AppState?.activeRoom?.title])
+ return (
+   <h5 className="title-text">{room}</h5>
+ )
+};
 
 export default TopNavigation;
