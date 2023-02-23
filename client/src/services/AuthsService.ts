@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import type { NextRouter} from "next/router";
 import { pb } from "../../utils/pocketBase";
 import type { UserLogin } from "../models/user";
 
@@ -8,6 +9,12 @@ class AuthsService {
       await pb.collection("users").requestPasswordReset(email);
     } catch (error) {
       console.log(error);
+    }
+  }
+  async isUserLoggedIn(router: NextRouter){
+    const loggedIn = pb.authStore.model
+    if (!loggedIn) {
+      await router.push('/login')
     }
   }
 
@@ -32,6 +39,9 @@ class AuthsService {
     const email = data.email;
     const password = data.password;
     await pb.collection("users").authWithPassword(email, password);
+  }
+   signOut(){
+     pb.authStore.clear()
   }
 }
 

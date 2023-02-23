@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import PocketBase from "pocketbase";
+// import PocketBase from "pocketbase";
+import { pb } from "../../utils/pocketBase";
 
 const RedirectPage = () => {
   const router = useRouter();
   const { code, state } = router.query;
   const redirectUrl = "http://127.0.0.1:8090/redirect.html";
   // const provider = JSON.parse(localStorage.getItem("provider"));
-  const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKET_URL);
+  // const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKET_URL);
 
   useEffect(() => {
     // if (provider.state !== state) {
