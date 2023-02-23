@@ -5,6 +5,8 @@ import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 import { BsHash } from "react-icons/bs";
 import { pb } from "../../utils/pocketBase";
 import { AppState } from "../../AppState.js";
+import { observer } from "mobx-react-lite";
+import { messageService } from "../services/MessageService";
 
 const topics = ["general", "tailwind-css", "react"];
 const questions = ["jit-compilation", "purge-files", "dark-mode"];
@@ -73,8 +75,10 @@ const TopicSelection = ({ selection }) => {
           expand:'nessages'
         });
       // Update AppState.activeRoom
-      AppState.activeRoom = room.id;
-      console.log(AppState.activeRoom);
+      // console.log(AppState.activeRoom,'notActiveYet');
+      AppState.activeRoom = room;
+      // console.log(AppState.activeRoomm,'Active Now');
+       await messageService.getMessages();
     } catch (error) {
       console.error(error);
     } finally {
@@ -102,4 +106,4 @@ const ChannelBlock = () => (
   </div>
 );
 
-export default ChannelsBar;
+export default observer(ChannelsBar);

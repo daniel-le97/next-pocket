@@ -19,7 +19,7 @@ class MessageService {
      const res = await pb
        .collection("messages")
        .getList(1,50 , {
-        filter:`room = "${AppState?.activeRoom}"`,
+        filter:`room = "${AppState?.activeRoom.id}"`,
          sort: "created",
          expand:'user'
        });

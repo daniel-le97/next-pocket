@@ -1,3 +1,4 @@
+import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
 import {
   FaSearch,
@@ -10,10 +11,15 @@ import {
 import { AppState } from "../../AppState.js";
 
 const TopNavigation = () => {
+   const [room, setRoom] = useState(null);
+   useEffect(() => {
+    // console.log(AppState?.activeRoom?.title,'te124314');
+     setRoom(AppState?.activeRoom?.title);
+   }, [AppState?.activeRoom?.title]);
   return (
     <div className="top-navigation">
       <HashtagIcon />
-      <Title />
+      <Title room={room} />
       {/* <ThemeIcon /> */}
       <Search />
       <BellIcon />
@@ -47,15 +53,11 @@ const UserCircle = () => (
   <FaUserCircle size="24" className="top-navigation-icon" />
 );
 const HashtagIcon = () => <FaHashtag size="20" className="title-hashtag" />;
-const Title = () => {
-  const [room,setRoom] = useState(null)
-  useEffect(()=>{
-    console.log(AppState?.activeRoom?.title);
-setRoom(AppState?.activeRoom?.title)
-  },[AppState?.activeRoom?.title])
+const Title = ({room}) => {
+ 
  return (
-   <h5 className="title-text">{room}</h5>
+   <h5 className="title-text">{room? room:'noRoomYet'}</h5>
  )
 };
 
-export default TopNavigation;
+export default observer(TopNavigation);

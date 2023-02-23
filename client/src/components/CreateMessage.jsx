@@ -3,6 +3,8 @@ import { BsPlusCircleFill } from "react-icons/bs";
 import { messageService } from "../services/MessageService";
 
 import PocketBase from "pocketbase";
+import { observer } from "mobx-react-lite";
+import { AppState } from "../../AppState.js";
 
 const pb = new PocketBase(process.env.NEXT_PUBLIC_POCKET_URL);
 
@@ -17,9 +19,13 @@ const CreateMessage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    console.log(text);
     const data = {
       text: text,
       user: "20lbeavoen33ngd",
+      room:AppState?.activeRoom?.id
+      
     };
     await messageService.sendMessage(data);
     setText("");
@@ -47,4 +53,4 @@ const PlusIcon = () => (
   />
 );
 
-export default CreateMessage;
+export default observer(CreateMessage);

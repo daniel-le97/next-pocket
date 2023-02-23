@@ -53,7 +53,7 @@ const user = pb.authStore.model;
     const data = {
       text: newMessage,
       user: user?.id,
-      room:AppState.activeRoom
+      room:AppState.activeRoom.id
     };
     const createdMessage = await pb.collection("messages").create(data);
     setNewMessage("");
