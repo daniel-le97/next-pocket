@@ -13,7 +13,7 @@ const Messages = () => {
   let unsubscribe = null;
 const user = pb.authStore.model;
   useEffect(() => {
-console.log(user);
+
     const fetchMessages = async () => {
       await messageService.getMessages();
     };
@@ -28,8 +28,10 @@ console.log(user);
             const user = await pb.collection("users").getOne(record.user);
             record.expand = { user };
             // setMessages((prevMessages) => [...prevMessages, record]);
-            AppState.messages = [...AppState.messages, record];
-            // messages = [...messages, record];
+            let updatedMessages = [...AppState.messages]
+            updatedMessages = [...updatedMessages,record]
+            AppState.messages =  updatedMessages
+          
           }
           // if (action === "delete") {
           //   setMessages((prevMessages) =>
@@ -39,7 +41,7 @@ console.log(user);
         });
 
     return () => {
-      if (unsubscribe) {
+      if (unsubscribe ) {
         unsubscribe();
       }
     };
@@ -51,6 +53,7 @@ console.log(user);
     const data = {
       text: newMessage,
       user: user?.id,
+      room:AppState.activeRoom
     };
     const createdMessage = await pb.collection("messages").create(data);
     setNewMessage("");
@@ -62,6 +65,7 @@ console.log(user);
         messages?.map((message, index) => (
           <div className=" post  group  relative" key={message.id}>
             <div className="avatar-wrapper">
+            
               <img
                 className="avatar"
                 src={

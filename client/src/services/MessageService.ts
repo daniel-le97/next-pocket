@@ -19,7 +19,8 @@ class MessageService {
      const res = await pb
        .collection("messages")
        .getList(1,50 , {
-         sort: "-created",
+        filter:`room = "${AppState?.activeRoom}"`,
+         sort: "created",
          expand:'user'
        });
     // const newMessages =  messages.map(message => new Message(message))

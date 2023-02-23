@@ -1,13 +1,36 @@
 import { observer } from "mobx-react";
 import Link from "next/link.js";
 import { useEffect, useState } from "react";
-import { BsPlus, BsFillLightningFill, BsGearFill, BsPerson } from "react-icons/bs";
-import { FaAirbnb, FaArrowCircleRight, FaFire, FaHome, FaPoo } from "react-icons/fa";
+import {
+  // @ts-ignore
+  BsPlus,
+  // @ts-ignore
+  BsFillLightningFill,
+  // @ts-ignore
+  BsGearFill,
+  BsPerson,
+} from "react-icons/bs";
+import {
+  // @ts-ignore
+  FaAirbnb,
+  FaArrowCircleRight,
+  // @ts-ignore
+  FaFire,
+  FaHome,
+  // @ts-ignore
+  FaPoo,
+} from "react-icons/fa";
+// @ts-ignore
 import { AppState } from "../../AppState.js";
 import { pb } from "../../utils/pocketBase";
 
 const SideBar = () => {
-  
+   const [user, setUser] = useState(null);
+
+   useEffect(() => {
+     // @ts-ignore
+     setUser(pb?.authStore?.model);
+   }, []);
   return (
     <div
       className="
@@ -22,18 +45,30 @@ const SideBar = () => {
       />
 
       <Divider />
-      <SideBarIcon
-        icon={<FaArrowCircleRight size="22" />}
-        text={"Login"}
-        router={"/login"}
-      />
-     
-     <UserIcon/>
 
+      {user ? (
+        <>
+          <UserIcon user={user} />
+          <Divider />
+          <SideBarIcon
+          
+            icon={<FaArrowCircleRight size="22" />}
+            text={"Logout"}
+            router={"/login"}
+          />
+        </>
+      ) : (
+        <SideBarIcon
+          icon={<FaArrowCircleRight size="22" />}
+          text={"Login"}
+          router={"/login"}
+        />
+      )}
     </div>
   );
 };
 
+// @ts-ignore
 const SideBarIcon = ({ icon, text, router }) => (
   <Link href={router}>
     <div className=" sidebar-icon group ">
@@ -42,40 +77,29 @@ const SideBarIcon = ({ icon, text, router }) => (
     </div>
   </Link>
 );
-const UserIcon = () => {
-  useEffect(() => {
-   const user = pb?.authStore?.model
- 
-   
-  }, []);
-   const [user,setUser] = useState( pb?.authStore?.model)
-
+const UserIcon = ({user}) => {
   return (
-    <div className=" sidebar-icon group ">
+    <div className="sidebar-icon group">
       <img
         src={
+          // @ts-ignore
           user?.avatarUrl
-            ? user?.avatarUrl
+            ? // @ts-ignore
+              user?.avatarUrl
             : "https://api.dicebear.com/5.x/bottts-neutral/svg"
         }
         alt="UserIcon"
         className="rounded-full"
       />
-      <span className=" sidebar-tooltip group-hover:scale-100">
-        {" "}
-        {user?.username}{" "}
+      <span className="sidebar-tooltip group-hover:scale-100">
+        {
+          // @ts-ignore
+          user?.username
+        }
       </span>
     </div>
   );
-
-
-
-}
-;
-
+};
 const Divider = () => <hr className="sidebar-hr" />;
 
-
-
-
-export default  observer( SideBar);
+export default observer(SideBar);

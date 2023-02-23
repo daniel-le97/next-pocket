@@ -11,6 +11,7 @@ class ObservableAppState {
 
   test = "hi";
 
+  activeRoom = "lq92qsysrisxvyc";
   messages = [];
   constructor() {
     makeAutoObservable(this);

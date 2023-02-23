@@ -3,17 +3,12 @@ import { BsPlus, BsFillLightningFill, BsGearFill } from "react-icons/bs";
 import { FaAirbnb, FaFire, FaHome, FaPoo } from "react-icons/fa";
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 import { BsHash } from "react-icons/bs";
+import { pb } from "../../utils/pocketBase";
+import { AppState } from "../../AppState.js";
 
-
-const topics = ["tailwind-css", "react"];
+const topics = ["general", "tailwind-css", "react"];
 const questions = ["jit-compilation", "purge-files", "dark-mode"];
 const random = ["variants", "plugins"];
-
-
-
-
-
-
 
 const ChannelsBar = () => {
   return (
@@ -21,8 +16,8 @@ const ChannelsBar = () => {
       <ChannelBlock />
       <div className="channel-container">
         <Dropdown header="Topics" selections={topics} />
-        <Dropdown header="Questions" selections={questions} />
-        <Dropdown header="Random" selections={random} />
+        {/* <Dropdown header="Questions" selections={questions} />
+        <Dropdown header="Random" selections={random} /> */}
       </div>
     </div>
   );
@@ -49,7 +44,9 @@ const Dropdown = ({ header, selections }) => {
       </div>
       {expanded &&
         selections &&
-        selections.map((selection) => <TopicSelection selection={selection} key={selection} />)}
+        selections.map((selection) => (
+          <TopicSelection selection={selection} key={selection} />
+        ))}
     </div>
   );
 };
@@ -63,12 +60,41 @@ const ChevronIcon = ({ expanded }) => {
   );
 };
 
-const TopicSelection = ({ selection }) => (
-  <div className="dropdown-selection">
-    <BsHash size="24" className="text-gray-400" />
-    <h5 className="dropdown-selection-text">{selection}</h5>
-  </div>
-);
+const TopicSelection = ({ selection }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = async () => {
+    setIsLoading(true);
+    try {
+      // Use pocketbase to get the room by title or ID
+      const room = await pb
+        .collection("rooms")
+        .getFirstListItem(`title="${selection}"`,{
+          expand:'nessages'
+        });
+      // Update AppState.activeRoom
+      AppState.activeRoom = room.id;
+      console.log(AppState.activeRoom);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="dropdown-selection " onClick={handleClick}>
+      {isLoading ? (
+        <span>Loading...</span>
+      ) : (
+        <>
+          <BsHash size="24" className="text-gray-400" />
+          <h5 className="dropdown-selection-text">{selection}</h5>
+        </>
+      )}
+    </div>
+  );
+};
 
 const ChannelBlock = () => (
   <div className="channel-block">
