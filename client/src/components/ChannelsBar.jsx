@@ -4,7 +4,7 @@ import { FaAirbnb, FaFire, FaHome, FaPoo } from "react-icons/fa";
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 import { BsHash } from "react-icons/bs";
 import { pb } from "../../utils/pocketBase";
-import { AppState } from "../../AppState.js";
+import { AppState } from "../../AppState";
 import { observer } from "mobx-react-lite";
 import { messageService } from "../services/MessageService";
 
@@ -25,6 +25,7 @@ const ChannelsBar = () => {
   );
 };
 
+// @ts-ignore
 const Dropdown = ({ header, selections }) => {
   const [expanded, setExpanded] = useState(true);
 
@@ -46,6 +47,7 @@ const Dropdown = ({ header, selections }) => {
       </div>
       {expanded &&
         selections &&
+        // @ts-ignore
         selections.map((selection) => (
           <TopicSelection selection={selection} key={selection} />
         ))}
@@ -53,6 +55,7 @@ const Dropdown = ({ header, selections }) => {
   );
 };
 
+// @ts-ignore
 const ChevronIcon = ({ expanded }) => {
   const chevClass = "text-accent text-opacity-80 my-auto mr-1";
   return expanded ? (
@@ -62,23 +65,23 @@ const ChevronIcon = ({ expanded }) => {
   );
 };
 
+// @ts-ignore
 const TopicSelection = ({ selection }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = async () => {
     setIsLoading(true);
     try {
-      // Use pocketbase to get the room by title or ID
       const room = await pb
         .collection("rooms")
-        .getFirstListItem(`title="${selection}"`,{
-          expand:'nessages'
+        .getFirstListItem(`title="${selection}"`, {
+          expand: "nessages",
         });
-      // Update AppState.activeRoom
-      // console.log(AppState.activeRoom,'notActiveYet');
+
+      // @ts-ignore
       AppState.activeRoom = room;
-      // console.log(AppState.activeRoomm,'Active Now');
-       await messageService.getMessages();
+
+      await messageService.getMessages();
     } catch (error) {
       console.error(error);
     } finally {

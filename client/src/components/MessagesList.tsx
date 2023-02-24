@@ -2,18 +2,17 @@ import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react";
 import { pb } from "../../utils/pocketBase";
 // import { currentUser, pb } from "./pocketbase";
-import { BsPlusCircleFill } from "react-icons/bs";
+import { BsEmojiSmile, BsPencil, BsPlusCircleFill, BsRecordBtn, BsXCircle } from "react-icons/bs";
 import { UserLogin } from "../models/user";
-import { AppState } from "../../AppState.js";
+import { AppState } from "../../AppState";
 import { messageService } from "../services/MessageService";
 const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
   const messages = AppState.messages;
   const listRef = useRef(null);
-  let unsubscribe = null;
-const user = pb.authStore.model;
+  let unsubscribe: (() => void) | null = null;
+  const user = pb.authStore.model;
   useEffect(() => {
-
     const fetchMessages = async () => {
       await messageService.getMessages();
     };
@@ -28,10 +27,9 @@ const user = pb.authStore.model;
             const user = await pb.collection("users").getOne(record.user);
             record.expand = { user };
             // setMessages((prevMessages) => [...prevMessages, record]);
-            let updatedMessages = [...AppState.messages]
-            updatedMessages = [...updatedMessages,record]
-            AppState.messages =  updatedMessages
-          
+            let updatedMessages = [...AppState.messages];
+            updatedMessages = [...updatedMessages, record];
+            AppState.messages = updatedMessages;
           }
           // if (action === "delete") {
           //   setMessages((prevMessages) =>
@@ -41,19 +39,20 @@ const user = pb.authStore.model;
         });
 
     return () => {
-      if (unsubscribe ) {
+      if (unsubscribe) {
         unsubscribe();
       }
     };
   }, []);
 
-  const sendMessage = async (event) => {
+  const sendMessage = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    const user = pb.authStore.model
+    const user = pb.authStore.model;
     const data = {
       text: newMessage,
       user: user?.id,
-      room:AppState.activeRoom.id
+      // @ts-ignore
+      room: AppState?.activeRoom?.id,
     };
     const createdMessage = await pb.collection("messages").create(data);
     setNewMessage("");
@@ -61,11 +60,10 @@ const user = pb.authStore.model;
 
   return (
     <div className="messages snap-end pb-14" ref={listRef}>
-      {messages && messages.length > 0 ? (
+      {messages &&
         messages?.map((message, index) => (
           <div className=" post  group  relative" key={message.id}>
             <div className="avatar-wrapper">
-            
               <img
                 className="avatar"
                 src={
@@ -87,7 +85,7 @@ const user = pb.authStore.model;
             </div>
             <div className="absolute bottom-16 right-0 mr-5 ">
               {index === messages.length - 1 && (
-                <div className="transition-all group-hover:opacity-0  ">
+                <div className=" transition-all group-hover:opacity-0  ">
                   <div className=" relative w-full rounded-lg bg-red-400 px-3 text-sm font-bold text-white">
                     Newest Message
                     <hr className=" absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400 " />
@@ -95,11 +93,24 @@ const user = pb.authStore.model;
                 </div>
               )}
             </div>
+            <div className="absolute bottom-16 right-0  mr-5   opacity-0 group-hover:opacity-100">
+              <div className=" post-options">
+                <div className="group/item relative ">
+                  <BsEmojiSmile size={22} />
+                  <span className=" post-icon-tooltip  ">Like</span>
+                </div>
+                <div className="group/item relative">
+                  <BsPencil size={22} />
+                  <span className=" post-icon-tooltip  ">Edit</span>
+                </div>
+                <div className="group/item relative">
+                  <BsXCircle size={22} />
+                  <span className=" post-icon-tooltip  ">Remove</span>
+                </div>
+              </div>
+            </div>
           </div>
-        ))
-      ) : (
-        <p>No Messages Found</p>
-      )}
+        ))}
 
       <div className="bottom-bar   ">
         <PlusIcon />
