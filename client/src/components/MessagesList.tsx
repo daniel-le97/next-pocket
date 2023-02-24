@@ -48,6 +48,12 @@ const Messages = () => {
 
   const sendMessage = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    if (containsUrl(newMessage)) {
+      console.log("URL found!");
+    } else {
+      console.log("No URL found.");
+    }
+
     const user = pb.authStore.model;
     const data = {
       text: newMessage,
@@ -63,7 +69,14 @@ const Messages = () => {
     <div className="messages snap-end pb-14" ref={listRef}>
       {messages &&
         messages?.map((message, index) => (
-          <div className={messageQuery != ''? ' post-filtered group relative':' post  group  relative'} key={message.id}>
+          <div
+            className={
+              messageQuery != ""
+                ? " post-filtered group relative"
+                : " post  group  relative"
+            }
+            key={message.id}
+          >
             <div className="avatar-wrapper">
               <img
                 className="avatar"
@@ -82,7 +95,11 @@ const Messages = () => {
                   {new Date(message.created).toLocaleDateString()}
                 </small>
               </p>
-              <p className="post-text">{message.text}</p>
+              {containsUrl(message.text) ? (
+                <a href={message.text} className="text-blue-500 font-semibold hover:underline" >{message.text}</a>
+              ) : (
+                <p className="post-text">{message.text}</p>
+              )}
             </div>
             <div className="absolute bottom-16 right-0 mr-5 ">
               {index === messages.length - 1 && (
@@ -113,10 +130,9 @@ const Messages = () => {
           </div>
         ))}
 
-
       <div className="bottom-bar   ">
         <PlusIcon />
-        <form onSubmit={sendMessage}>
+        <form onSubmit={sendMessage} className="w-full">
           <input
             value={newMessage}
             onChange={(event) => setNewMessage(event.target.value)}
@@ -134,4 +150,14 @@ const PlusIcon = () => (
     className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
   />
 );
+
+
+function containsUrl(text) {
+  // Create a regular expression to match URLs
+  const urlRegex =
+    /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
+
+  // Use the `test` method to check if a URL exists within the text
+  return urlRegex.test(text);
+}
 export default observer(Messages);
