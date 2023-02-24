@@ -2,6 +2,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { observer } from "mobx-react";
+import React from "react";
 // import { React } from "react";
 
 function AuthMenu() {
