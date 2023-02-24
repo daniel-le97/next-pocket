@@ -96,7 +96,7 @@ const Messages = () => {
                 </small>
               </p>
               {containsUrl(message.text) ? (
-                <a href={message.text} className="text-blue-500 font-semibold hover:underline" >{message.text}</a>
+                <a target="_blank" href={message.text} className="text-blue-500 font-semibold hover:underline" >{message.text}</a>
               ) : (
                 <p className="post-text">{message.text}</p>
               )}
