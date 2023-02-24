@@ -53,14 +53,14 @@
 }
 .sidebar-user-tooltip {
   @apply absolute left-14  m-2 w-auto min-w-max origin-left scale-0 rounded-md
-    bg-zinc-900 p-2 
+    bg-zinc-900  
     text-xs font-bold 
     text-white shadow-md transition-all duration-100;
 }
 
 
 .top-navigation {
-  @apply fixed z-10  m-0  flex h-16 w-2/3 
+  @apply fixed z-10  ml-1.5  flex h-16 w-3/4
     flex-row items-center justify-evenly rounded-lg 
     bg-gray-300 bg-opacity-90 
     shadow-lg 
@@ -226,7 +226,7 @@
 }
 
 .avatar {
-  @apply mx-0 mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md;
+  @apply mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md shadow-zinc-900;
 }
 
 .post-owner {

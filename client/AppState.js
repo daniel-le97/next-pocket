@@ -11,8 +11,10 @@ class ObservableAppState {
 
   test = "hi";
 
-  messageQuery = ""
+  messageQuery = "";
   activeRoom = null; //general chat;
+
+  /** @type {import('./src/models/Message.js').Message[]} */
   messages = [];
   constructor() {
     makeAutoObservable(this);

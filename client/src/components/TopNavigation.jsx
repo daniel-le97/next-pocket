@@ -16,18 +16,7 @@ const TopNavigation = () => {
     <div className="top-navigation">
       <HashtagIcon />
       <Title room={room} />
-      {/* <div className="search">
-        <input
-          className="search-input"
-          type="text"
-          placeholder="Search..."
-          value={query}
-          onChange={(event) =>
-            findMessage(event.target.value) && setQuery(event.target.value)
-          }
-        />
-        <FaSearch size="18" className="text-secondary my-auto" />
-      </div> */}
+     
       <Search />
       <BellIcon />
       <UserCircle />
@@ -86,8 +75,8 @@ const UserCircle = () => (
   <FaUserCircle size="24" className="top-navigation-icon" />
 );
 const HashtagIcon = () => <FaHashtag size="20" className="title-hashtag" />;
-const Title = ({ room }) => {
-  return <h5 className="title-text">{room ? room : ""}</h5>;
+const Title = ({ room,query }) => {
+  return <h5 className="title-text">{room ? room : query}</h5>;
 };
 
 export default observer(TopNavigation);

@@ -1,18 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react";
 import { pb } from "../../utils/pocketBase";
-// import { currentUser, pb } from "./pocketbase";
-import { BsEmojiSmile, BsPencil, BsPlusCircleFill, BsRecordBtn, BsXCircle } from "react-icons/bs";
-import { UserLogin } from "../models/user";
+import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
 import { AppState } from "../../AppState";
 import { messageService } from "../services/MessageService";
+import { Message } from "../models/Message";
+import CreateMessage from "./CreateMessage";
+
 const Messages = () => {
-  const [newMessage, setNewMessage] = useState("");
-  const messages = AppState.messages;
+  const messages: Message[] = AppState.messages;
   const listRef = useRef(null);
   let unsubscribe: (() => void) | null = null;
-  const user = pb.authStore.model;
-  const messageQuery = AppState.messageQuery
+
+  const messageQuery = AppState.messageQuery;
   useEffect(() => {
     const fetchMessages = async () => {
       await messageService.getMessages();
@@ -24,10 +24,8 @@ const Messages = () => {
         .collection("messages")
         .subscribe("*", async ({ action, record }) => {
           if (action === "create") {
-            // Fetch associated user
             const user = await pb.collection("users").getOne(record.user);
             record.expand = { user };
-            // setMessages((prevMessages) => [...prevMessages, record]);
             let updatedMessages = [...AppState.messages];
             updatedMessages = [...updatedMessages, record];
             AppState.messages = updatedMessages;
@@ -45,25 +43,6 @@ const Messages = () => {
       }
     };
   }, []);
-
-  const sendMessage = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    if (containsUrl(newMessage)) {
-      console.log("URL found!");
-    } else {
-      console.log("No URL found.");
-    }
-
-    const user = pb.authStore.model;
-    const data = {
-      text: newMessage,
-      user: user?.id,
-      // @ts-ignore
-      room: AppState?.activeRoom?.id,
-    };
-    const createdMessage = await pb.collection("messages").create(data);
-    setNewMessage("");
-  };
 
   return (
     <div className="messages snap-end pb-14" ref={listRef}>
@@ -96,7 +75,13 @@ const Messages = () => {
                 </small>
               </p>
               {containsUrl(message.text) ? (
-                <a target="_blank" href={message.text} className="text-blue-500 font-semibold hover:underline" >{message.text}</a>
+                <a
+                  target="_blank"
+                  href={message.text}
+                  className="font-semibold text-blue-500 hover:underline"
+                >
+                  {message.text}
+                </a>
               ) : (
                 <p className="post-text">{message.text}</p>
               )}
@@ -130,7 +115,7 @@ const Messages = () => {
           </div>
         ))}
 
-      <div className="bottom-bar   ">
+      {/* <div className="bottom-bar   ">
         <PlusIcon />
         <form onSubmit={sendMessage} className="w-full">
           <input
@@ -140,17 +125,12 @@ const Messages = () => {
             className="bottom-bar-input"
           />
         </form>
-      </div>
+      </div> */}
+
+      <CreateMessage />
     </div>
   );
 };
-const PlusIcon = () => (
-  <BsPlusCircleFill
-    size="22"
-    className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
-  />
-);
-
 
 function containsUrl(text) {
   // Create a regular expression to match URLs

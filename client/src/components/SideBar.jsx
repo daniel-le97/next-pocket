@@ -90,9 +90,10 @@ const SideBarIcon = ({ icon, text, router }) => (
     </div>
   </Link>
 );
+// @ts-ignore
 const UserIcon = ({user}) => {
   return (
-    <div className="sidebar-icon group">
+    <div className="sidebar-icon group" >
       <img
         src={
           // @ts-ignore
@@ -104,11 +105,31 @@ const UserIcon = ({user}) => {
         alt="UserIcon"
         className="rounded-full"
       />
-      <span className="sidebar-tooltip group-hover:scale-100">
-        {
-          // @ts-ignore
-          user?.username
-        }
+      <span className="sidebar-user-tooltip group-hover:scale-100">
+        <div className="">
+          <div className="rounded-t-md bg-red-100 p-3"></div>
+          <div className="rounded-b-md bg-zinc-700 p-3">
+            <img
+              src={user?.avatarUrl}
+              alt="UserIcon"
+              className="mb-2 rounded-full border-4 border-zinc-900"
+            />
+            <div className="rounded-md bg-zinc-900 p-2 ">
+              <p className="text-xl">{user?.username}</p>
+              <hr className="my-2" />
+              <div className="">
+                <p className="text-md font-bold ">MEMBER SINCE</p>
+                <p className="text-light font-sans ">
+                  {new Date(user.created).toLocaleDateString()}
+                </p>
+              </div>
+              <hr className="my-2" />
+              <div className="">
+                LogOut
+              </div>
+            </div>
+          </div>
+        </div>
       </span>
     </div>
   );
