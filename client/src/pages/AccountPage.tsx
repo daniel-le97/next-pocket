@@ -1,7 +1,7 @@
-// @ts-ignore
+
 import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
-import { AppState } from "../../AppState.js";
+// import { AppState } from "../../AppState.js";
 import { pb } from "../../utils/pocketBase";
 
 function AccountPage() {
