@@ -1,5 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { observer } from "mobx-react";
 import Link from "next/link.js";
+import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
 import {
   // @ts-ignore
@@ -23,13 +27,20 @@ import {
 // @ts-ignore
 import { AppState } from "../../AppState.js";
 import { pb } from "../../utils/pocketBase";
+import { authsService } from "../services/AuthsService";
 
 const SideBar = () => {
    const [user, setUser] = useState(null);
+   const router = useRouter()
+
+   function logOut (){
+    authsService.signOut()
+    router.push('/login')
+   }
 
    useEffect(() => {
      // @ts-ignore
-     setUser(pb?.authStore?.model);
+     setUser(pb.authStore.model);
    }, []);
   return (
     <div
@@ -50,12 +61,14 @@ const SideBar = () => {
         <>
           <UserIcon user={user} />
           <Divider />
+          <div onClick={logOut}>
           <SideBarIcon
-          
-            icon={<FaArrowCircleRight size="22" />}
-            text={"Logout"}
-            router={"/login"}
+          icon={<FaArrowCircleRight size="22" />}
+          text={"Logout"}
+          router={'/login'}
+          // onClick={logOut()}
           />
+          </div>
         </>
       ) : (
         <SideBarIcon
@@ -86,7 +99,7 @@ const UserIcon = ({user}) => {
           user?.avatarUrl
             ? // @ts-ignore
               user?.avatarUrl
-            : "https://api.dicebear.com/5.x/bottts-neutral/svg"
+            : `https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${user.username}`
         }
         alt="UserIcon"
         className="rounded-full"
@@ -101,5 +114,7 @@ const UserIcon = ({user}) => {
   );
 };
 const Divider = () => <hr className="sidebar-hr" />;
+
+
 
 export default observer(SideBar);

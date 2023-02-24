@@ -1,23 +1,20 @@
 // @ts-ignore
 import { observer } from "mobx-react";
-import React from "react";
-import { AppState } from "../../AppState";
+import React, { useEffect, useState } from "react";
+import { AppState } from "../../AppState.js";
+import { pb } from "../../utils/pocketBase";
 
 function AccountPage() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    console.log(pb.authStore.model);
+    setUser(pb.authStore.model);
+  }, []);
+
   return (
     <div className="account-page">
       <div className="card">
-        <div className="card-body p-5 text-center">
-          {/* <img
-            src={AppState.account.picture}
-            alt={AppState.account.name}
-            className="rounded-circle"
-            height="200"
-          /> */}
-          <p className="display-6 my-2">{AppState.test}</p>
-          {/* <kbd>{AppState.account.email}</kbd> */}
-          {AppState?.user}
-        </div>
+        <div className="card-body p-5 text-center">{JSON.stringify(user)}</div>
       </div>
     </div>
   );

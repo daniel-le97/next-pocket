@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import {  pb } from "../../utils/pocketBase";
@@ -10,6 +11,13 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
    const router = useRouter();
+
+  //  useEffect(() => {
+  //   const loggedInUser = pb.authStore.model
+  //   if () {
+      
+  //   }
+  //  })
   
   async function login() {
     const user = await pb
@@ -28,9 +36,8 @@ function Login() {
         username,
         password,
         email,
-        avatarUrl: "https://api.dicebear.com/5.x/bottts-neutral/svg",
-        passwordConfirm: password,
-        name: "hi mom!",
+        avatarUrl: `https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${username}`,
+        passwordConfirm: password
       };
       const createdUser = await pb.collection("users").create(data);
       await login();
