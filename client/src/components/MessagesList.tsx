@@ -12,6 +12,7 @@ const Messages = () => {
   const listRef = useRef(null);
   let unsubscribe: (() => void) | null = null;
   const user = pb.authStore.model;
+  const messageQuery = AppState.messageQuery
   useEffect(() => {
     const fetchMessages = async () => {
       await messageService.getMessages();
@@ -62,7 +63,7 @@ const Messages = () => {
     <div className="messages snap-end pb-14" ref={listRef}>
       {messages &&
         messages?.map((message, index) => (
-          <div className=" post  group  relative" key={message.id}>
+          <div className={messageQuery != ''? ' post-filtered group relative':' post  group  relative'} key={message.id}>
             <div className="avatar-wrapper">
               <img
                 className="avatar"
@@ -111,6 +112,7 @@ const Messages = () => {
             </div>
           </div>
         ))}
+
 
       <div className="bottom-bar   ">
         <PlusIcon />

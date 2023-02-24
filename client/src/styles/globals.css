@@ -9,6 +9,27 @@
   padding: 0;
 }
 
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+
+
+
 .sidebar {
   @apply fixed top-0 left-0 flex h-screen w-16 flex-col bg-zinc-900 shadow-lg;
 }
@@ -157,6 +178,13 @@
 
 .post {
   @apply m-0  flex w-full cursor-pointer flex-row items-center justify-evenly py-4 px-8 transition-all hover:bg-zinc-800
+    hover:bg-opacity-50
+    hover:shadow-md
+    hover:transition-all;
+}
+.post-filtered {
+  @apply m-0  flex w-full cursor-pointer flex-row items-center justify-evenly py-4 px-8 transition-all 
+ bg-gray-800
     hover:bg-opacity-50
     hover:shadow-md
     hover:transition-all;

@@ -11,6 +11,7 @@ class ObservableAppState {
 
   test = "hi";
 
+  messageQuery = ""
   activeRoom = null; //general chat;
   messages = [];
   constructor() {
