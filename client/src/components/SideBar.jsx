@@ -6,6 +6,7 @@ import Link from "next/link.js";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
 import logo from "../assets/LLCLOGO.png";
+import logo from "../assets/LLCLOGO.png";
 import {
   // @ts-ignore
   BsPlus,
@@ -33,13 +34,13 @@ import { authsService } from "../services/AuthsService";
 const SideBar = () => {
   const [user, setUser] = useState(null);
 
-  //  const router = useRouter()
-  const logOut = useLogOut();
+   const router = useRouter()
+  // const logOut = useLogOut();
 
-  //  function logOut() {
-  //    pb.authStore.clear();
-  //    router.push("/login");
-  //  }
+   function logOut() {
+     pb.authStore.clear();
+     router.push("/login");
+   }
   useEffect(() => {
     // @ts-ignore
     setUser(pb.authStore.model);
@@ -106,11 +107,11 @@ const SideBarIcon = ({ icon, text, router }) => (
 const UserIcon = ({ user }) => {
   // const router = useRouter();
 
-  // function logOut() {
-  //  pb.authStore.clear()
-  //   router.push("/login");
-  // }
-  const logOut = useLogOut();
+//  async function logOut () {
+//   await pb.authStore.clear()
+//    await router.push("/login");
+//   }
+  // const logOut = useLogOut();
   return (
     <div className="sidebar-icon group">
       <img
@@ -145,7 +146,7 @@ const UserIcon = ({ user }) => {
                 </p>
               </div>
               <hr className="my-2  border-gray-600" />
-              <div className="" onClick={logOut}>
+              <div className="" >
                 LogOut
               </div>
             </div>
@@ -157,10 +158,10 @@ const UserIcon = ({ user }) => {
 };
 const Divider = () => <hr className="sidebar-hr" />;
 
-const useLogOut = () => {
-  const router = useRouter();
-  authsService.signOut();
-  router.push("/login");
-};
+// const useLogOut = () => {
+//   const router = useRouter();
+//   authsService.signOut();
+//   router.push("/login");
+// };
 
 export default observer(SideBar);

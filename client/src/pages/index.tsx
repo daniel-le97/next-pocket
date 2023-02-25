@@ -22,13 +22,13 @@ useEffect(() => {
 
 
 
-// useEffect(() => {
-//   const user = pb.authStore.model;
-//   const subscribe = async () => {
-//     const res = await pb
-//       .collection("usersStatus")
-//       .getFirstListItem(`userId = "${user?.id}"`);
-//     // console.log(res);
+useEffect(() => {
+  const user = pb.authStore.model;
+  const subscribe = async () => {
+    const res = await pb
+      .collection("usersStatus")
+      .getFirstListItem(`userId = "${user?.id}"`);
+    // console.log(res);
 
 //     // Update isOnline status to true on component mount
 //     const data = {
@@ -40,18 +40,18 @@ useEffect(() => {
 //       .update(res.id, data);
 //     // console.log(updatedRecord);
 
-//     // Update isOnline status to false on beforeunload event
-//     const handleBeforeUnload = async () => {
-//       const data = {
-//         userId: user?.id,
-//         isOnline: false,
-//       };
-//       const updatedRecord = await pb
-//         .collection("usersStatus")
-//         .update(res.id, data);
-//       console.log(updatedRecord);
-//     };
-//     window.addEventListener("beforeunload", handleBeforeUnload);
+    // Update isOnline status to false on beforeunload event
+    const handleBeforeUnload = () => {
+      const data = {
+        userId: user.id,
+        isOnline: false,
+      };
+      const updatedRecord = pb
+        .collection("usersStatus")
+        .update(res.id, data);
+      console.log(updatedRecord);
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
 //     // Remove the event listener on unmount
 //     return () => {
