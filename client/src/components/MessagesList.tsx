@@ -7,6 +7,7 @@ import { messageService } from "../services/MessageService";
 import { Message } from "../models/Message";
 import CreateMessage from "./CreateMessage";
 import noMessage from "../assets/noMessages.png"
+import UserStatus from "./UsersStatus";
 const Messages = () => {
   const messages: Message[] = AppState.messages;
   const listRef = useRef(null);
@@ -46,7 +47,7 @@ const Messages = () => {
 
   return (
     <div className="messages snap-end pb-14" ref={listRef}>
-      {messages.length>=1 ? (
+      {messages.length >= 1 ? (
         messages?.map((message, index) => (
           <div
             className={
@@ -56,7 +57,7 @@ const Messages = () => {
             }
             key={message.id}
           >
-            <div className="avatar-wrapper">
+            <div className="avatar-wrapper relative">
               <img
                 className="avatar"
                 src={
@@ -66,6 +67,7 @@ const Messages = () => {
                 alt="avatar"
                 width="40px"
               />
+              <UserStatus user={message?.expand?.user} />
             </div>
             <div className="post-content">
               <p className="post-owner">
@@ -116,11 +118,7 @@ const Messages = () => {
         ))
       ) : (
         <div className=" absolute top-1/3 left-1/2">
-          <img
-            src={noMessage.src}
-            alt=""
-            width={400}
-          />
+          <img src={noMessage.src} alt="" width={400} />
         </div>
       )}
 

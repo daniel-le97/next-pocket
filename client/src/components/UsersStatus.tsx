@@ -1,60 +1,60 @@
 import { pb } from "../../utils/pocketBase";
 import {useState,useEffect} from 'react'
-export default function UserStatus({ userId }) {
+import { FaCircle } from "react-icons/fa";
+export default function UserStatus({user}) {
   const [isOnline, setIsOnline] = useState(false);
-
-  // useEffect(() => {
-  //   const statusRef = pb.collection("usersStatus").
-
-  //   // Set up a listener for changes to the user's status document
-  //   const unsubscribe = statusRef.onSnapshot((doc) => {
-  //     if (doc.exists) {
-  //       const data = doc.data();
-  //       setIsOnline(data.isOnline);
-  //     }
-  //   });
-
-  //   return unsubscribe;
-  // }, [userId]);
-
-
-
-
-
-
+ const [userStatusRecord,setUserStatusRecord] = useState(null)
  useEffect(() => {
- 
+
+  let unsubscribe: (() => void) | null = null;
+  const getStatus = async () =>{
+    const res = await pb.collection('usersStatus').getFirstListItem(`userId="${user?.id}"`)
   
-    // const fetchMessages = async () => {
-    //   await messageService.getMessages();
-    // };
-    // fetchMessages();
+    // console.log(res);
+    
+    setUserStatusRecord(res)
+    console.log(res.isOnline);
+    
+setIsOnline(res.isOnline)
 
-  const   unsubscribe = async () =>
-      await pb
-        .collection("usersStatus")
-        .subscribe("*", async (e) => {
-        console.log(e.record);
+
+  }
+  getStatus()
+
+  // const unsubscribe = async () => {
+  //  await  pb
+  //     .collection("usersStatus")
+  //     .subscribe("*", function (e) {
+  //       console.log(e);
+  //     });
+  // }
+  // unsubscribe()
+
+   unsubscribe = async () =>{
+
+    const record = await pb.collection('usersStatus').getFirstListItem(`userId="${user?.id}"`)
+    // console.log(record?.id);
+    
+  
+     await pb.collection('usersStatus').subscribe(record.id, function (e) {
+    console.log(e.record);
+
         
-            // const user = await pb.collection("users").getOne(record.user);
-            // record.expand = { user };
-            // let updatedMessages = [...AppState.messages];
-            // updatedMessages = [...updatedMessages, record];
-            // AppState.messages = updatedMessages;
+        
+    
           
-          // if (action === "delete") {
-          //   setMessages((prevMessages) =>
-          //     prevMessages.filter((m) => m.id !== record.id)
-          //   );
-          // }
-        });
-
-        unsubscribe()
-    // return () => {
-    //   if (unsubscribe) {
-    //     unsubscribe();
-    //   }
-    // };
+          setIsOnline(e.record.isOnline)
+        //  console.log(isOnline);
+         
+       
+       });
+      }
+   return () => {
+     if (unsubscribe) {
+       unsubscribe();
+     }
+   };
+   
   }, []);
 
 
@@ -70,8 +70,8 @@ export default function UserStatus({ userId }) {
 
 
   return (
-    <div>
-      User {userId} is {isOnline ? "online" : "offline"}
+    <div className="absolute right-0 rounded-full shadow-md shadow-zinc-800 ">
+      {isOnline ? <FaCircle color="#22c55e" /> : <FaCircle color="#ef4444" />}
     </div>
   );
 }

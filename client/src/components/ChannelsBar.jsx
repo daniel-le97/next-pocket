@@ -55,7 +55,7 @@ const Dropdown = ({ header, selections }) => {
         ))}
 
       <div className="mt-10">
-      <UserStatus />
+      
       </div>
     </div>
   );
