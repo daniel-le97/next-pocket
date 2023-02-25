@@ -11,6 +11,8 @@ AppState.user = pBase.authStore.model
 
 export const pb = pBase
 pb.authStore.onChange((auth) => {
+  console.log(AppState.user);
+  
   console.log(pb.authStore.model, 'auth');
   AppState.user = pb.authStore.model;
 });
