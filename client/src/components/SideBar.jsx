@@ -5,6 +5,7 @@ import { observer } from "mobx-react";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
+import logo from '../assets/LLCLOGO.png'
 import {
   // @ts-ignore
   BsPlus,
@@ -30,18 +31,18 @@ import { pb } from "../../utils/pocketBase";
 import { authsService } from "../services/AuthsService";
 
 const SideBar = () => {
-   const [user, setUser] = useState(null);
-   const router = useRouter()
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
-   function logOut (){
-    authsService.signOut()
-    router.push('/login')
-   }
+  function logOut() {
+    authsService.signOut();
+    router.push("/login");
+  }
 
-   useEffect(() => {
-     // @ts-ignore
-     setUser(pb.authStore.model);
-   }, []);
+  useEffect(() => {
+    // @ts-ignore
+    setUser(pb.authStore.model);
+  }, []);
   return (
     <div
       className="
@@ -62,12 +63,12 @@ const SideBar = () => {
           <UserIcon user={user} />
           <Divider />
           <div onClick={logOut}>
-          <SideBarIcon
-          icon={<FaArrowCircleRight size="22" />}
-          text={"Logout"}
-          router={'/login'}
-          // onClick={logOut()}
-          />
+            <SideBarIcon
+              icon={<FaArrowCircleRight size="22" />}
+              text={"Logout"}
+              router={"/login"}
+              // onClick={logOut()}
+            />
           </div>
         </>
       ) : (
@@ -77,6 +78,17 @@ const SideBar = () => {
           router={"/login"}
         />
       )}
+
+      <div className="absolute bottom-3 left-1.5">
+     
+        <SideBarIcon
+          icon={
+            <img src={logo.src} alt="" width={50} className="rounded-full" />
+          }
+          text={"DevOpporunitiesLLC"}
+          router={"/"}
+        />
+      </div>
     </div>
   );
 };
@@ -91,9 +103,9 @@ const SideBarIcon = ({ icon, text, router }) => (
   </Link>
 );
 // @ts-ignore
-const UserIcon = ({user}) => {
+const UserIcon = ({ user }) => {
   return (
-    <div className="sidebar-icon group" >
+    <div className="sidebar-icon group">
       <img
         src={
           // @ts-ignore
@@ -105,37 +117,35 @@ const UserIcon = ({user}) => {
         alt="UserIcon"
         className="rounded-full"
       />
-      <span className="sidebar-user-tooltip group-hover:scale-100">
-        <div className="">
-          <div className="rounded-t-md bg-red-100 p-3"></div>
+      <div className="sidebar-user-tooltip   group-hover:scale-100 ">
+        <div className="shadow-lx relative">
+          <div className="rounded-t-md bg-red-100 py-8"></div>
+          <img
+            src={user?.avatarUrl}
+            alt="UserIcon"
+            width={80}
+            className="absolute left-3 top-6 rounded-full border-8 border-zinc-700 shadow-md"
+          />
+          <div className="absolute"></div>
           <div className="rounded-b-md bg-zinc-700 p-3">
-            <img
-              src={user?.avatarUrl}
-              alt="UserIcon"
-              className="mb-2 rounded-full border-4 border-zinc-900"
-            />
-            <div className="rounded-md bg-zinc-900 p-2 ">
+            <div className="mt-12 rounded-md bg-zinc-900 p-2 ">
               <p className="text-xl">{user?.username}</p>
-              <hr className="my-2" />
+              <hr className="my-2  border-gray-600" />
               <div className="">
                 <p className="text-md font-bold ">MEMBER SINCE</p>
-                <p className="text-light font-sans ">
+                <p className="  font-mono text-gray-400  ">
                   {new Date(user.created).toLocaleDateString()}
                 </p>
               </div>
-              <hr className="my-2" />
-              <div className="">
-                LogOut
-              </div>
+              <hr className="my-2  border-gray-600" />
+              <div className="">LogOut</div>
             </div>
           </div>
         </div>
-      </span>
+      </div>
     </div>
   );
 };
 const Divider = () => <hr className="sidebar-hr" />;
-
-
 
 export default observer(SideBar);

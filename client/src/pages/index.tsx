@@ -30,7 +30,7 @@ useEffect(() => {
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  w-full ">
           
-       <SideBar />
+       <SideBar  />
        <ChannelsBar/>
        <ContentContainer/>
         </div>

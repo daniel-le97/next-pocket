@@ -6,7 +6,7 @@ import { AppState } from "../../AppState";
 import { messageService } from "../services/MessageService";
 import { Message } from "../models/Message";
 import CreateMessage from "./CreateMessage";
-
+import noMessage from "../assets/noMessages.png"
 const Messages = () => {
   const messages: Message[] = AppState.messages;
   const listRef = useRef(null);
@@ -46,7 +46,7 @@ const Messages = () => {
 
   return (
     <div className="messages snap-end pb-14" ref={listRef}>
-      {messages &&
+      {messages.length>=1 ? (
         messages?.map((message, index) => (
           <div
             className={
@@ -113,7 +113,16 @@ const Messages = () => {
               </div>
             </div>
           </div>
-        ))}
+        ))
+      ) : (
+        <div className=" absolute top-1/3 left-1/2">
+          <img
+            src={noMessage.src}
+            alt=""
+            width={400}
+          />
+        </div>
+      )}
 
       {/* <div className="bottom-bar   ">
         <PlusIcon />
