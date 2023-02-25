@@ -41,7 +41,9 @@ class AuthsService {
     await pb.collection("users").authWithPassword(email, password);
   }
    signOut(){
+    
      pb.authStore.clear()
+     
   }
 }
 
