@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite";
 import { messageService } from "../services/MessageService";
 import CustomLink from "./CustomLink";
 import UserStatus from "./UsersStatus";
+import TopicSelection from "./TopicSelection";
 
 const topics = ["general", "tailwind-css", "react"];
 const questions = ["jit-compilation", "purge-files", "dark-mode"];
@@ -54,9 +55,7 @@ const Dropdown = ({ header, selections }) => {
           <TopicSelection selection={selection} key={selection} />
         ))}
 
-      <div className="mt-10">
-      
-      </div>
+      <div className="mt-10"></div>
     </div>
   );
 };
@@ -72,45 +71,7 @@ const ChevronIcon = ({ expanded }) => {
 };
 
 // @ts-ignore
-const TopicSelection = ({ selection }) => {
-  const [isLoading, setIsLoading] = useState(false);
-const [isActive, setIsActive] = useState(false);
-const [activeSelection, setActiveSelection] = useState("");
-  const handleClick = async () => {
-    setIsLoading(true);
-    try {
-      const room = await pb
-        .collection("rooms")
-        .getFirstListItem(`title="${selection}"`, {
-          expand: "nessages",
-        });
 
-      // @ts-ignore
-      AppState.activeRoom = room;
-
-      await messageService.getMessages();
-      setActiveSelection(selection); // Update activeSelection state to the current selection
-      setIsActive(true); // Update isActive state to true
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <div className="dropdown-selection " onClick={handleClick}>
-      <BsHash size="24" className="text-gray-400" />
-      <h5
-        className={`dropdown-selection-text ${
-          selection === activeSelection ? "text-red-400" : "text-gray-500"
-        }`}
-      >
-        {selection}
-      </h5>
-    </div>
-  );
-};
 
 const ChannelBlock = () => (
   <div className="channel-block">

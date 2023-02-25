@@ -1,9 +1,9 @@
 import { observer } from "mobx-react";
 import React, { useEffect, useState } from "react";
-import { FaSearch, FaHashtag, FaRegBell, FaUserCircle } from "react-icons/fa";
+import { FaSearch, FaHashtag, FaRegBell, FaUserCircle, FaSun, FaMoon } from "react-icons/fa";
 import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
-
+import useDarkMode from '../../hooks/useDarkMode'
 const TopNavigation = () => {
   const [room, setRoom] = useState(null);
   const [message, setMessage] = useState("");
@@ -15,8 +15,8 @@ const TopNavigation = () => {
   return (
     <div className="top-navigation">
       <HashtagIcon />
-      <Title room={room} />
-     
+      <Title room={room}  query={query}/>
+     <ThemeIcon/>
       <Search />
       <BellIcon />
       <UserCircle />
@@ -24,19 +24,20 @@ const TopNavigation = () => {
   );
 };
 
-// const ThemeIcon = () => {
-//   const [darkTheme, setDarkTheme] = useDarkMode();
-//   const handleMode = () => setDarkTheme(!darkTheme);
-//   return (
-//     <span onClick={handleMode}>
-//       {darkTheme ? (
-//         <FaSun size="24" className="top-navigation-icon" />
-//       ) : (
-//         <FaMoon size="24" className="top-navigation-icon" />
-//       )}
-//     </span>
-//   );
-// };
+const ThemeIcon = () => {
+  const [darkTheme, setDarkTheme] = useDarkMode();
+ 
+  const handleMode = () => setDarkTheme(!darkTheme);
+  return (
+    <span onClick={handleMode}>
+      {darkTheme ? (
+        <FaSun size="24" className="top-navigation-icon" />
+      ) : (
+        <FaMoon size="24" className="top-navigation-icon" />
+      )}
+    </span>
+  );
+};
 
 const Search = () => {
   const [query, setQuery] = useState("");
