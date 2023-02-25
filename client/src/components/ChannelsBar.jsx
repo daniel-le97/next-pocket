@@ -74,7 +74,8 @@ const ChevronIcon = ({ expanded }) => {
 // @ts-ignore
 const TopicSelection = ({ selection }) => {
   const [isLoading, setIsLoading] = useState(false);
-
+const [isActive, setIsActive] = useState(false);
+const [activeSelection, setActiveSelection] = useState("");
   const handleClick = async () => {
     setIsLoading(true);
     try {
@@ -88,6 +89,8 @@ const TopicSelection = ({ selection }) => {
       AppState.activeRoom = room;
 
       await messageService.getMessages();
+      setActiveSelection(selection); // Update activeSelection state to the current selection
+      setIsActive(true); // Update isActive state to true
     } catch (error) {
       console.error(error);
     } finally {
@@ -97,14 +100,14 @@ const TopicSelection = ({ selection }) => {
 
   return (
     <div className="dropdown-selection " onClick={handleClick}>
-      {isLoading ? (
-        <span>Loading...</span>
-      ) : (
-        <>
-          <BsHash size="24" className="text-gray-400" />
-          <h5 className="dropdown-selection-text">{selection}</h5>
-        </>
-      )}
+      <BsHash size="24" className="text-gray-400" />
+      <h5
+        className={`dropdown-selection-text ${
+          selection === activeSelection ? "text-red-400" : "text-gray-500"
+        }`}
+      >
+        {selection}
+      </h5>
     </div>
   );
 };
