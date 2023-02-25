@@ -8,6 +8,7 @@ import { AppState } from "../../AppState";
 import { observer } from "mobx-react-lite";
 import { messageService } from "../services/MessageService";
 import CustomLink from "./CustomLink";
+import UserStatus from "./UsersStatus";
 
 const topics = ["general", "tailwind-css", "react"];
 const questions = ["jit-compilation", "purge-files", "dark-mode"];
@@ -54,7 +55,7 @@ const Dropdown = ({ header, selections }) => {
         ))}
 
       <div className="mt-10">
-      
+      <UserStatus />
       </div>
     </div>
   );
