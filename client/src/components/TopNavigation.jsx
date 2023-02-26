@@ -4,6 +4,7 @@ import { FaSearch, FaHashtag, FaRegBell, FaUserCircle, FaSun, FaMoon } from "rea
 import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
 import useDarkMode from '../../hooks/useDarkMode'
+import { BsMoon, BsSun } from "react-icons/bs";
 const TopNavigation = () => {
   const [room, setRoom] = useState(null);
   const [message, setMessage] = useState("");
@@ -31,9 +32,9 @@ const ThemeIcon = () => {
   return (
     <span onClick={handleMode}>
       {darkTheme ? (
-        <FaSun size="24" className="top-navigation-icon" />
+        <BsSun size="24" className="top-navigation-icon" />
       ) : (
-        <FaMoon size="24" className="top-navigation-icon" />
+        <BsMoon size="24" className="top-navigation-icon" />
       )}
     </span>
   );

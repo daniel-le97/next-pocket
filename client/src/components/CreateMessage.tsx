@@ -5,11 +5,14 @@ import { BsPlusCircleFill } from "react-icons/bs";
 import { AppState } from "../../AppState";
 import { FaLaugh, FaSmile } from "react-icons/fa";
 import { Dialog } from "@headlessui/react";
+import InputEmoji from "react-input-emoji";
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
-
+ const messages = AppState?.messages
   const sendMessage = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
+
+    // event.preventDefault();
+  
     if (containsUrl(newMessage)) {
       console.log("URL found!");
     } else {
@@ -28,33 +31,47 @@ const CreateMessage = () => {
   };
 
   return (
-    <div className="bottom-bar   ">
+    <div className={messages.length >=1? 'bottom-bar': 'hidden'}>
+      <form onSubmit={sendMessage} className="w-3/4 flex">
+        <InputEmoji
+          value={newMessage}
+          onChange={ setNewMessage}
+          cleanOnEnter
+          onEnter={sendMessage}
+          placeholder="Enter message..."
+          className="bottom-bar-input"
+        />
       <PlusIcon />
-      <form onSubmit={sendMessage} className="w-full">
-        <input
+        {/* <button type="submit">submite</button> */}
+        {/* <input
           value={newMessage}
           onChange={(event) => setNewMessage(event.target.value)}
           placeholder="Enter message..."
           className="bottom-bar-input"
-        />
+          
+        /> */}
+       
       </form>
 
-      <div className="flex justify-evenly items-center">
-<EmojiPicker/>
+      <div className="flex items-center justify-evenly">
+     
+        {/* <EmojiPicker  text={newMessage} setText={setNewMessage}  /> */}
       </div>
     </div>
   );
 };
 const PlusIcon = () => (
-  <BsPlusCircleFill
-    size="22"
-    className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
-  />
+  <button type="submit">
+    <BsPlusCircleFill
+      size="22"
+      className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
+    />
+  </button>
 );
 
-const EmojiPicker = () => {
-   const [isHovered, setIsHovered] = useState(false);
-   let [isOpen, setIsOpen] = useState(true);
+const EmojiPicker = ({ text, setText }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  let [isOpen, setIsOpen] = useState(true);
 
   return (
     <div
@@ -70,10 +87,10 @@ const EmojiPicker = () => {
       >
         {/* <div className="fixed inset-0 bg-black/30" aria-hidden="true" /> */}
         <div className="  fixed bottom-12 right-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="w-full max-w-sm rounded bg-zinc-800 h-52 p-4">
+          <Dialog.Panel className="h-52 w-full max-w-sm rounded bg-zinc-800 p-4">
             <Dialog.Title>Complete your order</Dialog.Title>
 
-            {/* ... */}
+           
           </Dialog.Panel>
         </div>
       </Dialog>
@@ -91,7 +108,7 @@ const EmojiPicker = () => {
       )} */}
     </div>
   );
-}
+};
 function containsUrl(text: string) {
   // Create a regular expression to match URLs
   const urlRegex =

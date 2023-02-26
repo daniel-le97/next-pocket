@@ -8,6 +8,7 @@ import { Message } from "../models/Message";
 import CreateMessage from "./CreateMessage";
 import noMessage from "../assets/noMessages.png"
 import UserStatus from "./UsersStatus";
+
 const Messages = () => {
   const messages: Message[] = AppState.messages;
   const listRef = useRef(null);
