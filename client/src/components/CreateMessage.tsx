@@ -4,6 +4,7 @@ import { pb } from "../../utils/pocketBase";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { AppState } from "../../AppState";
 import { FaLaugh, FaSmile } from "react-icons/fa";
+import { Dialog } from "@headlessui/react";
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
 
@@ -53,18 +54,30 @@ const PlusIcon = () => (
 
 const EmojiPicker = () => {
    const [isHovered, setIsHovered] = useState(false);
-   const handleClick = ()=> {
-  
-    
-   }
+   let [isOpen, setIsOpen] = useState(true);
+
   return (
     <div
       className="group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={handleClick}
+      // onMouseEnter={() => setIsHovered(true)}
+      // onMouseLeave={() => setIsHovered(false)}
     >
-      {isHovered ? (
+      <button onClick={() => setIsOpen(true)}>Deactivate</button>
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="relative z-50"
+      >
+        {/* <div className="fixed inset-0 bg-black/30" aria-hidden="true" /> */}
+        <div className="  fixed bottom-12 right-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="w-full max-w-sm rounded bg-zinc-800 h-52 p-4">
+            <Dialog.Title>Complete your order</Dialog.Title>
+
+            {/* ... */}
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+      {/* {isHovered ? (
         <FaLaugh
           size={22}
 
@@ -75,7 +88,7 @@ const EmojiPicker = () => {
           size={22}
           className="text-green-300 transition-all duration-1000 ease-in-out"
         />
-      )}
+      )} */}
     </div>
   );
 }
@@ -87,4 +100,14 @@ function containsUrl(text: string) {
   // Use the `test` method to check if a URL exists within the text
   return urlRegex.test(text);
 }
+
+
+
+
+
+
+
+
+
+
 export default observer(CreateMessage);
