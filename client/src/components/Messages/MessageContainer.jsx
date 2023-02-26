@@ -1,7 +1,7 @@
 import React from "react";
 import MessagesList from "./MessagesList";
 
-import TopNavigation from "./TopNavigation.jsx";
+import TopNavigation from "./TopNavigation";
 
 const MessagesContainer = () => {
   return (

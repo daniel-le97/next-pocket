@@ -10,6 +10,7 @@ const TopNavigation = () => {
   const [message, setMessage] = useState("");
   const [query, setQuery] = useState("");
   useEffect(() => {
+    // @ts-ignore
     setRoom(AppState?.activeRoom?.title);
   }, [AppState?.activeRoom?.title]);
 
@@ -43,7 +44,7 @@ const ThemeIcon = () => {
 const Search = () => {
   const [query, setQuery] = useState("");
 
-  const findMessage = async (e) => {
+  const findMessage = async (e:any) => {
     AppState.messageQuery = e;
     const getMessage = async () => {
       const res = await pb.collection("messages").getList(1, 10, {
@@ -54,7 +55,7 @@ const Search = () => {
       updatedMessages = res.items;
       AppState.messages = updatedMessages;
     };
-    getMessage();
+  await getMessage();
   };
 
   return (
@@ -64,8 +65,8 @@ const Search = () => {
         type="text"
         placeholder="Search..."
         value={query}
-        onChange={(event) =>
-          findMessage(event.target.value) && setQuery(event.target.value)
+        onChange={async(event) =>
+         await findMessage(event.target.value) && setQuery(event.target.value)
         }
       />
       <FaSearch size="18" className="text-secondary my-auto" />

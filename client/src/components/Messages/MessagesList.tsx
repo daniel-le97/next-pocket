@@ -8,6 +8,7 @@ import { Message } from "../../models/Message";
 import CreateMessage from "./CreateMessage";
 import noMessage from "../../assets/noMessages.png"
 import UserStatus from "./UsersStatus";
+// type Record<K extends string | number | symbol, T> = { [P in K]: T };
 const Messages = () => {
   const messages: Message[] = AppState.messages;
   const listRef = useRef(null);
@@ -27,7 +28,8 @@ const Messages = () => {
           if (action === "create") {
             const user = await pb.collection("users").getOne(record.user);
             record.expand = { user };
-            let updatedMessages = [...AppState.messages];
+
+            let updatedMessages: Record <string,Message>[] = [...AppState.messages];
             updatedMessages = [...updatedMessages, record];
             AppState.messages = updatedMessages;
           }
@@ -139,7 +141,7 @@ const Messages = () => {
   );
 };
 
-function containsUrl(text) {
+function containsUrl(text:any) {
   // Create a regular expression to match URLs
   const urlRegex =
     /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;

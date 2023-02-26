@@ -16,10 +16,12 @@ class MessageService {
   }
   async getMessages() {
     try {
+      console.log(AppState.activeRoom);
+      
      const res = await pb
        .collection("messages")
        .getList(1,50 , {
-        filter:`room = "${AppState?.activeRoom.id}"`,
+        filter:`room = "${AppState?.activeRoom?.id}"`,
          sort: "created",
          expand:'user'
        });
