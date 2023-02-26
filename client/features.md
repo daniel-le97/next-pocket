@@ -10,7 +10,8 @@ Voice and video chat: Implement voice and video chat functionality using technol
 
 Push notifications: Implement push notifications to alert users of new messages, mentions, or other events, even when they're not actively using the app.
 
-Server-side rendering: Use Next.js to perform server-side rendering of your application, improving its performance and SEO.
+<!-- Server-side rendering: Use Next.js to perform server-side rendering of your application, improving its performance and SEO.  -->
+<!-- not doing server side rendering next.js app is being served by pocketbase -->
 
 Mobile responsiveness: Ensure that your application is fully responsive and works well on a variety of devices and screen sizes, including desktops, tablets, and mobile devices.
 
