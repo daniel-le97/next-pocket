@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { BsHash } from "react-icons/bs";
-import { AppState } from "../../AppState";
-import { pb } from "../../utils/pocketBase";
-import { messageService } from "../services/MessageService";
-const TopicSelection = ({ selection }) => {
+import { AppState } from "../../../AppState";
+import { pb } from "../../../utils/pocketBase";
+import { messageService } from "../../services/MessageService";
+const ChannelSelection = ({ selection }) => {
   const [activeSelection, setActiveSelection] = useState("");
   const handleClick = async () => {
     try {
@@ -30,7 +30,7 @@ const TopicSelection = ({ selection }) => {
       <h5
         className={
           selection === AppState?.activeRoom?.title
-            ? " dropdown-selection-text dark:text-green-400 text-pink-700"
+            ? " dropdown-selection-text text-pink-700 dark:text-green-400"
             : " dropdown-selection-text text-gray-500"
         }
       >
@@ -39,4 +39,4 @@ const TopicSelection = ({ selection }) => {
     </div>
   );
 };
-export default observer(TopicSelection);
+export default observer(ChannelSelection);

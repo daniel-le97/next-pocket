@@ -1,19 +1,12 @@
 import React, { useState } from "react";
-import { BsPlus, BsFillLightningFill, BsGearFill } from "react-icons/bs";
-import { FaAirbnb, FaFire, FaHome, FaPoo } from "react-icons/fa";
-import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
-import { BsHash } from "react-icons/bs";
-import { pb } from "../../utils/pocketBase";
-import { AppState } from "../../AppState";
-import { observer } from "mobx-react-lite";
-import { messageService } from "../services/MessageService";
-import CustomLink from "./CustomLink";
-import UserStatus from "./UsersStatus";
-import TopicSelection from "./TopicSelection";
 
+import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
+
+import { observer } from "mobx-react-lite";
+
+
+import ChannelSelection from "./ChannelSelection";
 const topics = ["general", "tailwind-css", "react"];
-const questions = ["jit-compilation", "purge-files", "dark-mode"];
-const random = ["variants", "plugins"];
 
 const ChannelsBar = () => {
   return (
@@ -21,8 +14,7 @@ const ChannelsBar = () => {
       <ChannelBlock />
       <div className="channel-container">
         <Dropdown header="Topics" selections={topics} />
-        {/* <Dropdown header="Questions" selections={questions} />
-        <Dropdown header="Random" selections={random} /> */}
+    
       </div>
     </div>
   );
@@ -52,7 +44,7 @@ const Dropdown = ({ header, selections }) => {
         selections &&
         // @ts-ignore
         selections.map((selection) => (
-          <TopicSelection selection={selection} key={selection} />
+          <ChannelSelection selection={selection} key={selection} />
         ))}
 
       <div className="mt-10"></div>

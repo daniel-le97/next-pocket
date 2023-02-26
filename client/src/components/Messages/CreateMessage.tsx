@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { pb } from "../../utils/pocketBase";
+import { pb } from "../../../utils/pocketBase";
 import { BsPlusCircleFill } from "react-icons/bs";
-import { AppState } from "../../AppState";
+import { AppState } from "../../../AppState";
 import { FaLaugh, FaSmile } from "react-icons/fa";
 import { Dialog } from "@headlessui/react";
 import InputEmoji from "react-input-emoji";

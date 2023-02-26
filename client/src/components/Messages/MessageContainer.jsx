@@ -1,9 +1,9 @@
 import React from "react";
 import MessagesList from "./MessagesList";
 
-import TopNavigation from "../components/TopNavigation.jsx";
+import TopNavigation from "./TopNavigation.jsx";
 
-const ContentContainer = () => {
+const MessagesContainer = () => {
   return (
     <div className="content-container">
       <TopNavigation />
@@ -14,4 +14,4 @@ const ContentContainer = () => {
   );
 };
 
-export default ContentContainer;
+export default MessagesContainer;

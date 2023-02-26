@@ -24,6 +24,6 @@
     "**/*.cjs",
     "**/*.mjs",
     "util/pocketBase.js"
-, "src/pages/login.jsx", "src/pages/login.jsx", "src/components/ChannelsBar.jsx", "AppState.js", "AppState.js", "src/components/SideBar.jsx", "src/components/SideBar.jsx"  ],
+, "src/pages/login.jsx", "src/pages/login.jsx", "src/components/Channels/ChannelsBar.jsxlsBar.jsx", "AppState.js", "AppState.js", "src/components/SideBar.jsx", "src/components/SideBar.jsx", "src/models/Message.ts"  ],
   "exclude": ["node_modules", "util/*.*"]
 }

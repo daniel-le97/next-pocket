@@ -23,6 +23,9 @@ class MessageService {
          sort: "created",
          expand:'user'
        });
+
+       console.log(res);
+       
     // const newMessages =  messages.map(message => new Message(message))
     AppState.messages = res.items
   

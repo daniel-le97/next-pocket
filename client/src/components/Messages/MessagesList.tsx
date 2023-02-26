@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react";
-import { pb } from "../../utils/pocketBase";
+import { pb } from "../../../utils/pocketBase";
 import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
-import { AppState } from "../../AppState";
-import { messageService } from "../services/MessageService";
-import { Message } from "../models/Message";
+import { AppState } from "../../../AppState";
+import { messageService } from "../../services/MessageService";
+import { Message } from "../../models/Message";
 import CreateMessage from "./CreateMessage";
-import noMessage from "../assets/noMessages.png"
+import noMessage from "../../assets/noMessages.png"
 import UserStatus from "./UsersStatus";
 const Messages = () => {
   const messages: Message[] = AppState.messages;

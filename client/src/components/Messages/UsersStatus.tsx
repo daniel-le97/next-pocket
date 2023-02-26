@@ -1,4 +1,4 @@
-import { pb } from "../../utils/pocketBase";
+import { pb } from "../../../utils/pocketBase";
 import { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
 export default function UserStatus({ user }) {
