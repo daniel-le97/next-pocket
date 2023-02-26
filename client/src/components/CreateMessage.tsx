@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import { pb } from "../../utils/pocketBase";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { AppState } from "../../AppState";
+import { FaLaugh, FaSmile } from "react-icons/fa";
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
 
@@ -36,6 +37,10 @@ const CreateMessage = () => {
           className="bottom-bar-input"
         />
       </form>
+
+      <div className="flex justify-evenly items-center">
+<EmojiPicker/>
+      </div>
     </div>
   );
 };
@@ -45,6 +50,35 @@ const PlusIcon = () => (
     className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
   />
 );
+
+const EmojiPicker = () => {
+   const [isHovered, setIsHovered] = useState(false);
+   const handleClick = ()=> {
+  
+    
+   }
+  return (
+    <div
+      className="group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClick}
+    >
+      {isHovered ? (
+        <FaLaugh
+          size={22}
+
+          className="text-green-300  transition-all duration-300 ease-in-out hover:scale-150 cursor-pointer"
+        />
+      ) : (
+        <FaSmile
+          size={22}
+          className="text-green-300 transition-all duration-1000 ease-in-out"
+        />
+      )}
+    </div>
+  );
+}
 function containsUrl(text: string) {
   // Create a regular expression to match URLs
   const urlRegex =
