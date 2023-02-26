@@ -6,7 +6,6 @@ import Link from "next/link.js";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
 import logo from "../assets/LLCLOGO.png";
-import logo from "../assets/LLCLOGO.png";
 import {
   // @ts-ignore
   BsPlus,

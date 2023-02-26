@@ -28,19 +28,19 @@ const Home: NextPage = () => {
       // console.log(res);
 
       //     // Update isOnline status to true on component mount
-      //     const data = {
-      //       userId: user?.id,
-      //       isOnline: true,
-      //     };
-      //     const updatedRecord = await pb
-      //       .collection("usersStatus")
-      //       .update(res.id, data);
-      //     // console.log(updatedRecord);
+          const data = {
+            userId: user?.id,
+            isOnline: true,
+          };
+          const updatedRecord = await pb
+            .collection("usersStatus")
+            .update(res.id, data);
+          // console.log(updatedRecord);
 
       // Update isOnline status to false on beforeunload event
       const handleBeforeUnload = () => {
         const data = {
-          userId: user.id,
+          userId: user?.id,
           isOnline: false,
         };
         const updatedRecord = pb.collection("usersStatus").update(res.id, data);
