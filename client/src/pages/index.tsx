@@ -22,10 +22,13 @@ const Home: NextPage = () => {
   useEffect(() => {
     const user = pb.authStore.model;
     const subscribe = async () => {
-      const res = await pb
+      const userStatus = await pb
         .collection("usersStatus")
         .getFirstListItem(`userId = "${user?.id}"`);
-      // console.log(res);
+      // console.log(userStatus);
+if(!userStatus){
+  throw new Error('userStatus Not Found')
+}
 
       //     // Update isOnline status to true on component mount
           const data = {
@@ -34,7 +37,7 @@ const Home: NextPage = () => {
           };
           const updatedRecord = await pb
             .collection("usersStatus")
-            .update(res.id, data);
+            .update(userStatus.id, data);
           // console.log(updatedRecord);
 
       // Update isOnline status to false on beforeunload event
@@ -43,7 +46,7 @@ const Home: NextPage = () => {
           userId: user?.id,
           isOnline: false,
         };
-        const updatedRecord = pb.collection("usersStatus").update(res.id, data);
+        const updatedRecord = pb.collection("usersStatus").update(userStatus.id, data);
         console.log(updatedRecord);
       };
       window.addEventListener("beforeunload", handleBeforeUnload);

@@ -16,17 +16,25 @@ class MessageService {
   }
   async getMessages() {
     try {
-      console.log(AppState.activeRoom);
+      // console.log(AppState.activeChannel);
       
-     const res = await pb
+
+      //  const test = await pb.collection('channels').getOne(AppState.activeChannel ,{
+      //   expand:'messages'
+      //  })
+
+      //  console.log(test);
+       
+       
+            const res = await pb
        .collection("messages")
        .getList(1,50 , {
-        filter:`room = "${AppState?.activeRoom?.id}"`,
+        filter:`channel = "${AppState?.activeChannel}"`,
          sort: "created",
          expand:'user'
        });
 
-       console.log(res);
+      
        
     // const newMessages =  messages.map(message => new Message(message))
     AppState.messages = res.items

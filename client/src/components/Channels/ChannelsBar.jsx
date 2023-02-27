@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 
 import { observer } from "mobx-react-lite";
 
-
 import ChannelSelection from "./ChannelSelection";
-const topics = ["general", "tailwind-css", "react"];
+import { pb } from "../../../utils/pocketBase";
+// const topics = ["general", "tailwind-css", "react"];
 
 const ChannelsBar = () => {
+  const [channels, setChannels] = useState([]);
+  useEffect(() => {
+    const channels = async () => {
+      const res = await pb.collection("channels").getList(1, 50);
+      const channelList = res.items.map((i) => i.title);
+      setChannels(channelList);
+    };
+    channels();
+  });
+
   return (
     <div className="channel-bar ">
       <ChannelBlock />
       <div className="channel-container">
-        <Dropdown header="Topics" selections={topics} />
-    
+        <Dropdown header="Topics" selections={channels} />
       </div>
     </div>
   );
@@ -63,7 +72,6 @@ const ChevronIcon = ({ expanded }) => {
 };
 
 // @ts-ignore
-
 
 const ChannelBlock = () => (
   <div className="channel-block">

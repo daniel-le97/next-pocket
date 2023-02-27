@@ -23,6 +23,7 @@ const CreateMessage = () => {
     const data = {
       text: newMessage,
       user: user?.id,
+      channel:AppState?.activeChannel,
       // @ts-ignore
       room: AppState?.activeRoom?.id,
     };
@@ -31,7 +32,7 @@ const CreateMessage = () => {
   };
 
   return (
-    <div className={messages.length >=1? 'bottom-bar': 'hidden'}>
+    <div className="bottom-bar">
       <form onSubmit={sendMessage} className="w-3/4 flex">
         <InputEmoji
           value={newMessage}
