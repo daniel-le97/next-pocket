@@ -69,46 +69,7 @@ const PlusIcon = () => (
   </button>
 );
 
-const EmojiPicker = ({ text, setText }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  let [isOpen, setIsOpen] = useState(true);
 
-  return (
-    <div
-      className="group"
-      // onMouseEnter={() => setIsHovered(true)}
-      // onMouseLeave={() => setIsHovered(false)}
-    >
-      <button onClick={() => setIsOpen(true)}>Deactivate</button>
-      <Dialog
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        className="relative z-50"
-      >
-        {/* <div className="fixed inset-0 bg-black/30" aria-hidden="true" /> */}
-        <div className="  fixed bottom-12 right-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="h-52 w-full max-w-sm rounded bg-zinc-800 p-4">
-            <Dialog.Title>Complete your order</Dialog.Title>
-
-           
-          </Dialog.Panel>
-        </div>
-      </Dialog>
-      {/* {isHovered ? (
-        <FaLaugh
-          size={22}
-
-          className="text-green-300  transition-all duration-300 ease-in-out hover:scale-150 cursor-pointer"
-        />
-      ) : (
-        <FaSmile
-          size={22}
-          className="text-green-300 transition-all duration-1000 ease-in-out"
-        />
-      )} */}
-    </div>
-  );
-};
 function containsUrl(text: string) {
   // Create a regular expression to match URLs
   const urlRegex =

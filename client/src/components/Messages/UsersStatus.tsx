@@ -1,9 +1,9 @@
 import { pb } from "../../../utils/pocketBase";
 import { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
-export default function UserStatus({ user }) {
+export default function UserStatus({ user }: any) {
   const [isOnline, setIsOnline] = useState(false);
-  const [userStatusRecord, setUserStatusRecord] = useState(null);
+  const [userStatusRecord, setUserStatusRecord] = useState<any>(null);
   useEffect(() => {
     let unsubscribe: (() => void) | null = null;
     const getStatus = async () => {
@@ -24,8 +24,6 @@ export default function UserStatus({ user }) {
       // console.log(record?.id);
 
       await pb.collection("usersStatus").subscribe(record.id, function (e) {
-    
-
         setIsOnline(e.record.isOnline);
         //  console.log(isOnline);
       });

@@ -29,11 +29,13 @@ class ObservableAppState {
 export const AppState = new Proxy(new ObservableAppState(), {
   get(target, prop) {
     isValidProp(target, prop);
+    // @ts-ignore
     return target[prop];
   },
   set(target, prop, value) {
     isValidProp(target, prop);
     action(() => {
+      // @ts-ignore
       target[prop] = value;
     })();
     return true;

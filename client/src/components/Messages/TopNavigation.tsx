@@ -6,7 +6,7 @@ import { pb } from "../../../utils/pocketBase";
 import useDarkMode from '../../../hooks/useDarkMode'
 import { BsMoon, BsSun } from "react-icons/bs";
 const TopNavigation = () => {
-  const [room, setRoom] = useState(null);
+  const [room, setRoom] = useState("");
   const [message, setMessage] = useState("");
   const [query, setQuery] = useState("");
   useEffect(() => {
@@ -66,7 +66,10 @@ const Search = () => {
         placeholder="Search..."
         value={query}
         onChange={async(event) =>
-         await findMessage(event.target.value) && setQuery(event.target.value)
+        {
+           await findMessage(event.target.value);
+           setQuery(event.target.value)
+        }
         }
       />
       <FaSearch size="18" className="text-secondary my-auto" />
