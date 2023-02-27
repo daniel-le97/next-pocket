@@ -23,7 +23,7 @@ const CreateMessage = () => {
     const data = {
       text: newMessage,
       user: user?.id,
-      channel:AppState?.activeChannel,
+      channel:AppState?.activeChannel?.id,
       // @ts-ignore
       room: AppState?.activeRoom?.id,
     };

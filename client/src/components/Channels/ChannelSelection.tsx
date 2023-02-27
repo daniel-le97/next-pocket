@@ -7,7 +7,7 @@ import { channelsService } from "../../services/ChannelsService";
 import { messageService } from "../../services/MessageService";
 const ChannelSelection = ({ selection }) => {
   const [activeSelection, setActiveSelection] = useState("");
-  const user = pb.authStore.model
+  const user = pb.authStore.model;
   const handleClick = async () => {
     try {
       const room = await pb
@@ -29,15 +29,15 @@ const ChannelSelection = ({ selection }) => {
   const joinChannel = async () => {
     try {
       const user = pb.authStore.model;
-      console.log(user);
-      
+      // console.log(user);
+
       const data = {
         memberId: user?.id,
         title: selection,
       };
 
       await channelsService.joinChannel(data);
-        await messageService.getMessages();
+      await messageService.getMessages();
       setActiveSelection(selection);
     } catch (error) {
       console.error(error);
@@ -55,14 +55,17 @@ const ChannelSelection = ({ selection }) => {
         }
       >
         {selection}
-
-        {/* <img
+      </h5>
+      {selection == AppState?.activeChannel?.title ? (
+        <img
           src={user?.avatarUrl}
           alt="UserIcon"
-          width={20}
+          width={15}
           className="rounded-full  shadow-md"
-        /> */}
-      </h5>
+        />
+      ) : (
+        <div className=""></div>
+      )}
     </div>
   );
 };

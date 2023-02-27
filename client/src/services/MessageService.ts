@@ -30,7 +30,7 @@ class MessageService {
             const res = await pb
        .collection("messages")
        .getList(1,50 , {
-        filter:`channel = "${AppState?.activeChannel}"`,
+        filter:`channel = "${AppState?.activeChannel?.id}"`,
          sort: "created",
          expand:'user'
        });

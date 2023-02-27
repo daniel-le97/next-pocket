@@ -7,7 +7,7 @@
 
 import Swal from 'sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
-import { logger } from './Logger.js'
+// import { logger } from './Logger.js'
 
 export default class Pop {
   /**

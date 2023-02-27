@@ -30,8 +30,8 @@ class ChannelsService {
     if (!channel) {
       throw new Error("Channel not found");
     }
-    AppState.activeChannel = channel.id;
-    console.log(AppState.activeChannel);
+    AppState.activeChannel = channel;
+    // console.log(AppState.activeChannel);
     
 
     //TODO need to find the channel that the user is IN, not the channel record to join
