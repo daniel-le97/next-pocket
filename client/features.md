@@ -17,7 +17,7 @@ Mobile responsiveness: Ensure that your application is fully responsive and work
 
 User profiles: Allow users to create and customize their profiles, including their usernames, avatars, and status messages.
 
-Emojis and reactions: Implement support for emojis and reactions to messages, allowing users to express themselves in fun and creative ways.
+<!-- Emojis and reactions: Implement support for emojis and reactions to messages, allowing users to express themselves in fun and creative ways. -->
 
 Search functionality: Implement search functionality to allow users to easily find messages, channels, and servers.
 

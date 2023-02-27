@@ -6,9 +6,9 @@ import { pb } from "../../../utils/pocketBase";
 import useDarkMode from '../../../hooks/useDarkMode'
 import { BsMoon, BsSun } from "react-icons/bs";
 const TopNavigation = () => {
-  const [room, setRoom] = useState("");
+  const [room, setRoom] = useState<string>("");
   const [message, setMessage] = useState("");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
   useEffect(() => {
     // @ts-ignore
     setRoom(AppState?.activeRoom?.title);
