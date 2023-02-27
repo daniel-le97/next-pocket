@@ -8,12 +8,13 @@ export class Message {
   created: Date
   updated: Date
   expand: any
-  
+  channel: string
   constructor(data: Partial<Message>) {
     this.text = data.text!;
     this.user = data.user!;
     this.id = data.id!;
     this.expand = data.expand!
+    this.channel = data.channel? data.channel : ''
     this.created = data.created || new Date(); // use default value if created is undefined
     this.updated = data.updated || new Date(); // use default value if updated is undefined
     // TODO add additional properties if needed

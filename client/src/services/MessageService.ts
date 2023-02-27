@@ -2,6 +2,7 @@
 // import type pocketbase from "pocketbase";
 import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
+import Pop from "../../utils/Pop";
 import type { Message } from "../models/Message";
 
 class MessageService {
@@ -30,12 +31,17 @@ class MessageService {
        
     // const newMessages =  messages.map(message => new Message(message))
     AppState.messages = res.items
-  
-    
-     
     } catch (error) {
       
     }
+  }
+  async getMessagesByChannelId(id: string){
+    try {
+       const messages =  await pb.collection('messages').getFullList<Message>(200, {filter: `channel.id = ${id}`, sort: '-created'})
+       return  messages
+      } catch (error) {
+        Pop.error(error)
+      }
   }
 }
 export const messageService = new MessageService();
