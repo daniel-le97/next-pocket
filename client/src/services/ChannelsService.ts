@@ -1,10 +1,11 @@
 import { AppState } from "../../AppState";
+import { ChannelsResponse, Collections } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import { PBChannel } from "../models/Channel";
 import type { Message } from "../models/Message";
 import { PBUser } from "../models/PBUser";
 
-type joinChannelData = { memberId: string, title: string }
+type joinChannelData = { memberId: string; title: string };
 
 class ChannelsService {
   async joinChannel(data: joinChannelData) {
@@ -17,37 +18,26 @@ class ChannelsService {
       .collection("channels")
       .getOne(user.currentChannel.id);
 
-    if (channelToLeave) {
-      await this.leaveChannel({
-        id: user.currentChannel.id,
-        memberId: data
-      });
-    }
+    // if (channelToLeave) {
+    //   await this.leaveChannel({
+    //     id: user.currentChannel.id,
+    //     memberId: data
+    //   });
+    // }
 
     // Get the channel record to join
     const channel = await pb
-      .collection("channels")
-      .getFirstListItem<PBChannel>(`title="${data.title}"`, {
+      .collection(Collections.Channels)
+      .getFirstListItem<ChannelsResponse>(`title="${data.title}"`, {
         expand: "members",
       });
+    console.log(channel);
 
     if (!channel) {
       throw new Error("Channel not found");
     }
     AppState.activeChannel = channel;
     // console.log(AppState.activeChannel);
-    
-
-    //TODO need to find the channel that the user is IN, not the channel record to join
-
-    // // Check if user is already in a channel
-    // const currentChannelQuery = pb
-    //   .collection("channels")
-    //   .query()
-    //   .where("members", "array_contains", data.memberId);
-    // const currentChannel = await currentChannelQuery.getFirstListItem({
-    //   expand: "members",
-    // });
 
     // Add the user to the channel's member list
     const newMemberList = [...channel.members, data.memberId];
@@ -74,15 +64,20 @@ class ChannelsService {
     await pb.collection("channels").update(data.id, { members: newMemberList });
   }
 
+  async getChannels() {
+    try {
+      const res = await pb
+        .collection(Collections.Channels)
+        .getList<ChannelsResponse>(1, 50);
 
-
-
-
-
-
-  async getChannels(){
-   const res = await pb.collection('channels').getList(1,50)
-
+      AppState.channels = res.items;
+      const channelTitles = res.items.map((i) => i.title);
+      AppState.channelTitles = channelTitles;
+      // return channelTitles;
+    } catch (error) {
+      console.error(error);
+      throw new Error("Failed to get channel list");
+    }
   }
 }
 

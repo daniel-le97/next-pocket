@@ -6,18 +6,18 @@ import { observer } from "mobx-react-lite";
 
 import ChannelSelection from "./ChannelSelection";
 import { pb } from "../../../utils/pocketBase";
-// const topics = ["general", "tailwind-css", "react"];
+import { channelsService } from "../../services/ChannelsService";
+import { AppState } from "../../../AppState";
+const topics = ["general", "tailwind-css", "react"];
 
 const ChannelsBar = () => {
-  const [channels, setChannels] = useState<string[]>([]);
+ const channels = AppState.channelTitles
   useEffect(() => {
-    const channels = async () => {
-      const res = await pb.collection("channels").getList(1, 50);
-      const channelList:string[] = res.items.map((i) => i.title);
-      setChannels(channelList);
+    const getChannels = async () => {
+   await channelsService.getChannels()
     };
-    channels();
-  });
+    getChannels();
+  },[]);
 
   return (
     <div className="channel-bar ">

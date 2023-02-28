@@ -2,18 +2,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
+import { ChannelsRecord, MessagesRecord } from "./pocketbase-types";
 import { isValidProp } from "./utils/isValidProp";
 
 class ObservableAppState {
-  user: Record<string,any> | null = null;
+  user: Record<string, any> | null = null;
   /** @type {import('./src/models/Account.js').Account | null} */
   account: Record<string, any> | null = null;
 
   messageQuery: string = "";
 
-  activeChannel: Record<string, any> | null = null;
+  activeChannel: ChannelsRecord | null = null;
 
-  messages: any[] = [];
+  channelTitles: (string | undefined)[] = [];
+  channels: ChannelsRecord[] = [];
+  messages: MessagesRecord[] = [];
   AppState: undefined;
 
   constructor() {

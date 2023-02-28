@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // import type pocketbase from "pocketbase";
 import { AppState } from "../../AppState";
+import { Collections, MessagesResponse } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import type { Message } from "../models/Message";
@@ -25,14 +26,16 @@ class MessageService {
 
       //  console.log(test);
 
-      const res = await pb.collection("messages").getList(1, 50, {
+      const res = await pb.collection(Collections.Messages).getList<MessagesResponse>(1, 50, {
         filter: `channel = "${AppState?.activeChannel?.id}"`,
         sort: "created",
         expand: "user",
       });
 
+      console.log(res);
+      
       // const newMessages =  messages.map(message => new Message(message))
-      AppState.messages = res.items;
+      // AppState.messages = res.items;
     } catch (error) {}
   }
   async getMessagesByChannelId(id: string) {

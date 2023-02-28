@@ -10,21 +10,13 @@ import ChannelSelection from "./Channels/ChannelSelection";
 // const topics = ["general", "tailwind-css", "react"];
 
 const ServerMembersBar = () => {
-  const [channels, setChannels] = useState<string[]>([]);
-  useEffect(() => {
-    const channels = async () => {
-      const res = await pb.collection("channels").getList(1, 50);
-      const channelList: string[] = res.items.map((i) => i.title);
-      setChannels(channelList);
-    };
-    channels();
-  });
+;
 
   return (
     <div className="server-members-bar ">
       <ChannelBlock />
       <div className="channel-container">
-        <Dropdown header="Topics" selections={channels} />
+      
       </div>
     </div>
   );
