@@ -2,7 +2,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import SideBar from "../components/SideBar";
+import SideBar from "../components/SideBar/SideBar";
 import ChannelsBar from "../components/Channels/ChannelsBar";
 import ContentContainer from "../components/Messages/MessageContainer";
 import React, { useEffect } from "react";

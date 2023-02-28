@@ -8,11 +8,10 @@ import { Dialog } from "@headlessui/react";
 import InputEmoji from "react-input-emoji";
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
- const messages = AppState?.messages
+  const messages = AppState?.messages;
   const sendMessage = async (event: { preventDefault: () => void }) => {
-
     // event.preventDefault();
-  
+
     if (containsUrl(newMessage)) {
       console.log("URL found!");
     } else {
@@ -23,7 +22,7 @@ const CreateMessage = () => {
     const data = {
       text: newMessage,
       user: user?.id,
-      channel:AppState?.activeChannel?.id,
+      channel: AppState?.activeChannel?.id,
       // @ts-ignore
       room: AppState?.activeRoom?.id,
     };
@@ -33,18 +32,23 @@ const CreateMessage = () => {
 
   return (
     <div className="bottom-bar">
-      <form onSubmit={sendMessage} className="w-3/4 flex">
-   {AppState.activeChannel? (<>     <InputEmoji
-          value={newMessage}
-          onChange={ setNewMessage}
-          cleanOnEnter
-          onEnter={sendMessage}
-          placeholder="Enter message..."
-          className="bottom-bar-input "
-        />
-      <PlusIcon /></>):(
-        <div className=""></div>
-      )}
+      <form onSubmit={sendMessage} className="flex w-3/4">
+        {AppState.activeChannel ? (
+          <>
+          
+            <InputEmoji
+              value={newMessage}
+              onChange={setNewMessage}
+              cleanOnEnter
+              onEnter={sendMessage}
+              placeholder="Enter message..."
+              className="bottom-bar-input  "
+            />
+            <PlusIcon />
+          </>
+        ) : (
+          <div className=""></div>
+        )}
         {/* <button type="submit">submite</button> */}
         {/* <input
           value={newMessage}
@@ -53,11 +57,9 @@ const CreateMessage = () => {
           className="bottom-bar-input"
           
         /> */}
-       
       </form>
 
       <div className="flex items-center justify-evenly">
-     
         {/* <EmojiPicker  text={newMessage} setText={setNewMessage}  /> */}
       </div>
     </div>
@@ -72,7 +74,6 @@ const PlusIcon = () => (
   </button>
 );
 
-
 function containsUrl(text: string) {
   // Create a regular expression to match URLs
   const urlRegex =
@@ -81,14 +82,5 @@ function containsUrl(text: string) {
   // Use the `test` method to check if a URL exists within the text
   return urlRegex.test(text);
 }
-
-
-
-
-
-
-
-
-
 
 export default observer(CreateMessage);

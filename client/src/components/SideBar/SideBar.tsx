@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
-import logo from "../assets/LLCLOGO.png";
+import logo from "../../assets/LLCLOGO.png";
 import {
   // @ts-ignore
   BsPlus,
@@ -26,9 +26,11 @@ import {
   FaPoo,
 } from "react-icons/fa";
 // @ts-ignore
-import { AppState } from "../../AppState";
-import { pb } from "../../utils/pocketBase";
-import { authsService } from "../services/AuthsService";
+import { AppState } from "../../../AppState";
+import { pb } from "../../../utils/pocketBase";
+import { authsService } from "../../services/AuthsService";
+import ServerSelection from "./ServerSelection";
+import DirectMessages from "./DirectMessages";
 
 const SideBar = () => {
   const [user, setUser] = useState(null);
@@ -51,6 +53,8 @@ const SideBar = () => {
     >
       <SideBarIcon icon={<FaHome size="28" />} text={"home"} router={"/"} />
       <Divider />
+      <DirectMessages />
+      <Divider />
       <SideBarIcon
         icon={<BsPerson size="32" />}
         text={"Account"}
@@ -71,6 +75,8 @@ const SideBar = () => {
               // onClick={logOut()}
             />
           </div>
+
+          <ServerSelection />
         </>
       ) : (
         <SideBarIcon
@@ -156,6 +162,20 @@ const UserIcon = ({ user }) => {
   );
 };
 const Divider = () => <hr className="sidebar-hr" />;
+
+
+// const ServerIcon = () => {
+//   return (
+//     <div className="sidebar-icon group">
+//       <img
+//         src={`https://api.dicebear.com/5.x/bottts-neutral/svg?seed=234`}
+//         alt="UserIcon"
+//         className="rounded-full"
+//       />
+//       <span className=" sidebar-tooltip group-hover:scale-100">Server To Add </span>
+//     </div>
+//   );
+// }
 
 // const useLogOut = () => {
 //   const router = useRouter();

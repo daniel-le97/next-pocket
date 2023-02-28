@@ -57,7 +57,9 @@
   }
 
   .top-navigation {
-    @apply fixed  z-10  ml-1.5  flex h-16 w-3/4
+    max-width: 100%;
+    width: 51.1rem;
+    @apply fixed  z-10    ml-1.5  flex h-16
     flex-row items-center justify-evenly rounded-lg 
     bg-gray-300 bg-opacity-90 
     shadow-lg 
@@ -169,11 +171,13 @@
   }
 
   .bottom-bar {
-    @apply fixed  bottom-2 flex h-12 w-3/4 flex-row items-center justify-start  rounded-lg dark:bg-gray-600 px-2 bg-gray-400  transition duration-300 ease-in-out;
+    @apply fixed  bottom-2 flex h-14 w-2/4 flex-row items-center justify-start  rounded-lg dark:bg-zinc-800 px-2 bg-gray-400  transition duration-300 ease-in-out;
   }
   .bottom-bar-input {
-    @apply ml-0 mr-auto w-full cursor-text bg-transparent font-semibold text-gray-500 placeholder-gray-500 outline-none ;
+    @apply ml-0 mr-auto w-full cursor-text bg-transparent font-semibold text-gray-500 placeholder-gray-500 outline-none    ;
   }
+
+  
 
   .post {
     @apply m-0  rounded-sm flex w-full cursor-pointer flex-row items-center justify-evenly py-4 px-8 transition-all
