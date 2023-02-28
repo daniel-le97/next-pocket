@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { NextRouter} from "next/router";
 import { pb } from "../../utils/pocketBase";
-import type { UserLogin } from "../models/user";
+import type { UserLogin } from "../models/PBUser";
 
 class AuthsService {
   async resetPassword(email: string) {

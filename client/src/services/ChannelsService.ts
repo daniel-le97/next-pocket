@@ -1,29 +1,33 @@
 import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
+import { PBChannel } from "../models/Channel";
 import type { Message } from "../models/Message";
+import { PBUser } from "../models/PBUser";
+
+type joinChannelData = { memberId: string, title: string }
 
 class ChannelsService {
-  async joinChannel(data: any) {
+  async joinChannel(data: joinChannelData) {
     const user = await pb
       .collection("users")
-      .getFirstListItem(`id="${data.memberId}"`);
+      .getFirstListItem<PBUser>(`id="${data.memberId}"`);
 
     // Get the channel record user is apart of
     const channelToLeave = await pb
       .collection("channels")
-      .getOne(user.currentChannel);
+      .getOne(user.currentChannel.id);
 
     if (channelToLeave) {
       await this.leaveChannel({
-        id: user.currentChannel,
-        memberId: data.memberId,
+        id: user.currentChannel.id,
+        memberId: data
       });
     }
 
     // Get the channel record to join
     const channel = await pb
       .collection("channels")
-      .getFirstListItem(`title="${data.title}"`, {
+      .getFirstListItem<PBChannel>(`title="${data.title}"`, {
         expand: "members",
       });
 
@@ -58,14 +62,14 @@ class ChannelsService {
 
   async leaveChannel(data: any) {
     // Get the channel record to leave
-    const channel = await pb.collection("channels").getOne(data.id);
+    const channel = await pb.collection("channels").getOne<PBChannel>(data.id);
     if (!channel) {
       throw new Error("Channel not found");
     }
 
     // Remove the user from the channel's member list
     const newMemberList = channel.members.filter(
-      (member: any) => member !== data.memberId
+      (member) => member !== data.memberId
     );
     await pb.collection("channels").update(data.id, { members: newMemberList });
   }
@@ -76,10 +80,10 @@ class ChannelsService {
 
 
 
-  // async getChannels(){
-  //  const res = await pb.collection('channels').getList(1,50)
+  async getChannels(){
+   const res = await pb.collection('channels').getList(1,50)
 
-  // }
+  }
 }
 
 export const channelsService = new ChannelsService();

@@ -1,4 +1,4 @@
-import { PBUser } from "./user"
+import { PBUser } from "./PBUser"
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 export class Message {

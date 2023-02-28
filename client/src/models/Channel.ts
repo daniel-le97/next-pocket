@@ -1,4 +1,6 @@
+import { type } from "os";
 import { Message } from "./Message";
+import { PBUser } from "./PBUser";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // export class Channel {
@@ -22,7 +24,7 @@ import { Message } from "./Message";
 //     // TODO add additional properties if needed
 //   }
 // }
-export interface Channel {
+export type PBChannel = {
   collectionId: string;
   collectionName: string;
   created: string;
@@ -30,5 +32,7 @@ export interface Channel {
   messages: string;
   title: string;
   updated: string;
-  expand: Record<string, unknown>; // or you could specify a more specific type for the `expand` property if you know what it should contain
+  expand: Record<string, unknown>;
+  members: PBUser[]
+   // or you could specify a more specific type for the `expand` property if you know what it should contain
 }
