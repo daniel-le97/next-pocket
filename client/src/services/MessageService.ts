@@ -26,23 +26,25 @@ class MessageService {
 
       //  console.log(test);
 
-      const res = await pb.collection(Collections.Messages).getList<MessagesResponse>(1, 50, {
-        filter: `channel = "${AppState?.activeChannel?.id}"`,
-        sort: "created",
-        expand: "user",
-      });
+      const res = await pb
+        .collection(Collections.Messages)
+        .getList<MessagesResponse>(1, 50, {
+          filter: `channel = "${AppState?.activeChannel?.id}"`,
+          sort: "created",
+          expand: "user",
+        });
 
       console.log(res);
-      
-      // const newMessages =  messages.map(message => new Message(message))
-      // AppState.messages = res.items;
+
+      const newMessages = messages.map((message) => new Message(message));
+      AppState.messages = res.items;
     } catch (error) {}
   }
   async getMessagesByChannelId(id: string) {
     try {
       const messages = await pb
-        .collection("messages")
-        .getFullList<Message>(200, {
+        .collection(Collections.Messages)
+        .getFullList<MessagesResponse>(200, {
           filter: `channel.id = ${id}`,
           sort: "-created",
         });

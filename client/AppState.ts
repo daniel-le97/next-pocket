@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
-import { ChannelsRecord, MessagesRecord } from "./pocketbase-types";
+import { ChannelsRecord, ChannelsResponse, MessagesRecord, MessagesResponse } from "./pocketbase-types";
 import { isValidProp } from "./utils/isValidProp";
 
 class ObservableAppState {
@@ -12,11 +12,11 @@ class ObservableAppState {
 
   messageQuery: string = "";
 
-  activeChannel: ChannelsRecord | null = null;
+  activeChannel: ChannelsResponse | null = null;
 
   channelTitles: (string | undefined)[] = [];
-  channels: ChannelsRecord[] = [];
-  messages: MessagesRecord[] = [];
+  channels: ChannelsResponse[] = [];
+  messages: MessagesResponse[] = [];
   AppState: undefined;
 
   constructor() {
