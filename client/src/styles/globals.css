@@ -235,6 +235,24 @@
   .post-text {
     @apply text-lg font-semibold dark:text-gray-300;
   }
+
+
+
+
+.server-members-bar {
+    @apply m-0  h-auto w-72 overflow-hidden bg-gray-200 dark:bg-zinc-800 shadow-lg
+   
+    ;
+  }
+
+
+
+
+
+
+
+
+
 }
 @tailwind utilities;
 

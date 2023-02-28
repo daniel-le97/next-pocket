@@ -76,10 +76,10 @@ class ChannelsService {
 
 
 
-  async getChannels(){
-   const res = await pb.collection('channels').getList(1,50)
+  // async getChannels(){
+  //  const res = await pb.collection('channels').getList(1,50)
 
-  }
+  // }
 }
 
 export const channelsService = new ChannelsService();
