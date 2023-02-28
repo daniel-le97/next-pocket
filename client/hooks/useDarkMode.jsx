@@ -43,27 +43,6 @@ const useDarkMode = () => {
   return [enabled, setEnabled];
 };
 
-// const useDarkMode = () => {
-//   const [enabled, setEnabled] = useLocalStorage("dark-theme");
 
-//   useEffect(() => {
-//     const className = "dark";
-//     const bodyClass = window.document.body.classList;
-//     const htmlClass = window.document.documentElement.classList;
-
-//     // if (typeof enabled === "undefined") {
-//     //   htmlClass.remove("dark");
-//     //   bodyClass.remove(className);
-//     //   return;
-//     // }
-
-//     htmlClass.add("dark");
-//     enabled
-//       ? bodyClass.add(className) && htmlClass.add(className)
-//       : bodyClass.remove(className) && htmlClass.remove(className);
-//   }, [enabled]);
-
-//   return [enabled, setEnabled];
-// };
 
 export default useDarkMode;

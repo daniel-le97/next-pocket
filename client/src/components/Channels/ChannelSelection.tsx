@@ -5,26 +5,26 @@ import { AppState } from "../../../AppState";
 import { pb } from "../../../utils/pocketBase";
 import { channelsService } from "../../services/ChannelsService";
 import { messageService } from "../../services/MessageService";
-const ChannelSelection = ({ selection }) => {
-  const [activeSelection, setActiveSelection] = useState("");
+const ChannelSelection = ({ selection }:{selection:any}) => {
+  // const [activeSelection, setActiveSelection] = useState("");
   const user = pb.authStore.model;
-  const handleClick = async () => {
-    try {
-      const room = await pb
-        .collection("rooms")
-        .getFirstListItem(`title="${selection}"`, {
-          expand: "messages",
-        });
+  // const handleClick = async () => {
+  //   try {
+  //     const room = await pb
+  //       .collection("rooms")
+  //       .getFirstListItem(`title="${selection}"`, {
+  //         expand: "messages",
+  //       });
 
-      AppState.activeRoom = room;
+  //     AppState.activeRoom = room;
 
-      await messageService.getMessages();
-      setActiveSelection(selection);
-      console.log(selection === AppState.activeRoom.title);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     await messageService.getMessages();
+  //     setActiveSelection(selection);
+  //     console.log(selection === AppState.activeRoom.title);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const joinChannel = async () => {
     try {
@@ -38,7 +38,7 @@ const ChannelSelection = ({ selection }) => {
 
       await channelsService.joinChannel(data);
       await messageService.getMessages();
-      setActiveSelection(selection);
+      // setActiveSelection(selection);
     } catch (error) {
       console.error(error);
     }
@@ -49,7 +49,7 @@ const ChannelSelection = ({ selection }) => {
       <BsHash size="24" className="text-gray-400" />
       <h5
         className={
-          selection === AppState?.activeRoom?.title
+          selection === AppState?.activeChannel?.title
             ? " dropdown-selection-text text-pink-700 dark:text-green-400"
             : " dropdown-selection-text text-gray-500"
         }

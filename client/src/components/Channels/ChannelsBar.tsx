@@ -9,11 +9,11 @@ import { pb } from "../../../utils/pocketBase";
 // const topics = ["general", "tailwind-css", "react"];
 
 const ChannelsBar = () => {
-  const [channels, setChannels] = useState([]);
+  const [channels, setChannels] = useState<string[]>([]);
   useEffect(() => {
     const channels = async () => {
       const res = await pb.collection("channels").getList(1, 50);
-      const channelList = res.items.map((i) => i.title);
+      const channelList:string[] = res.items.map((i) => i.title);
       setChannels(channelList);
     };
     channels();

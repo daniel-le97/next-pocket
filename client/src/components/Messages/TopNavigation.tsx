@@ -6,18 +6,18 @@ import { pb } from "../../../utils/pocketBase";
 import useDarkMode from '../../../hooks/useDarkMode'
 import { BsMoon, BsSun } from "react-icons/bs";
 const TopNavigation = () => {
-  const [room, setRoom] = useState<string>("");
+  const [channel, setRoom] = useState<string>("");
   const [message, setMessage] = useState("");
   const [query, setQuery] = useState<string>("");
   useEffect(() => {
     // @ts-ignore
-    setRoom(AppState?.activeRoom?.title);
-  }, [AppState?.activeRoom?.title]);
+    setRoom(AppState?.activeChannel?.title);
+  }, [AppState?.activeChannel?.title]);
 
   return (
     <div className="top-navigation">
       <HashtagIcon />
-      <Title room={room}  query={query}/>
+      <Title room={channel}  query={query}/>
      <ThemeIcon/>
       <Search />
       <BellIcon />

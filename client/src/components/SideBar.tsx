@@ -26,7 +26,7 @@ import {
   FaPoo,
 } from "react-icons/fa";
 // @ts-ignore
-import { AppState } from "../../AppState.js";
+import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
 import { authsService } from "../services/AuthsService";
 

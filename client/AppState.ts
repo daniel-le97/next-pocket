@@ -5,24 +5,20 @@ import { action, makeAutoObservable } from "mobx";
 import { isValidProp } from "./utils/isValidProp";
 
 class ObservableAppState {
-  user = null;
+  user: Record<string,any> | null = null;
   /** @type {import('./src/models/Account.js').Account | null} */
-  account = null;
+  account: Record<string, any> | null = null;
 
-  test = "hi";
+  messageQuery: string = "";
 
-  messageQuery = "";
-  /** @type {import('./src/models/Channel.js').Channel | null} */
-  activeRoom = null; //general chat;
-  activeChannel = null; //general chat;
+  activeChannel: Record<string, any> | null = null;
 
-  // /** @type {import('./src/models/Message.js').Message[]} */
-  /**
-   * @type {any[]}
-   */
-  messages = [];
+  messages: any[] = [];
+
   constructor() {
     makeAutoObservable(this);
+    this.AppState = undefined;
+    this.AppState = undefined;
   }
 }
 
@@ -30,13 +26,12 @@ class ObservableAppState {
 export const AppState = new Proxy(new ObservableAppState(), {
   get(target, prop) {
     isValidProp(target, prop);
-    // @ts-ignore
+
     return target[prop];
   },
   set(target, prop, value) {
     isValidProp(target, prop);
     action(() => {
-      // @ts-ignore
       target[prop] = value;
     })();
     return true;

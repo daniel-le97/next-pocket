@@ -1,5 +1,5 @@
 import pocketbase, { Admin, Record } from "pocketbase";
-import { AppState } from "../AppState.js";
+import { AppState } from "../AppState";
 import { env } from "../src/env.mjs";
 // import { logger } from "./Logger.js";
 
