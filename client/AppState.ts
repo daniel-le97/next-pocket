@@ -14,6 +14,7 @@ class ObservableAppState {
   activeChannel: Record<string, any> | null = null;
 
   messages: any[] = [];
+  AppState: undefined;
 
   constructor() {
     makeAutoObservable(this);

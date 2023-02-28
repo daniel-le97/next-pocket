@@ -34,15 +34,17 @@ const CreateMessage = () => {
   return (
     <div className="bottom-bar">
       <form onSubmit={sendMessage} className="w-3/4 flex">
-        <InputEmoji
+   {AppState.activeChannel? (<>     <InputEmoji
           value={newMessage}
           onChange={ setNewMessage}
           cleanOnEnter
           onEnter={sendMessage}
           placeholder="Enter message..."
-          className="bottom-bar-input"
+          className="bottom-bar-input "
         />
-      <PlusIcon />
+      <PlusIcon /></>):(
+        <div className=""></div>
+      )}
         {/* <button type="submit">submite</button> */}
         {/* <input
           value={newMessage}
