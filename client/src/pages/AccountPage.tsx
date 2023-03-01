@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { observer } from "mobx-react";
-import { Admin, Record } from "pocketbase";
+import type { Admin, Record } from "pocketbase";
 import React, { useEffect, useState } from "react";
-import { ServersResponse } from "../../pocketbase-types";
+import type { ServersResponse } from "../../pocketbase-types";
 // import { AppState } from "../../AppState.js";
 import { pb } from "../../utils/pocketBase";
 import { serversService } from "../services/ServersService";
