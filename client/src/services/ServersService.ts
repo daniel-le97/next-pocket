@@ -74,14 +74,13 @@ class ServersService {
 
   async getServersList() {
     try {
-      const res:ServersResponse = await pb
+      const res  = await pb
         .collection(Collections.Servers)
         .getList<ServersResponse>(1, 50);
 
       AppState.servers = res.items
-      const channelTitles = res.items.map((i) => i.title);
-      AppState.channelTitles = channelTitles;
-      // return channelTitles;
+     
+ 
     } catch (error) {
       console.error(error);
       throw new Error("Failed to get channel list");

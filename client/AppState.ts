@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { ServerResponse } from "http";
 import { action, makeAutoObservable } from "mobx";
-import { BaseSystemFields, ChannelsRecord, ChannelsResponse, MessagesRecord, MessagesResponse, UsersRecord, UsersResponse } from "./pocketbase-types";
+import { BaseSystemFields, ChannelsRecord, ChannelsResponse, MessagesRecord, MessagesResponse, ServersResponse, UsersRecord, UsersResponse } from "./pocketbase-types";
 import { isValidProp } from "./utils/isValidProp";
 
 
@@ -15,11 +14,11 @@ class ObservableAppState {
   messageQuery: string = "";
 
   activeChannel: ChannelsResponse | null = null;
-  activeServer:ServerResponse | null = null
+  activeServer:ServersResponse | null = null
 
   channelTitles: (string | undefined)[] = [];
   channels: ChannelsResponse[] = [];
-  servers: ServerResponse[] = []
+  servers: ServersResponse[] = []
   users: UsersResponse[]= []
   messages: MessagesResponse[] = [];
   AppState: undefined;
