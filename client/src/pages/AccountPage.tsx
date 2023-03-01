@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { observer } from "mobx-react";
+import { NextPage } from "next";
 import type { Admin, Record } from "pocketbase";
 import React, { useEffect, useState } from "react";
 import type { ServersResponse } from "../../pocketbase-types";
@@ -9,7 +10,7 @@ import type { ServersResponse } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import { serversService } from "../services/ServersService";
 
-function AccountPage() {
+function AccountPage () {
   const [user, setUser] = useState<Record | Admin | null>()
   const [servers, setServers] = useState<ServersResponse<unknown>>()
   useEffect(() => {

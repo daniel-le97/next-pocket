@@ -27,19 +27,19 @@ const Home: NextPage = () => {
         .collection("usersStatus")
         .getFirstListItem(`userId = "${user?.id}"`);
       // console.log(userStatus);
-if(!userStatus){
-  throw new Error('userStatus Not Found')
-}
+      if (!userStatus) {
+        throw new Error("userStatus Not Found");
+      }
 
       //     // Update isOnline status to true on component mount
-          const data = {
-            userId: user?.id,
-            isOnline: true,
-          };
-          const updatedRecord = await pb
-            .collection("usersStatus")
-            .update(userStatus.id, data);
-          // console.log(updatedRecord);
+      const data = {
+        userId: user?.id,
+        isOnline: true,
+      };
+      const updatedRecord = await pb
+        .collection("usersStatus")
+        .update(userStatus.id, data);
+      // console.log(updatedRecord);
 
       // Update isOnline status to false on beforeunload event
       const handleBeforeUnload = () => {
@@ -47,7 +47,9 @@ if(!userStatus){
           userId: user?.id,
           isOnline: false,
         };
-        const updatedRecord = pb.collection("usersStatus").update(userStatus.id, data);
+        const updatedRecord = pb
+          .collection("usersStatus")
+          .update(userStatus.id, data);
         console.log(updatedRecord);
       };
       window.addEventListener("beforeunload", handleBeforeUnload);
@@ -69,10 +71,10 @@ if(!userStatus){
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  w-full ">
-          <SideBar />
+          {/* <SideBar /> */}
           <ChannelsBar />
           <ContentContainer />
-          <ServerMembersBar/>
+          <ServerMembersBar />
         </div>
       </main>
     </>

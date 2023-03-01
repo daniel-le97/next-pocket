@@ -19,6 +19,7 @@ import {
   // @ts-ignore
   FaAirbnb,
   FaArrowCircleRight,
+  FaCompass,
   // @ts-ignore
   FaFire,
   FaHome,
@@ -75,7 +76,11 @@ const SideBar = () => {
               // onClick={logOut()}
             />
           </div>
-
+          <SideBarIcon
+            icon={<FaCompass size="22" />}
+            text={"Explore Servers"}
+            router={"/Explore"}
+          />
           <ServerSelection />
         </>
       ) : (
