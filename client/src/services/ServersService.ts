@@ -3,6 +3,7 @@
 import { AppState } from "../../AppState";
 import type {
   ServersResponse,
+  UsersRecord,
   UsersResponse} from "../../pocketbase-types";
 import {
   Collections
@@ -73,7 +74,7 @@ class ServersService {
 
   async getUserServers(userId: string){
     try {
-        const servers = await pb.collection(Collections.Servers).getFullList(50, {filter: `members.id = ${userId}`})
+        const servers = await pb.collection(Collections.Servers).getFullList<ServersResponse>(50, {filter: `members.id = ${userId}`})
         console.log(servers)
         return servers
       } catch (error) {
