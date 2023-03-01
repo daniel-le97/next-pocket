@@ -1,17 +1,15 @@
-import { ServerResponse } from "http";
-import { Collection } from "pocketbase";
+
+
 import { AppState } from "../../AppState";
 import type {
   ServersResponse,
   UsersResponse} from "../../pocketbase-types";
 import {
-  ChannelsResponse,
   Collections
 } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
-// import { PBChannel } from "../models/Channel";
-// import type { Message } from "../models/Message";
-// import { PBUser } from "../models/PBUser";
+import Pop from "../../utils/Pop";
+
 
 type ServerData = { memberId: string; title: string, id: string };
 
@@ -37,40 +35,50 @@ class ServersService {
 
     //TODO GET SERVERID SOMEHOW
     // Get the server record to join
-    const server = await pb
-      .collection(Collections.Servers)
-      .getOne<ServersResponse>(data.id)
+    // const server = await pb
+    //   .collection(Collections.Servers)
+    //   .getOne<ServersResponse>(data.id)
 
-    if (!server) {
-      throw new Error("Channel not found");
-    }
-    AppState.activeServer = server;
-    // console.log(AppState.activeChannel);
+    // if (!server) {
+    //   throw new Error("Channel not found");
+    // }
+    // AppState.activeServer = server;
+    // // console.log(AppState.activeChannel);
 
-    // Add the user to the channel's member list
-    const newMemberList = [...(server.members), data.memberId];
-    await pb
-      .collection("channels")
-      .update(channel.id, { members: newMemberList });
+    // // Add the user to the channel's member list
+    // const newMemberList = [...(server.members), data.memberId];
+    // await pb
+    //   .collection("channels")
+    //   .update(channel.id, { members: newMemberList });
 
-    await pb.collection("users").update(data.memberId, {
-      currentChannel: channel.id,
-    });
+    // await pb.collection("users").update(data.memberId, {
+    //   currentChannel: channel.id,
+    // });
   }
 
   async leaveServer(data: any) {
     // Get the channel record to leave
-    const serverToLeave = await pb.collection(Collections.Servers).getOne<ServersResponse>(data.id);
-    if (!serverToLeave) {
-      throw new Error("Server Not Found");
-    }
+    // const serverToLeave = await pb.collection(Collections.Servers).getOne<ServersResponse>(data.id);
+    // if (!serverToLeave) {
+    //   throw new Error("Server Not Found");
+    // }
 
-    //TODO FINISH THIS
-    // Remove the user from the channel's member list
-    const newMemberList = serverToLeave.members.filter(
-      (member) => member !== data.memberId
-    );
-    await pb.collection(Collections.Servers).update(data.id, { members: newMemberList });
+    // //TODO FINISH THIS
+    // // Remove the user from the channel's member list
+    // const newMemberList = serverToLeave.members.filter(
+    //   (member) => member !== data.memberId
+    // );
+    // await pb.collection(Collections.Servers).update(data.id, { members: newMemberList });
+  }
+
+  async getUserServers(userId: string){
+    try {
+        const servers = await pb.collection(Collections.Servers).getFullList(50, {filter: `members.id = ${userId}`})
+        console.log(servers)
+        return servers
+      } catch (error) {
+        Pop.error(error)
+      }
   }
 
   async getServersList() {
