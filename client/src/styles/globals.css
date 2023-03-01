@@ -244,9 +244,12 @@
 
 
 .server-members-bar {
-    @apply m-0  h-auto w-72 overflow-hidden bg-gray-200 dark:bg-zinc-800 shadow-lg
+    @apply m-0  h-auto  w-80 overflow-hidden bg-gray-200 dark:bg-zinc-800 shadow-lg transition-all duration-300
    
     ;
+  }
+  .server-members-bar-collapsed{
+    @apply h-0 w-0 overflow-hidden opacity-0 cursor-none  bg-zinc-800 transition-all duration-300
   }
 
 

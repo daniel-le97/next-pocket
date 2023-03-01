@@ -1,11 +1,20 @@
 
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 import { AppState } from "../../../AppState";
 import { ServersResponse } from "../../../pocketbase-types";
+import { serversService } from "../../services/ServersService";
 
 const ServerSelection = () => {
   const servers = AppState.servers;
 
+  useEffect(()=>{
+const getServers = async () =>{
+  await serversService.getServersList()
+
+}
+getServers()
+  },[])
   return (
     <>
       {servers &&
@@ -16,7 +25,7 @@ const ServerSelection = () => {
           //     {s.name}
           //   </span>
           // </div>
-          <ServerIcon server={s} />
+          <ServerIcon server={s}  key={s.id}/>
         ))}
     </>
     // <div className="sidebar-icon group">
@@ -34,8 +43,13 @@ const ServerSelection = () => {
 };
 
 const ServerIcon = ({ server }: { server: ServersResponse }) => (
-  <div className="sidebar-icon group">
-    <img src={server.image} alt="UserIcon" className="rounded-full" />
+  <div className=" sidebar-icon group ">
+    <img
+      src={server.imageUrl}
+      alt="UserIcon"
+      className="rounded-3xl w-12 h-12 object-cover"
+    />
+
     <span className=" sidebar-tooltip group-hover:scale-100">
       {server.name}
     </span>

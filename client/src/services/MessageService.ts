@@ -38,6 +38,8 @@ class MessageService {
 
       // const newMessages = res.items.map((message) =>  (message));
       AppState.messages = res.items;
+      // console.log(AppState.messages);
+      
     } catch (error) {}
   }
   async getMessagesByChannelId(id: string) {

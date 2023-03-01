@@ -4,40 +4,69 @@ import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 
 import { observer } from "mobx-react-lite";
 
-
 import { pb } from "../../../utils/pocketBase";
 import ChannelSelection from "../Channels/ChannelSelection";
 import { AppState } from "../../../AppState";
 import { userService } from "../../services/UserService";
 import { UsersResponse } from "../../../pocketbase-types";
 import UserStatus from "../Messages/UsersStatus";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 // const topics = ["general", "tailwind-css", "react"];
 
 const ServerMembersBar = () => {
-const users = AppState.users
-
-useEffect(()=>{
-const getUsersList = async ()=>{
-  await userService.getUsersList();
-}
-getUsersList()
-},[])
+  const users = AppState.users;
+  const [collapsed, setCollapsed] = useState(false);
+  useEffect(() => {
+    const getUsersList = async () => {
+      await userService.getUsersByServerId();
+    };
+    getUsersList();
+  }, []);
 
   return (
-    <div className="server-members-bar ">
-      <div className="channel-block">
-        <h5 className="channel-block-text">Members</h5>
+    <>
+      <div
+        className={
+          collapsed ? "server-members-bar   " : " server-members-bar-collapsed "
+        }
+      >
+        <div className="channel-block">
+          <h5 className="channel-block-text">Members</h5>
+          <div className=" mx-auto my-2 rounded-3xl bg-gray-800 p-2 text-green-500">
+            {" "}
+            {collapsed ? (
+              <BsArrowRight
+                size={22}
+                onClick={() => setCollapsed(!collapsed)}
+                className="cursor-pointer"
+              />
+            ) : (
+              <div className=""></div>
+            )}
+          </div>
+        </div>
+        <div className=" flex flex-col gap-y-3 px-3">
+          {users &&
+            users.map((u, index) => (
+              <div
+                className="relative cursor-pointer rounded-lg p-2 transition-all duration-200 hover:bg-slate-500"
+                key={u.id}
+              >
+                <User user={u} />
+              </div>
+            ))}
+        </div>
       </div>
-      <div className=" flex flex-col gap-y-3 px-3">
-        {users &&
-          users?.map((u,index) => (
-            <div className="relative hover:bg-slate-500 transition-all duration-200 cursor-pointer p-2 rounded-lg">
-              <User user={u } key={index} />
-              {/* <UserStatus user={u} key={index} /> */}
-            </div>
-          ))}
-      </div>
-    </div>
+      {!collapsed && (
+        <div className=" absolute top-1 right-5 mx-auto my-2 rounded-3xl bg-gray-800 p-2 text-green-500 transition-all duration-200">
+          <BsArrowLeft
+            size={22}
+            onClick={() => setCollapsed(!collapsed)}
+            className="cursor-pointer"
+          />
+        </div>
+      )}
+    </>
   );
 };
 
@@ -91,22 +120,23 @@ const ChannelBlock = () => (
   </div>
 );
 
-
-const User = ({user} :{user:UsersResponse}) => {
-  
+const User = ({ user }: { user: UsersResponse }) => {
   return (
     <div className="user-container flex gap-x-2  ">
-      <img
-        src={user.avatarUrl}
-        alt="userIcon"
-        width={30}
-        className="rounded-full shadow-md shadow-zinc-900"
-      />
-      <div className=" font-bold text-rose-600">{user.username}</div>
-      {/* <UserStatus user={user} key={user?.id}/> */}
-      
+      <div className="relative">
+        <img
+          src={user.avatarUrl}
+          alt="userIcon"
+          width={30}
+          className="rounded-full shadow-md shadow-zinc-900"
+        />
+        <div className="absolute left-8 top-9">
+          <UserStatus user={user} key={user?.id} />
+        </div>
+      </div>
+      <small className=" font-bold text-rose-600">{user.username}</small>
     </div>
   );
-}
+};
 
 export default observer(ServerMembersBar);

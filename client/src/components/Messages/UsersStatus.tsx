@@ -23,11 +23,11 @@ export default function UserStatus({ user }:{user:UsersResponse}) {
 
     unsubscribe = async () => {
       const record = await pb
-        .collection("usersStatus")
+        .collection(Collections.UsersStatus)
         .getFirstListItem(`userId="${user?.id}"`);
-      // console.log(record?.id);
+     
 
-      await pb.collection("usersStatus").subscribe(record.id, function (e) {
+      await pb.collection(Collections.UsersStatus).subscribe(record.id, function (e) {
         setIsOnline(e.record.isOnline);
         //  console.log(isOnline);
       });

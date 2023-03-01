@@ -22,6 +22,8 @@ const Messages = () => {
     const fetchMessages = async () => {
       
       await messageService.getMessages();
+    
+      
     };
     fetchMessages();
 
