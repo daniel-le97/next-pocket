@@ -9,66 +9,75 @@ import { PBChannel } from "../models/Channel";
 import type { Message } from "../models/Message";
 import { PBUser } from "../models/PBUser";
 
-type ChannelData = { memberId: string; title: string };
+type Data = { memberId: string; channelId: string };
 
 class ChannelsService {
-  async      joinChannel(data: ChannelData) {
-    const user: UsersResponse = await pb
-      .collection(Collections.Users)
-      .getFirstListItem<UsersResponse>(`id="${data.memberId}"`);
-      if (!user.currentChannel) {
-        throw new Error("No Current Channel");
-      }
-      // Get the channel record user is apart of
-    const channelToLeave = await pb
-      .collection("channels")
-      .getOne(user.currentChannel);
-    
+  async joinChannel(data: Data) {
+    // const user: UsersResponse = await pb
+    //   .collection(Collections.Users)
+    //   .getFirstListItem<UsersResponse>(`id="${data.memberId}"`);
+    //   if (!user.currentChannel) {
+    //     throw new Error("No Current Channel");
+    //   }
+    //   // Get the channel record user is apart of
+    // const channelToLeave = await pb
+    //   .collection("channels")
+    //   .getOne(user.currentChannel);
 
+    //TODO Right now this is fuzzy match aka not good
+    // const foundChannel = AppState.channels.find(c=>{
+    //  return  c.members?.includes(data.memberId)
+    // })
+   
+    
+    const channelToLeave = await pb
+      .collection(Collections.Channels)
+      .getFirstListItem(`members ?~ "${data.memberId}"`);
     if (channelToLeave) {
       await this.leaveChannel({
-        id: user.currentChannel,
-        memberId: data,
+        memberId: data.memberId,
+        channelId: channelToLeave.id,
       });
     }
 
     // Get the channel record to join
-    const channel = await pb
+    const channelToJoin = await pb
       .collection(Collections.Channels)
-      .getFirstListItem<ChannelsResponse>(`title="${data.title}"`, {
+      .getOne<ChannelsResponse>(data.channelId, {
         expand: "members",
       });
-    
 
-    if (!channel) {
+    if (!channelToJoin) {
       throw new Error("Channel not found");
     }
-    AppState.activeChannel = channel;
+    AppState.activeChannel = channelToJoin;
     // console.log(AppState.activeChannel);
 
     // Add the user to the channel's member list
-    const newMemberList = [...(channel.members as []), data.memberId];
+    const newMemberList = [...(channelToJoin.members as []), data.memberId];
     await pb
       .collection("channels")
-      .update(channel.id, { members: newMemberList });
+      .update(channelToJoin.id, { members: newMemberList });
 
     await pb.collection("users").update(data.memberId, {
-      currentChannel: channel.id,
+      currentChannel: channelToJoin.id,
     });
   }
 
-  async leaveChannel(data: any) {
+  async leaveChannel(data: Data) {
     // Get the channel record to leave
-    const channel = await pb.collection("channels").getOne<PBChannel>(data.id);
+    const channel = await pb
+      .collection(Collections.Channels)
+      .getOne<ChannelsResponse>(data.channelId);
     if (!channel) {
       throw new Error("Channel not found");
     }
 
     // Remove the user from the channel's member list
-    const newMemberList = channel.members.filter(
-      (member) => member !== data.memberId
+    const newMemberList = channel.members?.filter(
+      (m) => m !== data.memberId
     );
-    await pb.collection("channels").update(data.id, { members: newMemberList });
+    await pb.collection("channels").update(data.channelId, { members: newMemberList });
   }
 
   async getChannels() {

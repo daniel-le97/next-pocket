@@ -1,13 +1,15 @@
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { BsHash } from "react-icons/bs";
 import { AppState } from "../../../AppState";
+import { ChannelsResponse } from "../../../pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
 import { channelsService } from "../../services/ChannelsService";
 import { messageService } from "../../services/MessageService";
-const ChannelSelection = ({ selection }:{selection:any}) => {
+const ChannelSelection = ({ selection }:{selection:ChannelsResponse}) => {
   // const [activeSelection, setActiveSelection] = useState("");
   const user = pb.authStore.model;
+  const channels = AppState.channels
   // const handleClick = async () => {
   //   try {
   //     const room = await pb
@@ -25,17 +27,23 @@ const ChannelSelection = ({ selection }:{selection:any}) => {
   //     console.error(error);
   //   }
   // };
+  useEffect(()=>{
+// console.log(selection);
+
+  },[])
 
   const joinChannel = async () => {
     try {
       const user = pb.authStore.model;
       // console.log(user);
-
+      // const channel = AppState.channels.find(c=> c.id == selection.id)
       const data  = {
         memberId: user?.id,
-        title: selection,
+        channelId:selection?.id
       };
-
+const test = {
+  memberId:user?.id
+}
 
 
       await channelsService.joinChannel(data);
@@ -56,9 +64,9 @@ const ChannelSelection = ({ selection }:{selection:any}) => {
             : " dropdown-selection-text text-gray-500"
         }
       >
-        {selection}
+        {selection.title}
       </h5>
-      {selection == AppState?.activeChannel?.title ? (
+      {selection.title == AppState?.activeChannel?.title ? (
         <img
           src={user?.avatarUrl}
           alt="UserIcon"

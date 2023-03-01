@@ -34,7 +34,7 @@ class MessageService {
           expand: "user",
         });
 
-      console.log(res);
+      // console.log(res);
 
       // const newMessages = res.items.map((message) =>  (message));
       AppState.messages = res.items;
