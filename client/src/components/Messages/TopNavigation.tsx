@@ -5,6 +5,7 @@ import { AppState } from "../../../AppState";
 import { pb } from "../../../utils/pocketBase";
 import useDarkMode from '../../../hooks/useDarkMode'
 import { BsMoon, BsSun } from "react-icons/bs";
+import { MessagesResponse } from "../../../pocketbase-types";
 const TopNavigation = () => {
   const [channel, setRoom] = useState<string>("");
   const [message, setMessage] = useState("");
@@ -58,7 +59,7 @@ const Search = () => {
         expand: "user",
       });
       let updatedMessages = AppState.messages;
-      updatedMessages = res.items;
+      updatedMessages = res.items as unknown  as MessagesResponse<unknown>[]
       AppState.messages = updatedMessages;
     };
   await getMessage();
@@ -87,7 +88,7 @@ const UserCircle = () => (
   <FaUserCircle size="24" className="top-navigation-icon" />
 );
 const HashtagIcon = () => <FaHashtag size="20" className="title-hashtag" />;
-const Title = ({ room,query }) => {
+const Title = ({ room ,query }:{room:string,query:string}) => {
   return <h5 className="title-text">{room ? room : query}</h5>;
 };
 

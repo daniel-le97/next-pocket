@@ -31,10 +31,12 @@ const ChannelSelection = ({ selection }:{selection:any}) => {
       const user = pb.authStore.model;
       // console.log(user);
 
-      const data = {
+      const data  = {
         memberId: user?.id,
         title: selection,
       };
+
+
 
       await channelsService.joinChannel(data);
       await messageService.getMessages();

@@ -8,7 +8,7 @@ import { Dialog } from "@headlessui/react";
 import InputEmoji from "react-input-emoji";
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
-  const messages = AppState?.messages;
+  const messages = AppState.messages;
   const sendMessage = async (event: { preventDefault: () => void }) => {
     // event.preventDefault();
 

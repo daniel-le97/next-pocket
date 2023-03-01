@@ -1,29 +1,36 @@
 import { AppState } from "../../AppState";
-import { ChannelsResponse, Collections } from "../../pocketbase-types";
+import {
+  ChannelsResponse,
+  Collections,
+  UsersResponse,
+} from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import { PBChannel } from "../models/Channel";
 import type { Message } from "../models/Message";
 import { PBUser } from "../models/PBUser";
 
-type joinChannelData = { memberId: string; title: string };
+type ChannelData = { memberId: string; title: string };
 
 class ChannelsService {
-  async joinChannel(data: joinChannelData) {
-    const user = await pb
-      .collection("users")
-      .getFirstListItem<PBUser>(`id="${data.memberId}"`);
-
-    // Get the channel record user is apart of
+  async      joinChannel(data: ChannelData) {
+    const user: UsersResponse = await pb
+      .collection(Collections.Users)
+      .getFirstListItem<UsersResponse>(`id="${data.memberId}"`);
+      if (!user.currentChannel) {
+        throw new Error("No Current Channel");
+      }
+      // Get the channel record user is apart of
     const channelToLeave = await pb
       .collection("channels")
-      .getOne(user.currentChannel.id);
+      .getOne(user.currentChannel);
+    
 
-    // if (channelToLeave) {
-    //   await this.leaveChannel({
-    //     id: user.currentChannel.id,
-    //     memberId: data
-    //   });
-    // }
+    if (channelToLeave) {
+      await this.leaveChannel({
+        id: user.currentChannel,
+        memberId: data,
+      });
+    }
 
     // Get the channel record to join
     const channel = await pb
@@ -31,7 +38,7 @@ class ChannelsService {
       .getFirstListItem<ChannelsResponse>(`title="${data.title}"`, {
         expand: "members",
       });
-    console.log(channel);
+    
 
     if (!channel) {
       throw new Error("Channel not found");
@@ -40,7 +47,7 @@ class ChannelsService {
     // console.log(AppState.activeChannel);
 
     // Add the user to the channel's member list
-    const newMemberList = [...channel.members, data.memberId];
+    const newMemberList = [...(channel.members as []), data.memberId];
     await pb
       .collection("channels")
       .update(channel.id, { members: newMemberList });

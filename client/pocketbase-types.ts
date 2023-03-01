@@ -98,6 +98,7 @@ export type UsersRecord = {
 	currentChannel?: RecordIdString
 	avatar?: string
 	avatarUrl?: string
+
 }
 
 export type UsersStatusRecord = {

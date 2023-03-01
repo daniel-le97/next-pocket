@@ -2,8 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
-import { ChannelsRecord, ChannelsResponse, MessagesRecord, MessagesResponse } from "./pocketbase-types";
+import { BaseSystemFields, ChannelsRecord, ChannelsResponse, MessagesRecord, MessagesResponse, UsersRecord } from "./pocketbase-types";
 import { isValidProp } from "./utils/isValidProp";
+
 
 class ObservableAppState {
   user: Record<string, any> | null = null;

@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // import type pocketbase from "pocketbase";
 import { AppState } from "../../AppState";
-import { Collections, MessagesResponse } from "../../pocketbase-types";
+import { Collections, MessagesRecord, MessagesResponse } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import type { Message } from "../models/Message";
 
 class MessageService {
   //
-  async sendMessage(data: Message) {
+  async sendMessage(data: MessagesRecord) {
     try {
       const res = await pb.collection("messages").create<Message>(data);
       return res;
@@ -36,7 +36,7 @@ class MessageService {
 
       console.log(res);
 
-      const newMessages = messages.map((message) => new Message(message));
+      // const newMessages = res.items.map((message) =>  (message));
       AppState.messages = res.items;
     } catch (error) {}
   }

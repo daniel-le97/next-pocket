@@ -6,17 +6,21 @@ import { AppState } from "../../../AppState";
 import { messageService } from "../../services/MessageService";
 import { Message } from "../../models/Message";
 import CreateMessage from "./CreateMessage";
-import noMessage from "../../assets/noMessages.png"
+import noMessage from "../../assets/noMessages.png";
 import UserStatus from "./UsersStatus";
+import { MessagesResponse } from "../../../pocketbase-types";
 // type Record<K extends string | number | symbol, T> = { [P in K]: T };
+
 const Messages = () => {
-  const messages: Message[] = AppState.messages;
+  const messages = AppState.messages;
+  
   const listRef = useRef(null);
   let unsubscribe: (() => void) | null = null;
 
   const messageQuery = AppState.messageQuery;
   useEffect(() => {
     const fetchMessages = async () => {
+      
       await messageService.getMessages();
     };
     fetchMessages();
@@ -27,10 +31,15 @@ const Messages = () => {
         .subscribe("*", async ({ action, record }) => {
           if (action === "create") {
             const user = await pb.collection("users").getOne(record.user);
+           
+            
             record.expand = { user };
 
-            let updatedMessages: Record <string,Message>[] = [...AppState.messages];
-            updatedMessages = [...updatedMessages, record];
+            let updatedMessages: MessagesResponse[] = [...AppState.messages];
+            updatedMessages = [
+              ...updatedMessages,
+              record as unknown as MessagesResponse,
+            ];
             AppState.messages = updatedMessages;
           }
           // if (action === "delete") {
@@ -141,7 +150,7 @@ const Messages = () => {
   );
 };
 
-function containsUrl(text:any) {
+function containsUrl(text: any) {
   // Create a regular expression to match URLs
   const urlRegex =
     /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
