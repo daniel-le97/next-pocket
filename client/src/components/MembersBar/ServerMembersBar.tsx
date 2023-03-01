@@ -5,18 +5,33 @@ import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 import { observer } from "mobx-react-lite";
 
 
-import { pb } from "../../utils/pocketBase";
-import ChannelSelection from "./Channels/ChannelSelection";
+import { pb } from "../../../utils/pocketBase";
+import ChannelSelection from "../Channels/ChannelSelection";
+import { AppState } from "../../../AppState";
+import { userService } from "../../services/UserService";
 // const topics = ["general", "tailwind-css", "react"];
 
 const ServerMembersBar = () => {
-;
+const users = AppState.users
+
+useEffect(()=>{
+const getUsersList = async ()=>{
+  await userService.getUsersList();
+}
+getUsersList()
+},[])
 
   return (
     <div className="server-members-bar ">
-      <ChannelBlock />
+      <div className="channel-block">
+        <h5 className="channel-block-text">Members</h5>
+      </div>
       <div className="channel-container">
-      
+        {users && users.map(u=> (
+          <li>
+            {u.username}
+          </li>
+        ))}
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { AppState } from "../../AppState";
 import { authsService } from "../services/AuthsService";
 import { pb } from "../../utils/pocketBase";
-import ServerMembersBar from "../components/ServerMembersBar";
+import ServerMembersBar from "../components/MembersBar/ServerMembersBar";
 const Home: NextPage = () => {
   const router = useRouter();
   useEffect(() => {

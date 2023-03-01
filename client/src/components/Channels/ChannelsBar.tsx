@@ -15,7 +15,7 @@ const ChannelsBar = () => {
   const [expanded, setExpanded] = useState(true);
   useEffect(() => {
     const getChannels = async () => {
-      await channelsService.getChannels();
+      await channelsService.getChannelsByServerId();
     };
     getChannels();
   }, []);

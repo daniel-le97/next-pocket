@@ -80,7 +80,7 @@ class ChannelsService {
     await pb.collection("channels").update(data.channelId, { members: newMemberList });
   }
 
-  async getChannels() {
+  async getChannelsByServerId() {
     try {
       const res = await pb
         .collection(Collections.Channels)
