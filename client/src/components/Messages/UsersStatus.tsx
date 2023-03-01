@@ -1,16 +1,20 @@
 import { pb } from "../../../utils/pocketBase";
 import { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
-export default function UserStatus({ user }: any) {
+import { Collections, UsersResponse } from "../../../pocketbase-types";
+export default function UserStatus({ user }:{user:UsersResponse}) {
   const [isOnline, setIsOnline] = useState(false);
   const [userStatusRecord, setUserStatusRecord] = useState<any>(null);
   useEffect(() => {
     let unsubscribe: (() => void) | null = null;
     const getStatus = async () => {
       const res = await pb
-        .collection("usersStatus")
+        .collection(Collections.UsersStatus)
         .getFirstListItem(`userId="${user?.id}"`);
 
+  //  if(!res){
+  //   throw new Error ('no res')
+  //  }
       setUserStatusRecord(res);
 
       setIsOnline(res.isOnline);

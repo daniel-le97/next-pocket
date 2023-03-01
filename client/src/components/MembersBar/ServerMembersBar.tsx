@@ -9,6 +9,8 @@ import { pb } from "../../../utils/pocketBase";
 import ChannelSelection from "../Channels/ChannelSelection";
 import { AppState } from "../../../AppState";
 import { userService } from "../../services/UserService";
+import { UsersResponse } from "../../../pocketbase-types";
+import UserStatus from "../Messages/UsersStatus";
 // const topics = ["general", "tailwind-css", "react"];
 
 const ServerMembersBar = () => {
@@ -26,12 +28,14 @@ getUsersList()
       <div className="channel-block">
         <h5 className="channel-block-text">Members</h5>
       </div>
-      <div className="channel-container">
-        {users && users.map(u=> (
-          <li>
-            {u.username}
-          </li>
-        ))}
+      <div className=" flex flex-col gap-y-3 px-3">
+        {users &&
+          users?.map((u,index) => (
+            <div className="relative hover:bg-slate-500 transition-all duration-200 cursor-pointer p-2 rounded-lg">
+              <User user={u } key={index} />
+              {/* <UserStatus user={u} key={index} /> */}
+            </div>
+          ))}
       </div>
     </div>
   );
@@ -86,5 +90,23 @@ const ChannelBlock = () => (
     <h5 className="channel-block-text">Channels</h5>
   </div>
 );
+
+
+const User = ({user} :{user:UsersResponse}) => {
+  
+  return (
+    <div className="user-container flex gap-x-2  ">
+      <img
+        src={user.avatarUrl}
+        alt="userIcon"
+        width={30}
+        className="rounded-full shadow-md shadow-zinc-900"
+      />
+      <div className=" font-bold text-rose-600">{user.username}</div>
+      {/* <UserStatus user={user} key={user?.id}/> */}
+      
+    </div>
+  );
+}
 
 export default observer(ServerMembersBar);
