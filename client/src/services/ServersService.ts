@@ -1,53 +1,54 @@
 import { ServerResponse } from "http";
 import { Collection } from "pocketbase";
 import { AppState } from "../../AppState";
+import type {
+  ServersResponse,
+  UsersResponse} from "../../pocketbase-types";
 import {
   ChannelsResponse,
-  Collections,
-  ServersResponse,
-  UsersResponse,
+  Collections
 } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
-import { PBChannel } from "../models/Channel";
-import type { Message } from "../models/Message";
-import { PBUser } from "../models/PBUser";
+// import { PBChannel } from "../models/Channel";
+// import type { Message } from "../models/Message";
+// import { PBUser } from "../models/PBUser";
 
-type ChannelData = { memberId: string; title: string };
+type ServerData = { memberId: string; title: string, id: string };
 
 class ServersService {
-  async joinServer(data: ChannelData) {
+  async joinServer(data: ServerData) {
     const user: UsersResponse = await pb
       .collection(Collections.Users)
       .getFirstListItem<UsersResponse>(`id="${data.memberId}"`);
-    if (!user.currentChannel) {
-      throw new Error("No Current Channel");
+    if (!user) {
+      throw new Error("No Current Server");
     }
-    // Get the channel record user is apart of
-    const serverToLeave = await pb
-      .collection(Collections.Servers)
-      .getOne(user.currentChannel);
+    // Get the server record user is apart of
+    // const serverToLeave = await pb
+    //   .collection(Collections.Servers)
+    //   .getOne(user);
 
-    if (serverToLeave) {
-      await this.leaveServer({
-        id: user.currentChannel,
-        memberId: data,
-      });
-    }
+    // if (serverToLeave) {
+    //   await this.leaveServer({
+    //     id: user.currentChannel,
+    //     memberId: data,
+    //   });
+    // }
 
     //TODO GET SERVERID SOMEHOW
-    // Get the channel record to join
-    const serverToJoin = await pb
+    // Get the server record to join
+    const server = await pb
       .collection(Collections.Servers)
-      .getOne<ServersResponse>(serverId)
+      .getOne<ServersResponse>(data.id)
 
-    if (!serverToJoin) {
+    if (!server) {
       throw new Error("Channel not found");
     }
-    AppState.activeChannel = channel;
+    AppState.activeServer = server;
     // console.log(AppState.activeChannel);
 
     // Add the user to the channel's member list
-    const newMemberList = [...(channel.members as []), data.memberId];
+    const newMemberList = [...(server.members), data.memberId];
     await pb
       .collection("channels")
       .update(channel.id, { members: newMemberList });
