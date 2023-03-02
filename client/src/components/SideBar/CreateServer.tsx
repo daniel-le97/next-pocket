@@ -4,6 +4,7 @@ import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { serversService } from "../../services/ServersService";
+import { uploadService } from "../../services/UploadService";
 const data = {
   name: "test",
   description: "test",
@@ -16,7 +17,7 @@ const initialFormData = {
   description: data.description,
   members: data.members,
   imageUrl: data.imageUrl,
-  
+  imageFile: data.imageFile,
 };
 const CreateServer = () => {
   let [isOpen, setIsOpen] = useState(false);
@@ -26,6 +27,15 @@ const CreateServer = () => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
+
+    const handleFileChange = (event) => {
+
+      const uploadFile = async () => {
+        await uploadService.uploadFile(event.target.files);
+      }
+      uploadFile()
+      // setFormData({ ...formData, imageFile: event.target.files[0] });
+    };
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(formData);
@@ -123,7 +133,14 @@ const CreateServer = () => {
                           required
                         />
                       </label>
-
+                      <label>
+                        Image:
+                        <input
+                          type="file"
+                          name="imageFile"
+                          onChange={handleFileChange}
+                        />
+                      </label>
                       <label>
                         Description:
                         <textarea
