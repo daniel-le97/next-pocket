@@ -74,11 +74,17 @@ class ServersService {
 
   async getUserServers(userId: string){
     try {
-        const servers = await pb.collection(Collections.Servers).getFullList<ServersResponse>(50, {filter: `members.id = ${userId}`})
-        console.log(servers)
+        const servers = await pb
+          .collection(Collections.Servers)
+          .getFullList<ServersResponse>(50, {
+            filter: `members ?~ "${userId}"`,
+          });
+        // console.log(servers)
         return servers
       } catch (error) {
-        Pop.error(error)
+        // Pop.error(error)
+        console.error(error);
+        
       }
   }
 
@@ -94,6 +100,20 @@ class ServersService {
     } catch (error) {
       console.error(error);
       throw new Error("Failed to get channel list");
+    }
+  }
+
+  async getServersByUserId(){
+    try {
+      const user = pb.authStore.model
+      const res = await pb.collection(Collections.Servers).getList<ServersResponse>(1,50,{
+        filter:`members ?= ${user?.id}`
+      })
+      console.log(res);
+      AppState.activeServer 
+    } catch (error) {
+      console.error(error);
+      
     }
   }
 }

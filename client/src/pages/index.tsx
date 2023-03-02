@@ -11,6 +11,7 @@ import { AppState } from "../../AppState";
 import { authsService } from "../services/AuthsService";
 import { pb } from "../../utils/pocketBase";
 import ServerMembersBar from "../components/MembersBar/ServerMembersBar";
+import { serversService } from "../services/ServersService";
 const Home: NextPage = () => {
   const router = useRouter();
   useEffect(() => {
@@ -19,6 +20,17 @@ const Home: NextPage = () => {
       router.push("/login");
     }
   }, [router]);
+
+
+useEffect(()=>{
+    const user : object | null = pb.authStore.model;
+const getServerByUserId = async () =>{
+  await serversService.getUserServers(user.id)
+
+}
+getServerByUserId()
+
+},[])
 
   useEffect(() => {
     const user = pb.authStore.model;
