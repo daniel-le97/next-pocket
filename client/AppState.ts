@@ -21,6 +21,7 @@ class ObservableAppState {
   servers: ServersResponse[] = []
   users: UsersResponse[]= []
   messages: MessagesResponse[] = [];
+  loading:[] | undefined
   AppState: undefined;
 
   constructor() {

@@ -15,6 +15,7 @@ import Pop from "../../utils/Pop";
 type ServerData = { memberId: string; title: string, id: string };
 
 class ServersService {
+
   async joinServer(data: ServerData) {
     const user: UsersResponse = await pb
       .collection(Collections.Users)
@@ -118,6 +119,12 @@ class ServersService {
       
     }
   }
+
+
+async createServer(){
+  console.log('hi');
+  
+}
 }
 
 export const serversService = new ServersService();

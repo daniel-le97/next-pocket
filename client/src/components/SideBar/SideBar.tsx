@@ -32,6 +32,8 @@ import { pb } from "../../../utils/pocketBase";
 import { authsService } from "../../services/AuthsService";
 import ServerSelection from "./ServerSelection";
 import DirectMessages from "./DirectMessages";
+import { UsersResponse } from "../../../pocketbase-types";
+import CreateServer from "./CreateServer";
 
 const SideBar = () => {
   const [user, setUser] = useState(null);
@@ -70,14 +72,14 @@ const SideBar = () => {
           <Divider />
           <div onClick={logOut}>
             <SideBarIcon
-              icon={<FaArrowCircleRight size="22" />}
+              icon={<FaArrowCircleRight size="28" />}
               text={"Logout"}
               router={"/login"}
               // onClick={logOut()}
             />
           </div>
           <SideBarIcon
-            icon={<FaCompass size="22" />}
+            icon={<FaCompass size="28" />}
             text={"Explore Servers"}
             router={"/Explore"}
           />
@@ -92,6 +94,7 @@ const SideBar = () => {
       )}
 
       <div className="absolute bottom-3 left-1.5">
+        <CreateServer/>
         <SideBarIcon
           icon={
             <img src={logo.src} alt="" width={50} className="rounded-full" />
@@ -113,15 +116,9 @@ const SideBarIcon = ({ icon, text, router }) => (
     </div>
   </Link>
 );
-// @ts-ignore
-const UserIcon = ({ user }) => {
-  // const router = useRouter();
 
-//  async function logOut () {
-//   await pb.authStore.clear()
-//    await router.push("/login");
-//   }
-  // const logOut = useLogOut();
+const UserIcon = ({ user }:{user:UsersResponse}) => {
+
   return (
     <div className="sidebar-icon group">
       <img
@@ -169,23 +166,6 @@ const UserIcon = ({ user }) => {
 const Divider = () => <hr className="sidebar-hr" />;
 
 
-// const ServerIcon = () => {
-//   return (
-//     <div className="sidebar-icon group">
-//       <img
-//         src={`https://api.dicebear.com/5.x/bottts-neutral/svg?seed=234`}
-//         alt="UserIcon"
-//         className="rounded-full"
-//       />
-//       <span className=" sidebar-tooltip group-hover:scale-100">Server To Add </span>
-//     </div>
-//   );
-// }
 
-// const useLogOut = () => {
-//   const router = useRouter();
-//   authsService.signOut();
-//   router.push("/login");
-// };
 
 export default observer(SideBar);
