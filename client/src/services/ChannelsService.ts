@@ -1,13 +1,14 @@
 import { AppState } from "../../AppState";
+import type {
+  ChannelsResponse} from "../../pocketbase-types";
 import {
-  ChannelsResponse,
   Collections,
   UsersResponse,
 } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
-import { PBChannel } from "../models/Channel";
-import type { Message } from "../models/Message";
-import { PBUser } from "../models/PBUser";
+// import { PBChannel } from "../models/Channel";
+// import type { Message } from "../models/Message";
+// import { PBUser } from "../models/PBUser";
 
 type Data = { memberId: string; channelId: string };
 
