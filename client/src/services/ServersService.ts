@@ -74,12 +74,14 @@ class ServersService {
 
   async getUserServers(userId: string){
     try {
+      
+      
         const servers = await pb
           .collection(Collections.Servers)
           .getFullList<ServersResponse>(50, {
-            filter: `members ?~ "${userId}"`,
+            filter: `members.id ?= "${userId}"`,
           });
-        // console.log(servers)
+        console.log(servers)
         return servers
       } catch (error) {
         // Pop.error(error)

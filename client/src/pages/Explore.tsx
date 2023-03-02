@@ -2,9 +2,10 @@ import { observer } from "mobx-react-lite";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BsBadge4K, BsCheck, BsCircle, BsCircleFill } from "react-icons/bs";
 import { AppState } from "../../AppState";
+import { Collections } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import { serversService } from "../services/ServersService";
 
@@ -53,6 +54,16 @@ const Explore: NextPage = () => {
 };
 
 const ServerCard = ({ server }: { server: any }) => {
+  const [userStatus,setUserStatus] = useState([])
+  useEffect(()=>{
+   const getUserStatus = async () => {
+     const res = await pb.collection(Collections.UsersStatus).getList(1, 50,{
+      filter:`isOnline = true`
+     });
+    setUserStatus(res.items)
+   }
+    // getUserStatus()
+  },[])
   return (
     <div className="group  h-auto w-1/3 overflow-hidden rounded-xl bg-gradient-to-t from-zinc-900   to-gray-600 text-white shadow-sm transition-all duration-200 ease-in-out hover:shadow-xl hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:scale-105">
       <img
@@ -75,6 +86,7 @@ const ServerCard = ({ server }: { server: any }) => {
         {server.members.length}
         <small>Members</small>
       </div>
+        {/* {userStatus.length} */}
     </div>
   );
 };

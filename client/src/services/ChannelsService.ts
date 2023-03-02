@@ -32,7 +32,7 @@ class ChannelsService {
     
     const channelToLeave = await pb
       .collection(Collections.Channels)
-      .getFirstListItem(`members ?~ "${data.memberId}"`);
+      .getFirstListItem(`members.id ?= "${data.memberId}"`);
     if (channelToLeave) {
       await this.leaveChannel({
         memberId: data.memberId,
