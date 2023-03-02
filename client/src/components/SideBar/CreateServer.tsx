@@ -9,15 +9,17 @@ const data = {
   description: "test",
   members: ["RELATION_RECORD_ID"],
   imageUrl: "test",
+  imageFile: null,
 };
 const initialFormData = {
   name: data.name,
   description: data.description,
   members: data.members,
   imageUrl: data.imageUrl,
+  
 };
 const CreateServer = () => {
-  let [isOpen, setIsOpen] = useState(true);
+  let [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
 
   const handleChange = (event) => {
@@ -71,21 +73,24 @@ const CreateServer = () => {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-800 p-6 text-left align-middle shadow-xl shadow-zinc-800 transition-all">
                     <Dialog.Title
                       as="h3"
-                      className="text-lg font-medium leading-6 text-gray-900"
+                      className="text-lg font-medium leading-6 text-gray-300"
                     >
                       Server Form
                     </Dialog.Title>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">
+                      {/* <p className="text-sm text-gray-500">
                         Your payment has been successfully submitted. We’ve sent
                         you an email with all of the details of your order.
-                      </p>
+                      </p> */}
                     </div>
 
-                    <form onSubmit={handleSubmit}>
+                    <form
+                      onSubmit={handleSubmit}
+                      className="flex flex-col gap-y-3 text-white"
+                    >
                       <label>
                         Name:
                         <input
@@ -93,12 +98,12 @@ const CreateServer = () => {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          className="placeholder:text-gray-1 m-1 rounded-sm bg-gray-300 p-1"
+                          required
+                          className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
                         />
                       </label>
-                      <br />
 
-                      <label>
+                      {/* <label>
                         Members:
                         <input
                           type="text"
@@ -107,7 +112,7 @@ const CreateServer = () => {
                           onChange={handleChange}
                         />
                       </label>
-                      <br />
+                      */}
                       <label>
                         Image URL:
                         <input
@@ -115,9 +120,10 @@ const CreateServer = () => {
                           name="imageUrl"
                           value={formData.imageUrl}
                           onChange={handleChange}
+                          required
                         />
                       </label>
-                      <br />
+
                       <label>
                         Description:
                         <textarea
@@ -126,11 +132,16 @@ const CreateServer = () => {
                           onChange={handleChange}
                         />
                       </label>
-                      <br />
-                      <button type="submit">Submit</button>
+
+                      <button
+                        type="submit"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      >
+                        Submit
+                      </button>
                     </form>
 
-                    <div className="mt-4">
+                    {/* <div className="mt-4">
                       <button
                         type="button"
                         className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
@@ -138,7 +149,7 @@ const CreateServer = () => {
                       >
                         Got it, thanks!
                       </button>
-                    </div>
+                    </div> */}
                   </Dialog.Panel>
                 </Transition.Child>
               </div>
