@@ -7,6 +7,7 @@ export enum Collections {
 	DirectMessages = "directMessages",
 	FriendRequest = "friendRequest",
 	Friends = "friends",
+	Membership = "membership",
 	Messages = "messages",
 	Rooms = "rooms",
 	Servers = "servers",
@@ -76,6 +77,11 @@ export type FriendsRecord = {
 	friends?: RecordIdString[]
 }
 
+export type MembershipRecord = {
+	serverId: RecordIdString
+	userId: RecordIdString
+}
+
 export type MessagesRecord = {
 	text: string
 	user: RecordIdString
@@ -92,6 +98,7 @@ export type ServersRecord = {
 	image?: string
 	description?: string
 	members?: RecordIdString[]
+	imageUrl?: string
 }
 
 export type UsersRecord = {
@@ -110,6 +117,7 @@ export type ChannelsResponse<Texpand = unknown> = ChannelsRecord & BaseSystemFie
 export type DirectMessagesResponse<Texpand = unknown> = DirectMessagesRecord & BaseSystemFields<Texpand>
 export type FriendRequestResponse<Texpand = unknown> = FriendRequestRecord & BaseSystemFields<Texpand>
 export type FriendsResponse<Texpand = unknown> = FriendsRecord & BaseSystemFields<Texpand>
+export type MembershipResponse<Texpand = unknown> = MembershipRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
 export type RoomsResponse<Texpand = unknown> = RoomsRecord & BaseSystemFields<Texpand>
 export type ServersResponse<Texpand = unknown> = ServersRecord & BaseSystemFields<Texpand>
@@ -121,6 +129,7 @@ export type CollectionRecords = {
 	directMessages: DirectMessagesRecord
 	friendRequest: FriendRequestRecord
 	friends: FriendsRecord
+	membership: MembershipRecord
 	messages: MessagesRecord
 	rooms: RoomsRecord
 	servers: ServersRecord

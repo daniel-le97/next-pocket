@@ -2,6 +2,7 @@
 
 import { AppState } from "../../AppState";
 import type {
+  ServersRecord,
   ServersResponse,
   UsersRecord,
   UsersResponse} from "../../pocketbase-types";
@@ -81,8 +82,9 @@ class ServersService {
           .collection(Collections.Servers)
           .getFullList<ServersResponse>(50, {
             filter: `members.id ?= "${userId}"`,
+            expand: 'memberships'
           });
-        console.log(servers)
+        console.log('getUserServers', servers)
         return servers
       } catch (error) {
         // Pop.error(error)
@@ -106,32 +108,15 @@ class ServersService {
     }
   }
 
-  async getServersByUserId(){
-    try {
-      const user = pb.authStore.model
-      const res = await pb.collection(Collections.Servers).getList<ServersResponse>(1,50,{
-        filter:`members ?= ${user?.id}`
-      })
-      console.log(res);
-      AppState.activeServer 
+async createServer(serverData: ServersRecord){
+  try {
+      const server = await pb.collection(Collections.Servers).create<ServersResponse>(serverData)
+      console.log(server)
     } catch (error) {
-      console.error(error);
-      
+      console.error('createServer', error)
     }
-  }
-
-
-  async createServer(serverData) {
-        try {
-          const res = await pb.collection(Collections.Servers).create(serverData)
-          AppState.servers = [...AppState.servers,res]
-          console.log(res);
-          
-        } catch (error) {
-          
-          Pop.error(error, "[createServer]");
-        }
-      }
+  
+}
 }
 
 export const serversService = new ServersService();

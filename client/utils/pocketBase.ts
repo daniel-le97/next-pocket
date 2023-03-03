@@ -1,9 +1,11 @@
-import pocketbase, { Admin, Record } from "pocketbase";
+import pocketbase, { Admin, BaseAuthStore, Record, RecordService } from "pocketbase";
 import { AppState } from "../AppState";
+import { UsersRecord } from "../pocketbase-types";
 import { env } from "../src/env.mjs";
 // import { logger } from "./Logger.js";
 
 // import { useState, useEffect } from "react";
+
 
 const pBase = new pocketbase(env.NEXT_PUBLIC_POCKET_URL)
 pBase.autoCancellation(false)
@@ -25,6 +27,8 @@ export function useUser(){
     return user
   }
 }
+
+
 
 
 
