@@ -5,9 +5,9 @@
 export enum Collections {
 	Channels = "channels",
 	DirectMessages = "directMessages",
+	FileUploads = "fileUploads",
 	FriendRequest = "friendRequest",
 	Friends = "friends",
-	Membership = "membership",
 	Messages = "messages",
 	Rooms = "rooms",
 	Servers = "servers",
@@ -60,6 +60,12 @@ export type DirectMessagesRecord = {
 	files?: string[]
 }
 
+export type FileUploadsRecord = {
+	file?: string[]
+	url?: string
+	user: RecordIdString
+}
+
 export enum FriendRequestStatusOptions {
 	"pending" = "pending",
 	"declined" = "declined",
@@ -75,11 +81,6 @@ export type FriendRequestRecord = {
 export type FriendsRecord = {
 	user: RecordIdString
 	friends?: RecordIdString[]
-}
-
-export type MembershipRecord = {
-	serverId: RecordIdString
-	userId: RecordIdString
 }
 
 export type MessagesRecord = {
@@ -99,6 +100,7 @@ export type ServersRecord = {
 	description?: string
 	members?: RecordIdString[]
 	imageUrl?: string
+	owner: RecordIdString
 }
 
 export type UsersRecord = {
@@ -115,9 +117,9 @@ export type UsersStatusRecord = {
 // Response types include system fields and match responses from the PocketBase API
 export type ChannelsResponse<Texpand = unknown> = ChannelsRecord & BaseSystemFields<Texpand>
 export type DirectMessagesResponse<Texpand = unknown> = DirectMessagesRecord & BaseSystemFields<Texpand>
+export type FileUploadsResponse<Texpand = unknown> = FileUploadsRecord & BaseSystemFields<Texpand>
 export type FriendRequestResponse<Texpand = unknown> = FriendRequestRecord & BaseSystemFields<Texpand>
 export type FriendsResponse<Texpand = unknown> = FriendsRecord & BaseSystemFields<Texpand>
-export type MembershipResponse<Texpand = unknown> = MembershipRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
 export type RoomsResponse<Texpand = unknown> = RoomsRecord & BaseSystemFields<Texpand>
 export type ServersResponse<Texpand = unknown> = ServersRecord & BaseSystemFields<Texpand>
@@ -127,9 +129,9 @@ export type UsersStatusResponse = UsersStatusRecord & BaseSystemFields
 export type CollectionRecords = {
 	channels: ChannelsRecord
 	directMessages: DirectMessagesRecord
+	fileUploads: FileUploadsRecord
 	friendRequest: FriendRequestRecord
 	friends: FriendsRecord
-	membership: MembershipRecord
 	messages: MessagesRecord
 	rooms: RoomsRecord
 	servers: ServersRecord

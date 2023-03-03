@@ -81,8 +81,7 @@ class ServersService {
         const servers = await pb
           .collection(Collections.Servers)
           .getFullList<ServersResponse>(50, {
-            filter: `members.id ?= "${userId}"`,
-            expand: 'memberships'
+            filter: `members.id ?= "${userId}"`
           });
         console.log('getUserServers', servers)
         return servers
