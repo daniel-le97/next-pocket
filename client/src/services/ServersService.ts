@@ -121,10 +121,17 @@ class ServersService {
   }
 
 
-async createServer(){
-  console.log('hi');
-  
-}
+  async createServer(serverData) {
+        try {
+          const res = await pb.collection(Collections.Servers).create(serverData)
+          AppState.servers = [...AppState.servers,res]
+          console.log(res);
+          
+        } catch (error) {
+          
+          Pop.error(error, "[createServer]");
+        }
+      }
 }
 
 export const serversService = new ServersService();

@@ -17,15 +17,16 @@ class UploadService {
       const url = pb.getFileUrl(createdFile, createdFile.file, {
         thumb: "500x500",
       });
-      const getLastFile = await pb
-        .collection('fileUploads')
-        .update(createdFile.id, { url });
+      AppState.loading--;
+      return url
+      // const getLastFile = await pb
+      //   .collection('fileUploads')
+      //   .update(createdFile.id, { url });
       // console.log({
       //   uncompressed: file.size / 1000000 + "mb",
       //   compressed: compressed.size / 1000 + "kb",
       //   url,
       // });
-      AppState.loading--;
     }
   }
   async compress(file:any) {

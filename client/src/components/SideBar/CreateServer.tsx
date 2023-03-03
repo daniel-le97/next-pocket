@@ -5,6 +5,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { serversService } from "../../services/ServersService";
 import { uploadService } from "../../services/UploadService";
+import { pb } from "../../../utils/pocketBase";
+const user = pb.authStore.model
 const data = {
   name: "test",
   description: "test",
@@ -13,11 +15,11 @@ const data = {
   imageFile: null,
 };
 const initialFormData = {
-  name: data.name,
-  description: data.description,
-  members: data.members,
-  imageUrl: data.imageUrl,
-  imageFile: data.imageFile,
+  name: "",
+  description: "",
+  members: [user?.id],
+  imageUrl: "",
+  // imageFile: null,
 };
 const CreateServer = () => {
   let [isOpen, setIsOpen] = useState(false);
@@ -28,17 +30,20 @@ const CreateServer = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-    const handleFileChange = (event) => {
-
-      const uploadFile = async () => {
-        await uploadService.uploadFile(event.target.files);
-      }
-      uploadFile()
-      // setFormData({ ...formData, imageFile: event.target.files[0] });
+  const handleFileChange = (event) => {
+    const uploadFile = async () => {
+     const returnUrl = await uploadService.uploadFile(event.target.files);
+       const { imageUrl, value } = event.target;
+     setFormData({...formData,imageUrl:returnUrl})
     };
-  const handleSubmit = (event) => {
+    uploadFile();
+    // setFormData({ ...formData, imageFile: event.target.files[0] });
+  };
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(formData);
+    
+    // await serversService.createServer(formData);
   };
   function closeModal() {
     setIsOpen(false);
@@ -48,9 +53,7 @@ const CreateServer = () => {
     setIsOpen(true);
   }
 
-  async function createServer() {
-    await serversService.createServer();
-  }
+
   return (
     <div className=" sidebar-icon group ">
       <BsPlusCircleFill size={28} onClick={openModal} />
@@ -109,6 +112,8 @@ const CreateServer = () => {
                           value={formData.name}
                           onChange={handleChange}
                           required
+                          minLength={5}
+                          maxLength={35}
                           className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
                         />
                       </label>
@@ -123,7 +128,7 @@ const CreateServer = () => {
                         />
                       </label>
                       */}
-                      <label>
+                      {/* <label>
                         Image URL:
                         <input
                           type="text"
@@ -132,7 +137,7 @@ const CreateServer = () => {
                           onChange={handleChange}
                           required
                         />
-                      </label>
+                      </label> */}
                       <label>
                         Image:
                         <input
@@ -140,6 +145,8 @@ const CreateServer = () => {
                           name="imageFile"
                           onChange={handleFileChange}
                         />
+
+                        <img src={formData.imageUrl} alt="" className="rounded-full w-24 h-24 object-cover"  />
                       </label>
                       <label>
                         Description:
