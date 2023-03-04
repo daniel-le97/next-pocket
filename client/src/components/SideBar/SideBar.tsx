@@ -81,7 +81,7 @@ const SideBar = () => {
           <SideBarIcon
             icon={<FaCompass size="28" />}
             text={"Explore Servers"}
-            router={"/Explore"}
+            router={"/"}
           />
           <ServerSelection />
         </>

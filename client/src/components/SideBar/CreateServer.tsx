@@ -53,12 +53,12 @@ const CreateServer = () => {
     // uploadFile();
     // setFormData({ ...formData, imageFile: event.target.files[0] });
   };
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log(formData);
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   console.log(formData);
 
-    // await serversService.createServer(formData);
-  };
+  //   // await serversService.createServer(formData);
+  // };
   function closeModal() {
     setIsOpen(false);
   }

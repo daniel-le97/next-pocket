@@ -31,7 +31,7 @@ getServers()
 const ServerIcon = ({ server }: { server: ServersResponse }) => {
   const router = useRouter()
   const handleClick = () => {
-    router.push(`servers/${server.id}`)
+    router.push(`http://localhost:3000/server/${server.id}`);
   }
   
   return (<div className=" sidebar-icon group ">

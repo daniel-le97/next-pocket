@@ -21,7 +21,7 @@ const Server: NextPage = ({servers}) => {
       router.push("/login");
     }
     serversService.getUserServers(user?.id)
-  }, [router]);
+  }, []);
 
 
 // useEffect(()=>{

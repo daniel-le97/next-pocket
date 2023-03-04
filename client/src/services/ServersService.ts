@@ -13,7 +13,7 @@ import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 
 
-type ServerData = { memberId: string; title: string, id: string };
+type ServerData = { memberId: string; name: string, id: string };
 type Texpand = {
   members: UsersResponse[]
 }
