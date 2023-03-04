@@ -110,9 +110,17 @@ class ServersService {
 async createServer(serverData: ServersRecord){
   try {
       const server = await pb.collection(Collections.Servers).create<ServersResponse>(serverData)
-      console.log(server)
+      console.log(serverData.imageUrl)
+       AppState.servers = [...AppState.servers,server]
     } catch (error) {
       console.error('createServer', error)
+      // const record = await pb.collection('fileUpload').getFirstListItem(`url = "${serverData.imageUrl}`)
+       const record = await pb
+         .collection("fileUploads")
+         .getFirstListItem(`url="${serverData.imageUrl}"`);
+       console.log(record);
+          
+      await pb.collection('fileUploads').delete(record.id)
     }
   
 }
