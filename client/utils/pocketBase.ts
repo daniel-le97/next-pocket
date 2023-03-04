@@ -14,11 +14,11 @@ AppState.user = pBase.authStore.model
 //   console.log(pBase.authStore.model, "auth");
 //   AppState.user = pBase.authStore.model;
 // });
-
 export const pb = pBase
 pb.authStore.onChange((auth) => {
   // console.log(pb.authStore.model, 'auth');
   AppState.user = pb.authStore.model;
+  return auth
 });
 export function useUser(){
   const user = pb.authStore.model
