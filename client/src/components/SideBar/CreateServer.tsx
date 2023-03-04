@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
-
+import { useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { serversService } from "../../services/ServersService";
 import { uploadService } from "../../services/UploadService";
 import { pb } from "../../../utils/pocketBase";
-const user = pb.authStore.model
+const user = pb.authStore.model;
 const data = {
   name: "test",
   description: "test",
@@ -25,24 +25,38 @@ const CreateServer = () => {
   let [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data: any) => {
+    const formData = new FormData()
+    formData.append('imageFile',data.picture[0])
+    console.log(formData);
+  }
 
-  const handleFileChange = (event) => {
-    const uploadFile = async () => {
-     const returnUrl = await uploadService.uploadFile(event.target.files);
-       const { imageUrl, value } = event.target;
-     setFormData({...formData,imageUrl:returnUrl})
-    };
-    uploadFile();
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setFormData({ ...formData, [name]: value });
+  // };
+
+  const handleFileChange = (e) => {
+     const file = Array.from(e.target.files)[0];
+
+    // const uploadFile = async () => {
+    //   const returnUrl = await uploadService.uploadFile(event.target.files);
+    //   const { imageUrl, value } = event.target;
+    //   setFormData({ ...formData, imageUrl: returnUrl });
+    // };
+    // uploadFile();
     // setFormData({ ...formData, imageFile: event.target.files[0] });
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(formData);
-    
+
     // await serversService.createServer(formData);
   };
   function closeModal() {
@@ -101,59 +115,41 @@ const CreateServer = () => {
                     </div>
 
                     <form
-                      onSubmit={handleSubmit}
+                      onSubmit={handleSubmit(onSubmit)}
                       className="flex flex-col gap-y-3 text-white"
                     >
                       <label>
                         Name:
                         <input
+                          {...register("name", { required: true })}
                           type="text"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
-                          minLength={5}
-                          maxLength={35}
+                          // onChange={handleChange}
+
                           className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
                         />
                       </label>
 
-                      {/* <label>
-                        Members:
-                        <input
-                          type="text"
-                          name="members"
-                          value={formData.members}
-                          onChange={handleChange}
-                        />
-                      </label>
-                      */}
-                      {/* <label>
-                        Image URL:
-                        <input
-                          type="text"
-                          name="imageUrl"
-                          value={formData.imageUrl}
-                          onChange={handleChange}
-                          required
-                        />
-                      </label> */}
                       <label>
                         Image:
                         <input
+                        
                           type="file"
                           name="imageFile"
                           onChange={handleFileChange}
                         />
-
-                        <img src={formData.imageUrl} alt="" className="rounded-full w-24 h-24 object-cover"  />
+                        <img
+                          src={formData.imageUrl}
+                          alt=""
+                          className="h-24 w-24 rounded-full object-cover"
+                        />
                       </label>
                       <label>
                         Description:
                         <textarea
+                          {...register("description", { required: true })}
                           name="description"
-                          value={formData.description}
-                          onChange={handleChange}
+
+                          // onChange={handleChange}
                         />
                       </label>
 
