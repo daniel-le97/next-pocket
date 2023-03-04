@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { useEffect, useState } from "react";
 
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";

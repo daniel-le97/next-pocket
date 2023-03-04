@@ -14,6 +14,9 @@ import Pop from "../../utils/Pop";
 
 
 type ServerData = { memberId: string; title: string, id: string };
+type Texpand = {
+  members: UsersResponse[]
+}
 
 class ServersService {
 
@@ -76,13 +79,13 @@ class ServersService {
 
   async getUserServers(userId: string){
     try {
-      
-      
         const servers = await pb
           .collection(Collections.Servers)
-          .getFullList<ServersResponse>(50, {
-            filter: `members.id ?= "${userId}"`
+          .getFullList<ServersResponse<Texpand>>(50, {
+            filter: `members.id ?= "${userId}"`,
+            expand: 'members'
           });
+        //  const memberIds =  servers.map(server => server.expand?.members.map(member => member.id))
         console.log('getUserServers', servers)
         return servers
       } catch (error) {
@@ -97,10 +100,7 @@ class ServersService {
       const res  = await pb
         .collection(Collections.Servers)
         .getList<ServersResponse>(1, 50);
-
       AppState.servers = res.items
-     
- 
     } catch (error) {
       console.error(error);
       throw new Error("Failed to get channel list");
