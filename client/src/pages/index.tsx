@@ -60,7 +60,7 @@ const Explore: NextPage = () => {
 const ServerCard = ({ server }: { server: ServersResponse}) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user= pb.authStore.model
-    async function joinServer() {
+  async function joinServer() {
       if(!user){
         return
       }
