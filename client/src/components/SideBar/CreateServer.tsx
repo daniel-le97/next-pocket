@@ -6,6 +6,8 @@ import { Fragment, useEffect, useState } from "react";
 import { serversService } from "../../services/ServersService";
 import { uploadService } from "../../services/UploadService";
 import { pb } from "../../../utils/pocketBase";
+import ImageUploader from "../ImageUploader";
+import Loader from "../Loader";
 const user = pb.authStore.model;
 const data = {
   name: "test",
@@ -24,41 +26,55 @@ const initialFormData = {
 const CreateServer = () => {
   let [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
-
+  const [progress, setProgress] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
+    reset,
     formState: { errors },
-  } = useForm();
-  const onSubmit = (data: any) => {
-    const formData = new FormData()
-    formData.append('imageFile',data.picture[0])
-    console.log(formData);
-  }
-
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
-
-  const handleFileChange = (e) => {
-     const file = Array.from(e.target.files)[0];
-
-    // const uploadFile = async () => {
-    //   const returnUrl = await uploadService.uploadFile(event.target.files);
-    //   const { imageUrl, value } = event.target;
-    //   setFormData({ ...formData, imageUrl: returnUrl });
-    // };
-    // uploadFile();
-    // setFormData({ ...formData, imageFile: event.target.files[0] });
+  } = useForm({
+    defaultValues: {
+      name: "",
+      image: "",
+      members: [user?.id],
+      imageUrl: "",
+      owner: user?.id,
+    },
+  });
+  const onSubmit = async (data: any) => {
+    try {
+      await serversService.createServer(data);
+      reset();
+      setImageUrl("");
+      closeModal();
+    } catch (error) {
+      console.error("createServer", error);
+      // const record = await pb.collection('fileUpload').getFirstListItem(`url = "${serverData.imageUrl}`)
+   await uploadService.deleteFile(data.image)
+    }
+    // const formData = new FormData();
+    // formData.append("imageFile", data.picture[0]);
+    // console.log(formData);
   };
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault();
-  //   console.log(formData);
 
-  //   // await serversService.createServer(formData);
-  // };
+  const handleFileChange = (event: any) => {
+    const uploadFile = async () => {
+      // const file = Array.from(event.target.files)[0];
+
+      const record = await uploadService.uploadFile(
+        event.target.files
+      );
+      setImageUrl(record.url);
+      setValue("imageUrl", record?.url);
+      setValue("image", record?.id);
+    };
+    uploadFile();
+  };
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -66,7 +82,6 @@ const CreateServer = () => {
   function openModal() {
     setIsOpen(true);
   }
-
 
   return (
     <div className=" sidebar-icon group ">
@@ -121,34 +136,47 @@ const CreateServer = () => {
                       <label>
                         Name:
                         <input
-                          {...register("name", { required: true })}
+                          {...register("name", {
+                            required: true,
+                            maxLength: 30,
+                            minLength: 5,
+                          })}
                           type="text"
                           // onChange={handleChange}
 
                           className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
                         />
+                        {errors.name && (
+                          <span>Retry</span>
+                        )}
                       </label>
 
                       <label>
                         Image:
                         <input
-                        
                           type="file"
                           name="imageFile"
                           onChange={handleFileChange}
                         />
-                        <img
-                          src={formData.imageUrl}
-                          alt=""
-                          className="h-24 w-24 rounded-full object-cover"
-                        />
+                        {!uploading && imageUrl && (
+                          <img
+                            src={imageUrl}
+                            alt=""
+                            className="mt-5 h-32 w-32 rounded-full object-cover"
+                          />
+                        )}
+                        <Loader show={uploading} />
+                        {/* <Loader show={true}/> */}
+                        {/* {uploading && <Loader show={true} />} */}
                       </label>
+
+                      {/* <ImageUploader /> */}
                       <label>
                         Description:
                         <textarea
                           {...register("description", { required: true })}
                           name="description"
-
+                          className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
                           // onChange={handleChange}
                         />
                       </label>
@@ -159,7 +187,53 @@ const CreateServer = () => {
                       >
                         Submit
                       </button>
+
+                      
                     </form>
+
+
+
+
+
+
+
+
+
+
+{/* 
+ <div className="flex flex-wrap -mx-3 mb-6">
+    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+        First Name
+      </label>
+      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane"/>
+      <p className="text-red-500 text-xs italic">Please fill out this field.</p>
+    </div>
+    <div className="w-full md:w-1/2 px-3">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+        Last Name
+      </label>
+      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe">
+    </div>
+  </div>
+  <div className="flex flex-wrap -mx-3 mb-6">
+    <div className="w-full px-3">
+      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+        Password
+      </label>
+      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="******************"/>
+      <p className="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
+    </div>
+  </div>
+  */}
+
+
+
+
+
+
+
+
 
                     {/* <div className="mt-4">
                       <button

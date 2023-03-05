@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import Compressor from "compressorjs";
+import { useEffect, useState } from "react";
 import { AppState } from "../../AppState";
 import { Collections } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
@@ -40,7 +41,7 @@ class UploadService {
       const updatedFile = await pb
         .collection("fileUploads")
         .update(createdFile.id, { url: url });
-      return updatedFile
+      return updatedFile;
 
       // console.log({
       //   uncompressed: file.size / 1000000 + "mb",
@@ -78,8 +79,18 @@ class UploadService {
 
   async createFile(formData: any) {
     const file = await pb.collection("fileUploads").create(formData);
-    // const file = await pb.collection(collectionName).create(formData);
+
     return file;
+  }
+
+
+  async deleteFile(id:string){
+     const record = await pb
+       .collection("fileUploads")
+       .getOne(id);
+     console.log(record);
+
+     await pb.collection("fileUploads").delete(record.id);
   }
 }
 
