@@ -34,17 +34,18 @@ import ServerSelection from "./ServerSelection";
 import DirectMessages from "./DirectMessages";
 import { UsersResponse } from "../../../pocketbase-types";
 import CreateServer from "./CreateServer";
+import ThemeIcon from "./ThemeIcon";
 
 const SideBar = () => {
   const [user, setUser] = useState(null);
 
-   const router = useRouter()
+  const router = useRouter();
   // const logOut = useLogOut();
 
-   function logOut() {
-     pb.authStore.clear();
-     router.push("/login");
-   }
+  function logOut() {
+    pb.authStore.clear();
+    router.push("/login");
+  }
   useEffect(() => {
     // @ts-ignore
     setUser(pb.authStore.model);
@@ -94,7 +95,8 @@ const SideBar = () => {
       )}
 
       <div className="absolute bottom-3 left-1.5">
-        <CreateServer/>
+        <ThemeIcon />
+        <CreateServer />
         <SideBarIcon
           icon={
             <img src={logo.src} alt="" width={50} className="rounded-full" />
@@ -117,8 +119,7 @@ const SideBarIcon = ({ icon, text, router }) => (
   </Link>
 );
 
-const UserIcon = ({ user }:{user:UsersResponse}) => {
-
+const UserIcon = ({ user }: { user: UsersResponse }) => {
   return (
     <div className="sidebar-icon group">
       <img
@@ -153,9 +154,7 @@ const UserIcon = ({ user }:{user:UsersResponse}) => {
                 </p>
               </div>
               <hr className="my-2  border-gray-600" />
-              <div className="" >
-                LogOut
-              </div>
+              <div className="">LogOut</div>
             </div>
           </div>
         </div>
@@ -164,8 +163,5 @@ const UserIcon = ({ user }:{user:UsersResponse}) => {
   );
 };
 const Divider = () => <hr className="sidebar-hr" />;
-
-
-
 
 export default observer(SideBar);

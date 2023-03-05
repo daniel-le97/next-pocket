@@ -41,8 +41,9 @@ const CreateServer = () => {
       name: "",
       image: "",
       members: [user?.id],
-      imageUrl: "",
+      // imageUrl: "",
       owner: user?.id,
+      description: "",
     },
   });
   const onSubmit = async (data: any) => {
@@ -53,23 +54,18 @@ const CreateServer = () => {
       closeModal();
     } catch (error) {
       console.error("createServer", error);
-      // const record = await pb.collection('fileUpload').getFirstListItem(`url = "${serverData.imageUrl}`)
-   await uploadService.deleteFile(data.image)
+
+      await uploadService.deleteFile(data.image);
     }
-    // const formData = new FormData();
-    // formData.append("imageFile", data.picture[0]);
-    // console.log(formData);
   };
 
   const handleFileChange = (event: any) => {
     const uploadFile = async () => {
       // const file = Array.from(event.target.files)[0];
 
-      const record = await uploadService.uploadFile(
-        event.target.files
-      );
+      const record = await uploadService.uploadFile(event.target.files);
       setImageUrl(record.url);
-      setValue("imageUrl", record?.url);
+      // setValue("imageUrl", record?.url);
       setValue("image", record?.id);
     };
     uploadFile();
@@ -88,7 +84,7 @@ const CreateServer = () => {
       <BsPlusCircleFill size={28} onClick={openModal} />
 
       <span className=" sidebar-tooltip group-hover:scale-100">
-        CreateServer
+        Create Server
         <div className="fixed inset-0 flex items-center justify-center"></div>
         <Transition appear show={isOpen} as={Fragment}>
           <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -146,9 +142,7 @@ const CreateServer = () => {
 
                           className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
                         />
-                        {errors.name && (
-                          <span>Retry</span>
-                        )}
+                        {errors.name && <span>Retry</span>}
                       </label>
 
                       <label>
@@ -187,20 +181,9 @@ const CreateServer = () => {
                       >
                         Submit
                       </button>
-
-                      
                     </form>
 
-
-
-
-
-
-
-
-
-
-{/* 
+                    {/* 
  <div className="flex flex-wrap -mx-3 mb-6">
     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
       <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
@@ -226,14 +209,6 @@ const CreateServer = () => {
     </div>
   </div>
   */}
-
-
-
-
-
-
-
-
 
                     {/* <div className="mt-4">
                       <button

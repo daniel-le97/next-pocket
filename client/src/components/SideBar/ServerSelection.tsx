@@ -36,7 +36,7 @@ const ServerIcon = ({ server }: { server: ServersResponse }) => {
   
   return (<div className=" sidebar-icon group ">
     <img
-      src={server.imageUrl}
+      src={server?.expand?.image?.url }
       alt="UserIcon"
       className="rounded-3xl w-12 h-12 object-cover"
       onClick={handleClick}

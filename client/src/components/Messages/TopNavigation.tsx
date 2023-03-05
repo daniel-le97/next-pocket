@@ -19,7 +19,7 @@ const TopNavigation = () => {
     <div className="top-navigation">
       <HashtagIcon />
       <Title room={channel}  query={query}/>
-     <ThemeIcon/>
+     {/* <ThemeIcon/> */}
       <Search />
       <BellIcon />
       <UserCircle />
@@ -27,26 +27,7 @@ const TopNavigation = () => {
   );
 };
 
-const ThemeIcon = () => {
-  const [darkTheme, setDarkTheme] = useDarkMode();
- 
-  const handleMode = () => setDarkTheme(!darkTheme);
-  return (
-    <span onClick={handleMode}>
-      {/* {darkTheme ? (
-        <BsSun size="24" className="top-navigation-icon" />
-      ) : (
-        <BsMoon size="24" className="top-navigation-icon" />
-      )} */}
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/3751/3751403.png"
-        alt=""
-        width={30}
-        className="mx-3 cursor-pointer"
-      />
-    </span>
-  );
-};
+
 
 const Search = () => {
   const [query, setQuery] = useState("");

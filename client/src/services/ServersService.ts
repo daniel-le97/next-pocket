@@ -92,8 +92,12 @@ class ServersService {
     try {
       const res = await pb
         .collection(Collections.Servers)
-        .getList<ServersResponse>(1, 50);
+        .getList<ServersResponse>(1, 50,{
+          expand:'image,members'
+        });
       AppState.servers = res.items;
+      console.log(AppState.servers);
+      
     } catch (error) {
       console.error(error);
       throw new Error("Failed to get channel list");
