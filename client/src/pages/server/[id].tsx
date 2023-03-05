@@ -12,7 +12,7 @@ import { authsService } from "../../services/AuthsService";
 import { pb } from "../../../utils/pocketBase";
 import ServerMembersBar from "../../components/MembersBar/ServerMembersBar";
 import { serversService } from "../../services/ServersService";
-const Server: NextPage = ({servers}) => {
+const Server: NextPage = () => {
   const router = useRouter();
   console.log(router.query)
   useEffect(() => {
@@ -20,8 +20,7 @@ const Server: NextPage = ({servers}) => {
     if (!user) {
       router.push("/login");
     }
-    serversService.getUserServers(user?.id)
-  }, []);
+  }, [router]);
 
 
 // useEffect(()=>{
@@ -33,48 +32,6 @@ const Server: NextPage = ({servers}) => {
 // getServerByUserId()
 
 // },[])
-
-  useEffect(() => {
-    const user = pb.authStore.model;
-    const subscribe = async () => {
-      const userStatus = await pb
-        .collection("usersStatus")
-        .getFirstListItem(`userId = "${user?.id}"`);
-      // console.log(userStatus);
-      if (!userStatus) {
-        throw new Error("userStatus Not Found");
-      }
-
-      //     // Update isOnline status to true on component mount
-      const data = {
-        userId: user?.id,
-        isOnline: true,
-      };
-      const updatedRecord = await pb
-        .collection("usersStatus")
-        .update(userStatus.id, data);
-      // console.log(updatedRecord);
-
-      // Update isOnline status to false on beforeunload event
-      const handleBeforeUnload = () => {
-        const data = {
-          userId: user?.id,
-          isOnline: false,
-        };
-        const updatedRecord = pb
-          .collection("usersStatus")
-          .update(userStatus.id, data);
-        console.log(updatedRecord);
-      };
-      window.addEventListener("beforeunload", handleBeforeUnload);
-
-      // Remove the event listener on unmount
-      return () => {
-        window.removeEventListener("beforeunload", handleBeforeUnload);
-      };
-    };
-    subscribe();
-  }, []);
 
   return (
     <>

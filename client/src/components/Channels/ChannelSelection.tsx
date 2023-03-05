@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { observer } from "mobx-react-lite";
 import { useState,useEffect } from "react";
 import { BsHash } from "react-icons/bs";
@@ -35,17 +37,16 @@ const ChannelSelection = ({ selection }:{selection:ChannelsResponse}) => {
   const joinChannel = async () => {
     try {
       const user = pb.authStore.model;
+      if(!user){
+        console.error('must be logged in')
+        return
+      }
       // console.log(user);
       // const channel = AppState.channels.find(c=> c.id == selection.id)
       const data  = {
         memberId: user?.id,
         channelId:selection?.id
       };
-const test = {
-  memberId:user?.id
-}
-
-
       await channelsService.joinChannel(data);
       await messageService.getMessages();
       // setActiveSelection(selection);
