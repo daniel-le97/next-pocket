@@ -13,17 +13,14 @@ import { MessagesResponse } from "../../../pocketbase-types";
 
 const Messages = () => {
   const messages = AppState.messages;
-  
+
   const listRef = useRef(null);
   let unsubscribe: (() => void) | null = null;
 
   const messageQuery = AppState.messageQuery;
   useEffect(() => {
     const fetchMessages = async () => {
-      
       await messageService.getMessages();
-    
-      
     };
     fetchMessages();
 
@@ -33,8 +30,7 @@ const Messages = () => {
         .subscribe("*", async ({ action, record }) => {
           if (action === "create") {
             const user = await pb.collection("users").getOne(record.user);
-           
-            
+
             record.expand = { user };
 
             let updatedMessages: MessagesResponse[] = [...AppState.messages];

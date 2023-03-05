@@ -26,8 +26,8 @@ const ServerIcon = ({ server }: { server: ServersResponse }) => {
   const router = useRouter();
   const activeServer = AppState.activeServer;
   const handleClick = () => {
-    router.push(`http://localhost:3000/server/${server.id}`);
     AppState.activeServer = server;
+    router.push(`http://localhost:3000/server/${server.id}`);
   };
 
   return (

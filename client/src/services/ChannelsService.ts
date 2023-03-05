@@ -81,11 +81,13 @@ class ChannelsService {
     await pb.collection("channels").update(data.channelId, { members: newMemberList });
   }
 
-  async getChannelsByServerId() {
+  async getChannelsByServerId(serverId:string) {
     try {
       const res = await pb
         .collection(Collections.Channels)
-        .getList<ChannelsResponse>(1, 50);
+        .getList<ChannelsResponse>(1, 50,{
+          filter:`server = "${serverId}"`
+        });
 
       AppState.channels = res.items;
       const channelTitles = res.items.map((i) => i.title);

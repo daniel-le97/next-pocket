@@ -12,9 +12,12 @@ import { authsService } from "../../services/AuthsService";
 import { pb } from "../../../utils/pocketBase";
 import ServerMembersBar from "../../components/MembersBar/ServerMembersBar";
 import { serversService } from "../../services/ServersService";
+import { channelsService } from "../../services/ChannelsService";
+import { ServersResponse } from "../../../pocketbase-types";
 const Server: NextPage = () => {
   const router = useRouter();
-  console.log(router.query)
+  // console.log(router.query)
+  const server: ServersResponse | null = AppState.activeServer;
   useEffect(() => {
     const user = pb.authStore.model;
     if (!user) {
@@ -22,16 +25,14 @@ const Server: NextPage = () => {
     }
   }, [router]);
 
+  useEffect(()=>{
+    const getServerChannels = async () => {
+      await channelsService.getChannelsByServerId(server.id)
+      AppState.messages = []
+    }
+    getServerChannels()
+  })
 
-// useEffect(()=>{
-//     const user : object | null = pb.authStore.model;
-// const getServerByUserId = async () =>{
-//   await serversService.getUserServers(user.id)
-
-// }
-// getServerByUserId()
-
-// },[])
 
   return (
     <>
