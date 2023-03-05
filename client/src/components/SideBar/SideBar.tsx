@@ -110,14 +110,17 @@ const SideBar = () => {
 };
 
 // @ts-ignore
-const SideBarIcon = ({ icon, text, router }) => (
-  <Link href={router}>
-    <div className=" sidebar-icon group ">
-      {icon}
-      <span className=" sidebar-tooltip group-hover:scale-100">{text} </span>
-    </div>
-  </Link>
-);
+const SideBarIcon = ({ icon, text, router }) => {
+  
+  return (
+    <Link href={router}>
+      <div className=" sidebar-icon group ">
+        {icon}
+        <span className=" sidebar-tooltip group-hover:scale-100">{text} </span>
+      </div>
+    </Link>
+  );
+}
 
 const UserIcon = ({ user }: { user: UsersResponse }) => {
   return (

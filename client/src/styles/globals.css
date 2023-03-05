@@ -43,6 +43,7 @@
     ease-linear hover:rounded-xl hover:bg-green-600
     hover:text-white dark:bg-gray-800;
   }
+
   .sidebar-tooltip {
     @apply absolute left-14 m-2 w-auto min-w-max origin-left scale-0 rounded-md
     bg-zinc-900 p-2 
@@ -113,9 +114,7 @@
   }
 
   .channel-bar {
-    @apply m-0 ml-16 h-auto w-64 overflow-hidden bg-gray-200 dark:bg-zinc-800 shadow-lg
-   
-    ;
+    @apply m-0 ml-16 h-auto w-64 overflow-hidden bg-gray-200 shadow-lg dark:bg-zinc-800;
   }
 
   .channel-container {
@@ -127,7 +126,7 @@
   }
 
   .channel-block-text {
-    @apply my-auto  mr-auto ml-4 align-middle text-lg font-bold tracking-wide dark:text-gray-400 text-gray-600;
+    @apply my-auto  mr-auto ml-4 align-middle text-lg font-bold tracking-wide text-gray-600 dark:text-gray-400;
   }
 
   .dropdown {
@@ -171,23 +170,21 @@
   }
 
   .bottom-bar {
-    @apply fixed  bottom-2 flex h-14 w-2/4 flex-row items-center justify-start  rounded-lg dark:bg-zinc-800 px-2 bg-gray-400  transition duration-300 ease-in-out;
+    @apply fixed  bottom-2 flex h-14 w-2/4 flex-row items-center justify-start  rounded-lg bg-gray-400 px-2 transition  duration-300 ease-in-out dark:bg-zinc-800;
   }
   .bottom-bar-input {
-    @apply ml-0 mr-auto w-full cursor-text bg-transparent font-semibold text-gray-500 placeholder-gray-500 outline-none    ;
+    @apply ml-0 mr-auto w-full cursor-text bg-transparent font-semibold text-gray-500 placeholder-gray-500 outline-none;
   }
 
-  
-
   .post {
-    @apply m-0  rounded-sm flex w-full cursor-pointer flex-row items-center justify-evenly py-4 px-8 transition-all
+    @apply m-0  flex w-full cursor-pointer flex-row items-center justify-evenly rounded-sm py-4 px-8 transition-all
    hover:bg-zinc-800
     hover:bg-opacity-50
     hover:shadow-md
     hover:transition-all;
   }
   .post-filtered {
-    @apply m-0   rounded-sm flex w-full cursor-pointer flex-row items-center justify-evenly bg-gray-800 py-4 px-8 
+    @apply m-0   flex w-full cursor-pointer flex-row items-center justify-evenly rounded-sm bg-gray-800 py-4 px-8 
  transition-all
     hover:bg-opacity-50
     hover:shadow-md
@@ -225,7 +222,7 @@
   }
 
   .avatar {
-    @apply mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md dark:shadow-zinc-900 shadow-zinc-500;
+    @apply mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md shadow-zinc-500 dark:shadow-zinc-900;
   }
 
   .post-owner {
@@ -233,33 +230,19 @@
   }
 
   .timestamp {
-    @apply ml-3 font-normal dark:text-gray-300 text-black;
+    @apply ml-3 font-normal text-black dark:text-gray-300;
   }
 
   .post-text {
     @apply text-lg font-semibold dark:text-gray-300;
   }
 
-
-
-
-.server-members-bar {
-    @apply m-0  h-auto  w-80 overflow-hidden bg-gray-200 dark:bg-zinc-800 shadow-lg transition-all duration-300
-   
-    ;
+  .server-members-bar {
+    @apply m-0  h-auto  w-80 overflow-hidden bg-gray-200 shadow-lg transition-all duration-300 dark:bg-zinc-800;
   }
-  .server-members-bar-collapsed{
-    @apply h-0 w-0 overflow-hidden opacity-0 cursor-none  bg-zinc-800 transition-all duration-300
+  .server-members-bar-collapsed {
+    @apply h-0 w-0 cursor-none overflow-hidden bg-zinc-800  opacity-0 transition-all duration-300;
   }
-
-
-
-
-
-
-
-
-
 }
 @tailwind utilities;
 
@@ -273,13 +256,11 @@
   @apply bg-gray-500 dark:bg-green-400;
 }
 
-
-
 /* Loader */
 
 .loader {
-  border: 10px solid #eef0f1; 
-  border-top: 10px solid #3b49df; 
+  border: 10px solid #eef0f1;
+  border-top: 10px solid #3b49df;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -288,6 +269,10 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
