@@ -16,6 +16,7 @@ import { channelsService } from "../../services/ChannelsService";
 import { ServersResponse } from "../../../pocketbase-types";
 const Server: NextPage = () => {
   const router = useRouter();
+  const {id} = router.query
   // console.log(router.query)
   const server: ServersResponse | null = AppState.activeServer;
   useEffect(() => {
@@ -27,7 +28,7 @@ const Server: NextPage = () => {
 
   useEffect(()=>{
     const getServerChannels = async () => {
-      await channelsService.getChannelsByServerId(server.id)
+      await channelsService.getChannelsByServerId(id?.toString())
       AppState.messages = []
     }
     getServerChannels()

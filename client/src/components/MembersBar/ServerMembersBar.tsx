@@ -18,7 +18,7 @@ const ServerMembersBar = () => {
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
     const getUsersList = async () => {
-      await userService.getUsersByServerId();
+      // await userService.getUsersByServerId();
     };
     getUsersList();
   }, []);
