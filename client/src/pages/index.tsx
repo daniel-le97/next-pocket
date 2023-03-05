@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react-lite";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -5,7 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsBadge4K, BsCheck, BsCircle, BsCircleFill } from "react-icons/bs";
 import { AppState } from "../../AppState";
-import { Collections } from "../../pocketbase-types";
+import { BaseSystemFields, Collections, ServersRecord, ServersResponse, UsersStatusRecord, UsersStatusResponse } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import { serversService } from "../services/ServersService";
 
@@ -55,20 +57,23 @@ const Explore: NextPage = () => {
   );
 };
 
-const ServerCard = ({ server }: { server: any }) => {
-  const [userStatus, setUserStatus] = useState([]);
-  const user = pb.authStore.model;
-  async function joinServer() {
-    const data = {
-      serverId: server.id,
-      memberId: user?.id,
-    };
-    // const data = new FormData
-    await serversService.joinServer(data);
-  }
+const ServerCard = ({ server }: { server: ServersResponse}) => {
+  const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
+  const user= pb.authStore.model
+    async function joinServer() {
+      if(!user){
+        return
+      }
+      const data = {
+        id:server.id,
+        memberId:user.id,
+      }
+      // const data = new FormData
+      await serversService.joinServer(data);
+    }
   useEffect(() => {
     const getUserStatus = async () => {
-      const res = await pb.collection(Collections.UsersStatus).getList(1, 50, {
+      const res = await pb.collection(Collections.UsersStatus).getList<UsersStatusResponse>(1, 50, {
         filter: `isOnline = true`,
       });
       setUserStatus(res.items);
@@ -77,9 +82,8 @@ const ServerCard = ({ server }: { server: any }) => {
   }, []);
   return (
     <div
-      onClick={joinServer}
-      className="group  h-auto w-1/3 overflow-hidden rounded-xl bg-gradient-to-t from-zinc-900   to-gray-600 text-white shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl"
-    >
+    onClick={() => joinServer}
+    className="group  h-auto w-1/3 overflow-hidden rounded-xl bg-gradient-to-t from-zinc-900   to-gray-600 text-white shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl">
       <img
         src={server.imageUrl}
         alt=""
@@ -97,7 +101,7 @@ const ServerCard = ({ server }: { server: any }) => {
       </div>
       <div className=" m-2 flex items-center gap-x-2 ">
         <BsCircleFill size={10} className="text-gray-300" />
-        {server.members.length}
+        {server.members?.length}
         <small>Members</small>
       </div>
       {/* {userStatus.length} */}

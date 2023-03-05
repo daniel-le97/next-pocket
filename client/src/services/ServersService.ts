@@ -9,7 +9,7 @@ import { Collections } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 
-type ServerData = { memberId: string; name: string; id: string };
+type ServerData = { memberId: string; id: string };
 type Texpand = {
   members: UsersResponse[];
 };
@@ -80,7 +80,7 @@ class ServersService {
           expand: "members",
         });
       //  const memberIds =  servers.map(server => server.expand?.members.map(member => member.id))
-      console.log("getUserServers", servers);
+      // console.log('getUserServers', servers)
       return servers;
     } catch (error) {
       // Pop.error(error)
