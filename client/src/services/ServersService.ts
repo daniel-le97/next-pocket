@@ -15,13 +15,22 @@ type Texpand = {
 };
 
 class ServersService {
-  async joinServer(data: ServerData) {
-    const user: UsersResponse = await pb
-      .collection(Collections.Users)
-      .getFirstListItem<UsersResponse>(`id="${data.memberId}"`);
-    if (!user) {
-      throw new Error("No Current Server");
+  async joinServer(data: any) {
+    // const user: UsersResponse = await pb
+    //   .collection(Collections.Users)
+    //   .getFirstListItem<UsersResponse>(`id="${data.memberId}"`);
+    if (!data) {
+      throw new Error("No FormData Sent");
     }
+
+    // for (var pair of data.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
+
+    const res = await pb.collection("serverMembers").create(data);
+
+    console.log(res);
+
     // Get the server record user is apart of
     // const serverToLeave = await pb
     //   .collection(Collections.Servers)
@@ -73,15 +82,27 @@ class ServersService {
 
   async getUserServers(userId: string) {
     try {
-      const servers = await pb
-        .collection(Collections.Servers)
-        .getFullList<ServersResponse<Texpand>>(50, {
-          filter: `members.id ?= "${userId}"`,
-          expand: "members",
+      const res = await pb
+        .collection("serverMembers")
+        .getFullList({ 
+          filter: `user = "${userId}"`, 
+          expand: "server,image(server).url" 
         });
+     console.log(res);
+     
+      // AppState.userServers = res.map(s=> s.expand.server)
+      // const servers = await pb
+      //   .collection(Collections.Servers)
+      //   .getFullList<ServersResponse<Texpand>>(50, {
+      //     filter: `members.id ?= "${userId}"`,
+      //     expand: "members",
+      //   });
+      // AppState.userServers = res
+      // console.log("test", AppState.userServers);
+
       //  const memberIds =  servers.map(server => server.expand?.members.map(member => member.id))
       // console.log('getUserServers', servers)
-      return servers;
+      // return servers;
     } catch (error) {
       // Pop.error(error)
       console.error(error);
@@ -92,12 +113,11 @@ class ServersService {
     try {
       const res = await pb
         .collection(Collections.Servers)
-        .getList<ServersResponse>(1, 50,{
-          expand:'image,members'
+        .getList<ServersResponse>(1, 50, {
+          expand: "image,members",
         });
       AppState.servers = res.items;
       console.log(AppState.servers);
-      
     } catch (error) {
       console.error(error);
       throw new Error("Failed to get channel list");

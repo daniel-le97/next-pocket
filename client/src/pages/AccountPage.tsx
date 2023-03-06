@@ -28,12 +28,16 @@ function AccountPage () {
   }, [user]);
 
   return (
-    <div className="account-page">
-      <div className="card">
-        <div className="card-body p-5 text-center">{JSON.stringify(user)}</div>
-        <div className="card-body p-5 text-center">{servers}</div>
+    <main className="  dark:bg-zinc-800 ">
+      <div className="account-page">
+        <div className="card">
+          <div className="card-body p-5 text-center">
+            {JSON.stringify(user)}
+          </div>
+          <div className="card-body p-5 text-center">{servers?.name}</div>
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
 

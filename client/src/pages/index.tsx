@@ -6,8 +6,16 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsBadge4K, BsCheck, BsCircle, BsCircleFill } from "react-icons/bs";
+import { FaMousePointer } from "react-icons/fa";
 import { AppState } from "../../AppState";
-import { BaseSystemFields, Collections, ServersRecord, ServersResponse, UsersStatusRecord, UsersStatusResponse } from "../../pocketbase-types";
+import {
+  BaseSystemFields,
+  Collections,
+  ServersRecord,
+  ServersResponse,
+  UsersStatusRecord,
+  UsersStatusResponse,
+} from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import { serversService } from "../services/ServersService";
 
@@ -49,45 +57,47 @@ const Explore: NextPage = () => {
           </div>
         </div>
 
-        <div className="   mt-16 flex  flex-wrap  gap-5 mx-auto px-12  justify-center ">
+        <div className="   mx-auto mt-16  flex  flex-wrap justify-center gap-5  px-12 ">
           {servers && servers.map((s) => <ServerCard server={s} key={s.id} />)}
         </div>
-      
       </main>
     </>
   );
 };
 
-const ServerCard = ({ server }: { server: ServersResponse}) => {
+const ServerCard = ({ server }: { server: ServersResponse }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
-  const user= pb.authStore.model
+  const user = pb.authStore.model;
   async function joinServer() {
-      if(!user){
-        return
-      }
-      const data = {
-        id:server.id,
-        memberId:user.id,
-      }
-      // const data = new FormData
-      await serversService.joinServer(data);
+    if (!user) {
+      return;
     }
+    const data = {
+      serverId: server.id,
+      memberId: user.id,
+    };
+    const  formData = new FormData()
+    formData.append('server',server.id)
+    formData.append('user',user.id)
+  
+    // const data = new FormData
+    await serversService.joinServer(formData);
+  }
   useEffect(() => {
     const getUserStatus = async () => {
-      const res = await pb.collection(Collections.UsersStatus).getList<UsersStatusResponse>(1, 50, {
-        filter: `isOnline = true`,
-      });
+      const res = await pb
+        .collection(Collections.UsersStatus)
+        .getList<UsersStatusResponse>(1, 50, {
+          filter: `isOnline = true`,
+        });
       setUserStatus(res.items);
     };
     // getUserStatus()
   }, []);
   return (
-    <div
-      onClick={joinServer}
-      className="group   h-auto w-full sm:w-1/4 overflow-hidden rounded-xl  bg-gray-300 dark:bg-gradient-to-t from-zinc-900   to-gray-600 text-white shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl"
-    >
+    <div className="group   h-auto w-full overflow-hidden rounded-xl bg-gray-300  from-zinc-900 to-gray-600 text-white   shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4">
       <img
-        src={server.imageUrl}
+        src={server.expand.image.url}
         alt=""
         className="h-40 w-full rounded-t-xl object-cover"
       />
@@ -98,6 +108,9 @@ const ServerCard = ({ server }: { server: ServersResponse}) => {
             <BsCheck />
           </div>
           <h1>{server.name}</h1>
+          <div className="cursor-pointer" onClick={joinServer}>
+            <FaMousePointer size={20}/>
+          </div>
         </div>
         <p className="mt-2">{server.description}</p>
       </div>

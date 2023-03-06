@@ -22,7 +22,7 @@ pb.authStore.onChange((auth) => {
 });
 export function useUser(){
   const user = pb.authStore.model
-  console.log('user', user)
+  // console.log('user', user)
   if(user){
     return user
   }

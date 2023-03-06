@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-floating-promises */
+import { observer } from "mobx-react-lite";
 import { type AppType } from "next/dist/shared/lib/utils";
 import React, { useEffect } from "react";
+import { AppState } from "../../AppState";
 import { useUser } from "../../hooks/User";
 import { pb } from "../../utils/pocketBase";
 // import { pb } from "../../utils/pocketBase";
@@ -12,7 +14,7 @@ import { serversService } from "../services/ServersService";
 import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  const user = useUser();
+  const user =  AppState.user
   useEffect(() => {
     if (user) {
       const userServers = async () => {
@@ -22,7 +24,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       };
       userServers();
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     const user = pb.authStore.model;
@@ -54,7 +56,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         const updatedRecord = pb
           .collection("usersStatus")
           .update(userStatus.id, data);
-        console.log(updatedRecord);
+        // console.log(updatedRecord);
       };
       window.addEventListener("beforeunload", handleBeforeUnload);
 
@@ -73,4 +75,4 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   );
 };
 
-export default MyApp;
+export default observer(MyApp);

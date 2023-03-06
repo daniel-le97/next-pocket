@@ -10,6 +10,8 @@ import { isValidProp } from "./utils/isValidProp";
 class ObservableAppState {
   user: Record<string, any> | null = null;
   /** @type {import('./src/models/Account.js').Account | null} */
+
+  userServers:Record<string,any>[] = []
   account: Record<string, any> | null = null;
   messageQuery = '';
 

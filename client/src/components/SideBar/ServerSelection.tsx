@@ -6,14 +6,15 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AppState } from "../../../AppState";
 import type { ServersResponse } from "../../../pocketbase-types";
+import { useUser } from "../../../utils/pocketBase";
 import { serversService } from "../../services/ServersService";
 
 const ServerSelection = () => {
-  const servers = AppState.servers;
-
+  const servers = AppState.userServers;
+const user = useUser()
   useEffect(() => {
     const getServers = async () => {
-      await serversService.getServersList();
+      await serversService.getUserServers(user?.id)
     };
     getServers();
   }, []);
