@@ -44,8 +44,9 @@ function AccountPage() {
               className="h-32 w-32 rounded-full shadow-md shadow-zinc-900"
             />
           </div>
-          <div className="card-body p-5 text-center">
-            {JSON.stringify(user)}
+          <div className="card-body p-5 text-center flex justify-center">
+            {/* {JSON.stringify(user)} */}
+            <EditAccount  />
           </div>
         </div>
       </div>
@@ -81,13 +82,57 @@ const EditAccount = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="bg-zinc-700 p-3">
-        <input type="text" />
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex w-1/2 flex-col gap-y-3 text-white "
+    >
+      <div className="flex flex-col text-start">
+        <label>UserName:</label>
+        <input
+          {...register("username", {
+            required: true,
+            maxLength: 30,
+            minLength: 5,
+          })}
+          type="text"
+          // onChange={handleChange}
+
+          className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
+        />
       </div>
-      <div className="bg-zinc-700 p-2">
-        <input type="checkbox" />
+      <div className="flex flex-col text-start">
+        <label>AvatarUrl:</label>
+        <input
+          {...register("avatarUrl", {
+            required: true,
+           
+          })}
+          type="url"
+          // onChange={handleChange}
+
+          className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
+        />
       </div>
+      <div className="flex flex-col text-start">
+        <label>Email Visibility</label>
+        <input
+          {...register("emailVisibility", {
+            required: true,
+           
+          })}
+          type="checkbox"
+          // onChange={handleChange}
+
+          className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+      >
+        Submit
+      </button>
     </form>
   );
 };
