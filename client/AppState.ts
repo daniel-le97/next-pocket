@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -23,7 +24,7 @@ class ObservableAppState {
   servers: ServersResponse[] = []
   users: UsersResponse[]= []
   messages: MessagesResponse[] = [];
-  loading : number =0 ;
+  loading  =0 ;
   AppState: undefined;
 
   constructor() {
