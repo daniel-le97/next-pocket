@@ -1,20 +1,21 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react-lite";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsBadge4K, BsCheck, BsCircle, BsCircleFill } from "react-icons/bs";
 import { FaMousePointer } from "react-icons/fa";
 import { AppState } from "../../AppState";
+import type {
+  ServersResponse,
+  UsersStatusResponse} from "../../pocketbase-types";
 import {
   BaseSystemFields,
   Collections,
   ServersRecord,
-  ServersResponse,
-  UsersStatusRecord,
-  UsersStatusResponse,
+  UsersStatusRecord
 } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import { serversService } from "../services/ServersService";
@@ -73,8 +74,8 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
       return;
     }
     const data = {
-      serverId: server.id,
-      userId: user.id,
+      server: server.id,
+      user: user.id,
     };
     // const  formData = new FormData()
     // formData.append('server',server.id)
