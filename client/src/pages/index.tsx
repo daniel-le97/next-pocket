@@ -74,7 +74,7 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
     }
     const data = {
       serverId: server.id,
-      memberId: user.id,
+      userId: user.id,
     };
     // const  formData = new FormData()
     // formData.append('server',server.id)

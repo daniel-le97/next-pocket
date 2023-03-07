@@ -36,6 +36,7 @@ import DirectMessages from "./DirectMessages";
 import { UsersResponse } from "../../../pocketbase-types";
 import CreateServer from "./CreateServer";
 import ThemeIcon from "./ThemeIcon";
+import Pop from "../../../utils/Pop";
 
 const SideBar = () => {
   const [user, setUser] = useState(null);
@@ -43,7 +44,11 @@ const SideBar = () => {
   const router = useRouter();
   // const logOut = useLogOut();
 
-  function logOut() {
+  async function logOut() {
+    const yes = await Pop.confirm();
+    if (!yes) {
+      return;
+    }
     pb.authStore.clear();
     router.push("/login");
   }
@@ -112,7 +117,6 @@ const SideBar = () => {
 
 // @ts-ignore
 const SideBarIcon = ({ icon, text, router }) => {
-  
   return (
     <Link href={router}>
       <div className=" sidebar-icon group ">
@@ -121,7 +125,7 @@ const SideBarIcon = ({ icon, text, router }) => {
       </div>
     </Link>
   );
-}
+};
 
 const UserIcon = ({ user }: { user: UsersResponse }) => {
   return (

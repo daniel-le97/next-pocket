@@ -10,31 +10,39 @@ import type { ServersResponse } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import { serversService } from "../services/ServersService";
 
-function AccountPage () {
-  const [user, setUser] = useState<Record | Admin | null>()
-  const [servers, setServers] = useState<ServersResponse<unknown>>()
+function AccountPage() {
+  const [user, setUser] = useState<Record | Admin | null>();
+  const [servers, setServers] = useState<ServersResponse<unknown>>();
   useEffect(() => {
     console.log(pb.authStore.model);
-    const currentUser = pb.authStore.model
+    const currentUser = pb.authStore.model;
     if (currentUser) {
       setUser(currentUser);
       const getServers = async () => {
-        const servers = await serversService.getUserServers(currentUser.id)
-        setServers(servers)
-      }
-      getServers()
+        const servers = await serversService.getUserServers(currentUser.id);
+        setServers(servers);
+      };
+      getServers();
     }
-    serversService.getUserServers(pb.authStore.model?.id).then(value => setServers(value))
-  }, [user]);
+    serversService
+      .getUserServers(pb.authStore.model?.id)
+      .then((value) => setServers(value));
+  }, []);
 
   return (
-    <main className="  dark:bg-zinc-800 ">
+    <main className="  min-h-screen dark:bg-zinc-800  ">
       <div className="account-page">
-        <div className="card">
+        <div className="card  flex flex-col  justify-center   ">
+          <div className=" p-5 text-center flex justify-center ">
+            <img
+              src={user?.avatarUrl}
+              alt="Profile Image"
+              className="h-32 w-32 rounded-full shadow-md shadow-zinc-900"
+            />
+          </div>
           <div className="card-body p-5 text-center">
             {JSON.stringify(user)}
           </div>
-          <div className="card-body p-5 text-center">{servers?.name}</div>
         </div>
       </div>
     </main>

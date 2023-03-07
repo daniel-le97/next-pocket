@@ -9,13 +9,13 @@ import { Collections } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 
-type ServerData = { memberId: string; id: string };
+type ServerData = { userId: string; serverId: string };
 type Texpand = {
   members: UsersResponse[];
 };
 
 class ServersService {
-  async joinServer(data: any) {
+  async joinServer(data: ServerData) {
     if (!data) {
       throw new Error("No FormData Sent");
     }
