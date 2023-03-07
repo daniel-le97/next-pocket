@@ -76,12 +76,12 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
       serverId: server.id,
       memberId: user.id,
     };
-    const  formData = new FormData()
-    formData.append('server',server.id)
-    formData.append('user',user.id)
+    // const  formData = new FormData()
+    // formData.append('server',server.id)
+    // formData.append('user',user.id)
   
     // const data = new FormData
-    await serversService.joinServer(formData);
+    await serversService.joinServer(data);
   }
   useEffect(() => {
     const getUserStatus = async () => {

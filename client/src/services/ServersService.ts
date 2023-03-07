@@ -16,57 +16,18 @@ type Texpand = {
 
 class ServersService {
   async joinServer(data: any) {
-    // const user: UsersResponse = await pb
-    //   .collection(Collections.Users)
-    //   .getFirstListItem<UsersResponse>(`id="${data.memberId}"`);
     if (!data) {
       throw new Error("No FormData Sent");
     }
 
-    // for (var pair of data.entries()) {
-    //   console.log(pair[0] + ", " + pair[1]);
-    // }
-
     const res = await pb.collection("serverMembers").create(data);
-
     console.log(res);
+    return res
 
-    // Get the server record user is apart of
-    // const serverToLeave = await pb
-    //   .collection(Collections.Servers)
-    //   .getOne(user);
-
-    // if (serverToLeave) {
-    //   await this.leaveServer({
-    //     id: user.currentChannel,
-    //     memberId: data,
-    //   });
-    // }
-
-    //TODO GET SERVERID SOMEHOW
-    // Get the server record to join
-    // const server = await pb
-    //   .collection(Collections.Servers)
-    //   .getOne<ServersResponse>(data.id)
-
-    // if (!server) {
-    //   throw new Error("Channel not found");
-    // }
-    // AppState.activeServer = server;
-    // // console.log(AppState.activeChannel);
-
-    // // Add the user to the channel's member list
-    // const newMemberList = [...(server.members), data.memberId];
-    // await pb
-    //   .collection("channels")
-    //   .update(channel.id, { members: newMemberList });
-
-    // await pb.collection("users").update(data.memberId, {
-    //   currentChannel: channel.id,
-    // });
   }
 
   async leaveServer(data: any) {
+    await pb.collection('serverMembers').delete(data.id)
     // Get the channel record to leave
     // const serverToLeave = await pb.collection(Collections.Servers).getOne<ServersResponse>(data.id);
     // if (!serverToLeave) {
@@ -82,14 +43,12 @@ class ServersService {
 
   async getUserServers(userId: string) {
     try {
-      const res = await pb
-        .collection("serverMembers")
-        .getFullList({ 
-          filter: `user = "${userId}"`, 
-          expand: "server,image(server).url" 
-        });
-     console.log(res);
-     
+      const res = await pb.collection("serverMembers").getFullList({
+        filter: `user = "${userId}"`,
+        expand: "server,servers(serverMembers).image",
+      });
+      console.log(res);
+
       // AppState.userServers = res.map(s=> s.expand.server)
       // const servers = await pb
       //   .collection(Collections.Servers)
