@@ -10,6 +10,7 @@ export enum Collections {
 	Friends = "friends",
 	Messages = "messages",
 	Rooms = "rooms",
+	ServerMembers = "serverMembers",
 	Servers = "servers",
 	Users = "users",
 	UsersStatus = "usersStatus",
@@ -94,9 +95,14 @@ export type RoomsRecord = {
 	title?: string
 }
 
+export type ServerMembersRecord = {
+	user: RecordIdString
+	server: RecordIdString
+}
+
 export type ServersRecord = {
+	image?: RecordIdString
 	name: string
-	image?: string
 	description?: string
 	members?: RecordIdString[]
 	imageUrl?: string
@@ -122,6 +128,7 @@ export type FriendRequestResponse<Texpand = unknown> = FriendRequestRecord & Bas
 export type FriendsResponse<Texpand = unknown> = FriendsRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
 export type RoomsResponse<Texpand = unknown> = RoomsRecord & BaseSystemFields<Texpand>
+export type ServerMembersResponse<Texpand = unknown> = ServerMembersRecord & BaseSystemFields<Texpand>
 export type ServersResponse<Texpand = unknown> = ServersRecord & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = UsersRecord & AuthSystemFields<Texpand>
 export type UsersStatusResponse = UsersStatusRecord & BaseSystemFields
@@ -134,6 +141,7 @@ export type CollectionRecords = {
 	friends: FriendsRecord
 	messages: MessagesRecord
 	rooms: RoomsRecord
+	serverMembers: ServerMembersRecord
 	servers: ServersRecord
 	users: UsersRecord
 	usersStatus: UsersStatusRecord
