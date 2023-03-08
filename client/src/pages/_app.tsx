@@ -15,11 +15,12 @@ import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const user =  AppState.user
+  const servers = AppState.userServers
   useEffect(() => {
     if (user) {
       const userServers = async () => {
         const servers = await serversService.getUserServers(user.id);
-        console.log(servers);
+ 
         return servers;
       };
       userServers();
