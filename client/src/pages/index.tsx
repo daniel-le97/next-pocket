@@ -80,15 +80,19 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
         server: server.id,
         user: user.id,
       };
-      const yes = await Pop.confirm(`Join ${server.name}?`,'you will be directed to the server page','Join','question');
+      const yes = await Pop.confirm(
+        `Join ${server.name}?`,
+        "you will be directed to the server page",
+        "Join",
+        "question"
+      );
       if (!yes) {
         return;
-      } else {
-        await serversService.joinServer(data);
-        Pop.success('Thanks for Joining the Server!')
       }
+      if (await serversService.joinServer(data))
+        Pop.success("Thanks for Joining the Server!");
     } catch (error) {
-      Pop.error(error,'Join Server');
+      Pop.error(error, "Join Server");
     }
   }
   useEffect(() => {
@@ -100,7 +104,7 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
         });
       setUserStatus(res.items);
     };
-    getUserStatus()
+    getUserStatus();
   }, []);
   return (
     <div className="group  h-auto w-full overflow-hidden rounded-xl bg-gray-300  from-zinc-900 to-gray-600 text-white   shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4">
@@ -116,9 +120,12 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
             <BsCheck />
           </div>
           <h1>{server.name}</h1>
-          <div className="cursor-pointer group/join relative" onClick={joinServer}>
+          <div
+            className="group/join relative cursor-pointer"
+            onClick={joinServer}
+          >
             <FaUserPlus size={20} />
-            <span className="  absolute scale-0 -right-14 top-0 transition-all duration-200 ease-in  rounded-md px-2 bg-zinc-900 group-hover/join:scale-100">
+            <span className="  absolute -right-14 top-0 scale-0 rounded-md bg-zinc-900 px-2  transition-all duration-200 ease-in group-hover/join:scale-100">
               Join
             </span>
           </div>

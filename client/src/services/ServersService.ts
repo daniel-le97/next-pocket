@@ -26,7 +26,7 @@ class ServersService {
 
     // make sure user does not have a serverMember Record for the server already
     const userServerMemberRecord = await this.getUserServerMemberRecord(data);
-    // console.log('userServerMemberRecord',userServerMemberRecord); 
+    console.log('userServerMemberRecord',userServerMemberRecord); 
 
     //if we have a record for this user is a member => don't go any further
     if (userServerMemberRecord) {
@@ -39,7 +39,7 @@ class ServersService {
       .create<ServerMembersResponse>(data,{
         expand:'server.image'
       });
-      console.log(res);
+      console.log('joinedServer', res);
       
     // return the response for use as a "hook"
     return res;
