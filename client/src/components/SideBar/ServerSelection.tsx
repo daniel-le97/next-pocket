@@ -16,7 +16,7 @@ const user = useUser()
     const getServers = async () => {
       await serversService.getUserServers(user?.id)
     };
-    getServers();
+    // getServers();
   }, []);
   return (
     <>{servers && servers.map((s) => <ServerIcon server={s} key={s.id} />)}</>

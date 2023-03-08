@@ -14,13 +14,12 @@ import { serversService } from "../services/ServersService";
 import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  const user =  AppState.user
-  const servers = AppState.userServers
+  const user = AppState.user;
+  
   useEffect(() => {
     if (user) {
       const userServers = async () => {
         const servers = await serversService.getUserServers(user.id);
- 
         return servers;
       };
       userServers();
