@@ -16,6 +16,8 @@ type Texpand = {
 
 class ServersService {
   async joinServer(data: ServerData) {
+  
+    
     // if no data is sent throw an error
     if (!data) {
       throw new Error("No FormData Sent");
@@ -24,13 +26,19 @@ class ServersService {
     // make sure user does not have a serverMember Record for the server already
     const userServerMemberRecord = await this.getUserServerMemberRecord(data);
     if (userServerMemberRecord) {
+     
       return Pop.error("already a member of this server");
+      
       // return
     }
     // create the serverMember Record
     const res = await pb
       .collection(Collections.ServerMembers)
-      .create<ServerMembersResponse>(data);
+      .create<ServerMembersResponse>(data,{
+        expand:'server.image'
+      });
+      console.log(res);
+      
     // return the response for use as a "hook"
     return res;
   }

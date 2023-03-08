@@ -10,14 +10,16 @@ import { FaMousePointer } from "react-icons/fa";
 import { AppState } from "../../AppState";
 import type {
   ServersResponse,
-  UsersStatusResponse} from "../../pocketbase-types";
+  UsersStatusResponse,
+} from "../../pocketbase-types";
 import {
   BaseSystemFields,
   Collections,
   ServersRecord,
-  UsersStatusRecord
+  UsersStatusRecord,
 } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
+import Pop from "../../utils/Pop";
 import { serversService } from "../services/ServersService";
 
 const Explore: NextPage = () => {
@@ -70,19 +72,24 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
   async function joinServer() {
-    if (!user) {
-      return;
+    try {
+      if (!user) {
+        return;
+      }
+      const data = {
+        server: server.id,
+        user: user.id,
+      };
+      const yes = await Pop.confirm(`Join ${server.name}?`,'you will be directed to the server page','Join','question');
+      if (!yes) {
+        return;
+      } else {
+        await serversService.joinServer(data);
+        Pop.success('Thanks for Joining the Server!')
+      }
+    } catch (error) {
+      Pop.error(error,'Join Server');
     }
-    const data = {
-      server: server.id,
-      user: user.id,
-    };
-    // const  formData = new FormData()
-    // formData.append('server',server.id)
-    // formData.append('user',user.id)
-  
-    // const data = new FormData
-    await serversService.joinServer(data);
   }
   useEffect(() => {
     const getUserStatus = async () => {
@@ -110,7 +117,7 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
           </div>
           <h1>{server.name}</h1>
           <div className="cursor-pointer" onClick={joinServer}>
-            <FaMousePointer size={20}/>
+            <FaMousePointer size={20} />
           </div>
         </div>
         <p className="mt-2">{server.description}</p>

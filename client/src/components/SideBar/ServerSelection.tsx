@@ -10,12 +10,13 @@ import { useUser } from "../../../utils/pocketBase";
 import { serversService } from "../../services/ServersService";
 
 const ServerSelection = () => {
-  const servers = AppState.userServers;
+  const [servers,setServers] = useState([])
 const user = useUser()
   useEffect(() => {
-    const getServers = async () => {
-      await serversService.getUserServers(user?.id)
-    };
+    setServers(AppState.userServers)
+    // const getServers = async () => {
+    //   await serversService.getUserServers(user?.id)
+    // };
     // getServers();
   }, []);
   return (
