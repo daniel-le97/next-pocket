@@ -32,16 +32,18 @@ class ServersService {
       
       // return
     }
-    // create the serverMember Record
-    const res = await pb
-      .collection(Collections.ServerMembers)
-      .create<ServerMembersResponse>(data,{
-        expand:'server.image'
-      });
-      console.log(res);
-      
-    // return the response for use as a "hook"
-    return res;
+ else{
+   // create the serverMember Record
+   const res = await pb
+     .collection(Collections.ServerMembers)
+     .create<ServerMembersResponse>(data, {
+       expand: "server.image",
+     });
+   console.log(res);
+
+   // return the response for use as a "hook"
+   return res;
+ }
   }
 
   async getUserServerMemberRecord(data: ServerData) {
