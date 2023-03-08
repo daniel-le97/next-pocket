@@ -89,8 +89,9 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
       if (!yes) {
         return;
       }
-      if (await serversService.joinServer(data))
+      if (await serversService.joinServer(data)) {
         Pop.success("Thanks for Joining the Server!");
+      }
     } catch (error) {
       Pop.error(error, "Join Server");
     }
