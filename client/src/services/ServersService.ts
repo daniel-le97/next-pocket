@@ -1,5 +1,6 @@
 import { AppState } from "../../AppState";
 import type {
+  FileUploadsResponse,
   ServerMembersResponse,
   ServersRecord,
   ServersResponse,
@@ -57,12 +58,13 @@ class ServersService {
 
   async getUserServers(userId: string) {
     // get the servers the user has a membership record for
-    const res = await pb.collection("serverMembers").getFullList({
+    const res = await pb.collection("serverMembers").getFullList<ServerMembersResponse<ServersResponse<FileUploadsResponse>>>({
       filter: `user="${userId}"`,
       expand: "server.image",
     });
-    console.log("userServers", res);
-    return res;
+    const servers = res.map(member => member.expand)
+    AppState.userServers = servers
+    return res
   }
 
   async getServersList() {
