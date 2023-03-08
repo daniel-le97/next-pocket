@@ -40,7 +40,7 @@ const ServerIcon = ({
     router.push(`http://localhost:3000/server/${server.id}`);
   };
   useEffect(() => {
-    setShowing(true);
+    setShowing(!isShowing);
   }, []);
   return (
     <Transition
@@ -48,9 +48,9 @@ const ServerIcon = ({
       enter="transition-all duration-700"
       enterFrom="opacity-0 -translate-x-10"
       enterTo="opacity-100 translate-x-0"
-      leave="transition-all duration-300"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
+      leave="transition-all duration-700"
+      leaveFrom="opacity-100 translate-x-0"
+      leaveTo="opacity-0 -translate-x-10"
     >
       <div className=" sidebar-icon group  relative">
         <img

@@ -59,7 +59,13 @@ class ServersService {
     const memberShip = await this.getUserServerMemberRecord(data);
     if (!memberShip) {
       return Pop.error("unable to find server membership to delete");
+
+
     }
+
+//filter the server from the current userServers Array
+AppState.userServers = AppState.userServers.filter(s=>s?.id !=data.server )
+
     // delete the user from the servers memberships
     return await pb.collection(Collections.ServerMembers).delete(memberShip.id);
   }

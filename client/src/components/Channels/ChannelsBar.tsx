@@ -10,10 +10,12 @@ import ChannelSelection from "./ChannelSelection";
 import { pb } from "../../../utils/pocketBase";
 import { channelsService } from "../../services/ChannelsService";
 import { AppState } from "../../../AppState";
+import LeaveServer from "./LeaveServer";
 const topics = ["general", "tailwind-css", "react"];
 
 const ChannelsBar = () => {
   const channels = AppState.channels;
+  const server = AppState.activeServer
   const [expanded, setExpanded] = useState(true);
   useEffect(() => {
     const getChannels = async () => {
@@ -55,7 +57,9 @@ const ChannelsBar = () => {
               <ChannelSelection selection={c} key={c.id} />
             ))}
 
-          <div className="mt-10"></div>
+          <div className="fixed bottom-0 mb-3">
+            <LeaveServer server={server} />
+          </div>
         </div>
       </div>
     </div>

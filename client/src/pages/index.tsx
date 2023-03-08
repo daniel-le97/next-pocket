@@ -71,7 +71,7 @@ const Explore: NextPage = () => {
 const ServerCard = ({ server }: { server: ServersResponse }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
-  const router = useRouter()
+  const router = useRouter();
   async function joinServer() {
     try {
       if (!user) {
@@ -93,13 +93,14 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
       if (await serversService.joinServer(data)) {
         Pop.success("Thanks for Joining the Server!");
         router.push(`http://localhost:3000/server/${server.id}`);
-        
       }
     } catch (error) {
       Pop.error(error, "Join Server");
     }
   }
   useEffect(() => {
+  
+    
     const getUserStatus = async () => {
       const res = await pb
         .collection(Collections.UsersStatus)
@@ -111,7 +112,7 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
     getUserStatus();
   }, []);
   return (
-    <div className="group  h-auto w-full overflow-hidden rounded-xl bg-gray-300  from-zinc-900 to-gray-600 text-white   shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4">
+    <div className=" group  h-auto w-full overflow-hidden rounded-xl bg-gray-300  from-zinc-900 to-gray-600 text-white   shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4">
       <img
         src={server.expand.image.url}
         alt=""
@@ -136,7 +137,7 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
         </div>
         <p className="mt-2">{server.description}</p>
       </div>
-      <div className=" m-2 flex items-center gap-x-2 ">
+      <div className=" m-2 flex items-center gap-x-2  ">
         <BsCircleFill size={10} className="text-gray-300" />
         {server.members?.length}
         <small>Members</small>
