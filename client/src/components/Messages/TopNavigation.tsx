@@ -5,7 +5,7 @@ import { AppState } from "../../../AppState";
 import { pb } from "../../../utils/pocketBase";
 import useDarkMode from '../../../hooks/useDarkMode'
 import { BsMoon, BsSun } from "react-icons/bs";
-import { MessagesResponse } from "../../../pocketbase-types";
+import { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
 const TopNavigation = () => {
   const [channel, setRoom] = useState<string>("");
   const [message, setMessage] = useState("");

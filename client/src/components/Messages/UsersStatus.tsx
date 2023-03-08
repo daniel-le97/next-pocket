@@ -1,7 +1,7 @@
 import { pb } from "../../../utils/pocketBase";
 import { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
-import { Collections, UsersResponse } from "../../../pocketbase-types";
+import { Collections, UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 export default function UserStatus({ user }:{user:UsersResponse}) {
   const [isOnline, setIsOnline] = useState(false);
   const [userStatusRecord, setUserStatusRecord] = useState<any>(null);

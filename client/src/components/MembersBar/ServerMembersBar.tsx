@@ -8,7 +8,7 @@ import { pb } from "../../../utils/pocketBase";
 import ChannelSelection from "../Channels/ChannelSelection";
 import { AppState } from "../../../AppState";
 import { userService } from "../../services/UserService";
-import { UsersResponse } from "../../../pocketbase-types";
+import { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import UserStatus from "../Messages/UsersStatus";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 // const topics = ["general", "tailwind-css", "react"];

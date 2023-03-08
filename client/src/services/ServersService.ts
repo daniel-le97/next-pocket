@@ -5,57 +5,55 @@ import type {
   ServersRecord,
   ServersResponse,
   UsersResponse,
-} from "../../pocketbase-types";
-import { Collections } from "../../pocketbase-types";
+} from "../../PocketBaseTypes/pocketbase-types";
+import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 
 type ServerData = { user: string; server: string };
-type Texpand = {
-  members: UsersResponse[];
+type TServerExpand<T> = {
+  server: ServersResponse<T>;
 };
+
+
 
 class ServersService {
   async joinServer(data: ServerData) {
-  
-    
     // if no data is sent throw an error
     if (!data) {
       throw new Error("No FormData Sent");
     }
-    // console.log(data);
+
     // make sure user does not have a serverMember Record for the server already
     const userServerMemberRecord = await this.getUserServerMemberRecord(data);
-    if (userServerMemberRecord) {
-     
-      return Pop.error("already a member of this server");
-      
-      // return
-    }
- else{
-   // create the serverMember Record
-   const res = await pb
-     .collection(Collections.ServerMembers)
-     .create<ServerMembersResponse>(data, {
-       expand: "server.image",
-     });
-   console.log(res);
+    // console.log('userServerMemberRecord',userServerMemberRecord); 
 
-   // return the response for use as a "hook"
-   return res;
- }
+    //if we have a record for this user is a member => don't go any further
+    if (userServerMemberRecord) {
+      return Pop.error("already a member of this server");
+    }
+
+    // create the serverMember Record
+    const res = await pb
+      .collection(Collections.ServerMembers)
+      .create<ServerMembersResponse>(data,{
+        expand:'server.image'
+      });
+      console.log(res);
+      
+    // return the response for use as a "hook"
+    return res;
   }
 
   async getUserServerMemberRecord(data: ServerData) {
     // get the users membership for the server and return it
     const record = await pb
       .collection(Collections.ServerMembers)
-      .getFirstListItem<ServerMembersResponse>(
+      .getList<ServerMembersResponse>(1,1,{filter:
         `user="${data.user}" && server="${data.server}"`
-      );
-    return record;
+      });
+    return record.items[0];
   }
-
   async leaveServer(data: ServerData) {
     // get the memberShip to be deleted
     const memberShip = await this.getUserServerMemberRecord(data);
@@ -68,12 +66,21 @@ class ServersService {
 
   async getUserServers(userId: string) {
     // get the servers the user has a membership record for
-    const res = await pb.collection("serverMembers").getFullList<ServerMembersResponse<ServersResponse<FileUploadsResponse>>>({
+    const res = await pb.collection("serverMembers").getFullList<ServerMembersResponse<TServerExpand<FileUploadsResponse>>>({
       filter: `user="${userId}"`,
       expand: "server.image",
     });
-    const servers = res.map(member => member.expand)
+
+    // filter out the servers from the serverMembers records
+    const servers = res.map(member => member.expand?.server)
+    console.log('userServers', res)
+    return;
+    
+    
+    // set the global state for usersServers
     AppState.userServers = servers
+    
+    // return everything
     return res
   }
 

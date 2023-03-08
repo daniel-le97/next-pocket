@@ -8,7 +8,7 @@ import { Message } from "../../models/Message";
 import CreateMessage from "./CreateMessage";
 import noMessage from "../../assets/noMessages.png";
 import UserStatus from "./UsersStatus";
-import { MessagesResponse } from "../../../pocketbase-types";
+import { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
 // type Record<K extends string | number | symbol, T> = { [P in K]: T };
 
 const Messages = () => {

@@ -1,10 +1,10 @@
 import { AppState } from "../../AppState";
 import type {
-  ChannelsResponse} from "../../pocketbase-types";
+  ChannelsResponse} from "../../PocketBaseTypes/pocketbase-types";
 import {
   Collections,
   UsersResponse,
-} from "../../pocketbase-types";
+} from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 // import { PBChannel } from "../models/Channel";
 // import type { Message } from "../models/Message";

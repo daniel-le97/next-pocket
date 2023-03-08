@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
-import type { ChannelsResponse, FileUploadsResponse, MessagesResponse, ServersResponse, UsersResponse } from "./pocketbase-types";
-import { BaseSystemFields, ChannelsRecord, MessagesRecord, UsersRecord } from "./pocketbase-types";
+import type { ChannelsResponse, FileUploadsResponse, MessagesResponse, ServersResponse, UsersResponse } from "./PocketBaseTypes/pocketbase-types";
+import { BaseSystemFields, ChannelsRecord, MessagesRecord, UsersRecord } from "./PocketBaseTypes/pocketbase-types";
 import { isValidProp } from "./utils/isValidProp";
 
 
@@ -12,19 +12,19 @@ class ObservableAppState {
   user: Record<string, any> | null = null;
   /** @type {import('./src/models/Account.js').Account | null} */
 
-  userServers: ServersResponse<FileUploadsResponse>[] = []
+  userServers: (ServersResponse<FileUploadsResponse<unknown>> | undefined)[] = [];
   account: Record<string, any> | null = null;
-  messageQuery = '';
+  messageQuery = "";
 
   activeChannel: ChannelsResponse | null = null;
-  activeServer:ServersResponse | null = null
+  activeServer: ServersResponse | null = null;
 
   channelTitles: (string | undefined)[] = [];
   channels: ChannelsResponse[] = [];
-  servers: ServersResponse[] = []
-  users: UsersResponse[]= []
+  servers: ServersResponse[] = [];
+  users: UsersResponse[] = [];
   messages: MessagesResponse[] = [];
-  loading  =0 ;
+  loading = 0;
   AppState: undefined;
 
   constructor() {

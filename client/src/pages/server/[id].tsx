@@ -13,7 +13,7 @@ import { pb } from "../../../utils/pocketBase";
 import ServerMembersBar from "../../components/MembersBar/ServerMembersBar";
 import { serversService } from "../../services/ServersService";
 import { channelsService } from "../../services/ChannelsService";
-import { ServersResponse } from "../../../pocketbase-types";
+import { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 const Server: NextPage = () => {
   const router = useRouter();
   const {id} = router.query

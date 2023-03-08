@@ -7,7 +7,7 @@ import type { Admin, Record } from "pocketbase";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "../../hooks/User";
-import type { ServersResponse } from "../../pocketbase-types";
+import type { ServersResponse } from "../../PocketBaseTypes/pocketbase-types";
 // import { AppState } from "../../AppState.js";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";

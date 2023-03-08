@@ -33,7 +33,7 @@ import { pb } from "../../../utils/pocketBase";
 import { authsService } from "../../services/AuthsService";
 import ServerSelection from "./ServerSelection";
 import DirectMessages from "./DirectMessages";
-import { UsersResponse } from "../../../pocketbase-types";
+import { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import CreateServer from "./CreateServer";
 import ThemeIcon from "./ThemeIcon";
 import Pop from "../../../utils/Pop";

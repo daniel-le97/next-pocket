@@ -1,6 +1,6 @@
 import pocketbase, { Admin, BaseAuthStore, Record, RecordService } from "pocketbase";
 import { AppState } from "../AppState";
-import { UsersRecord } from "../pocketbase-types";
+import { UsersRecord } from "../PocketBaseTypes/pocketbase-types";
 import { env } from "../src/env.mjs";
 // import { logger } from "./Logger.js";
 

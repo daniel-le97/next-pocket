@@ -6,7 +6,7 @@
 import Compressor from "compressorjs";
 import { useEffect, useState } from "react";
 import { AppState } from "../../AppState";
-import { Collections } from "../../pocketbase-types";
+import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 

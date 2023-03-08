@@ -7,7 +7,7 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "type": "npx pocketbase-typegen --json ./pb_schema.json"
+    "type": "npx pocketbase-typegen --out PocketBaseTypes/pocketbase-types.ts --json ./pb_schema.json"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.12",

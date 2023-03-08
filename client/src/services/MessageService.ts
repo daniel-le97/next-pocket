@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 // import type pocketbase from "pocketbase";
 import { AppState } from "../../AppState";
-import { Collections, MessagesRecord, MessagesResponse } from "../../pocketbase-types";
+import { Collections, MessagesRecord, MessagesResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import type { Message } from "../models/Message";

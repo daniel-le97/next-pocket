@@ -1,5 +1,5 @@
 import { AppState } from "../../AppState";
-import { Collections, ServersResponse, UsersResponse } from "../../pocketbase-types";
+import { Collections, ServersResponse, UsersResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 
 class UserService{

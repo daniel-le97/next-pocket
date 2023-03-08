@@ -11,13 +11,13 @@ import { AppState } from "../../AppState";
 import type {
   ServersResponse,
   UsersStatusResponse,
-} from "../../pocketbase-types";
+} from "../../PocketBaseTypes/pocketbase-types";
 import {
   BaseSystemFields,
   Collections,
   ServersRecord,
   UsersStatusRecord,
-} from "../../pocketbase-types";
+} from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { serversService } from "../services/ServersService";

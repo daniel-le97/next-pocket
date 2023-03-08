@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useState, useEffect } from "react";
 import { BsHash } from "react-icons/bs";
 import { AppState } from "../../../AppState";
-import { ChannelsResponse } from "../../../pocketbase-types";
+import { ChannelsResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
 import { channelsService } from "../../services/ChannelsService";
 import { messageService } from "../../services/MessageService";
