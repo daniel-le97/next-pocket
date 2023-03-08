@@ -17,14 +17,18 @@ import { ServersResponse } from "../../../pocketbase-types";
 const Server: NextPage = () => {
   const router = useRouter();
   const {id} = router.query
+  // const server= AppState.activeServer
   // console.log(router.query)
   const server: ServersResponse | null = AppState.activeServer;
+  const user = pb.authStore.model;
   useEffect(() => {
-    const user = pb.authStore.model;
     if (!user) {
       router.push("/login");
     }
-  }, [router]);
+    if (!server) {
+          router.push("/");
+    }
+  }, []);
 
   useEffect(()=>{
     const getServerChannels = async () => {

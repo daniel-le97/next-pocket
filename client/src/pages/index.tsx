@@ -6,7 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsBadge4K, BsCheck, BsCircle, BsCircleFill } from "react-icons/bs";
-import { FaMousePointer } from "react-icons/fa";
+import { FaMousePointer, FaThumbsUp, FaUserPlus } from "react-icons/fa";
 import { AppState } from "../../AppState";
 import type {
   ServersResponse,
@@ -100,10 +100,10 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
         });
       setUserStatus(res.items);
     };
-    // getUserStatus()
+    getUserStatus()
   }, []);
   return (
-    <div className="group   h-auto w-full overflow-hidden rounded-xl bg-gray-300  from-zinc-900 to-gray-600 text-white   shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4">
+    <div className="group  h-auto w-full overflow-hidden rounded-xl bg-gray-300  from-zinc-900 to-gray-600 text-white   shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4">
       <img
         src={server.expand.image.url}
         alt=""
@@ -116,8 +116,11 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
             <BsCheck />
           </div>
           <h1>{server.name}</h1>
-          <div className="cursor-pointer" onClick={joinServer}>
-            <FaMousePointer size={20} />
+          <div className="cursor-pointer group/join relative" onClick={joinServer}>
+            <FaUserPlus size={20} />
+            <span className="  absolute scale-0 -right-14 top-0 transition-all duration-200 ease-in  rounded-md px-2 bg-zinc-900 group-hover/join:scale-100">
+              Join
+            </span>
           </div>
         </div>
         <p className="mt-2">{server.description}</p>

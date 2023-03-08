@@ -5,33 +5,40 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AppState } from "../../../AppState";
-import type { ServersResponse } from "../../../pocketbase-types";
+import type {
+  FileUploadsResponse,
+  ServersResponse,
+} from "../../../pocketbase-types";
 import { useUser } from "../../../utils/pocketBase";
 import { serversService } from "../../services/ServersService";
 
 const ServerSelection = () => {
-  const [servers,setServers] = useState([])
-const user = useUser()
+  const [servers, setServers] = useState<
+    ServersResponse<FileUploadsResponse<unknown>>[]
+  >([]);
+  const user = useUser();
   useEffect(() => {
-    setServers(AppState.userServers)
-    // const getServers = async () => {
-    //   await serversService.getUserServers(user?.id)
-    // };
-    // getServers();
-  }, []);
+    setServers(AppState.userServers);
+  }, [AppState.userServers]);
   return (
-    <>{servers && servers.map((s) => <ServerIcon server={s} key={s.id} />)}</>
+    <>
+      {servers &&
+        servers.map((s, index) => <ServerIcon server={s} key={index} />)}
+    </>
   );
 };
 
-const ServerIcon = ({ server }: { server: ServersResponse }) => {
+const ServerIcon = ({
+  server,
+}: {
+  server: ServersResponse<FileUploadsResponse<unknown>>;
+}) => {
   const router = useRouter();
   const activeServer = AppState.activeServer;
   const handleClick = () => {
     AppState.activeServer = server;
-    
+
     router.push(`http://localhost:3000/server/${server.id}`);
-    
   };
 
   return (
@@ -41,14 +48,15 @@ const ServerIcon = ({ server }: { server: ServersResponse }) => {
         alt="UserIcon"
         className={
           activeServer?.id === server.id
-            ? "h-12 w-12 rounded-3xl rounded-xl border-2 border-white object-cover transition-all duration-300 ease-linear"
+            ? "h-12 w-12  rounded-xl border-2 border-white object-cover transition-all duration-300 ease-linear"
             : "h-12 w-12 rounded-3xl object-cover transition-all duration-300 ease-linear hover:rounded-xl"
         }
         onClick={handleClick}
       />
 
-      <span className=" sidebar-tooltip group-hover:scale-100">
+      <span className=" sidebar-tooltip group-hover:scale-100 ">
         {server.name}
+        {/* {JSON.stringify(server)} */}
       </span>
       {activeServer?.id === server.id && (
         <span className=" absolute -left-3.5 h-3 w-3 rounded-full bg-white transition-all duration-300   ease-linear"></span>

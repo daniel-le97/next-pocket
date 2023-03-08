@@ -41,17 +41,6 @@ import Pop from "../../../utils/Pop";
 const SideBar = () => {
   const [user, setUser] = useState(null);
 
-  const router = useRouter();
-  // const logOut = useLogOut();
-
-  async function logOut() {
-    const yes = await Pop.confirm();
-    if (!yes) {
-      return;
-    }
-    pb.authStore.clear();
-    router.push("/login");
-  }
   useEffect(() => {
     // @ts-ignore
     setUser(pb.authStore.model);
@@ -77,14 +66,7 @@ const SideBar = () => {
         <>
           <UserIcon user={user} />
           <Divider />
-          <div onClick={logOut}>
-            <SideBarIcon
-              icon={<FaArrowCircleRight size="28" />}
-              text={"Logout"}
-              router={"/login"}
-              // onClick={logOut()}
-            />
-          </div>
+          <LogOutIcon />
           <SideBarIcon
             icon={<FaCompass size="28" />}
             text={"Explore Servers"}
@@ -171,5 +153,32 @@ const UserIcon = ({ user }: { user: UsersResponse }) => {
   );
 };
 const Divider = () => <hr className="sidebar-hr" />;
+const LogOutIcon = () => {
+  const router = useRouter();
+  // const logOut = useLogOut();
 
+  const logOut = async () => {
+ const confirmed = await Pop.confirm('LogOut?','Will be redirected to login page','Logout','question');
+    if (!confirmed) {
+     return
+    } 
+    pb.authStore.clear();
+    router.push("/login");
+  };
+
+  const confirmLogout = async () => {
+    const confirmed = await Pop.confirm();
+    if (confirmed) {
+      console.log("User confirmed logout.");
+    } else {
+      console.log("User canceled logout.");
+    }
+  };
+  return (
+    <div className=" sidebar-icon group " onClick={logOut}>
+      <FaArrowCircleRight size="28" />
+      <span className=" sidebar-tooltip group-hover:scale-100">Logout</span>
+    </div>
+  );
+};
 export default observer(SideBar);
