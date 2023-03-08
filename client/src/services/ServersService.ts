@@ -4,9 +4,6 @@ import type {
   ServersRecord,
   ServersResponse,
   UsersResponse} from "../../pocketbase-types";
-import {
-  UsersRecord
-} from "../../pocketbase-types";
 import { Collections } from "../../pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
@@ -22,7 +19,7 @@ class ServersService {
     if (!data) {
       throw new Error("No FormData Sent");
     }
-    console.log(data);
+    // console.log(data);
     // make sure user does not have a serverMember Record for the server already
     const userServerMemberRecord = await this.getUserServerMemberRecord(data)
    if(userServerMemberRecord){
@@ -51,59 +48,42 @@ class ServersService {
       return Pop.error('unable to find server membership to delete')
     }
     // delete the user from the servers memberships
-    await pb.collection(Collections.ServerMembers).delete(memberShip.id)
+   return await pb.collection(Collections.ServerMembers).delete(memberShip.id)
   }
 
   async getUserServers(userId: string) {
-    try {
+      // get the servers the user has a membership record for 
       const res = await pb.collection("serverMembers").getFullList({
-        filter: `user = "${userId}"`,
+        filter: `user="${userId}"`,
         expand: "server,servers(serverMembers).image",
       });
-      console.log(res);
-
-      // AppState.userServers = res.map(s=> s.expand.server)
-      // const servers = await pb
-      //   .collection(Collections.Servers)
-      //   .getFullList<ServersResponse<Texpand>>(50, {
-      //     filter: `members.id ?= "${userId}"`,
-      //     expand: "members",
-      //   });
-      // AppState.userServers = res
-      // console.log("test", AppState.userServers);
-
-      //  const memberIds =  servers.map(server => server.expand?.members.map(member => member.id))
-      // console.log('getUserServers', servers)
-      // return servers;
-    } catch (error) {
-      // Pop.error(error)
-      console.error(error);
-    }
+      // console.log(res);
   }
 
   async getServersList() {
-    try {
+    // get all servers available
       const res = await pb
         .collection(Collections.Servers)
         .getList<ServersResponse>(1, 50, {
           expand: "image,members",
         });
+      
+      // add the servers to the global state
       AppState.servers = res.items;
-      console.log(AppState.servers);
-    } catch (error) {
-      console.error(error);
-      throw new Error("Failed to get channel list");
-    }
+      // console.log(AppState.servers);
+
   }
 
   async createServer(serverData: ServersRecord) {
-    console.log(serverData);
-
+    // create a server with the provided data
     const newServer = await pb
       .collection(Collections.Servers)
       .create<ServersResponse>(serverData);
-
-    AppState.servers = [...AppState.servers, newServer];
+    
+    // update the global servers state if the server is created successfully
+    if (newServer) {
+      AppState.servers = [...AppState.servers, newServer];
+    }
   }
 }
 
