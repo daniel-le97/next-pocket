@@ -73,15 +73,15 @@ class ServersService {
 
     // filter out the servers from the serverMembers records
     const servers = res.map(member => member.expand?.server)
-    console.log('userServers', res)
-    return;
+    // console.log('userServers', servers)
+    // return;
     
     
     // set the global state for usersServers
     AppState.userServers = servers
     
     // return everything
-    return res
+    return servers
   }
 
   async getServersList() {
