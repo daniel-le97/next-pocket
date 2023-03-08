@@ -59,10 +59,9 @@ class ServersService {
     // get the servers the user has a membership record for
     const res = await pb.collection("serverMembers").getFullList({
       filter: `user="${userId}"`,
-      expand: "server,servers(serverMembers).image",
+      expand: "server.image",
     });
-    console.log(res);
-    AppState.userServers = res;
+    console.log("userServers", res);
     return res;
   }
 
