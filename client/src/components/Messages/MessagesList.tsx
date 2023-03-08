@@ -64,7 +64,7 @@ const Messages = () => {
                 ? " post-filtered group relative"
                 : " post  group  relative"
             }
-            key={message.id}
+            key={index}
           >
             <div className="avatar-wrapper relative">
               <img

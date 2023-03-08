@@ -15,8 +15,6 @@ type TServerExpand<T> = {
   server: ServersResponse<T>;
 };
 
-
-
 class ServersService {
   async joinServer(data: ServerData) {
     // if no data is sent throw an error
@@ -26,7 +24,7 @@ class ServersService {
 
     // make sure user does not have a serverMember Record for the server already
     const userServerMemberRecord = await this.getUserServerMemberRecord(data);
-    console.log('userServerMemberRecord',userServerMemberRecord); 
+    console.log("userServerMemberRecord", userServerMemberRecord);
 
     //if we have a record for this user is a member => don't go any further
     if (userServerMemberRecord) {
@@ -36,11 +34,13 @@ class ServersService {
     // create the serverMember Record
     const res = await pb
       .collection(Collections.ServerMembers)
-      .create<ServerMembersResponse>(data,{
-        expand:'server.image'
+      .create<ServerMembersResponse<T>>(data, {
+        expand: "server.image",
       });
-      console.log('joinedServer', res);
-      
+    console.log("joinedServer", res);
+    AppState.userServers = [...AppState.userServers,res.expand.server]
+    AppState.activeServer = res.expand.server
+
     // return the response for use as a "hook"
     return res;
   }
@@ -49,8 +49,8 @@ class ServersService {
     // get the users membership for the server and return it
     const record = await pb
       .collection(Collections.ServerMembers)
-      .getList<ServerMembersResponse>(1,1,{filter:
-        `user="${data.user}" && server="${data.server}"`
+      .getList<ServerMembersResponse>(1, 1, {
+        filter: `user="${data.user}" && server="${data.server}"`,
       });
     return record.items[0];
   }
@@ -66,22 +66,23 @@ class ServersService {
 
   async getUserServers(userId: string) {
     // get the servers the user has a membership record for
-    const res = await pb.collection("serverMembers").getFullList<ServerMembersResponse<TServerExpand<FileUploadsResponse>>>({
-      filter: `user="${userId}"`,
-      expand: "server.image",
-    });
+    const res = await pb
+      .collection("serverMembers")
+      .getFullList<ServerMembersResponse<TServerExpand<FileUploadsResponse>>>({
+        filter: `user="${userId}"`,
+        expand: "server.image",
+      });
 
     // filter out the servers from the serverMembers records
-    const servers = res.map(member => member.expand?.server)
+    const servers = res.map((member) => member.expand?.server);
     // console.log('userServers', servers)
     // return;
-    
-    
+
     // set the global state for usersServers
-    AppState.userServers = servers
-    
+    AppState.userServers = servers;
+
     // return everything
-    return servers
+    return servers;
   }
 
   async getServersList() {

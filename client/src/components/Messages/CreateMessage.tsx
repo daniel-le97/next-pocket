@@ -23,8 +23,8 @@ const CreateMessage = () => {
       text: newMessage,
       user: user?.id,
       channel: AppState?.activeChannel?.id,
-      // @ts-ignore
-      room: AppState?.activeRoom?.id,
+      // // @ts-ignore
+      // room: AppState?.activeRoom?.id,
     };
     const createdMessage = await pb.collection("messages").create(data);
     setNewMessage("");

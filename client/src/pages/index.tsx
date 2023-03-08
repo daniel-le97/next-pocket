@@ -71,6 +71,7 @@ const Explore: NextPage = () => {
 const ServerCard = ({ server }: { server: ServersResponse }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
+  const router = useRouter()
   async function joinServer() {
     try {
       if (!user) {
@@ -91,6 +92,8 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
       }
       if (await serversService.joinServer(data)) {
         Pop.success("Thanks for Joining the Server!");
+        router.push(`http://localhost:3000/server/${server.id}`);
+        
       }
     } catch (error) {
       Pop.error(error, "Join Server");
