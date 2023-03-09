@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { AppState } from "../../../AppState";
 import type { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { useUser } from "../../../utils/pocketBase";
-import { serversService } from "../../services/ServersService";
+import { membersService } from "../../services/membersService";
 
 const ServerSelection = () => {
   const [servers, setServers] = useState<

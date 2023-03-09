@@ -10,28 +10,23 @@ import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 // import { pb } from "../../utils/pocketBase";
 import Layout from "../components/Layout";
-import { serversService } from "../services/ServersService";
+import { membersService } from "../services/membersService";
 
 import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  const user = AppState.user;
+  // const user = AppState.user;
 
+  const user = useUser()
   useEffect(() => {
-    const userServers = async () => {
-      try {
-        const servers = await serversService.getUserServers(user.id);
+    if (user) {
+      const userServers = async () => {
+        const servers = await membersService.getUserServers(user.id);
         return servers;
-      } catch (error) {
-        // console.log(error.status)
-        if (error.status == 404) {
-          return;
-        }
-        Pop.error(error);
-      }
-    };
-    userServers();
-  }, []);
+      };
+      userServers();
+    }
+  }, [user]);
 
   useEffect(() => {
     const user = pb.authStore.model;

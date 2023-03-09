@@ -10,13 +10,13 @@ import { useRouter } from "next/router";
 import { AppState } from "../../../AppState";
 import { authsService } from "../../services/AuthsService";
 import { pb } from "../../../utils/pocketBase";
-import ServerMembersBar from "../../components/MembersBar/ServerMembersBar";
-import { serversService } from "../../services/ServersService";
+import MembersBar from "../../components/MembersBar/MembersBar";
+import { membersService } from "../../services/membersService";
 import { channelsService } from "../../services/ChannelsService";
-import { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import type { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 const Server: NextPage = () => {
   const router = useRouter();
-  const {id} = router.query
+  const { id } = router.query;
   // const server= AppState.activeServer
   // console.log(router.query)
   const server: ServersResponse | null = AppState.activeServer;
@@ -26,18 +26,17 @@ const Server: NextPage = () => {
       router.push("/login");
     }
     if (!server) {
-          router.push("/");
+      router.push("/");
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const getServerChannels = async () => {
-      await channelsService.getChannelsByServerId(id?.toString())
-      AppState.messages = []
-    }
-    getServerChannels()
-  },[])
-
+      await channelsService.getChannelsByServerId(id?.toString());
+      AppState.messages = [];
+    };
+    getServerChannels();
+  }, []);
 
   return (
     <>
@@ -51,13 +50,11 @@ const Server: NextPage = () => {
           {/* <SideBar /> */}
           <ChannelsBar />
           <ContentContainer />
-          <ServerMembersBar />
+          <MembersBar />
         </div>
       </main>
     </>
   );
 };
-
-
 
 export default Server;

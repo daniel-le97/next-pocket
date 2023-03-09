@@ -8,9 +8,9 @@ export enum Collections {
 	FileUploads = "fileUploads",
 	FriendRequest = "friendRequest",
 	Friends = "friends",
+	Members = "members",
 	Messages = "messages",
 	Rooms = "rooms",
-	ServerMembers = "serverMembers",
 	Servers = "servers",
 	Users = "users",
 	UsersStatus = "usersStatus",
@@ -49,7 +49,7 @@ export type ViewSystemFields<T = never> = {
 
 export type ChannelsRecord = {
 	members?: RecordIdString[]
-	messages?: RecordIdString
+	messages?: RecordIdString[]
 	title?: string
 	server?: RecordIdString
 }
@@ -84,6 +84,11 @@ export type FriendsRecord = {
 	friends?: RecordIdString[]
 }
 
+export type MembersRecord = {
+	user: RecordIdString
+	server: RecordIdString
+}
+
 export type MessagesRecord = {
 	text: string
 	user: RecordIdString
@@ -95,18 +100,13 @@ export type RoomsRecord = {
 	title?: string
 }
 
-export type ServerMembersRecord = {
-	user: RecordIdString
-	server: RecordIdString
-}
-
 export type ServersRecord = {
 	image?: RecordIdString
 	name: string
 	description?: string
 	members?: RecordIdString[]
 	imageUrl?: string
-	owner: RecordIdString
+	owner?: RecordIdString
 }
 
 export type UsersRecord = {
@@ -126,9 +126,9 @@ export type DirectMessagesResponse<Texpand = unknown> = DirectMessagesRecord & B
 export type FileUploadsResponse<Texpand = unknown> = FileUploadsRecord & BaseSystemFields<Texpand>
 export type FriendRequestResponse<Texpand = unknown> = FriendRequestRecord & BaseSystemFields<Texpand>
 export type FriendsResponse<Texpand = unknown> = FriendsRecord & BaseSystemFields<Texpand>
+export type MembersResponse<Texpand = unknown> = MembersRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
 export type RoomsResponse<Texpand = unknown> = RoomsRecord & BaseSystemFields<Texpand>
-export type ServerMembersResponse<Texpand = unknown> = ServerMembersRecord & BaseSystemFields<Texpand>
 export type ServersResponse<Texpand = unknown> = ServersRecord & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = UsersRecord & AuthSystemFields<Texpand>
 export type UsersStatusResponse = UsersStatusRecord & BaseSystemFields
@@ -139,9 +139,9 @@ export type CollectionRecords = {
 	fileUploads: FileUploadsRecord
 	friendRequest: FriendRequestRecord
 	friends: FriendsRecord
+	members: MembersRecord
 	messages: MessagesRecord
 	rooms: RoomsRecord
-	serverMembers: ServerMembersRecord
 	servers: ServersRecord
 	users: UsersRecord
 	usersStatus: UsersStatusRecord
