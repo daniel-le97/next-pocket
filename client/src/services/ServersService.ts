@@ -131,7 +131,7 @@ AppState.userServers = AppState.userServers.filter(s=>s?.id !=data.server )
       })
       const defaultServerChannel =  await channelsService.createChannel(newServer.id)
       AppState.servers = [...AppState.servers, newServer];
-      AppState.userServers = [...AppState.userServers,newServer]
+      // AppState.userServers = [...AppState.userServers,newServer]
       return newServer
     }
 
