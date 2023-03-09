@@ -14,7 +14,8 @@ import ServerMembersBar from "../../components/MembersBar/ServerMembersBar";
 import { serversService } from "../../services/ServersService";
 import { channelsService } from "../../services/ChannelsService";
 import { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
-const Server: NextPage = () => {
+import { observer } from "mobx-react";
+const DirectMessagesId: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   // const server= AppState.activeServer
@@ -57,4 +58,4 @@ const Server: NextPage = () => {
   );
 };
 
-export default Server;
+export default observer(DirectMessagesId);

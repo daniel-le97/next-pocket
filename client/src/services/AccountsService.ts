@@ -11,7 +11,7 @@ class  AccountsService {
 
 
   async getFriendsList(){
-const friendsList = await 
+
   }
 }
 export const accountsService = new AccountsService()

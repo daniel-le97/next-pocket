@@ -54,7 +54,7 @@ class FriendService {
   async declineFriendRequest(id: string) {
     const request = await pb
       .collection(Collections.FriendRequest)
-      .get<FriendRequestResponse>(id);
+      .getOne<FriendRequestResponse>(id);
     if (request.status === "pending") {
       request.status = "declined";
       const response = await pb

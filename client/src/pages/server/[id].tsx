@@ -10,8 +10,7 @@ import { useRouter } from "next/router";
 import { AppState } from "../../../AppState";
 import { authsService } from "../../services/AuthsService";
 import { pb } from "../../../utils/pocketBase";
-import MembersBar from "../../components/MembersBar/MembersBar";
-import { membersService } from "../../services/membersService";
+import ServerMembersBar from "../../components/MembersBar/ServerMembersBar";
 import { channelsService } from "../../services/ChannelsService";
 import type { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 const Server: NextPage = () => {
@@ -50,7 +49,7 @@ const Server: NextPage = () => {
           {/* <SideBar /> */}
           <ChannelsBar />
           <ContentContainer />
-          <MembersBar />
+         <ServerMembersBar/>
         </div>
       </main>
     </>

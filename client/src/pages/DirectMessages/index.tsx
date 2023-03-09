@@ -13,10 +13,26 @@ import ContentContainer from "../../components/Messages/MessageContainer";
 
 import Head from "next/head";
 import FriendsBar from "../../components/DirectMessages/FriendsBar";
+import { userService } from "../../services/UserService";
+import Pop from "../../../utils/Pop";
+import { AppState } from "../../../AppState";
 function DirectMessagesPage() {
   const [user, setUser] = useState<Record | Admin | null>();
   const [servers, setServers] = useState<ServersResponse<unknown>>();
-  useEffect(() => {}, []);
+  const friends = AppState.users
+   useEffect(() => {
+     const getFriendsList = async () => {
+       try {
+         await userService.getUsersList();
+       } catch (error) {
+         Pop.error(error);
+       }
+     };
+
+     getFriendsList();
+
+     // setFriends(AppState.users)
+   }, []);
 
   return (
     <>
@@ -28,7 +44,7 @@ function DirectMessagesPage() {
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  w-full ">
           {/* <SideBar /> */}
-          <FriendsBar />
+          <FriendsBar friends={friends} />
           <ContentContainer />
           {/* <ServerMembersBar /> */}
         </div>

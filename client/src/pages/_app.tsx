@@ -17,7 +17,7 @@ import "../styles/globals.css";
 const MyApp: AppType = ({ Component, pageProps }) => {
   // const user = AppState.user;
 
-  const user = useUser()
+  const user = useUser();
   useEffect(() => {
     if (user) {
       const userServers = async () => {

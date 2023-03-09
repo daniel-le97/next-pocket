@@ -1,36 +1,48 @@
 import { pb } from "../../../utils/pocketBase";
 import { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
-import { Collections, UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
-export default function UserStatus({ user }:{user:UsersResponse}) {
+import {
+  Collections,
+  UsersResponse,
+} from "../../../PocketBaseTypes/pocketbase-types";
+import Pop from "../../../utils/Pop";
+export default function UserStatus({ user }: { user: UsersResponse }) {
   const [isOnline, setIsOnline] = useState(false);
   const [userStatusRecord, setUserStatusRecord] = useState<any>(null);
   useEffect(() => {
-    let unsubscribe: (() => void) | null = null;
+  
+    
+    // let unsubscribe: (() => void) | null = null;
     const getStatus = async () => {
-      const res = await pb
-        .collection(Collections.UsersStatus)
-        .getFirstListItem(`userId="${user?.id}"`);
+      try {
+       const res = await pb
+         .collection(Collections.UsersStatus)
+         .getFirstListItem(`userId="${user?.id}"`);
 
-  //  if(!res){
-  //   throw new Error ('no res')
-  //  }
-      setUserStatusRecord(res);
+        if(!res){
+         throw new Error ('no res')
+        }
+       setUserStatusRecord(res);
 
-      setIsOnline(res.isOnline);
+       setIsOnline(res.isOnline);
+      
+     } catch (error) {
+      if (error.status === 404) {
+        return
+      }
+      Pop.error(error)
+     }
     };
     getStatus();
 
-    unsubscribe = async () => {
-      const record = await pb
+   const  unsubscribe = async () => {
+  
+      await pb
         .collection(Collections.UsersStatus)
-        .getFirstListItem(`userId="${user?.id}"`);
-     
-
-      await pb.collection(Collections.UsersStatus).subscribe(record.id, function (e) {
-        setIsOnline(e.record.isOnline);
-        //  console.log(isOnline);
-      });
+        .subscribe(userStatusRecord?.id, function (e) {
+          setIsOnline(e.record.isOnline);
+          //  console.log(isOnline);
+        });
     };
     return () => {
       if (unsubscribe) {
