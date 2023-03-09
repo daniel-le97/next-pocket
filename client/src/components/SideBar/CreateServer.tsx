@@ -25,12 +25,12 @@ const initialFormData = {
   // imageFile: null,
 };
 const CreateServer = () => {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-  const router = useRouter()
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -50,11 +50,11 @@ const CreateServer = () => {
   });
   const onSubmit = async (data: any) => {
     try {
-    const newServer=  await serversService.createServer(data);
+      const newServer = await serversService.createServer(data);
       reset();
       setImageUrl("");
       closeModal();
-   router.push(`http://localhost:3000/server/${newServer.id}`);
+      router.push(`http://localhost:3000/server/${newServer.id}`);
     } catch (error) {
       console.error("createServer", error);
 
@@ -234,7 +234,7 @@ const CreateServer = () => {
 };
 
 const FormModal = () => {
-  let [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
 
   function closeModal() {
     setIsOpen(false);

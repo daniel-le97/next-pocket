@@ -3,8 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
-import type { ChannelsResponse, FileUploadsResponse, MessagesResponse, ServersResponse, UsersResponse } from "./PocketBaseTypes/pocketbase-types";
-import { BaseSystemFields, ChannelsRecord, MessagesRecord, UsersRecord } from "./PocketBaseTypes/pocketbase-types";
+import type { ChannelsResponse, MessagesResponse, ServersResponse, UsersResponse } from "./PocketBaseTypes/pocketbase-types";
+import type { Server } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
 
@@ -21,7 +21,7 @@ class ObservableAppState {
 
   channelTitles: (string | undefined)[] = [];
   channels: ChannelsResponse[] = [];
-  servers: ServersResponse[] = [];
+  servers: Server[] = [];
   users: UsersResponse[] = [];
   messages: MessagesResponse[] = [];
   loading = 0;
@@ -38,12 +38,13 @@ class ObservableAppState {
 export const AppState = new Proxy(new ObservableAppState(), {
   get(target, prop) {
     isValidProp(target, prop);
-
+    // @ts-expect-error uses explicit any
     return target[prop];
   },
   set(target, prop, value) {
     isValidProp(target, prop);
     action(() => {
+      // @ts-expect-error uses explicit any
       target[prop] = value;
     })();
     return true;

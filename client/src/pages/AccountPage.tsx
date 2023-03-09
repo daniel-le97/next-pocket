@@ -12,7 +12,7 @@ import type { ServersResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { accountsService } from "../services/AccountsService";
-import { serversService } from "../services/ServersService";
+import { membersService } from "../services/membersService";
 
 function AccountPage() {
   const [user, setUser] = useState<Record | Admin | null>();
@@ -23,12 +23,12 @@ function AccountPage() {
     if (currentUser) {
       setUser(currentUser);
       const getServers = async () => {
-        const servers = await serversService.getUserServers(currentUser.id);
+        const servers = await membersService.getUserServers(currentUser.id);
         setServers(servers);
       };
       getServers();
     }
-    serversService
+    membersService
       .getUserServers(pb.authStore.model?.id)
       .then((value) => setServers(value));
   }, []);
@@ -44,9 +44,9 @@ function AccountPage() {
               className="h-32 w-32 rounded-full shadow-md shadow-zinc-900"
             />
           </div>
-          <div className="card-body p-5 text-center flex justify-center">
+          <div className="card-body flex justify-center p-5 text-center">
             {/* {JSON.stringify(user)} */}
-            <EditAccount  />
+            <EditAccount />
           </div>
         </div>
       </div>
@@ -105,7 +105,6 @@ const EditAccount = () => {
         <input
           {...register("avatarUrl", {
             required: true,
-           
           })}
           type="url"
           // onChange={handleChange}
@@ -118,7 +117,6 @@ const EditAccount = () => {
         <input
           {...register("emailVisibility", {
             required: true,
-           
           })}
           type="checkbox"
           // onChange={handleChange}

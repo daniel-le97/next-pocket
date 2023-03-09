@@ -8,12 +8,12 @@ import { pb } from "../../../utils/pocketBase";
 import ChannelSelection from "../Channels/ChannelSelection";
 import { AppState } from "../../../AppState";
 import { userService } from "../../services/UserService";
-import { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import type { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import UserStatus from "../Messages/UsersStatus";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 // const topics = ["general", "tailwind-css", "react"];
 
-const ServerMembersBar = () => {
+const MembersBar = () => {
   const users = AppState.users;
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
@@ -139,4 +139,4 @@ const User = ({ user }: { user: UsersResponse }) => {
   );
 };
 
-export default observer(ServerMembersBar);
+export default observer(MembersBar);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react-lite";
@@ -5,22 +6,22 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { BsBadge4K, BsCheck, BsCircle, BsCircleFill } from "react-icons/bs";
-import { FaMousePointer, FaThumbsUp, FaUserPlus } from "react-icons/fa";
+import { BsCheck, BsCircleFill } from "react-icons/bs";
+import { FaUserPlus } from "react-icons/fa";
 import { AppState } from "../../AppState";
 import type {
-  ServersResponse,
   UsersStatusResponse,
 } from "../../PocketBaseTypes/pocketbase-types";
 import {
-  BaseSystemFields,
   Collections,
-  ServersRecord,
-  UsersStatusRecord,
 } from "../../PocketBaseTypes/pocketbase-types";
+import type { Server } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
+import { membersService } from "../services/membersService";
+
 import { serversService } from "../services/ServersService";
+
 
 const Explore: NextPage = () => {
   const router = useRouter();
@@ -68,7 +69,7 @@ const Explore: NextPage = () => {
   );
 };
 
-const ServerCard = ({ server }: { server: ServersResponse }) => {
+const ServerCard = ({ server }: { server: Server }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
   const router = useRouter();
@@ -90,7 +91,7 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
       if (!yes) {
         return;
       }
-      if (await serversService.joinServer(data)) {
+      if (await membersService.joinServer(data)) {
         Pop.success("Thanks for Joining the Server!");
         router.push(`http://localhost:3000/server/${server.id}`);
       }
@@ -99,8 +100,6 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
     }
   }
   useEffect(() => {
-  
-    
     const getUserStatus = async () => {
       const res = await pb
         .collection(Collections.UsersStatus)
@@ -114,7 +113,7 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
   return (
     <div className=" group  h-auto w-full overflow-hidden rounded-xl bg-gray-300  from-zinc-900 to-gray-600 text-white   shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4">
       <img
-        src={server.expand.image.url}
+        src={server.expand?.image.url}
         alt=""
         className="h-40 w-full rounded-t-xl object-cover"
       />

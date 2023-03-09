@@ -9,22 +9,23 @@ import { useUser } from "../../hooks/User";
 import { pb } from "../../utils/pocketBase";
 // import { pb } from "../../utils/pocketBase";
 import Layout from "../components/Layout";
-import { serversService } from "../services/ServersService";
+import { membersService } from "../services/membersService";
 
 import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  const user = AppState.user;
-  
+  // const user = AppState.user;
+
+  const user = useUser()
   useEffect(() => {
     if (user) {
       const userServers = async () => {
-        const servers = await serversService.getUserServers(user.id);
+        const servers = await membersService.getUserServers(user.id);
         return servers;
       };
       userServers();
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const user = pb.authStore.model;
