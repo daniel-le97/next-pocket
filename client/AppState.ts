@@ -12,7 +12,7 @@ class ObservableAppState {
   user: Record<string, any> | null = null;
   /** @type {import('./src/models/Account.js').Account | null} */
 
-  userServers: (ServersResponse<FileUploadsResponse<unknown>> | undefined)[] = [];
+  userServers: (ServersResponse<unknown> | undefined)[] = [];
   account: Record<string, any> | null = null;
   messageQuery = "";
 

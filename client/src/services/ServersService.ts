@@ -4,18 +4,18 @@ import type {
   FileUploadsResponse,
   ServerMembersResponse,
   ServersRecord,
-  ServersResponse,
-  UsersResponse,
+  ServersResponse
 } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
+import type { TServerExpand } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { channelsService } from "./ChannelsService";
 
 type ServerData = { user: string; server: string };
-type TServerExpand<T> = {
-  server: ServersResponse<T>;
-};
+// type TServerExpand<T> = {
+//   server: ServersResponse<T>;
+// };
 
 class ServersService {
   async joinServer(data: ServerData) {
@@ -26,7 +26,7 @@ class ServersService {
 
     // make sure user does not have a serverMember Record for the server already
     const userServerMemberRecord = await this.getUserServerMemberRecord(data);
-    console.log("userServerMemberRecord", userServerMemberRecord);
+    console.log('is-member', "userServerMemberRecord", userServerMemberRecord);
 
     //if we have a record for this user is a member => don't go any further
     if (userServerMemberRecord) {
@@ -36,12 +36,12 @@ class ServersService {
     // create the serverMember Record
     const res = await pb
       .collection(Collections.ServerMembers)
-      .create<ServerMembersResponse<T>>(data, {
+      .create<ServerMembersResponse<TServerExpand<FileUploadsResponse>>>(data, {
         expand: "server.image",
       });
     console.log("joinedServer", res);
-    AppState.userServers = [...AppState.userServers,res.expand.server]
-    AppState.activeServer = res.expand.server
+    // AppState.userServers = [...AppState.userServers,res.expand.server]
+    // AppState.activeServer = res.expand?.server
 
     // return the response for use as a "hook"
     return res;
