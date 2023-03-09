@@ -98,6 +98,28 @@ class ChannelsService {
       throw new Error("Failed to get channel list");
     }
   }
+
+
+  async createChannel(serverId:string){
+    const data = {
+      members:[],
+      messages:[],
+      title:"general",
+      server:serverId
+    }
+    const newChannel = await  pb.collection(Collections.Channels).create<ChannelsResponse>(data)
+
+
+    
+    console.log(newChannel);
+    if (newChannel) {
+      
+      AppState.channels = [...AppState.channels,newChannel]
+      AppState.activeChannel = newChannel
+    }
+
+
+  }
 }
 
 export const channelsService = new ChannelsService();

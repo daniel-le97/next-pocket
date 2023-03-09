@@ -36,7 +36,7 @@ const Server: NextPage = () => {
       AppState.messages = []
     }
     getServerChannels()
-  })
+  },[])
 
 
   return (

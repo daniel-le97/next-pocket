@@ -1,5 +1,6 @@
 import { AppState } from "../../AppState";
 import type {
+  ChannelsResponse,
   FileUploadsResponse,
   ServerMembersResponse,
   ServersRecord,
@@ -9,6 +10,7 @@ import type {
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
+import { channelsService } from "./ChannelsService";
 
 type ServerData = { user: string; server: string };
 type TServerExpand<T> = {
@@ -104,16 +106,36 @@ AppState.userServers = AppState.userServers.filter(s=>s?.id !=data.server )
     // console.log(AppState.servers);
   }
 
+
+  //TODO When Creating a Server must also create a serverMember Collection Record & a Default Channel Record for the Server, push them to the server.Id page .
   async createServer(serverData: ServersRecord) {
     // create a server with the provided data
     const newServer = await pb
       .collection(Collections.Servers)
-      .create<ServersResponse>(serverData);
+      .create<ServersResponse>(serverData,{
+        expand:"image"
+      });
 
     // update the global servers state if the server is created successfully
     if (newServer) {
+    
+
+
+
+      const data:ServerData = {
+        server:newServer.id,
+        user:newServer.owner
+      }
+      const userServerMemberRecord = await pb.collection(Collections.ServerMembers).create(data,{
+        expand:'server.image'
+      })
+      const defaultServerChannel =  await channelsService.createChannel(newServer.id)
       AppState.servers = [...AppState.servers, newServer];
+      AppState.userServers = [...AppState.userServers,newServer]
+      return newServer
     }
+
+  
   }
 }
 

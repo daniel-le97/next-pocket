@@ -53,12 +53,10 @@ const ChannelsBar = () => {
           {expanded &&
             channels &&
             // @ts-ignore
-            channels.map((c) => (
-              <ChannelSelection selection={c} key={c.id} />
-            ))}
+            channels.map((c) => <ChannelSelection selection={c} key={c.id} />)}
 
           <div className="fixed bottom-0 mb-3">
-            <LeaveServer server={server} />
+            {server && <LeaveServer server={server} />}
           </div>
         </div>
       </div>

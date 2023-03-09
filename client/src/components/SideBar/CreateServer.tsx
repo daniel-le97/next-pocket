@@ -8,6 +8,7 @@ import { uploadService } from "../../services/UploadService";
 import { pb } from "../../../utils/pocketBase";
 import ImageUploader from "../ImageUploader";
 import Loader from "../Loader";
+import { useRouter } from "next/router";
 const user = pb.authStore.model;
 const data = {
   name: "test",
@@ -29,6 +30,7 @@ const CreateServer = () => {
   const [progress, setProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -48,10 +50,11 @@ const CreateServer = () => {
   });
   const onSubmit = async (data: any) => {
     try {
-      await serversService.createServer(data);
+    const newServer=  await serversService.createServer(data);
       reset();
       setImageUrl("");
       closeModal();
+   router.push(`http://localhost:3000/server/${newServer.id}`);
     } catch (error) {
       console.error("createServer", error);
 
