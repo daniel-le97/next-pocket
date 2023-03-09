@@ -4,7 +4,7 @@ import type {
   FileUploadsResponse,
   ServerMembersResponse,
   ServersRecord,
-  ServersResponse
+  ServersResponse,
 } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import type { TServerExpand } from "../../PocketBaseTypes/utils";
@@ -26,7 +26,7 @@ class ServersService {
 
     // make sure user does not have a serverMember Record for the server already
     const userServerMemberRecord = await this.getUserServerMemberRecord(data);
-    console.log('is-member', "userServerMemberRecord", userServerMemberRecord);
+    console.log("is-member", "userServerMemberRecord", userServerMemberRecord);
 
     //if we have a record for this user is a member => don't go any further
     if (userServerMemberRecord) {
@@ -61,12 +61,12 @@ class ServersService {
     const memberShip = await this.getUserServerMemberRecord(data);
     if (!memberShip) {
       return Pop.error("unable to find server membership to delete");
-
-
     }
 
-//filter the server from the current userServers Array
-AppState.userServers = AppState.userServers.filter(s=>s?.id !=data.server )
+    //filter the server from the current userServers Array
+    AppState.userServers = AppState.userServers.filter(
+      (s) => s?.id != data.server
+    );
 
     // delete the user from the servers memberships
     return await pb.collection(Collections.ServerMembers).delete(memberShip.id);
@@ -106,36 +106,33 @@ AppState.userServers = AppState.userServers.filter(s=>s?.id !=data.server )
     // console.log(AppState.servers);
   }
 
-
   //TODO When Creating a Server must also create a serverMember Collection Record & a Default Channel Record for the Server, push them to the server.Id page .
   async createServer(serverData: ServersRecord) {
     // create a server with the provided data
     const newServer = await pb
       .collection(Collections.Servers)
-      .create<ServersResponse>(serverData,{
-        expand:"image"
+      .create<ServersResponse>(serverData, {
+        expand: "image",
       });
 
     // update the global servers state if the server is created successfully
     if (newServer) {
-    
-
-
-
-      const data:ServerData = {
-        server:newServer.id,
-        user:newServer.owner
-      }
-      const userServerMemberRecord = await pb.collection(Collections.ServerMembers).create(data,{
-        expand:'server.image'
-      })
-      const defaultServerChannel =  await channelsService.createChannel(newServer.id)
+      const data: ServerData = {
+        server: newServer.id,
+        user: newServer.owner,
+      };
+      const userServerMemberRecord = await pb
+        .collection(Collections.ServerMembers)
+        .create(data, {
+          expand: "server.image",
+        });
+      const defaultServerChannel = await channelsService.createChannel(
+        newServer.id
+      );
       AppState.servers = [...AppState.servers, newServer];
       // AppState.userServers = [...AppState.userServers,newServer]
-      return newServer
+      return newServer;
     }
-
-  
   }
 }
 

@@ -11,10 +11,15 @@ async updateUser(userData:any) {
 }
 
 async getUsersList(){
-  const res =await  pb.collection('users').getList<UsersResponse>(1,50)
-  AppState.users = res.items
-
+  console.log('hi');
   
+  const res =await  pb.collection('users').getList<UsersResponse>(1,50)
+  console.log(res);
+  
+  AppState.users = res.items
+console.log(res.items);
+
+
 }
 
 async getUsersByServerId(){

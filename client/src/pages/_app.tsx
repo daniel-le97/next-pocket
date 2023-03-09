@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { AppState } from "../../AppState";
 import { useUser } from "../../hooks/User";
 import { pb } from "../../utils/pocketBase";
+import Pop from "../../utils/Pop";
 // import { pb } from "../../utils/pocketBase";
 import Layout from "../components/Layout";
 import { serversService } from "../services/ServersService";
@@ -15,15 +16,21 @@ import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const user = AppState.user;
-  
+
   useEffect(() => {
-    if (user) {
-      const userServers = async () => {
+    const userServers = async () => {
+      try {
         const servers = await serversService.getUserServers(user.id);
         return servers;
-      };
-      userServers();
-    }
+      } catch (error) {
+        // console.log(error.status)
+        if (error.status == 404) {
+          return;
+        }
+        Pop.error(error);
+      }
+    };
+    userServers();
   }, []);
 
   useEffect(() => {

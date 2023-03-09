@@ -1,11 +1,17 @@
+import { UsersResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import type { Account } from "../models/Account";
 
 class  AccountsService {
- async updateAccount(data:useer){
+ async updateAccount(data:UsersResponse){
 
-    const account = await pb.collection('users').update(id, data)
+    const account = await pb.collection('users').update(data.id, data)
     return account
+  }
+
+
+  async getFriendsList(){
+const friendsList = await 
   }
 }
 export const accountsService = new AccountsService()

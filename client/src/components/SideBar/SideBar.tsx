@@ -15,6 +15,7 @@ import {
   // @ts-ignore
   BsGearFill,
   BsPerson,
+  BsMessenger,
 } from "react-icons/bs";
 import {
   // @ts-ignore
@@ -50,9 +51,18 @@ const SideBar = () => {
       className="
               sidebar  "
     >
-      <SideBarIcon icon={<FaHome size="28" />} text={"home"} router={"/"} />
+      <SideBarIcon
+        icon={<FaCompass size="28" />}
+        text={"Explore Servers"}
+        router={"/"}
+      />
       <Divider />
-      <DirectMessages />
+      <SideBarIcon
+        icon={<BsMessenger size={22} />}
+        text={"Direct Messages"}
+        router={"/DirectMessages"}
+      />
+
       <Divider />
       <SideBarIcon
         icon={<BsPerson size="32" />}
@@ -67,11 +77,7 @@ const SideBar = () => {
           <UserIcon user={user} />
           <Divider />
           <LogOutIcon />
-          <SideBarIcon
-            icon={<FaCompass size="28" />}
-            text={"Explore Servers"}
-            router={"/"}
-          />
+
           <ServerSelection />
         </>
       ) : (
@@ -106,8 +112,6 @@ const SideBarIcon = ({ icon, text, router }) => {
         <span className=" sidebar-tooltip group-hover:scale-100">{text} </span>
       </div>
     </Link>
-
-    
   );
 };
 
@@ -160,10 +164,15 @@ const LogOutIcon = () => {
   // const logOut = useLogOut();
 
   const logOut = async () => {
- const confirmed = await Pop.confirm('LogOut?','Will be redirected to login page','Logout','question');
+    const confirmed = await Pop.confirm(
+      "LogOut?",
+      "Will be redirected to login page",
+      "Logout",
+      "question"
+    );
     if (!confirmed) {
-     return
-    } 
+      return;
+    }
     pb.authStore.clear();
     router.push("/login");
   };
