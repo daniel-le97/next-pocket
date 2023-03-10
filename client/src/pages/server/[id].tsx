@@ -35,7 +35,7 @@ const Server: NextPage = () => {
       AppState.messages = [];
     };
     getServerChannels();
-  }, []);
+  }, [router]);
 
   return (
     <>
@@ -49,7 +49,7 @@ const Server: NextPage = () => {
           {/* <SideBar /> */}
           <ChannelsBar />
           <ContentContainer />
-         <ServerMembersBar/>
+         {/* <ServerMembersBar/> */}
         </div>
       </main>
     </>

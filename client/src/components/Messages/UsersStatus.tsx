@@ -9,40 +9,44 @@ import Pop from "../../../utils/Pop";
 export default function UserStatus({ user }: { user: UsersResponse }) {
   const [isOnline, setIsOnline] = useState(false);
   const [userStatusRecord, setUserStatusRecord] = useState<any>(null);
+
   useEffect(() => {
-  
-    
-    // let unsubscribe: (() => void) | null = null;
-    const getStatus = async () => {
+
+
+    const fetchStatus = async () => {
       try {
-       const res = await pb
-         .collection(Collections.UsersStatus)
-         .getFirstListItem(`userId="${user?.id}"`);
+       
+        
+        const res = await pb
+          .collection("usersStatus")
+          .getFirstListItem(`userId="${user?.id}"`);
 
-        if(!res){
-         throw new Error ('no res')
+        setUserStatusRecord(res);
+
+        setIsOnline(res.isOnline);
+      } catch (error) {
+        if (error.status === 404) {
+          console.error(error);
+
+          return;
         }
-       setUserStatusRecord(res);
-
-       setIsOnline(res.isOnline);
-      
-     } catch (error) {
-      if (error.status === 404) {
-        return
+        Pop.error(error);
       }
-      Pop.error(error)
-     }
     };
-    getStatus();
+    fetchStatus();
 
-   const  unsubscribe = async () => {
-  
-      await pb
-        .collection(Collections.UsersStatus)
-        .subscribe(userStatusRecord?.id, function (e) {
-          setIsOnline(e.record.isOnline);
-          //  console.log(isOnline);
-        });
+
+    
+    const unsubscribe = async () => {
+    if (userStatusRecord) {
+        await pb
+          .collection("usersStatus")
+          .subscribe(userStatusRecord?.id, function (e) {
+            console.log(e.record);
+
+            setIsOnline(e.record.isOnline);
+          });
+    }
     };
     return () => {
       if (unsubscribe) {
@@ -61,3 +65,21 @@ export default function UserStatus({ user }: { user: UsersResponse }) {
     </div>
   );
 }
+
+//  const getStatus = async () => {
+//    try {
+//      const res = await pb
+//        .collection(Collections.UsersStatus)
+//        .getFirstListItem(`userId="${user?.id}"`);
+
+//      setUserStatusRecord(res);
+
+//      setIsOnline(res.isOnline);
+//    } catch (error) {
+//      if (error.status === 404) {
+//        return;
+//      }
+//      Pop.error(error);
+//    }
+//  };
+//  getStatus();

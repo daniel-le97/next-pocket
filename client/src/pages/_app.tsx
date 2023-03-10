@@ -10,15 +10,16 @@ import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 // import { pb } from "../../utils/pocketBase";
 import Layout from "../components/Layout";
-import { membersService } from "../services/membersService";
+import { membersService } from "../services/MembersService";
+import { userService } from "../services/UserService";
 
 import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   // const user = AppState.user;
 
-  const user = useUser();
   useEffect(() => {
+    const user = pb.authStore.model;
     if (user) {
       const userServers = async () => {
         const servers = await membersService.getUserServers(user.id);
@@ -26,7 +27,18 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       };
       userServers();
     }
-  }, [user]);
+  }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        await userService.getUsersList();
+      } catch (error) {
+        Pop.error(error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     const user = pb.authStore.model;

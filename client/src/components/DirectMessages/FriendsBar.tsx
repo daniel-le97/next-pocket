@@ -18,22 +18,12 @@ import {
 } from "../../../PocketBaseTypes/pocketbase-types";
 const topics = ["general", "tailwind-css", "react"];
 
-const FriendsBar = ({ friends }: { friends: UsersResponse[] }) => {
-  // const [friends, setFriends] = useState<UsersResponse<unknown>[]>([]);
-  useEffect(() => {
-    const getFriendsList = async () => {
-      try {
-        await userService.getUsersList();
-      } catch (error) {
-        Pop.error(error);
-      }
-    };
-
-    getFriendsList();
-
-    // setFriends(AppState.users)
-  }, []);
-
+const FriendsBar = () => {
+  const [friends, setFriends] = useState<UsersResponse<unknown>[]>([])
+ 
+useEffect(()=>{
+  setFriends(AppState.users)
+},[AppState.users])
   return (
     <div className="channel-bar ">
       <div className="channel-block">

@@ -19,7 +19,7 @@ import { AppState } from "../../../AppState";
 function DirectMessagesPage() {
   const [user, setUser] = useState<Record | Admin | null>();
   const [servers, setServers] = useState<ServersResponse<unknown>>();
-  const friends = AppState.users
+  
    useEffect(() => {
      const getFriendsList = async () => {
        try {
@@ -29,7 +29,7 @@ function DirectMessagesPage() {
        }
      };
 
-     getFriendsList();
+    //  getFriendsList();
 
      // setFriends(AppState.users)
    }, []);
@@ -44,7 +44,7 @@ function DirectMessagesPage() {
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  w-full ">
           {/* <SideBar /> */}
-          <FriendsBar friends={friends} />
+          <FriendsBar  />
           <ContentContainer />
           {/* <ServerMembersBar /> */}
         </div>

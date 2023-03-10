@@ -15,8 +15,6 @@ class UserService {
     const res = await pb.collection("users").getList<UsersResponse>(1, 50);
 
     AppState.users = res.items;
-    console.log(AppState.users);
-    
   }
 
   async getUsersByServerId() {

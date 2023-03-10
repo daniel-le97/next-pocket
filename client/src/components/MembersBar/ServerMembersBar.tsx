@@ -131,7 +131,7 @@ const User = ({ user }: { user: UsersResponse }) => {
           className="rounded-full shadow-md shadow-zinc-900"
         />
         <div className="absolute left-8 top-9">
-          <UserStatus user={user} key={user?.id} />
+         {user &&    <UserStatus user={user}  />}
         </div>
       </div>
       <small className=" font-bold text-rose-600">{user.username}</small>
