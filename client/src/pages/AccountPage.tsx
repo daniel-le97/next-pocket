@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
@@ -28,9 +29,9 @@ function AccountPage() {
       };
       getServers();
     }
-    membersService
-      .getUserServers(pb.authStore.model?.id)
-      .then((value) => setServers(value));
+    // membersService
+    //   .getUserServers(pb.authStore.model?.id)
+    //   .then((value) => setServers(value));
   }, []);
 
   return (
