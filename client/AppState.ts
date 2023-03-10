@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
-import type { ChannelsResponse, MessagesResponse, ServersResponse, UsersResponse } from "./PocketBaseTypes/pocketbase-types";
+import type { ChannelsResponse, FriendRequestResponse, MessagesResponse, ServersResponse, UsersResponse } from "./PocketBaseTypes/pocketbase-types";
 import type { MemberUser, Server } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
@@ -29,6 +29,8 @@ class ObservableAppState {
   messages: MessagesResponse[] = [];
   loading = 0;
   AppState: undefined;
+
+  friendRequests:FriendRequestResponse[]=[]
 
   constructor() {
     makeAutoObservable(this);

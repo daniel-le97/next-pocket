@@ -120,7 +120,7 @@ const ChannelBlock = () => (
   </div>
 );
 
-const User = ({ user }: { user: UsersResponse }) => {
+ const User = ({ user }: { user: UsersResponse }) => {
   return (
     <div className="user-container flex gap-x-2  ">
       <div className="relative">

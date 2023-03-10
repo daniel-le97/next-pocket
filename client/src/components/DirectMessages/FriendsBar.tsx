@@ -18,16 +18,27 @@ import {
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { Transition,Dialog } from "@headlessui/react";
+import { Transition, Dialog } from "@headlessui/react";
 import { BsPlusCircleFill } from "react-icons/bs";
+import { friendService } from "../../services/FriendService";
 const topics = ["general", "tailwind-css", "react"];
 
 const FriendsBar = () => {
-  const [friends, setFriends] = useState<UsersResponse<unknown>[]>([]);
-
+  const [friends, setFriends] = useState([]);
+  const user = pb.authStore.model;
   useEffect(() => {
-    setFriends(AppState.users);
-  }, [AppState.users]);
+    const fetchFriends = async () => {
+      try {
+        const res = await friendService.getUserFriendsList(user?.id);
+        console.log(res);
+
+        //  setFriends(res)
+      } catch (error) {
+        Pop.error(error);
+      }
+    };
+    fetchFriends();
+  }, []);
   return (
     <div className="channel-bar ">
       <div className="channel-block">
@@ -42,20 +53,21 @@ const FriendsBar = () => {
 };
 
 const User = ({ user }: { user: UsersResponse }) => {
- const [isOpen, setIsOpen] = useState(false);
-   function closeModal() {
-     setIsOpen(false);
-   }
+  const [isOpen, setIsOpen] = useState(false);
+  function closeModal() {
+    setIsOpen(false);
+  }
 
-   function openModal() {
-    console.log('hi');
-    
-     setIsOpen(true);
-   }
+  function openModal() {
+    console.log("hi");
+
+    setIsOpen(true);
+  }
   return (
-    <div 
-   onClick={openModal}
-    className="user-container my-3 flex cursor-pointer gap-x-2 rounded-md p-2 transition-all duration-150 ease-in hover:bg-zinc-500 hover:bg-opacity-25  ">
+    <div
+      onClick={openModal}
+      className="user-container my-3 flex cursor-pointer gap-x-2 rounded-md p-2 transition-all duration-150 ease-in hover:bg-zinc-500 hover:bg-opacity-25  "
+    >
       <div className="relative">
         <img
           src={user.avatarUrl}
@@ -67,19 +79,11 @@ const User = ({ user }: { user: UsersResponse }) => {
           {user && <UserStatus user={user} />}
         </div>
       </div>
-     <Menu isOpen={isOpen} />
+      <Menu isOpen={isOpen} />
       <small className=" font-bold text-rose-600">{user.username}</small>
-
-      
     </div>
   );
 };
-
-
-
-
-
-
 
 const Menu = (props: { isOpen: boolean }) => {
   let { isOpen } = props; // access the isOpen boolean via props
@@ -115,7 +119,7 @@ const Menu = (props: { isOpen: boolean }) => {
   };
 
   function closeModal() {
-   isOpen = false
+    isOpen = false;
   }
 
   // function openModal() {
@@ -181,9 +185,6 @@ const Menu = (props: { isOpen: boolean }) => {
     </>
   );
 };
-
-
-
 
 // @ts-ignore
 

@@ -4,11 +4,11 @@
 import { observer } from "mobx-react";
 import { NextPage } from "next";
 import type { Admin, Record } from "pocketbase";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "../../../hooks/User";
 import type { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
-
+import { Tab } from "@headlessui/react";
 import ContentContainer from "../../components/Messages/MessageContainer";
 
 import Head from "next/head";
@@ -17,9 +17,15 @@ import { userService } from "../../services/UserService";
 import Pop from "../../../utils/Pop";
 import { AppState } from "../../../AppState";
 import AddFriend from "../../components/DirectMessages/AddFriend";
+import FriendRequests from "../../components/DirectMessages/FriendRequests";
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 function DirectMessagesPage() {
   const [user, setUser] = useState<Record | Admin | null>();
   const [servers, setServers] = useState<ServersResponse<unknown>>();
+  let [categories] = useState(["Friends", "Requests", "AddFriend"]);
+  const [activeCategory, setActiveCategory] = useState("");
 
   useEffect(() => {
     const getFriendsList = async () => {
@@ -35,6 +41,11 @@ function DirectMessagesPage() {
     // setFriends(AppState.users)
   }, []);
 
+  const handleClick = (data: any) => {
+    return (event) => {
+      setActiveCategory(data);
+    };
+  };
   return (
     <>
       <Head>
@@ -44,16 +55,69 @@ function DirectMessagesPage() {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  w-full ">
-          {/* <SideBar /> */}
           <FriendsBar />
 
           <div className="content-container">
-            <div className="content-list">
-              <AddFriend/>
+            <div className="">
+              <div className="px-2  sm:px-0">
+                <Tab.Group>
+                  <Tab.List className="flex space-x-1 rounded-xl  p-1">
+                    {categories.map((category) => (
+                      <Tab
+                        key={category}
+                        className={({ selected }) =>
+                          classNames(
+                            "w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-zinc-300",
+                            "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 transition-all duration-150 ease-linear focus:outline-none focus:ring-2",
+                            selected
+                              ? "bg-zinc-200/20 shadow"
+                              : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
+                          )
+                        }
+                        onClick={handleClick(category)}
+                      >
+                        {category}
+                      </Tab>
+                    ))}
+                  </Tab.List>
+                  <Tab.Panels className="mt-2">
+                    <Tab.Panel
+                      className={classNames(
+                        "rounded-xl p-3",
+                        "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                      )}
+                    >
+                      {/* Content for "Friends" category */}
+                      {activeCategory === "Friends" && (
+                        <div>
+                          <h1>Friends</h1>
+                          <p>This is the content for the Friends category</p>
+                        </div>
+                      )}
+                    </Tab.Panel>
+                    <Tab.Panel
+                      className={classNames(
+                        "rounded-xl  p-3",
+                        "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                      )}
+                    >
+                      {/* Content for "Requests" category */}
+                      {activeCategory === "Requests" && <FriendRequests />}
+                    </Tab.Panel>
+                    <Tab.Panel
+                      className={classNames(
+                        "min-h-screen rounded-xl p-3",
+                        "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                      )}
+                    >
+                      {/* Content for "AddFriend" category */}
+                      {activeCategory === "AddFriend" && <AddFriend />}
+                    </Tab.Panel>
+                  </Tab.Panels>
+                </Tab.Group>
+              </div>
             </div>
           </div>
-          {/* <ContentContainer /> */}
-          {/* <ServerMembersBar /> */}
         </div>
       </main>
     </>

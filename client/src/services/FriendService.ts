@@ -1,3 +1,4 @@
+import { AppState } from "../../AppState";
 import {
   Collections,
   FriendRequestResponse,
@@ -59,7 +60,7 @@ class FriendService {
       request.status = "declined";
       const response = await pb
         .collection(Collections.FriendRequest)
-        .update<FriendRequestResponse>(id, request);
+        .delete(id)
       return response;
     } else {
       throw new Error("Friend request has already been processed.");
@@ -74,8 +75,40 @@ class FriendService {
   async createFriendRecord(
     senderId: string,
     receiverId: string
-  ): Promise<void> {
-    // Implement logic to create a new friend record between the sender and receiver.
+  ) {
+    const data = {
+      user:receiverId,
+      friends:senderId
+    }
+  const res = await pb.collection(Collections.Friends).create(data)
+  return res
+  }
+
+  /**
+   * Fetchs a list of all friend requests through the userId
+   * @param senderId - The ID of the sender.
+   * @param receiverId - The ID of the receiver.
+   */
+  async getUserFriendRequests(userId: string) {
+    const res = await pb
+      .collection(Collections.FriendRequest)
+      .getFullList<FriendRequestResponse>(200, {
+        filter: `receiverId = "${userId}"`,
+        expand:'senderId,receiverId'
+      });
+      // AppState.friendRequests = res
+      return res
+  }
+
+  async getUserFriendsList(userId:string){
+    const res=  await pb.collection( Collections.Friends).getFullList(100,{
+      filter:`user="${userId}"`,
+      expand:'friends'
+    })
+
+
+    return res
+    
   }
 }
 
