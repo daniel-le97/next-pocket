@@ -21,7 +21,7 @@ class MembersService {
 
     // if we have a record for this user is a member => don't go any further
     if (userMemberRecord) {
-      return Pop.error("already a member of this server");
+      return;
     }
 
     // create the Member Record
@@ -35,7 +35,7 @@ class MembersService {
     AppState.activeServer = res.expand?.server ? res.expand.server : null;
 
     // return the response for use as a "hook"
-    return res;
+    return {new: true};
   }
   async getUserMemberRecord(data: MembersRecord) {
     // get the users membership for the server and return it
