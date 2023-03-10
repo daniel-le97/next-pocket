@@ -8,6 +8,7 @@ import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import type { TServerExpand } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
+
 class MembersService {
   async joinServer(data: MembersRecord) {
     // if no data is sent throw an error
