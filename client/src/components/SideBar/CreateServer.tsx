@@ -233,18 +233,6 @@ const CreateServer = () => {
   );
 };
 
-const FormModal = () => {
-  const [isOpen, setIsOpen] = useState(true);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  return <></>;
-};
 
 export default observer(CreateServer);

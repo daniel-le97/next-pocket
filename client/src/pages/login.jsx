@@ -42,7 +42,7 @@ function Login() {
       };
       const createdUser = await pb.collection("users").create(data);
       const statusData = {
-        userId:createdUser.id,
+        user:createdUser.id,
         isOnline:true
       }
       const createdUserStats = await pb.collection(Collections.UsersStatus).create(statusData)
