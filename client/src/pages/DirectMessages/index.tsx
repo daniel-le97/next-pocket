@@ -45,7 +45,7 @@ function DirectMessagesPage() {
         <div className="flex  w-full ">
           {/* <SideBar /> */}
           <FriendsBar  />
-          <ContentContainer />
+          {/* <ContentContainer /> */}
           {/* <ServerMembersBar /> */}
         </div>
       </main>

@@ -12,9 +12,10 @@ class UserService {
   }
 
   async getUsersList() {
-    const res = await pb.collection("users").getList<UsersResponse>(1, 50);
+    const res = await pb.collection("users").getFullList<UsersResponse>(200);
 
-    AppState.users = res.items;
+    AppState.users = res;
+    return AppState.users
   }
 
   async getUsersByServerId() {

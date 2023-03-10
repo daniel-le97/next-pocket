@@ -50,7 +50,7 @@ const DirectMessagesId: NextPage = () => {
         <div className="flex  w-full ">
         
        
-          <ContentContainer />
+          {/* <ContentContainer /> */}
       
         </div>
       </main>
