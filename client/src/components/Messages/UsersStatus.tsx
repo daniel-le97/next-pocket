@@ -53,7 +53,7 @@ export default function UserStatus({ user }: { user: UsersResponse }) {
         unsubscribe();
       }
     };
-  }, [userStatusRecord]);
+  }, []);
 
   return (
     <div className="absolute right-0 bottom-0 rounded-full border-4 border-zinc-700 shadow-md shadow-zinc-700 ">
