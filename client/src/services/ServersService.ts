@@ -102,6 +102,8 @@ class ServersService {
 
     // add the servers to the global state
     AppState.servers = res.items;
+    console.log('servers',res.items);
+    
     // console.log(AppState.servers);
   }
 
