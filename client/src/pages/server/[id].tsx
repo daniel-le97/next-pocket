@@ -15,6 +15,7 @@ import { channelsService } from "../../services/ChannelsService";
 import type { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { useService } from "../../../hooks/Services";
 import Pop from "../../../utils/Pop";
+import { serversService } from "../../services/ServersService";
 const Server: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string
@@ -34,6 +35,7 @@ const Server: NextPage = () => {
   useEffect(() => {
     const getServerChannels = async () => {
       await channelsService.getChannelsByServerId(id);
+      await serversService.getMembers(id)
       AppState.messages = [];
     };
     getServerChannels();
@@ -57,6 +59,8 @@ const Server: NextPage = () => {
     </>
   );
 };
+
+
 
 
 export default Server;

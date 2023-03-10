@@ -12,7 +12,7 @@ import type { ServersResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { accountsService } from "../services/AccountsService";
-import { membersService } from "../services/membersService";
+import { membersService } from "../services/MembersService";
 
 function AccountPage() {
   const [user, setUser] = useState<Record | Admin | null>();
