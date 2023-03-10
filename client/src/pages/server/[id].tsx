@@ -58,13 +58,5 @@ const Server: NextPage = () => {
   );
 };
 
-async function getServerMembers(){
-  const {members} = useService()
-  try {
-      await members.
-    } catch (error) {
-      Pop.error(error)
-    }
-}
 
 export default Server;
