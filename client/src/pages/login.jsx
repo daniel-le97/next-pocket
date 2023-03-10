@@ -5,6 +5,7 @@ import {  pb } from "../../utils/pocketBase";
 import { AppState } from "../../AppState";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
+import { Collections } from "../../PocketBaseTypes/pocketbase-types.js";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -40,6 +41,11 @@ function Login() {
         passwordConfirm: password
       };
       const createdUser = await pb.collection("users").create(data);
+      const statusData = {
+        userId:createdUser.id,
+        isOnline:true
+      }
+      const createdUserStats = await pb.collection(Collections.UsersStatus).create(statusData)
       await login();
       // await loginWithGithub();
     } catch (err) {
