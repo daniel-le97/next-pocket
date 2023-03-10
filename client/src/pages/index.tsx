@@ -18,7 +18,7 @@ import {
 import type { Server } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
-import { membersService } from "../services/membersService";
+import { membersService } from "../services/MembersService";
 
 import { serversService } from "../services/ServersService";
 

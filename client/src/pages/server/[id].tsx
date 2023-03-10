@@ -13,9 +13,11 @@ import { pb } from "../../../utils/pocketBase";
 import ServerMembersBar from "../../components/MembersBar/ServerMembersBar";
 import { channelsService } from "../../services/ChannelsService";
 import type { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import { useService } from "../../../hooks/Services";
+import Pop from "../../../utils/Pop";
 const Server: NextPage = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const id = router.query.id as string
   // const server= AppState.activeServer
   // console.log(router.query)
   const server: ServersResponse | null = AppState.activeServer;
@@ -31,11 +33,11 @@ const Server: NextPage = () => {
 
   useEffect(() => {
     const getServerChannels = async () => {
-      await channelsService.getChannelsByServerId(id?.toString());
+      await channelsService.getChannelsByServerId(id);
       AppState.messages = [];
     };
     getServerChannels();
-  }, [router]);
+  }, [id]);
 
   return (
     <>
@@ -49,11 +51,12 @@ const Server: NextPage = () => {
           {/* <SideBar /> */}
           <ChannelsBar />
           <ContentContainer />
-         {/* <ServerMembersBar/> */}
+          <ServerMembersBar />
         </div>
       </main>
     </>
   );
 };
+
 
 export default Server;
