@@ -4,15 +4,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
 import type { ChannelsResponse, MessagesResponse, ServersResponse, UsersResponse } from "./PocketBaseTypes/pocketbase-types";
-import type { Server } from "./PocketBaseTypes/utils";
+import type { MemberUser, Server } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
 
 class ObservableAppState {
   user: Record<string, any> | null = null;
-  /** @type {import('./src/models/Account.js').Account | null} */
+  // /** @type {import('./src/models/Account.js').Account | null} */
+
+  members: MemberUser[] = []
 
   userServers: (ServersResponse<unknown> | undefined)[] = [];
+  
   account: Record<string, any> | null = null;
   messageQuery = "";
 
