@@ -90,6 +90,8 @@ class ChannelsService {
         });
 
       AppState.channels = res.items;
+      console.log(res.items);
+      
       const channelTitles = res.items.map((i) => i.title);
       AppState.channelTitles = channelTitles;
       // return channelTitles;

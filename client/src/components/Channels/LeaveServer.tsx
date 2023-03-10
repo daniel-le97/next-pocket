@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useUser } from "../../../utils/pocketBase";
 import Pop from "../../../utils/Pop";
-import { membersService } from "../../services/membersService";
+import { membersService } from "../../services/MembersService";
 import { useEffect } from "react";
 import { Server } from "../../../PocketBaseTypes/utils";
 const LeaveServer = ({ server }: { server: Server}) => {
