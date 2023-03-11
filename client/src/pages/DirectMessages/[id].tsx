@@ -25,7 +25,9 @@ import MessageContainer from "../../components/DirectMessages/DirectMessageConta
 import CreateMessage from "../../components/DirectMessages/CreateDirectMessage";
 const DirectMessagesId: NextPage = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const  id  = router.query.id as string;
+  
+  
   // const server= AppState.activeServer
   // console.log(router.query)
   const server: ServersResponse | null = AppState.activeServer;
@@ -38,25 +40,31 @@ const DirectMessagesId: NextPage = () => {
   }, []);
 
   useEffect(() => {
+   
+    
+    
     const fetchMessages = async () => {
       try {
-        const data = {
-          from: user?.id,
-          to: id?.toString(),
-        };
+        // const data = {
+        //   from: user?.id,
+        //   to: id
+        // };
+console.log(id);
 
+     
+        
         const res = await directMessageService.getDirectMessages(
           user?.id,
-          id?.toString()
+          id
         );
-        console.log(res);
+      
 
-        setMessages(res);
+        // setMessages(res);
       } catch (error) {
         Pop.error(error);
       }
     };
-    // fetchMessages();
+    fetchMessages();
   }, []);
 
   return (
@@ -71,7 +79,7 @@ const DirectMessagesId: NextPage = () => {
           <FriendsBar />
         
           <MessageContainer/>
-        
+       
         </div>
       </main>
     </>
