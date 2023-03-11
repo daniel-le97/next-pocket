@@ -24,8 +24,8 @@ function classNames(...classes) {
 function DirectMessagesPage() {
   const [user, setUser] = useState<Record | Admin | null>();
   const [servers, setServers] = useState<ServersResponse<unknown>>();
-  let [categories] = useState(["Friends", "Requests", "AddFriend"]);
-  const [activeCategory, setActiveCategory] = useState("");
+  let [categories] = useState([ "Requests", "AddFriend"]);
+  const [activeCategory, setActiveCategory] = useState("Requests");
 
   useEffect(() => {
     const getFriendsList = async () => {
@@ -81,24 +81,11 @@ function DirectMessagesPage() {
                     ))}
                   </Tab.List>
                   <Tab.Panels className="mt-2">
-                    <Tab.Panel
-                      className={classNames(
-                        "rounded-xl p-3",
-                        "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
-                      )}
-                    >
-                      {/* Content for "Friends" category */}
-                      {activeCategory === "Friends" && (
-                        <div>
-                          <h1>Friends</h1>
-                          <p>This is the content for the Friends category</p>
-                        </div>
-                      )}
-                    </Tab.Panel>
+              
                     <Tab.Panel
                       className={classNames(
                         "rounded-xl  p-3",
-                        "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                        " "
                       )}
                     >
                       {/* Content for "Requests" category */}
@@ -106,8 +93,8 @@ function DirectMessagesPage() {
                     </Tab.Panel>
                     <Tab.Panel
                       className={classNames(
-                        "min-h-screen rounded-xl p-3",
-                        "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                        " rounded-xl p-3",
+                        ""
                       )}
                     >
                       {/* Content for "AddFriend" category */}

@@ -101,10 +101,11 @@ class FriendService {
   }
 
   async getUserFriendsList(userId:string){
-    const res=  await pb.collection( Collections.Friends).getFullList(100,{
-      filter:`user="${userId}"`,
+    const res=  await pb.collection( Collections.Friends).getFirstListItem(`user="${userId}"`,{
+
       expand:'friends'
     })
+
 
 
     return res

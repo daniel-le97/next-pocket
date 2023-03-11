@@ -12,6 +12,7 @@ const AddFriend = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [activeUser, setActiveUser] = useState(null);
   const user = pb.authStore.model;
+  const [query,setQuery] = useState('')
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -43,21 +44,28 @@ const AddFriend = () => {
   });
   const handleChange = (event) => {
     const query = event.target.value;
-   
+   setQuery(query)
     
-    if (query === "") {
-      setActiveUser(null);
-      setFilteredUsers([]);
-    }
-    const filtered = users.filter((u) => u.username.includes(query));
+   
+    const filtered = users.filter((u) => u.username.includes(query) && u.username !== user.username);
+   
     setFilteredUsers(filtered);
+     if (query === "") {
+       setActiveUser(null);
+       setFilteredUsers([]);
+     
+     }
+    
   };
   const handleClick = (user: any) => {
     return (event) => {
       setActiveUser(user);
       
       setValue("receiverId",user?.id)
-      //  console.log(getValues("user"));
+      setValue("receiverName",user?.username)
+      console.log(getValues('receiverName'));
+    
+      
     };
   };
   const onSubmit = async (data: any) => {
@@ -108,7 +116,7 @@ const AddFriend = () => {
           {filteredUsers.length >= 1 && (
             <div className=" after:  absolute top-16 w-full   rounded-b-md bg-zinc-900   p-3 pt-8 transition-all   duration-150 ease-linear">
               <ul className="  max-h-72 overflow-y-auto  rounded-sm  p-1 ">
-                {filteredUsers.length >= 0 &&
+                {filteredUsers.length >= 1 &&
                   filteredUsers.map((u, index) => (
                     <li
                       key={index}

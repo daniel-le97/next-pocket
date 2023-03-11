@@ -15,6 +15,7 @@ import { serversService } from "../../services/ServersService";
 import { channelsService } from "../../services/ChannelsService";
 import { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { observer } from "mobx-react";
+import FriendsBar from "../../components/DirectMessages/FriendsBar";
 const DirectMessagesId: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -26,9 +27,7 @@ const DirectMessagesId: NextPage = () => {
     if (!user) {
       router.push("/login");
     }
-    if (!server) {
-      router.push("/");
-    }
+   
   }, []);
 
   useEffect(() => {
@@ -48,10 +47,10 @@ const DirectMessagesId: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  w-full ">
-        
-       
-          {/* <ContentContainer /> */}
-      
+          <FriendsBar />
+          <div className="content-container">
+            
+          </div>
         </div>
       </main>
     </>

@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { Transition, Dialog } from "@headlessui/react";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { friendService } from "../../services/FriendService";
+import Link from "next/link";
 const topics = ["general", "tailwind-css", "react"];
 
 const FriendsBar = () => {
@@ -30,9 +31,9 @@ const FriendsBar = () => {
     const fetchFriends = async () => {
       try {
         const res = await friendService.getUserFriendsList(user?.id);
-        console.log(res);
+     
 
-        //  setFriends(res)
+         setFriends(res?.expand?.friends)
       } catch (error) {
         Pop.error(error);
       }
@@ -54,34 +55,39 @@ const FriendsBar = () => {
 
 const User = ({ user }: { user: UsersResponse }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter()
   function closeModal() {
     setIsOpen(false);
   }
 
   function openModal() {
-    console.log("hi");
+ 
 
     setIsOpen(true);
   }
+  const handleClick = () => {
+    router.push(`http://localhost:3000/DirectMessages/${user?.id}`);
+  }
   return (
-    <div
-      onClick={openModal}
-      className="user-container my-3 flex cursor-pointer gap-x-2 rounded-md p-2 transition-all duration-150 ease-in hover:bg-zinc-500 hover:bg-opacity-25  "
-    >
-      <div className="relative">
-        <img
-          src={user.avatarUrl}
-          alt="userIcon"
-          width={30}
-          className="rounded-full shadow-md shadow-zinc-900"
-        />
-        <div className="absolute left-8 top-9">
-          {user && <UserStatus user={user} />}
+  
+      <div
+      onClick={handleClick}
+      className="user-container my-3 flex cursor-pointer gap-x-2 rounded-md p-2 transition-all duration-150 ease-in hover:bg-zinc-500 hover:bg-opacity-25  ">
+        <div className="relative">
+          <img
+            src={user.avatarUrl}
+            alt="userIcon"
+            width={30}
+            className="rounded-full shadow-md shadow-zinc-900"
+          />
+          <div className="absolute left-8 top-9">
+            {user && <UserStatus user={user} />}
+          </div>
         </div>
+        <Menu isOpen={isOpen} />
+        <small className=" font-bold text-rose-600">{user.username}</small>
       </div>
-      <Menu isOpen={isOpen} />
-      <small className=" font-bold text-rose-600">{user.username}</small>
-    </div>
+   
   );
 };
 
