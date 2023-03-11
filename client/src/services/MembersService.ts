@@ -12,7 +12,7 @@ import Pop from "../../utils/Pop";
 class MembersService {
   async joinServer(data: MembersRecord) {
     // if no data is sent throw an error
-    if (!data) {
+    if (!data.user && !data.server) {
       throw new Error("No FormData Sent");
     }
 

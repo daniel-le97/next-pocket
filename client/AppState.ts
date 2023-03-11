@@ -35,6 +35,8 @@ class ObservableAppState {
   messages: MessagesResponse[] = [];
   directMessages:DirectMessagesResponse[] = []
   loading = 0;
+
+  lastPath = ''
   AppState: undefined;
 
   friendRequests: FriendRequestResponse[] = [];

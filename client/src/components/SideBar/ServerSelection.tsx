@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AppState } from "../../../AppState";
-import type { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import type { FileUploadsResponse, ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { useUser } from "../../../utils/pocketBase";
 import { membersService } from "../../services/MembersService";
 
