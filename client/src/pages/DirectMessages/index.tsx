@@ -18,31 +18,15 @@ import Pop from "../../../utils/Pop";
 import { AppState } from "../../../AppState";
 import AddFriend from "../../components/DirectMessages/AddFriend";
 import FriendRequests from "../../components/DirectMessages/FriendRequests";
-function classNames(...classes) {
+function classNames(...classes:any[]) {
   return classes.filter(Boolean).join(" ");
 }
 function DirectMessagesPage() {
-  const [user, setUser] = useState<Record | Admin | null>();
-  const [servers, setServers] = useState<ServersResponse<unknown>>();
-  let [categories] = useState([ "Requests", "AddFriend"]);
+  let [categories] = useState(["Requests", "AddFriend"]);
   const [activeCategory, setActiveCategory] = useState("Requests");
 
-  useEffect(() => {
-    const getFriendsList = async () => {
-      try {
-        await userService.getUsersList();
-      } catch (error) {
-        Pop.error(error);
-      }
-    };
-
-    //  getFriendsList();
-
-    // setFriends(AppState.users)
-  }, []);
-
   const handleClick = (data: any) => {
-    return (event) => {
+    return (event: any) => {
       setActiveCategory(data);
     };
   };
@@ -81,22 +65,11 @@ function DirectMessagesPage() {
                     ))}
                   </Tab.List>
                   <Tab.Panels className="mt-2">
-              
-                    <Tab.Panel
-                      className={classNames(
-                        "rounded-xl  p-3",
-                        " "
-                      )}
-                    >
+                    <Tab.Panel className={classNames("rounded-xl  p-3", " ")}>
                       {/* Content for "Requests" category */}
                       {activeCategory === "Requests" && <FriendRequests />}
                     </Tab.Panel>
-                    <Tab.Panel
-                      className={classNames(
-                        " rounded-xl p-3",
-                        ""
-                      )}
-                    >
+                    <Tab.Panel className={classNames(" rounded-xl p-3", "")}>
                       {/* Content for "AddFriend" category */}
                       {activeCategory === "AddFriend" && <AddFriend />}
                     </Tab.Panel>

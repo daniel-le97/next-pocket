@@ -12,7 +12,7 @@ const AddFriend = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [activeUser, setActiveUser] = useState(null);
   const user = pb.authStore.model;
-  const [query,setQuery] = useState('')
+  const [query, setQuery] = useState("");
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -39,42 +39,38 @@ const AddFriend = () => {
       senderId: user?.id,
       receiverId: activeUser?.id,
       status: "pending",
-      receiverName:""
+      receiverName: "",
     },
   });
   const handleChange = (event) => {
     const query = event.target.value;
-   setQuery(query)
-    
-   
-    const filtered = users.filter((u) => u.username.includes(query) && u.username !== user.username);
-   
+    setQuery(query);
+
+    const filtered = users.filter(
+      (u) => u.username.includes(query) && u.username !== user.username
+    );
+
     setFilteredUsers(filtered);
-     if (query === "") {
-       setActiveUser(null);
-       setFilteredUsers([]);
-     
-     }
-    
+    if (query === "") {
+      setActiveUser(null);
+      setFilteredUsers([]);
+    }
   };
   const handleClick = (user: any) => {
     return (event) => {
       setActiveUser(user);
-      
-      setValue("receiverId",user?.id)
-      setValue("receiverName",user?.username)
-      console.log(getValues('receiverName'));
-    
-      
+
+      setValue("receiverId", user?.id);
+      setValue("receiverName", user?.username);
+      console.log(getValues("receiverName"));
     };
   };
   const onSubmit = async (data: any) => {
     try {
-      delete data.receiverName
+      delete data.receiverName;
       console.log(data);
-      
 
-      await friendService.sendFriendRequest(data)
+      await friendService.sendFriendRequest(data);
     } catch (error) {
       Pop.error(error);
     }

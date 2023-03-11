@@ -5,7 +5,7 @@ import Link from "next/link";
 import SideBar from "../../components/SideBar/SideBar";
 import ChannelsBar from "../../components/Channels/ChannelsBar";
 import ContentContainer from "../../components/Messages/MessageContainer";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { AppState } from "../../../AppState";
 import { authsService } from "../../services/AuthsService";
@@ -16,6 +16,13 @@ import { channelsService } from "../../services/ChannelsService";
 import { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { observer } from "mobx-react";
 import FriendsBar from "../../components/DirectMessages/FriendsBar";
+import Pop from "../../../utils/Pop";
+import { directMessageService } from "../../services/DirectMessagesService";
+import { MessageCard } from "../../components/Messages/MessagesList";
+import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
+import UserStatus from "../../components/Messages/UsersStatus";
+import MessageContainer from "../../components/DirectMessages/DirectMessageContainer";
+import CreateMessage from "../../components/DirectMessages/CreateDirectMessage";
 const DirectMessagesId: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -23,19 +30,33 @@ const DirectMessagesId: NextPage = () => {
   // console.log(router.query)
   const server: ServersResponse | null = AppState.activeServer;
   const user = pb.authStore.model;
+  const [messages, setMessages] = useState([]);
   useEffect(() => {
     if (!user) {
       router.push("/login");
     }
-   
   }, []);
 
   useEffect(() => {
-    const getServerChannels = async () => {
-      await channelsService.getChannelsByServerId(id?.toString());
-      AppState.messages = [];
+    const fetchMessages = async () => {
+      try {
+        const data = {
+          from: user?.id,
+          to: id?.toString(),
+        };
+
+        const res = await directMessageService.getDirectMessages(
+          user?.id,
+          id?.toString()
+        );
+        console.log(res);
+
+        setMessages(res);
+      } catch (error) {
+        Pop.error(error);
+      }
     };
-    // getServerChannels();
+    // fetchMessages();
   }, []);
 
   return (
@@ -48,13 +69,84 @@ const DirectMessagesId: NextPage = () => {
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  w-full ">
           <FriendsBar />
-          <div className="content-container">
-            
-          </div>
+        
+          <MessageContainer/>
+        
         </div>
       </main>
     </>
   );
 };
+
+// export const MessageCard = ({ messages, message, index }) => {
+//   const messageQuery = AppState.messageQuery;
+//   return (
+//     <div
+//       className={
+//         messageQuery != ""
+//           ? " post-filtered group relative"
+//           : " post  group  relative"
+//       }
+//     >
+//       <div className="avatar-wrapper relative">
+//         <img
+//           className="avatar"
+//           src={
+//             message.expand.user.avatarUrl ||
+//             `https://api.dicebear.com/5.x/bottts-neutral/svg`
+//           }
+//           alt="avatar"
+//           width="40px"
+//         />
+//         <UserStatus user={message?.expand?.user} />
+//       </div>
+//       <div className="post-content">
+//         <p className="post-owner">
+//           {message.expand?.user?.username}
+//           <small className="timestamp">
+//             {new Date(message.created).toLocaleDateString()}
+//           </small>
+//         </p>
+//         {containsUrl(message.text) ? (
+//           <a
+//             target="_blank"
+//             href={message.text}
+//             className="font-semibold text-blue-500 hover:underline"
+//           >
+//             {message.text}
+//           </a>
+//         ) : (
+//           <p className="post-text">{message.text}</p>
+//         )}
+//       </div>
+//       <div className="absolute bottom-16 right-0 mr-5 ">
+//         {index === messages.length - 1 && (
+//           <div className=" transition-all group-hover:opacity-0  ">
+//             <div className=" relative w-full rounded-lg bg-red-400 px-3 text-sm font-bold text-white">
+//               Newest Message
+//               <hr className=" absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400 " />
+//             </div>
+//           </div>
+//         )}
+//       </div>
+//       <div className="absolute bottom-16 right-0  mr-5   opacity-0 group-hover:opacity-100">
+//         <div className=" post-options">
+//           <div className="group/item relative ">
+//             <BsEmojiSmile size={22} />
+//             <span className=" post-icon-tooltip  ">Like</span>
+//           </div>
+//           <div className="group/item relative">
+//             <BsPencil size={22} />
+//             <span className=" post-icon-tooltip  ">Edit</span>
+//           </div>
+//           <div className="group/item relative">
+//             <BsXCircle size={22} />
+//             <span className=" post-icon-tooltip  ">Remove</span>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
 export default observer(DirectMessagesId);

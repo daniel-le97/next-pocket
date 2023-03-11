@@ -15,7 +15,7 @@ class UserService {
     const res = await pb.collection("users").getFullList<UsersResponse>(200);
 
     AppState.users = res;
-    return AppState.users
+    return AppState.users;
   }
 
   async getUsersByServerId() {
