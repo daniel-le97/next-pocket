@@ -2,20 +2,20 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import SideBar from "../../components/SideBar/SideBar";
-import ChannelsBar from "../../components/Channels/ChannelsBar";
-import ContentContainer from "../../components/Messages/MessageContainer";
+import SideBar from "../../../components/SideBar/SideBar";
+import ChannelsBar from "../../../components/Channels/ChannelsBar";
+import ContentContainer from "../../../components/Messages/MessageContainer";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { AppState } from "../../../AppState";
-import { authsService } from "../../services/AuthsService";
-import { pb } from "../../../utils/pocketBase";
-import ServerMembersBar from "../../components/MembersBar/ServerMembersBar";
-import { channelsService } from "../../services/ChannelsService";
-import type { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
-import { useService } from "../../../hooks/Services";
-import Pop from "../../../utils/Pop";
-import { serversService } from "../../services/ServersService";
+import { AppState } from "../../../../AppState";
+import { authsService } from "../../../services/AuthsService";
+import { pb } from "../../../../utils/pocketBase";
+import ServerMembersBar from "../../../components/MembersBar/ServerMembersBar";
+import { channelsService } from "../../../services/ChannelsService";
+import type { ServersResponse } from "../../../../PocketBaseTypes/pocketbase-types";
+import { useService } from "../../../../hooks/Services";
+import Pop from "../../../../utils/Pop";
+import { serversService } from "../../../services/ServersService";
 const Server: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string

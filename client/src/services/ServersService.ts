@@ -18,6 +18,13 @@ type ServerData = { user: string; server: string };
 // };
 
 class ServersService {
+  async getById(id:string){
+    const server = await pb.collection(Collections.Servers).getFirstListItem<ServersResponse>(`id="${id}"`)
+    console.log(server);
+    
+    AppState.activeServer = server
+    return server
+  }
   async getServersList() {
     // get all servers available
     const res = await pb

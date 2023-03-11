@@ -5,7 +5,8 @@ import {  pb } from "../../utils/pocketBase";
 import { AppState } from "../../AppState";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
-import { Collections } from "../../PocketBaseTypes/pocketbase-types.js";
+import { Collections } from "../../PocketBaseTypes/pocketbase-types";
+import { getRedirectOrPath } from "../../utils/Redirect";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -28,7 +29,8 @@ function Login() {
     AppState.user = user.record;
     AppState.user.token = user.token;
     console.log(AppState.user);
-        router.push("/");
+    const path = getRedirectOrPath()
+    router.push(path);
   }
 
   async function signUp() {

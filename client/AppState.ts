@@ -28,6 +28,8 @@ class ObservableAppState {
   users: UsersResponse[] = [];
   messages: MessagesResponse[] = [];
   loading = 0;
+
+  lastPath = ''
   AppState: undefined;
 
   friendRequests:FriendRequestResponse[]=[]
