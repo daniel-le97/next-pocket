@@ -15,6 +15,9 @@ class MembersService {
     if (!data.user && !data.server) {
       throw new Error("No FormData Sent");
     }
+    console.log(data)
+    
+    
 
     // make sure user does not have a Member Record for the server already
     const userMemberRecord = await this.getUserMemberRecord(data);

@@ -46,7 +46,7 @@ const ServerLink : NextPage = () => {
             }
             router.push(`/server/${id}`)
           } catch (error) {
-            Pop.error(error, 'joiningServer')
+            Pop.error(error, `server/${id}/join`)
           }
         }
 
