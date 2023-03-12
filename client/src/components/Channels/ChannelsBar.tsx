@@ -4,25 +4,52 @@ import React, { useEffect, useState } from "react";
 
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 
 import ChannelSelection from "./ChannelSelection";
-import { pb } from "../../../utils/pocketBase";
+import { pb, useUser } from "../../../utils/pocketBase";
 import { channelsService } from "../../services/ChannelsService";
 import { AppState } from "../../../AppState";
 import LeaveServer from "./LeaveServer";
+import { useRouter } from "next/router";
+import {
+  ChannelsResponse,
+  Collections,
+} from "../../../PocketBaseTypes/pocketbase-types";
+import { messageService } from "../../services/MessageService";
 const topics = ["general", "tailwind-css", "react"];
 
 const ChannelsBar = () => {
   const channels = AppState.channels;
-  const server = AppState.activeServer
+  const server = AppState.activeServer;
+  const router = useRouter();
+  const user = useUser();
   const [expanded, setExpanded] = useState(true);
   useEffect(() => {
-    const getChannels = async () => {
-      await channelsService.getChannelsByServerId();
-    };
-    getChannels();
-  }, []);
+    if (router.query.id) {
+      const id = router.query.id as string;
+      const getChannels = async () => {
+        await channelsService.getChannelsByServerId(id);
+      };
+      getChannels();
+
+      const setActiveChannel = async () => {
+        try {
+          const res = await pb
+            .collection(Collections.Users)
+            .getOne<ChannelsResponse>(user?.id, {
+              expand: "currentChannel",
+            });
+
+          AppState.activeChannel = res.expand.currentChannel;
+          await messageService.getMessages()
+          console.log(AppState.activeChannel);
+          
+        } catch (error) {}
+      };
+      setActiveChannel();
+    }
+  }, [router.query.id]);
 
   return (
     <div className="channel-bar ">

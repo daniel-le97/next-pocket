@@ -16,9 +16,11 @@ const Messages = () => {
 
   const listRef = useRef(null);
   let unsubscribe: (() => void) | null = null;
-
+const activeChannel = AppState.activeChannel
   const messageQuery = AppState.messageQuery;
   useEffect(() => {
+   
+    
     const fetchMessages = async () => {
       await messageService.getMessages();
     };
@@ -162,7 +164,7 @@ export const MessageCard = ({ messages, message, index }) => {
           alt="avatar"
           width="40px"
         />
-        <UserStatus user={message?.expand?.user} />
+        {/* <UserStatus user={message?.expand?.user} /> */}
       </div>
       <div className="post-content">
         <p className="post-owner">

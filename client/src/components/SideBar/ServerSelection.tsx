@@ -2,11 +2,14 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
 import { Transition } from "@headlessui/react";
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AppState } from "../../../AppState";
-import type { FileUploadsResponse, ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import type {
+  FileUploadsResponse,
+  ServersResponse,
+} from "../../../PocketBaseTypes/pocketbase-types";
 import { useUser } from "../../../utils/pocketBase";
 import { membersService } from "../../services/MembersService";
 
@@ -15,9 +18,19 @@ const ServerSelection = () => {
     ServersResponse<FileUploadsResponse<unknown>>[]
   >([]);
   const user = useUser();
+  const router = useRouter();
+
   useEffect(() => {
     setServers(AppState.userServers);
-  }, [AppState.userServers]);
+    if (router.query.id && servers) {
+     let server= servers.find(s=> s?.id == router.query.id)
+     AppState.activeServer = server
+     console.log(server);
+     
+    }
+  }, [AppState.userServers,router.query.id]);
+
+
   return (
     <>
       {servers &&

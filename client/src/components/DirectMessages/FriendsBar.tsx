@@ -4,7 +4,7 @@ import React, { useEffect, useState, Fragment } from "react";
 
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 
-import { observer } from "mobx-react-lite";
+import { observer } from "mob-x-react";
 
 import { userService } from "../../services/UserService";
 import { pb } from "../../../utils/pocketBase";
@@ -31,9 +31,8 @@ const FriendsBar = () => {
     const fetchFriends = async () => {
       try {
         const res = await friendService.getUserFriendsList(user?.id);
-     
 
-         setFriends(res?.expand?.friends)
+        setFriends(res?.expand?.friends);
       } catch (error) {
         Pop.error(error);
       }
@@ -55,39 +54,36 @@ const FriendsBar = () => {
 
 const User = ({ user }: { user: UsersResponse }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   function closeModal() {
     setIsOpen(false);
   }
 
   function openModal() {
- 
-
     setIsOpen(true);
   }
   const handleClick = () => {
     router.push(`http://localhost:3000/DirectMessages/${user?.id}`);
-  }
+  };
   return (
-  
-      <div
+    <div
       onClick={handleClick}
-      className="user-container my-3 flex cursor-pointer gap-x-2 rounded-md p-2 transition-all duration-150 ease-in hover:bg-zinc-500 hover:bg-opacity-25  ">
-        <div className="relative">
-          <img
-            src={user.avatarUrl}
-            alt="userIcon"
-            width={30}
-            className="rounded-full shadow-md shadow-zinc-900"
-          />
-          <div className="absolute left-8 top-9">
-            {user && <UserStatus user={user} />}
-          </div>
+      className="user-container my-3 flex cursor-pointer gap-x-2 rounded-md p-2 transition-all duration-150 ease-in hover:bg-zinc-500 hover:bg-opacity-25  "
+    >
+      <div className="relative">
+        <img
+          src={user.avatarUrl}
+          alt="userIcon"
+          width={30}
+          className="rounded-full shadow-md shadow-zinc-900"
+        />
+        <div className="absolute left-8 top-9">
+          {user && <UserStatus user={user} />}
         </div>
-        <Menu isOpen={isOpen} />
-        <small className=" font-bold text-rose-600">{user.username}</small>
       </div>
-   
+      <Menu isOpen={isOpen} />
+      <small className=" font-bold text-rose-600">{user.username}</small>
+    </div>
   );
 };
 

@@ -15,25 +15,23 @@ import CreateMessage from "./CreateDirectMessage";
 
 const DirectMessageContainer = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const  id  = router.query.id as string;
   const listRef = useRef(null);
-  const server: ServersResponse | null = AppState.activeServer;
   const user = pb.authStore.model;
   const messages = AppState.directMessages;
    let unsubscribe: (() => void) | null = null;
-  useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
-  }, []);
+  
 
   useEffect(() => {
+     if (!user) {
+      router.push("/login");
+    }
+
+    console.log(id);
+    
     const fetchMessages = async () => {
       try {
-        const data = {
-          from: user?.id,
-          to: id?.toString(),
-        };
+    
 
      await directMessageService.getDirectMessages(
           user?.id,
@@ -67,7 +65,7 @@ const DirectMessageContainer = () => {
             record.expand.from =  user ;
 
 
-            console.log(record);
+           
             
             let updatedMessages: DirectMessagesResponse[] = [
               ...AppState.directMessages,
@@ -102,7 +100,7 @@ const DirectMessageContainer = () => {
                   alt="avatar"
                   width="40px"
                 />
-                <UserStatus user={message?.expand?.from} />
+                {/* <UserStatus user={message?.expand?.from} /> */}
               </div>
               <div className="post-content">
                 <p className="post-owner">

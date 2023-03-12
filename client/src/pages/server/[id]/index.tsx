@@ -19,27 +19,25 @@ import { serversService } from "../../../services/ServersService";
 const Server: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string
-  // const server= AppState.activeServer
-  // console.log(router.query)
+
   const server: ServersResponse | null = AppState.activeServer;
   const user = pb.authStore.model;
-  useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
-    if (!server) {
-      router.push("/");
-    }
-  }, []);
+ 
 
   useEffect(() => {
-    const getServerChannels = async () => {
-      await channelsService.getChannelsByServerId(id);
-      await serversService.getMembers(id)
-      AppState.messages = [];
-    };
-    getServerChannels();
-  }, [id]);
+      if (!user) {
+        router.push("/login");
+      }
+   
+    
+  if (router.query.id) {
+      const getServerChannels = async () => {
+        await channelsService.getChannelsByServerId(id);
+        await serversService.getMembers(id);
+      };
+      getServerChannels();
+  }
+  }, [router.query.id]);
 
   return (
     <>

@@ -1,36 +1,12 @@
 import { AppState } from "../../AppState";
-import type {
-  ChannelsResponse} from "../../PocketBaseTypes/pocketbase-types";
-import {
-  Collections,
-  UsersResponse,
-} from "../../PocketBaseTypes/pocketbase-types";
+import type { ChannelsResponse } from "../../PocketBaseTypes/pocketbase-types";
+import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
-// import { PBChannel } from "../models/Channel";
-// import type { Message } from "../models/Message";
-// import { PBUser } from "../models/PBUser";
 
 type Data = { memberId: string; channelId: string };
 
 class ChannelsService {
   async joinChannel(data: Data) {
-    // const user: UsersResponse = await pb
-    //   .collection(Collections.Users)
-    //   .getFirstListItem<UsersResponse>(`id="${data.memberId}"`);
-    //   if (!user.currentChannel) {
-    //     throw new Error("No Current Channel");
-    //   }
-    //   // Get the channel record user is apart of
-    // const channelToLeave = await pb
-    //   .collection("channels")
-    //   .getOne(user.currentChannel);
-
-    //TODO Right now this is fuzzy match aka not good
-    // const foundChannel = AppState.channels.find(c=>{
-    //  return  c.members?.includes(data.memberId)
-    // })
-   
-    
     const channelToLeave = await pb
       .collection(Collections.Channels)
       .getFirstListItem(`members.id ?= "${data.memberId}"`);
@@ -75,25 +51,27 @@ class ChannelsService {
     }
 
     // Remove the user from the channel's member list
-    const newMemberList = channel.members?.filter(
-      (m) => m !== data.memberId
-    );
-    await pb.collection("channels").update(data.channelId, { members: newMemberList });
+    const newMemberList = channel.members?.filter((m) => m !== data.memberId);
+    await pb
+      .collection("channels")
+      .update(data.channelId, { members: newMemberList });
   }
 
-  async getChannelsByServerId(serverId:string) {
+  async getChannelsByServerId(serverId: string) {
     try {
       const res = await pb
         .collection(Collections.Channels)
-        .getList<ChannelsResponse>(1, 50,{
-          filter:`server = "${serverId}"`
+        .getList<ChannelsResponse>(1, 50, {
+          filter: `server = "${serverId}"`,
         });
 
       AppState.channels = res.items;
-      console.log(res.items);
       
+
       const channelTitles = res.items.map((i) => i.title);
       AppState.channelTitles = channelTitles;
+
+      
       // return channelTitles;
     } catch (error) {
       console.error(error);
@@ -101,26 +79,22 @@ class ChannelsService {
     }
   }
 
-
-  async createChannel(serverId:string){
+  async createChannel(serverId: string) {
     const data = {
-      members:[],
-      messages:[],
-      title:"general",
-      server:serverId
-    }
-    const newChannel = await  pb.collection(Collections.Channels).create<ChannelsResponse>(data)
+      members: [],
+      messages: [],
+      title: "general",
+      server: serverId,
+    };
+    const newChannel = await pb
+      .collection(Collections.Channels)
+      .create<ChannelsResponse>(data);
 
-
-    
     console.log(newChannel);
     if (newChannel) {
-      
-      AppState.channels = [...AppState.channels,newChannel]
-      AppState.activeChannel = newChannel
+      AppState.channels = [...AppState.channels, newChannel];
+      AppState.activeChannel = newChannel;
     }
-
-
   }
 }
 

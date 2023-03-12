@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 import { useState, useEffect } from "react";
 import { BsHash } from "react-icons/bs";
 import { AppState } from "../../../AppState";
@@ -41,6 +41,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
         }
       >
         {selection.title}
+       
       </h5>
       {selection.title === channelTitle ? (
         <img

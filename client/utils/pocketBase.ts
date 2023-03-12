@@ -1,6 +1,6 @@
 import pocketbase, { Admin, BaseAuthStore, Record, RecordService } from "pocketbase";
 import { AppState } from "../AppState";
-import { UsersRecord } from "../PocketBaseTypes/pocketbase-types";
+import { Collections, UsersRecord } from "../PocketBaseTypes/pocketbase-types";
 import { env } from "../src/env.mjs";
 // import { logger } from "./Logger.js";
 
@@ -20,9 +20,9 @@ pb.authStore.onChange((auth) => {
   AppState.user = pb.authStore.model;
   return auth
 });
-export function useUser(){
+export  function useUser(){
   const user = pb.authStore.model
-  // console.log('user', user)
+ 
   if(user){
     return user
   }

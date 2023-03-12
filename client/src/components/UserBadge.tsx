@@ -1,4 +1,4 @@
-import { observer } from "mobx-react-lite";
+import { observer } from "";
 import { UsersResponse } from "../../PocketBaseTypes/pocketbase-types";
 
 export const UserBadge = ({ user }: { user: UsersResponse }) => {

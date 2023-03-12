@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 
-import { observer } from "mobx-react-lite";
+import { observer } from "mob-x-react";
 
 import { pb } from "../../../utils/pocketBase";
 import ChannelSelection from "../Channels/ChannelSelection";
@@ -120,7 +120,7 @@ const ChannelBlock = () => (
   </div>
 );
 
- const User = ({ user }: { user: UsersResponse }) => {
+const User = ({ user }: { user: UsersResponse }) => {
   return (
     <div className="user-container flex gap-x-2  ">
       <div className="relative">
@@ -131,7 +131,7 @@ const ChannelBlock = () => (
           className="rounded-full shadow-md shadow-zinc-900"
         />
         <div className="absolute left-8 top-9">
-         {user &&    <UserStatus user={user}  />}
+          {user && <UserStatus user={user} />}
         </div>
       </div>
       <small className=" font-bold text-rose-600">{user.username}</small>

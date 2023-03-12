@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @next/next/no-img-element */
-import { observer } from "mobx-react-lite";
+import { observer } from "mob-x-react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -9,19 +9,14 @@ import { useEffect, useState } from "react";
 import { BsCheck, BsCircleFill } from "react-icons/bs";
 import { FaUserPlus } from "react-icons/fa";
 import { AppState } from "../../AppState";
-import type {
-  UsersStatusResponse,
-} from "../../PocketBaseTypes/pocketbase-types";
-import {
-  Collections,
-} from "../../PocketBaseTypes/pocketbase-types";
+import type { UsersStatusResponse } from "../../PocketBaseTypes/pocketbase-types";
+import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import type { Server } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { membersService } from "../services/MembersService";
 
 import { serversService } from "../services/ServersService";
-
 
 const Explore: NextPage = () => {
   const router = useRouter();
@@ -91,11 +86,11 @@ const ServerCard = ({ server }: { server: Server }) => {
       if (!yes) {
         return;
       }
-      const isMember = await membersService.joinServer(data)
+      const isMember = await membersService.joinServer(data);
       // console.log('isMember',isMember);
-      
+
       if (isMember) {
-        isMember.new == true ? Pop.success(`Welcome to ${server.name}`) : '';
+        isMember.new == true ? Pop.success(`Welcome to ${server.name}`) : "";
         router.push(`server/${server.id}`);
       }
     } catch (error) {

@@ -18,11 +18,8 @@ import { observer } from "mobx-react";
 import FriendsBar from "../../components/DirectMessages/FriendsBar";
 import Pop from "../../../utils/Pop";
 import { directMessageService } from "../../services/DirectMessagesService";
-import { MessageCard } from "../../components/Messages/MessagesList";
-import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
-import UserStatus from "../../components/Messages/UsersStatus";
-import MessageContainer from "../../components/DirectMessages/DirectMessageContainer";
-import CreateMessage from "../../components/DirectMessages/CreateDirectMessage";
+
+import DirectMessageContainer from "../../components/DirectMessages/DirectMessageContainer";
 const DirectMessagesId: NextPage = () => {
   const router = useRouter();
   const  id  = router.query.id as string;
@@ -41,31 +38,25 @@ const DirectMessagesId: NextPage = () => {
 
   useEffect(() => {
    
+    console.log(router.query.id);
     
     
-    const fetchMessages = async () => {
-      try {
-        // const data = {
-        //   from: user?.id,
-        //   to: id
-        // };
-console.log(id);
+  if (router.query.id) {
+      const fetchMessages = async () => {
+        try {
+          const res = await directMessageService.getDirectMessages(
+            user?.id,
+            id
+          );
 
-     
-        
-        const res = await directMessageService.getDirectMessages(
-          user?.id,
-          id
-        );
-      
-
-        // setMessages(res);
-      } catch (error) {
-        Pop.error(error);
-      }
-    };
-    fetchMessages();
-  }, []);
+          // setMessages(res);
+        } catch (error) {
+          Pop.error(error);
+        }
+      };
+      fetchMessages();
+  }
+  }, [router.query.id]);
 
   return (
     <>
@@ -78,7 +69,7 @@ console.log(id);
         <div className="flex  w-full ">
           <FriendsBar />
         
-          <MessageContainer/>
+          <DirectMessageContainer/>
        
         </div>
       </main>
