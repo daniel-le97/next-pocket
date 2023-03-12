@@ -40,7 +40,11 @@ class FriendService {
         .update<FriendRequestResponse>(id, request);
       if (response.status === "accepted") {
         await this.createFriendRecord(request.senderId, request.receiverId);
+        
       }
+        const deletedRecord = await pb
+          .collection(Collections.FriendRequest)
+          .delete(id);
       return response;
     } else {
       throw new Error("Friend request has already been processed.");
