@@ -16,6 +16,7 @@ import type { ServersResponse } from "../../../../PocketBaseTypes/pocketbase-typ
 import { useService } from "../../../../hooks/Services";
 import Pop from "../../../../utils/Pop";
 import { serversService } from "../../../services/ServersService";
+import { membersService } from "../../../services/MembersService";
 const Server: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string
@@ -28,14 +29,21 @@ const Server: NextPage = () => {
       if (!user) {
         router.push("/login");
       }
-   
+
+  
+   let isMember = false
     
   if (router.query.id) {
+      const checkIfMember = async() => {
+      const member = await membersService.getUserMemberRecord({user: user?.id, server: id })
+      member ? isMember = true : router.push('/')
+    }
       const getServerChannels = async () => {
         await channelsService.getChannelsByServerId(id);
         await serversService.getMembers(id);
       };
-      getServerChannels();
+      checkIfMember()
+      isMember ? getServerChannels() : ''
   }
   }, [router.query.id]);
 

@@ -16,7 +16,7 @@ class MembersService {
       throw new Error("No FormData Sent");
     }
     console.log(data)
-    
+    // return;
     
 
     // make sure user does not have a Member Record for the server already
@@ -26,12 +26,12 @@ class MembersService {
     if (userMemberRecord) {
       return;
     }
-
     // create the Member Record
     const res = await pb
       .collection(Collections.Members)
       .create<MembersResponse<TServerExpand<FileUploadsResponse>>>(data, {
         expand: "server.image",
+        '$autoCancel': true
       });
     console.log("joinedServer", res);
     AppState.userServers = [...AppState.userServers, res.expand?.server];

@@ -78,7 +78,7 @@ const ServerLink : NextPage = () => {
       
   //   }
   // }
-  return (<><div>{JSON.stringify(AppState.activeServer)}</div></>)
+  return (<><div>loading...</div></>)
 }
 
 export default observer(ServerLink)

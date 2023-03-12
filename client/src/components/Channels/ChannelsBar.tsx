@@ -83,7 +83,7 @@ const ChannelsBar = () => {
             channels.map((c) => <ChannelSelection selection={c} key={c.id} />)}
 
           <div className="fixed bottom-0 mb-3">
-            {/* {server && <LeaveServer server={server} />} */}
+            {server && <LeaveServer server={AppState.activeServer}/>}
           </div>
         </div>
       </div>
