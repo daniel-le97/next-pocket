@@ -16,71 +16,68 @@ import { userService } from "../services/UserService";
 import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  // const user = AppState.user;
+  const user = pb.authStore.model;
 
-  // useEffect(() => {
-  //   const user = pb.authStore.model;
-  //   if (user) {
-  //     const userServers = async () => {
-  //       const servers = await membersService.getUserServers(user.id);
-  //       return servers;
-  //     };
-  //     userServers();
-  //   }
-  // }, []);
 
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       await userService.getUsersList();
-  //     } catch (error) {
-  //       Pop.error(error);
-  //     }
-  //   };
-  //   fetchUsers();
-  // }, []);
 
-  // useEffect(() => {
-  //   const user = pb.authStore.model;
-  //   const subscribe = async () => {
-  //     const userStatus = await pb
-  //       .collection("usersStatus")
-  //       .getFirstListItem(`userId = "${user?.id}"`);
-  //     // console.log(userStatus);
-  //     if (!userStatus) {
-  //       throw new Error("userStatus Not Found");
-  //     }
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        await userService.getUsersList();
+      } catch (error) {
+        Pop.error(error);
+      }
+    };
+    fetchUsers();
 
-  //     //     // Update isOnline status to true on component mount
-  //     const data = {
-  //       userId: user?.id,
-  //       isOnline: true,
-  //     };
-  //     const updatedRecord = await pb
-  //       .collection("usersStatus")
-  //       .update(userStatus.id, data);
-  //     // console.log(updatedRecord);
+    const fetchUserServers = async () => {
+      const userId = user?.id as string;
+      const servers = await membersService.getUserServers(userId);
+      return servers;
+    };
+    fetchUserServers();
+  }, []);
 
-  //     // Update isOnline status to false on beforeunload event
-  //     const handleBeforeUnload = () => {
-  //       const data = {
-  //         userId: user?.id,
-  //         isOnline: false,
-  //       };
-  //       const updatedRecord = pb
-  //         .collection("usersStatus")
-  //         .update(userStatus.id, data);
-  //       // console.log(updatedRecord);
-  //     };
-  //     window.addEventListener("beforeunload", handleBeforeUnload);
+  useEffect(() => {
+    const subscribe = async () => {
+      const userStatus = await pb
+        .collection("usersStatus")
+        .getFirstListItem(`userId = "${user?.id}"`);
+      // console.log(userStatus);
+      if (!userStatus) {
+        throw new Error("userStatus Not Found");
+      }
 
-  //     // Remove the event listener on unmount
-  //     return () => {
-  //       window.removeEventListener("beforeunload", handleBeforeUnload);
-  //     };
-  //   };
-  //   subscribe();
-  // }, []);
+      //     // Update isOnline status to true on component mount
+      const data = {
+        userId: user?.id,
+        isOnline: true,
+      };
+      const updatedRecord = await pb
+        .collection("usersStatus")
+        .update(userStatus.id, data);
+      // console.log(updatedRecord);
+
+      // Update isOnline status to false on beforeunload event
+      const handleBeforeUnload = () => {
+        const data = {
+          userId: user?.id,
+          isOnline: false,
+        };
+        const updatedRecord = pb
+          .collection("usersStatus")
+          .update(userStatus.id, data);
+        // console.log(updatedRecord);
+      };
+      window.addEventListener("beforeunload", handleBeforeUnload);
+
+      // Remove the event listener on unmount
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      };
+    };
+    subscribe();
+  }, []);
 
   return (
     <Layout>

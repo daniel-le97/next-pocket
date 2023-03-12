@@ -19,32 +19,34 @@ import { serversService } from "../../../services/ServersService";
 import { membersService } from "../../../services/MembersService";
 const Server: NextPage = () => {
   const router = useRouter();
-  const id = router.query.id as string
+  const id = router.query.id as string;
 
   const server: ServersResponse | null = AppState.activeServer;
   const user = pb.authStore.model;
- 
 
   useEffect(() => {
-      if (!user) {
-        router.push("/login");
-      }
-
-  
-   let isMember = false
-    
-  if (router.query.id) {
-      const checkIfMember = async() => {
-      const member = await membersService.getUserMemberRecord({user: user?.id, server: id })
-      member ? isMember = true : router.push('/')
+    if (!user) {
+      router.push("/login");
     }
+
+    let isMember = false;
+
+    if (router.query.id) {
+      const checkIfMember = async () => {
+        const member = await membersService.getUserMemberRecord({
+          user: user?.id,
+          server: id,
+        });
+        member ? (isMember = true) : router.push("/");
+      };
       const getServerChannels = async () => {
         await channelsService.getChannelsByServerId(id);
         await serversService.getMembers(id);
       };
-      checkIfMember()
-      isMember ? getServerChannels() : ''
-  }
+      checkIfMember();
+      isMember ? getServerChannels() : "";
+      
+    }
   }, [router.query.id]);
 
   return (
@@ -65,8 +67,5 @@ const Server: NextPage = () => {
     </>
   );
 };
-
-
-
 
 export default Server;

@@ -23,13 +23,10 @@ const ServerSelection = () => {
   useEffect(() => {
     setServers(AppState.userServers);
     if (router.query.id && servers) {
-     let server= servers.find(s=> s?.id == router.query.id)
-     AppState.activeServer = server
-     console.log(server);
-     
+      let server = servers.find((s) => s?.id == router.query.id);
+      AppState.activeServer = server;
     }
-  }, [AppState.userServers,router.query.id]);
-
+  }, [AppState.userServers, router.query.id]);
 
   return (
     <>
@@ -48,10 +45,9 @@ const ServerIcon = ({
   const activeServer = AppState.activeServer;
   const [isShowing, setShowing] = useState(false);
   const handleClick = () => {
-   
     AppState.activeServer = server;
-    // AppState.messages = []
-
+    AppState.activeChannel = null
+AppState.messages = []
     router.push(`http://localhost:3000/server/${server.id}`);
   };
   useEffect(() => {

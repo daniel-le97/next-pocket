@@ -41,10 +41,10 @@ const ChannelsBar = () => {
               expand: "currentChannel",
             });
 
-          AppState.activeChannel = res.expand.currentChannel;
-          await messageService.getMessages()
-          console.log(AppState.activeChannel);
-          
+          if (res.expand.currentChannel) {
+            AppState.activeChannel = res.expand.currentChannel;
+            await messageService.getMessages();
+          }
         } catch (error) {}
       };
       setActiveChannel();
@@ -83,7 +83,7 @@ const ChannelsBar = () => {
             channels.map((c) => <ChannelSelection selection={c} key={c.id} />)}
 
           <div className="fixed bottom-0 mb-3">
-            {server && <LeaveServer server={AppState.activeServer}/>}
+            {server && <LeaveServer server={AppState.activeServer} />}
           </div>
         </div>
       </div>
