@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 
-import { observer } from "mob-x-react";
+import { observer } from "mobx-react";
 
 import { pb } from "../../../utils/pocketBase";
 import ChannelSelection from "../Channels/ChannelSelection";

@@ -1,4 +1,4 @@
-import { observer } from "mob-x-react";
+import { observer } from "mobx-react";
 import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 import { useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @next/next/no-img-element */
-import { observer } from "mob-x-react";
+import { observer } from "mobx-react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";

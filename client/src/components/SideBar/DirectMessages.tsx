@@ -1,4 +1,4 @@
-import { observer } from "mob-x-react";
+import { observer } from "mobx-react";
 import { BsMessenger } from "react-icons/bs";
 
 const DirectMessages = () => {

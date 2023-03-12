@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { observer } from "mob-x-react";
+import { observer } from "mobx-react";
 import { type AppType } from "next/dist/shared/lib/utils";
 import React, { useEffect } from "react";
 import { AppState } from "../../AppState";

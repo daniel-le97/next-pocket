@@ -4,7 +4,7 @@ import React, { useEffect, useState, Fragment } from "react";
 
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 
-import { observer } from "mob-x-react";
+import { observer } from "mobx-react";
 
 import { userService } from "../../services/UserService";
 import { pb } from "../../../utils/pocketBase";
