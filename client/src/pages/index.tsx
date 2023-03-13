@@ -7,7 +7,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsCheck, BsCircleFill } from "react-icons/bs";
-import { FaUserPlus } from "react-icons/fa";
+import { FaStar, FaUserCheck, FaUserPlus } from "react-icons/fa";
 import { AppState } from "../../AppState";
 import type { UsersStatusResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
@@ -68,6 +68,7 @@ const ServerCard = ({ server }: { server: Server }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
   const router = useRouter();
+  const [isMember, setIsMember] = useState(false);
   async function joinServer() {
     try {
       if (!user) {
@@ -107,9 +108,20 @@ const ServerCard = ({ server }: { server: Server }) => {
       setUserStatus(res.items);
     };
     getUserStatus();
+
+    const checkIfMember = async () => {
+      const member = await membersService.getUserMemberRecord({
+        user: user?.id as string,
+        server: router.query.id as string,
+      });
+  if (member) {
+    setIsMember(true)
+  }
+    };
+    checkIfMember();
   }, []);
   return (
-    <div className=" group  h-auto w-full overflow-hidden rounded-xl bg-gray-300  from-zinc-900 to-gray-600 text-white   shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4">
+    <div className=" group  h-auto w-full overflow-hidden rounded-xl bg-gray-300  from-zinc-900 to-gray-600 text-white   shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4 relative">
       <img
         src={server.expand?.image.url}
         alt=""
@@ -118,23 +130,27 @@ const ServerCard = ({ server }: { server: Server }) => {
 
       <div className="mt-2 p-3">
         <div className="flex items-center gap-x-2 ">
-          <div className="rounded-3xl bg-green-600">
+          <div className="rounded-3xl bg-green-600 ">
             <BsCheck />
           </div>
           <h1>{server.name}</h1>
-          <div
-            className="group/join relative cursor-pointer"
-            onClick={joinServer}
-          >
-            <FaUserPlus size={20} />
-            <span className="  absolute -right-14 top-0 scale-0 rounded-md bg-zinc-900 px-2  transition-all duration-200 ease-in group-hover/join:scale-100">
-              Join
-            </span>
-          </div>
+          {isMember ? (
+            <div
+              className="group/join relative cursor-pointer"
+              onClick={joinServer}
+            >
+              <FaUserPlus size={20} />
+              <span className="  absolute -right-14 top-0 scale-0 rounded-md bg-zinc-900 px-2  transition-all duration-200 ease-in group-hover/join:scale-100">
+                Join
+              </span>
+            </div>
+          ) : (
+            <FaUserCheck size={20} className="text-green-400" />
+          )}
         </div>
-        <p className="mt-2">{server.description}</p>
+        <p className="mt-2 pb-10">{server.description}</p>
       </div>
-      <div className=" m-2 flex items-center gap-x-2  ">
+      <div className=" absolute bottom-0 left-0 m-2 flex items-center gap-x-2  ">
         <BsCircleFill size={10} className="text-gray-300" />
         {server.members?.length}
         <small>Members</small>

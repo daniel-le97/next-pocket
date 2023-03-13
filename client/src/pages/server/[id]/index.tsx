@@ -17,6 +17,10 @@ import { useService } from "../../../../hooks/Services";
 import Pop from "../../../../utils/Pop";
 import { serversService } from "../../../services/ServersService";
 import { membersService } from "../../../services/MembersService";
+import { observer } from "mobx-react";
+import { withAuth } from "../../../middleware/WithAuth";
+import { ServerMember} from "../../../middleware/ServerMember"
+
 const Server: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
@@ -37,7 +41,7 @@ const Server: NextPage = () => {
           user: user?.id,
           server: id,
         });
-        member ? (isMember = true) : router.push("/");
+        member ? (isMember = true) :router.push("/");
       };
       const getServerChannels = async () => {
         await channelsService.getChannelsByServerId(id);
@@ -45,7 +49,6 @@ const Server: NextPage = () => {
       };
       checkIfMember();
       isMember ? getServerChannels() : "";
-      
     }
   }, [router.query.id]);
 
@@ -68,4 +71,4 @@ const Server: NextPage = () => {
   );
 };
 
-export default Server;
+export default observer(Server);
