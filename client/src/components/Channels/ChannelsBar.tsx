@@ -17,6 +17,7 @@ import {
   Collections,
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { messageService } from "../../services/MessageService";
+import ServerLink from "./ServerLink";
 const topics = ["general", "tailwind-css", "react"];
 
 const ChannelsBar = () => {
@@ -84,6 +85,8 @@ const ChannelsBar = () => {
 
           <div className="fixed bottom-0 mb-3">
             {server && <LeaveServer server={AppState.activeServer} />}
+            {<ServerLink/>}
+
           </div>
         </div>
       </div>
