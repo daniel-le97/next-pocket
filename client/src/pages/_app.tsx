@@ -18,8 +18,6 @@ import "../styles/globals.css";
 const MyApp: AppType = ({ Component, pageProps }) => {
   const user = pb.authStore.model;
 
-
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {

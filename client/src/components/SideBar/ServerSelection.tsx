@@ -46,8 +46,8 @@ const ServerIcon = ({
   const [isShowing, setShowing] = useState(false);
   const handleClick = () => {
     AppState.activeServer = server;
-    AppState.activeChannel = null
-AppState.messages = []
+//     AppState.activeChannel = null
+// AppState.messages = []
     router.push(`http://localhost:3000/server/${server.id}`);
   };
   useEffect(() => {

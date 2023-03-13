@@ -66,12 +66,11 @@ class ChannelsService {
         });
 
       AppState.channels = res.items;
-      
 
       const channelTitles = res.items.map((i) => i.title);
       AppState.channelTitles = channelTitles;
 
-      
+      AppState.activeChannel = res.items[0];
       // return channelTitles;
     } catch (error) {
       console.error(error);

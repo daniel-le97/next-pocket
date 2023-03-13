@@ -121,12 +121,7 @@ const CreateServer = () => {
                     >
                       Server Form
                     </Dialog.Title>
-                    <div className="mt-2">
-                      {/* <p className="text-sm text-gray-500">
-                        Your payment has been successfully submitted. We’ve sent
-                        you an email with all of the details of your order.
-                      </p> */}
-                    </div>
+                    <div className="mt-2"></div>
 
                     <form
                       onSubmit={handleSubmit(onSubmit)}
@@ -141,8 +136,6 @@ const CreateServer = () => {
                             minLength: 5,
                           })}
                           type="text"
-                          // onChange={handleChange}
-
                           className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
                         />
                         {errors.name && <span>Retry</span>}
@@ -163,18 +156,14 @@ const CreateServer = () => {
                           />
                         )}
                         <Loader show={uploading} />
-                        {/* <Loader show={true}/> */}
-                        {/* {uploading && <Loader show={true} />} */}
                       </label>
 
-                      {/* <ImageUploader /> */}
                       <label>
                         Description:
                         <textarea
                           {...register("description", { required: true })}
                           name="description"
                           className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
-                          // onChange={handleChange}
                         />
                       </label>
 
@@ -185,43 +174,6 @@ const CreateServer = () => {
                         Submit
                       </button>
                     </form>
-
-                    {/* 
- <div className="flex flex-wrap -mx-3 mb-6">
-    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-        First Name
-      </label>
-      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text" placeholder="Jane"/>
-      <p className="text-red-500 text-xs italic">Please fill out this field.</p>
-    </div>
-    <div className="w-full md:w-1/2 px-3">
-      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-        Last Name
-      </label>
-      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe">
-    </div>
-  </div>
-  <div className="flex flex-wrap -mx-3 mb-6">
-    <div className="w-full px-3">
-      <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-        Password
-      </label>
-      <input className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="******************"/>
-      <p className="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
-    </div>
-  </div>
-  */}
-
-                    {/* <div className="mt-4">
-                      <button
-                        type="button"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                        onClick={closeModal}
-                      >
-                        Got it, thanks!
-                      </button>
-                    </div> */}
                   </Dialog.Panel>
                 </Transition.Child>
               </div>

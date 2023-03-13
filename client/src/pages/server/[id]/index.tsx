@@ -19,7 +19,9 @@ import { serversService } from "../../../services/ServersService";
 import { membersService } from "../../../services/MembersService";
 import { observer } from "mobx-react";
 import { withAuth } from "../../../middleware/WithAuth";
-import { ServerMember} from "../../../middleware/ServerMember"
+import { ServerMember } from "../../../middleware/ServerMember";
+import MessagesContainer from "../../../components/Messages/MessageContainer";
+import { messageService } from "../../../services/MessageService";
 
 const Server: NextPage = () => {
   const router = useRouter();
@@ -32,23 +34,38 @@ const Server: NextPage = () => {
     if (!user) {
       router.push("/login");
     }
-
     let isMember = false;
-
     if (router.query.id) {
       const checkIfMember = async () => {
         const member = await membersService.getUserMemberRecord({
           user: user?.id,
           server: id,
         });
-        member ? (isMember = true) :router.push("/");
+        member ? (isMember = true) : router.push("/");
       };
       const getServerChannels = async () => {
         await channelsService.getChannelsByServerId(id);
+          await messageService.getMessages();
         await serversService.getMembers(id);
       };
       checkIfMember();
       isMember ? getServerChannels() : "";
+
+
+
+//  const fetchChannels = async () => {
+//   try {
+//     await channelsService.getChannelsByServerId(router.query.id)
+//     await messageService.getMessages()
+//     AppState.messages = []
+//   } catch (error) {
+//     Pop.error(error)
+//   }
+//  }
+// fetchChannels()
+
+
+
     }
   }, [router.query.id]);
 
@@ -63,7 +80,7 @@ const Server: NextPage = () => {
         <div className="flex  w-full ">
           {/* <SideBar /> */}
           <ChannelsBar />
-          <ContentContainer />
+          <MessagesContainer />
           <ServerMembersBar />
         </div>
       </main>

@@ -21,10 +21,10 @@ const activeChannel = AppState.activeChannel
   useEffect(() => {
    
     
-    const fetchMessages = async () => {
-      await messageService.getMessages();
-    };
-    fetchMessages();
+    // const fetchMessages = async () => {
+    //   await messageService.getMessages();
+    // };
+    // fetchMessages();
 
     unsubscribe = async () =>
       await pb
