@@ -2,6 +2,7 @@
 // import { Server } from "http"
 import { observer } from "mobx-react"
 import { useRouter } from "next/router"
+import React from 'react'
 // import type { Server } from "../../../PocketBaseTypes/utils"
 
 const ServerLink = () =>{
