@@ -1,27 +1,25 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import SideBar from "../../../components/SideBar/SideBar";
+
 import ChannelsBar from "../../../components/Channels/ChannelsBar";
-import ContentContainer from "../../../components/Messages/MessageContainer";
-import React, { useEffect } from "react";
+
+import React, { useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
 import { AppState } from "../../../../AppState";
-import { authsService } from "../../../services/AuthsService";
+
 import { pb } from "../../../../utils/pocketBase";
 import ServerMembersBar from "../../../components/MembersBar/ServerMembersBar";
 import { channelsService } from "../../../services/ChannelsService";
 import type { ServersResponse } from "../../../../PocketBaseTypes/pocketbase-types";
-import { useService } from "../../../../hooks/Services";
-import Pop from "../../../../utils/Pop";
+
 import { serversService } from "../../../services/ServersService";
 import { membersService } from "../../../services/MembersService";
 import { observer } from "mobx-react";
-import { withAuth } from "../../../middleware/WithAuth";
-import { ServerMember } from "../../../middleware/ServerMember";
+
 import MessagesContainer from "../../../components/Messages/MessageContainer";
 import { messageService } from "../../../services/MessageService";
+import { Transition } from "@headlessui/react";
 
 const Server: NextPage = () => {
   const router = useRouter();
@@ -44,27 +42,13 @@ const Server: NextPage = () => {
         member ? (isMember = true) : router.push("/");
       };
       const getServerChannels = async () => {
+        AppState.messages = [];
         await channelsService.getChannelsByServerId(id);
-          await messageService.getMessages();
+        await messageService.getMessages();
         await serversService.getMembers(id);
       };
       checkIfMember();
-      isMember ? getServerChannels() : "";
-
-
-
-//  const fetchChannels = async () => {
-//   try {
-//     await channelsService.getChannelsByServerId(router.query.id)
-//     await messageService.getMessages()
-//     AppState.messages = []
-//   } catch (error) {
-//     Pop.error(error)
-//   }
-//  }
-// fetchChannels()
-
-
+      getServerChannels();
 
     }
   }, [router.query.id]);
@@ -77,12 +61,13 @@ const Server: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
-        <div className="flex  w-full ">
-          {/* <SideBar /> */}
+        <div className="flex  w-full  ">
+         
           <ChannelsBar />
           <MessagesContainer />
           <ServerMembersBar />
         </div>
+      
       </main>
     </>
   );

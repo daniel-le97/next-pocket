@@ -52,7 +52,7 @@ const DirectMessagesId: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
-        <div className="flex  w-full ">
+        <div className="flex  w-full  ">
           <FriendsBar />
 
           <DirectMessageContainer />

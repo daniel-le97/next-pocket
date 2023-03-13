@@ -49,7 +49,7 @@ const Explore: NextPage = () => {
           </div>
         </div>
 
-        <div className="   mx-auto mt-16  flex  flex-wrap justify-center gap-5  px-12 ">
+        <div className="   mx-auto mt-16  flex  flex-wrap justify-center gap-5  p-12 ">
           {servers && servers.map((s) =>
            <ServerCard server={s} key={s.id} />
            )}

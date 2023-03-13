@@ -25,6 +25,8 @@ const ServerSelection = () => {
     if (router.query.id && servers) {
       let server = servers.find((s) => s?.id == router.query.id);
       AppState.activeServer = server;
+     AppState.messages = []
+      
     }
   }, [AppState.userServers, router.query.id]);
 

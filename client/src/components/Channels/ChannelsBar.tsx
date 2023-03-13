@@ -44,7 +44,7 @@ const ChannelsBar = () => {
 
           if (res.expand.currentChannel) {
             AppState.activeChannel = res.expand.currentChannel;
-            await messageService.getMessages();
+            // await messageService.getMessages();
           }
         } catch (error) {}
       };

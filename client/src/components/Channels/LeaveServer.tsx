@@ -11,7 +11,7 @@ const LeaveServer = ({ server }: { server: Server}) => {
   const user = useUser();
   const router = useRouter();
   useEffect(() => {
-    console.log(server);
+
   }, []);
   const leaveServer = async () => {
     try {
