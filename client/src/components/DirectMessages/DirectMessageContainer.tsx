@@ -15,69 +15,68 @@ import CreateMessage from "./CreateDirectMessage";
 
 const DirectMessageContainer = () => {
   const router = useRouter();
-  const  id  = router.query.id as string;
-  
+  const id = router.query.id as string;
+
   const user = pb.authStore.model;
   const messages = AppState.directMessages;
-   let unsubscribe: (() => void) | null = null;
-  
- const listRef = useRef<HTMLDivElement>(null);
+  let unsubscribe: (() => void) | null = null;
 
- 
- 
+  const listRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-     if (!user) {
+    if (!user) {
       router.push("/login");
     }
 
- 
-  if(router.query.id){
-      
-    const fetchMessages = async () => {
-      try {
-        await directMessageService.getDirectMessages(user?.id, id?.toString());
-      } catch (error) {
-        Pop.error(error);
-      }
-    };
+    if (router.query.id) {
+      const fetchMessages = async () => {
+        try {
+          await directMessageService.getDirectMessages(
+            user?.id,
+            id?.toString()
+          );
+        } catch (error) {
+          Pop.error(error);
+        }
+      };
 
-    fetchMessages();
+      fetchMessages();
 
-    unsubscribe = async () =>
-      await pb
-        .collection("directMessages")
-        .subscribe("*", async ({ action, record }) => {
-          if (action === "create") {
-            const user = await pb.collection("users").getOne(record.from);
+      unsubscribe = async () =>
+        await pb
+          .collection("directMessages")
+          .subscribe("*", async ({ action, record }) => {
+            if (action === "create") {
+              const user = await pb.collection("users").getOne(record.from);
 
-            // Check if record.expand is defined
-            if (!record.expand) {
-              record.expand = {};
+              // Check if record.expand is defined
+              if (!record.expand) {
+                record.expand = {};
+              }
+
+              // Set the from property on record.expand
+              record.expand.from = user;
+
+              let updatedMessages: DirectMessagesResponse[] = [
+                ...AppState.directMessages,
+              ];
+              updatedMessages = [
+                ...updatedMessages,
+                record as unknown as DirectMessagesResponse,
+              ];
+              AppState.directMessages = updatedMessages;
             }
-
-            // Set the from property on record.expand
-            record.expand.from = user;
-
-            let updatedMessages: DirectMessagesResponse[] = [
-              ...AppState.directMessages,
-            ];
-            updatedMessages = [
-              ...updatedMessages,
-              record as unknown as DirectMessagesResponse,
-            ];
-            AppState.directMessages = updatedMessages;
-          }
-        });
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }
+          });
+      return () => {
+        if (unsubscribe) {
+          unsubscribe();
+        }
+      };
+    }
   }, [router.query.id]);
 
   return (
-    <div className=" messages content-container d ">
+    <div className=" messages content-container ">
       {messages &&
         messages.map((message, index) => (
           <DirectMessageCard
@@ -93,10 +92,7 @@ const DirectMessageContainer = () => {
   );
 };
 
-
-
- const DirectMessageCard = ({ messages, message, index }) => {
-
+const DirectMessageCard = ({ messages, message, index }) => {
   return (
     <div className="rounded-md p-1 " key={index}>
       <div className=" post  group  relative">

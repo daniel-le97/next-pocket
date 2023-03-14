@@ -26,7 +26,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         Pop.error(error);
       }
     };
-    fetchUsers();
+    // fetchUsers();
 
     const fetchUserServers = async () => {
       const userId = user?.id as string;

@@ -9,12 +9,11 @@ import InputEmoji from "react-input-emoji";
 import { useRouter } from "next/router";
 const CreateDirectMessage = () => {
   const [newMessage, setNewMessage] = useState("");
- 
+
   const router = useRouter();
   const { id } = router.query;
 
   const sendMessage = async (event: { preventDefault: () => void }) => {
- 
     const user = pb.authStore.model;
     const data = {
       text: newMessage,
@@ -24,8 +23,8 @@ const CreateDirectMessage = () => {
       // // @ts-ignore
       // room: AppState?.activeRoom?.id,
     };
-    const createdMessage = await pb.collection("directMessages").create(data,{
-      expand:'from,to'
+    const createdMessage = await pb.collection("directMessages").create(data, {
+      expand: "from,to",
     });
     setNewMessage("");
   };
@@ -44,9 +43,7 @@ const CreateDirectMessage = () => {
         <PlusIcon />
       </form>
 
-      <div className="flex items-center justify-evenly">
-        {/* <EmojiPicker  text={newMessage} setText={setNewMessage}  /> */}
-      </div>
+   
     </div>
   );
 };

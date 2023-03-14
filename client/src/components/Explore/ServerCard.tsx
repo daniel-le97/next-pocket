@@ -54,7 +54,7 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
         });
       setUserStatus(res.items);
     };
-    getUserStatus();
+    // getUserStatus();
 
     const checkIfMember = async () => {
       const member = await membersService.getUserMemberRecord({
@@ -66,7 +66,7 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
         setIsMember(true);
       }
     };
-    checkIfMember();
+    // checkIfMember();
   }, []);
   return (
     <div
@@ -107,6 +107,9 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
       <div className=" absolute bottom-0 left-0 m-2 flex items-center gap-x-2  ">
         <BsCircleFill size={10} className="text-gray-300" />
         {server.members?.length}
+        {/* {server.members.map((m) => (
+          <div className=" ">{JSON.stringify(m)}</div>
+        ))} */}
         <small>Members</small>
       </div>
       {/* {userStatus.length} */}

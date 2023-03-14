@@ -164,14 +164,14 @@
   }
 
   .content-container {
-    @apply flex h-screen  w-full snap-y  snap-end  flex-col overflow-y-scroll bg-gray-300 p-3 pb-14  dark:bg-zinc-700;
+    @apply flex h-screen  w-full   snap-y  snap-end  flex-col overflow-y-scroll  bg-gray-300 p-3 pb-14  dark:bg-zinc-700;
   }
   .content-list {
     @apply w-full pt-20;
   }
 
   .bottom-bar {
-    @apply fixed  bottom-2 flex h-14 w-2/4 flex-row items-center justify-start  rounded-lg bg-gray-400 px-2 transition  duration-300 ease-in-out dark:bg-zinc-800;
+    @apply fixed    bottom-2  flex h-14 w-9/12  rounded-lg bg-gray-400  transition  duration-300 ease-in-out dark:bg-zinc-800;
   }
   .bottom-bar-input {
     @apply ml-0 mr-auto w-full cursor-text bg-transparent font-semibold text-gray-500 placeholder-gray-500 outline-none;

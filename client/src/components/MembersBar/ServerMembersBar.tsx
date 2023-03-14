@@ -20,7 +20,7 @@ const MembersBar = () => {
     const getUsersList = async () => {
       // await userService.getUsersByServerId();
     };
-    getUsersList();
+    // getUsersList();
   }, []);
 
   return (
