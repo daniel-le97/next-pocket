@@ -40,14 +40,18 @@ class MembersService {
     // return the response for use as a "hook"
     return {new: true};
   }
-  async getUserMemberRecord(data: MembersRecord) {
+  async getUserMemberRecord(data: MembersRecord, setMember?:boolean) {
     // get the users membership for the server and return it
     const record = await pb
       .collection(Collections.Members)
       .getList<MembersResponse>(1, 1, {
         filter: `user="${data.user}" && server="${data.server}"`,
       });
-    return record.items[0];
+      const membership = record.items[0]
+      if (setMember) {
+        AppState.activeMembership = membership
+      }
+    return membership
   }
   async leaveServer(data: MembersRecord) {
     // get the memberShip to be deleted

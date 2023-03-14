@@ -7,6 +7,7 @@ import type {
   ChannelsResponse,
   DirectMessagesResponse,
   FriendRequestResponse,
+  MembersResponse,
   MessagesResponse,
   ServersResponse,
   UsersResponse,
@@ -26,7 +27,8 @@ class ObservableAppState {
   messageQuery = "";
 
   activeChannel: ChannelsResponse | null = null;
-  activeServer: ServersResponse | null = null;
+  activeServer: ServersResponse | Server = null;
+  activeMembership: MembersResponse | null = null
 
   channelTitles: (string | undefined)[] = [];
   channels: ChannelsResponse[] = [];
@@ -37,6 +39,7 @@ class ObservableAppState {
   loading = 0;
 
   lastPath = ''
+
   AppState: undefined;
 
   friendRequests: FriendRequestResponse[] = [];
@@ -52,13 +55,11 @@ class ObservableAppState {
 export const AppState = new Proxy(new ObservableAppState(), {
   get(target, prop) {
     isValidProp(target, prop);
-    // @ts-expect-error uses explicit any
     return target[prop];
   },
   set(target, prop, value) {
     isValidProp(target, prop);
     action(() => {
-      // @ts-expect-error uses explicit any
       target[prop] = value;
     })();
     return true;

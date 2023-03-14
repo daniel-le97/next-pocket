@@ -18,14 +18,14 @@ type ServerData = { user: string; server: string };
 // };
 
 class ServersService {
-  async getById(id: string) {
-    const server = await pb
-      .collection(Collections.Servers)
-      .getFirstListItem<ServersResponse>(`id="${id}"`);
-    console.log(server);
-
-    AppState.activeServer = server;
-    return server;
+  async getById(id:string){
+    const server = await pb.collection(Collections.Servers).getFirstListItem<Server>(`id="${id}"`, {
+      expand: 'server.image'
+    })
+    console.log('server.getById',server);
+    
+    AppState.activeServer = server
+    return server
   }
   async getServersList() {
     const user = useUser();

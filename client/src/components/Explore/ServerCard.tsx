@@ -1,18 +1,22 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { FaUserCheck, FaUserPlus } from "react-icons/fa";
+import type {
+  UsersStatusResponse} from "../../../PocketBaseTypes/pocketbase-types";
 import {
-  Collections,
-  ServersResponse,
-  UsersStatusResponse,
+  Collections
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
 import { useEffect, useState } from "react";
 import Pop from "../../../utils/Pop";
 import { membersService } from "../../services/MembersService";
 import { BsCheck, BsCircleFill } from "react-icons/bs";
-import { AppState } from "../../../AppState";
-const ServerCard = ({ server }: { server: ServersResponse }) => {
+import React from "react";
+import type { Server } from "../../../PocketBaseTypes/utils";
+const ServerCard = ({ server }: { server: Server }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
   const router = useRouter();

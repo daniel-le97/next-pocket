@@ -10,6 +10,7 @@ import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
 import ServerCard from "../components/Explore/ServerCard";
 import { serversService } from "../services/ServersService";
+import React from "react";
 
 const Explore: NextPage = () => {
   const router = useRouter();
