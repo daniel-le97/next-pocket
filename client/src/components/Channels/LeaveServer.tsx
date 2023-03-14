@@ -5,14 +5,11 @@ import { useRouter } from "next/router";
 import { useUser } from "../../../utils/pocketBase";
 import Pop from "../../../utils/Pop";
 import { membersService } from "../../services/MembersService";
-import { useEffect } from "react";
-import { Server } from "../../../PocketBaseTypes/utils";
+import type { Server } from "../../../PocketBaseTypes/utils";
+import React from "react";
 const LeaveServer = ({ server }: { server: Server}) => {
   const user = useUser();
   const router = useRouter();
-  useEffect(() => {
-
-  }, []);
   const leaveServer = async () => {
     try {
       const data = {

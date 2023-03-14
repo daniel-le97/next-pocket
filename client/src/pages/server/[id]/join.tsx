@@ -10,6 +10,7 @@ import { MembersRecord, ServersResponse } from "../../../../PocketBaseTypes/pock
 import Pop from "../../../../utils/Pop";
 import { membersService } from "../../../services/MembersService";
 import { serversService } from "../../../services/ServersService";
+import React from "react";
 
 const ServerLink : NextPage = () => {
   const user = useUser()
@@ -23,7 +24,7 @@ const ServerLink : NextPage = () => {
   // getServer()
 
   useEffect(() => {
-    if(router.isReady){
+    if(id){
       const getServer = async () => {
         const serverToJoin = await serversService.getById(id);
         setServer(serverToJoin);
