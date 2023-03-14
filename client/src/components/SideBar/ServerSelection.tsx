@@ -81,8 +81,10 @@ const ServerIcon = ({
           {server.name}
           {/* {JSON.stringify(server)} */}
         </span>
-        {activeServer?.id === server.id && (
+        {activeServer?.id !== server.id ? (
           <span className=" absolute -left-3.5 h-3 w-3 rounded-full bg-white transition-all duration-300   ease-linear"></span>
+        ) : (
+          <span className=" absolute -left-3.5 h-10 w-2.5 rounded-full bg-white transition-all duration-300   ease-linear"></span>
         )}
       </div>
 

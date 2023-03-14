@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Pop from "../../../utils/Pop";
 import { membersService } from "../../services/MembersService";
 import { BsCheck, BsCircleFill } from "react-icons/bs";
+import { AppState } from "../../../AppState";
 const ServerCard = ({ server }: { server: ServersResponse }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
@@ -46,27 +47,25 @@ const ServerCard = ({ server }: { server: ServersResponse }) => {
     }
   }
   useEffect(() => {
-    const getUserStatus = async () => {
-      const res = await pb
-        .collection(Collections.UsersStatus)
-        .getList<UsersStatusResponse>(1, 50, {
-          filter: `isOnline = true`,
-        });
-      setUserStatus(res.items);
-    };
-    // getUserStatus();
+  
 
     const checkIfMember = async () => {
-      const member = await membersService.getUserMemberRecord({
-        user: user?.id as string,
-        server: server.id,
-      });
+      // const member = await membersService.getUserMemberRecord({
+      //   user: user?.id as string,
+      //   server: server.id,
+      // });
 
-      if (member) {
+
+
+
+ let result = server.members?.includes(user?.id)
+
+
+      if (result) {
         setIsMember(true);
       }
     };
-    // checkIfMember();
+    checkIfMember();
   }, []);
   return (
     <div

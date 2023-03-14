@@ -18,6 +18,7 @@ import {
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { messageService } from "../../services/MessageService";
 import ServerLink from "./ServerLink";
+import DeleteServer from "./DeleteServer";
 const topics = ["general", "tailwind-css", "react"];
 
 const ChannelsBar = () => {
@@ -83,9 +84,10 @@ const ChannelsBar = () => {
             // @ts-ignore
             channels.map((c) => <ChannelSelection selection={c} key={c.id} />)}
 
-          <div className="fixed bottom-0 mb-3">
+          <div className="fixed bottom-0 mb-3 flex flex-col gap-3">
             {server && <LeaveServer server={AppState.activeServer} />}
-            {<ServerLink/>}
+            <ServerLink/>
+            <DeleteServer/>
 
           </div>
         </div>

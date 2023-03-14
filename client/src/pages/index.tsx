@@ -14,6 +14,7 @@ import { serversService } from "../services/ServersService";
 const Explore: NextPage = () => {
   const router = useRouter();
   const servers = AppState.servers;
+  const user = pb.authStore.model
   useEffect(() => {
     const user = pb.authStore.model;
     if (!user) {
@@ -26,6 +27,8 @@ const Explore: NextPage = () => {
       await serversService.getServersList();
     };
     getServers();
+
+    // servers.sort((a,b) => a.members?.includes(user?.id))
   }, []);
 
   return (

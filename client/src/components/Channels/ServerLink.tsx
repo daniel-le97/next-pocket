@@ -3,6 +3,8 @@
 import { observer } from "mobx-react"
 import { useRouter } from "next/router"
 import React from 'react'
+import { AppState } from "../../../AppState"
+import Pop from "../../../utils/Pop"
 // import type { Server } from "../../../PocketBaseTypes/utils"
 
 const ServerLink = () =>{
@@ -16,6 +18,7 @@ const ServerLink = () =>{
     console.log(router, origin);
     
     await navigator.clipboard.writeText(url)
+    Pop.toast('Copied To ClipBoard')
   }
 
   return (<button className=" bg-blue-600 hover:bg-blue-300 rounded" onClick={handleClick}>getLink</button>)

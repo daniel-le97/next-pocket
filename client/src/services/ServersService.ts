@@ -8,7 +8,7 @@ import {
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { MemberUser, TServerExpand } from "../../PocketBaseTypes/utils";
 import type { Server } from "../../PocketBaseTypes/utils";
-import { pb } from "../../utils/pocketBase";
+import { pb, useUser } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { channelsService } from "./ChannelsService";
 
@@ -18,19 +18,23 @@ type ServerData = { user: string; server: string };
 // };
 
 class ServersService {
-  async getById(id:string){
-    const server = await pb.collection(Collections.Servers).getFirstListItem<ServersResponse>(`id="${id}"`)
+  async getById(id: string) {
+    const server = await pb
+      .collection(Collections.Servers)
+      .getFirstListItem<ServersResponse>(`id="${id}"`);
     console.log(server);
-    
-    AppState.activeServer = server
-    return server
+
+    AppState.activeServer = server;
+    return server;
   }
   async getServersList() {
+    const user = useUser();
     // get all servers available
     const res = await pb
       .collection(Collections.Servers)
       .getList<Server>(1, 50, {
         expand: "image,members",
+        sort: `created`,
       });
 
     // add the servers to the global state
@@ -66,13 +70,28 @@ class ServersService {
     return newServer;
   }
 
-  async getMembers(serverId: string){
+  async getMembers(serverId: string) {
     const members = await pb
       .collection(Collections.Members)
-      .getFullList<MemberUser>({ filter: `server="${serverId}"`, expand: 'user' });
+      .getFullList<MemberUser>({
+        filter: `server="${serverId}"`,
+        expand: "user",
+      });
 
-    AppState.members = members
+    AppState.members = members;
+  }
 
+  async DeleteServer(ownerId: string, serverId: string) {
+    const user = useUser();
+    if (!user) {
+      throw new Error("No User");
+    }
+    if (user?.id != ownerId) {
+      throw new Error("Not Authorized");
+    }
+    await pb.collection(Collections.Servers).delete(serverId);
+    AppState.servers = AppState.servers.filter((s) => s.id != serverId);
+    AppState.userServers = AppState.userServers.filter((s) => s?.id != serverId);
   }
 }
 

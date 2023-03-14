@@ -51,6 +51,9 @@ const Server: NextPage = () => {
       getServerChannels();
 
     }
+
+
+    
   }, [router.query.id]);
 
   return (
