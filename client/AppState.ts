@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
+import { Route } from "nextjs-routes";
 import type {
   ChannelsResponse,
   DirectMessagesResponse,
@@ -38,7 +39,7 @@ class ObservableAppState {
   directMessages:DirectMessagesResponse[] = []
   loading = 0;
 
-  lastPath = ''
+  lastPath: string | null = null
 
   AppState: undefined;
 

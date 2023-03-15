@@ -35,16 +35,8 @@ const Server: NextPage = () => {
       const fetchServerData = async () => {
         try {
           if (!user) {
-            setRedirect(router.asPath);
+            setRedirect({ pathname: "/server/[id]", query: { id } });
             return router.push("/login");
-          }
-          if (
-            !(await membersService.getUserMemberRecord(
-              { user: user.id, server: id },
-              true
-            ))
-          ) {
-            return router.push("/");
           }
           console.log(router.asPath);
           await channelsService.getChannelsByServerId(id);

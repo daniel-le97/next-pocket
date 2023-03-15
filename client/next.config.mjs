@@ -5,16 +5,10 @@
  * This is especially useful for Docker builds.
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
+import withRoutes from 'nextjs-routes/config'
 
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
- 
-  /**
-   * If you have the "experimental: { appDir: true }" setting enabled, then you
-   * must comment the below `i18n` config out.
-   *
-   * @see https://github.com/vercel/next.js/issues/41980
-   */
 };
-export default config;
+export default withRoutes(config);
