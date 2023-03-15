@@ -30,12 +30,12 @@ const LeaveServer = ({ server }: { server: Server}) => {
   };
 
   return (
-    <div
-      className=" cursor-pointer rounded-md bg-gray-400 p-2 shadow-md transition-all duration-150 ease-in hover:scale-105 hover:bg-gray-600    "
+    <button
+      className=" server-button   "
       onClick={leaveServer}
     >
       Leave <small>{server && server.id}</small>
-    </div>
+    </button>
   );
 };
 export default observer(LeaveServer);

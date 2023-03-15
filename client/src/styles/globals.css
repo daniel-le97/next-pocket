@@ -52,10 +52,10 @@
     text-white shadow-md transition-all duration-100;
   }
   .sidebar-user-tooltip {
-    @apply absolute left-14 z-50  m-2 w-96  min-w-max origin-left scale-0 rounded-md
+    @apply absolute bottom-12 z-50 shadow-zinc-900 m-2  w-96  min-w-max origin-bottom-left   rounded-md
     bg-zinc-900  
     text-xs font-bold 
-    text-white shadow-md transition-all duration-100;
+    text-white shadow-lg transition-all duration-100 ;
   }
 
   .top-navigation {
@@ -115,7 +115,7 @@
   }
 
   .channel-bar {
-    @apply m-0 h-auto w-64 overflow-hidden bg-gray-200 shadow-lg dark:bg-zinc-800;
+    @apply m-0 h-auto w-80  bg-gray-200 shadow-lg dark:bg-zinc-800;
   }
 
   .channel-container {
@@ -164,7 +164,7 @@
   }
 
   .content-container {
-    @apply flex h-screen  w-full   snap-y  snap-end  flex-col overflow-y-scroll  bg-gray-300 p-3 pb-14  dark:bg-zinc-700;
+    @apply flex h-screen w-full   snap-y  snap-end  flex-col overflow-y-scroll  bg-gray-300 p-3 pb-14  dark:bg-zinc-700;
   }
   .content-list {
     @apply w-full pt-20;
@@ -244,6 +244,10 @@
   .server-members-bar-collapsed {
     @apply h-0 w-0 cursor-none overflow-hidden bg-zinc-800  opacity-0 transition-all duration-300;
   }
+
+  .server-button {
+    @apply duration-300  flex  w-full  items-center justify-between    rounded-sm p-2 text-zinc-300 transition-all ease-linear hover:bg-indigo-600 hover:text-white;
+  }
 }
 @tailwind utilities;
 
@@ -278,19 +282,18 @@
   }
 }
 
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .text-shadow {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.10);
-  }
+.text-shadow-md {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+}
 
-  .text-shadow-md {
-    text-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
-  }
+.text-shadow-lg {
+  text-shadow: 0 15px 30px rgba(0, 0, 0, 0.11), 0 5px 15px rgba(0, 0, 0, 0.08);
+}
 
-  .text-shadow-lg {
-    text-shadow: 0 15px 30px rgba(0,0,0,0.11), 0 5px 15px rgba(0,0,0,0.08);
-  }
-
-  .text-shadow-none {
-    text-shadow: none;
-  }
+.text-shadow-none {
+  text-shadow: none;
+}

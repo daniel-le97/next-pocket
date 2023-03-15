@@ -2,7 +2,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 
-import ChannelsBar from "../../../components/Channels/ChannelsBar";
+import ChannelsBar from "../../../components/ChannelsBar/ChannelsBar";
 
 import React, { useEffect, Fragment } from "react";
 import { useRouter } from "next/router";
@@ -20,7 +20,7 @@ import { observer } from "mobx-react";
 import MessagesContainer from "../../../components/Messages/MessageContainer";
 import { messageService } from "../../../services/MessageService";
 import { Transition } from "@headlessui/react";
-import { setRedirect} from "../../../../utils/Redirect";
+import { setRedirect } from "../../../../utils/Redirect";
 import Pop from "../../../../utils/Pop";
 
 const Server: NextPage = () => {
@@ -34,24 +34,28 @@ const Server: NextPage = () => {
     if (router.query.id) {
       const fetchServerData = async () => {
         try {
-          if(!user){
-            setRedirect(router.asPath)
-            return router.push('/login')
+          if (!user) {
+            setRedirect(router.asPath);
+            return router.push("/login");
           }
-          if (!(await membersService.getUserMemberRecord({user: user.id,server: id}, true))){return router.push("/");}
-          console.log(router.asPath)
+          if (
+            !(await membersService.getUserMemberRecord(
+              { user: user.id, server: id },
+              true
+            ))
+          ) {
+            return router.push("/");
+          }
+          console.log(router.asPath);
           await channelsService.getChannelsByServerId(id);
           await messageService.getMessages();
           await serversService.getMembers(id);
         } catch (error) {
-          Pop.error(error)
+          Pop.error(error);
         }
       };
       fetchServerData();
     }
-
-
-    
   }, [router.query.id]);
 
   return (

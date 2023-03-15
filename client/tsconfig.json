@@ -23,7 +23,17 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    "util/pocketBase.js"
-, "src/pages/login.jsx", "src/pages/login.jsx", "src/components/Channels/ChannelsBar.jsxlsBar.jsx", "AppState.ts", "AppState.ts", "src/components/SideBar/SideBar.tsxeBarsrc/components/SideBar/SideBar.tsxeBar/SideBar.tsx", "src/models/Message.ts", "middleware/AuthorizedUser.ts", "src/middleware/WithAuth.js", "src/middleware/WithAuth.js"  ],
+    "util/pocketBase.js",
+    "src/pages/login.jsx",
+    "src/pages/login.jsx",
+    "src/components/ChannelsBar/ChannelsBar.jsxlsBar.jsx",
+    "AppState.ts",
+    "AppState.ts",
+    "src/components/SideBar/SideBar.tsxeBarsrc/components/SideBar/SideBar.tsxeBar/SideBar.tsx",
+    "src/models/Message.ts",
+    "middleware/AuthorizedUser.ts",
+    "src/middleware/WithAuth.js",
+    "src/middleware/WithAuth.js"
+  ],
   "exclude": ["node_modules", "util/*.*"]
 }

@@ -3,6 +3,7 @@
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React from "react";
+import { FaUserMinus } from "react-icons/fa";
 import { AppState } from "../../../AppState";
 import { pb, useUser } from "../../../utils/pocketBase";
 import Pop from "../../../utils/Pop";
@@ -30,13 +31,14 @@ const DeleteServer = () => {
   };
 
   return (
-    <div className="">
+    <div className="w-full">
       {user?.id == server?.owner ? (
         <button
-          className=" rounded bg-red-500 p-2 font-bold  text-white hover:bg-red-700 transition-all duration-300 ease-linear"
+          className=" server-button"
           onClick={handleClick}
         >
           Delete Server
+          <FaUserMinus size={15} />
         </button>
       ) : (
         <div className=""></div>
@@ -45,3 +47,4 @@ const DeleteServer = () => {
   );
 };
 export default observer(DeleteServer);
+    

@@ -5,7 +5,7 @@ import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 import { observer } from "mobx-react";
 
 import { pb } from "../../../utils/pocketBase";
-import ChannelSelection from "../Channels/ChannelSelection";
+import ChannelSelection from "../ChannelsBar/ChannelSelection";
 import { AppState } from "../../../AppState";
 import { userService } from "../../services/UserService";
 import type { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";

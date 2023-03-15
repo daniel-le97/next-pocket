@@ -74,7 +74,7 @@ const SideBar = () => {
 
       {user ? (
         <>
-          <UserIcon user={user} />
+          {/* <UserIcon user={user} /> */}
           <Divider />
           <LogOutIcon />
 
