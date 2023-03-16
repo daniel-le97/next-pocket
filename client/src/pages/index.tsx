@@ -53,10 +53,13 @@ const Explore: NextPage = () => {
           </div>
         </div>
 
-        <div className="    mt-16  flex  flex-wrap justify-center gap-5 ">
-          {servers && servers.map((s) =>
-           <ServerCard server={s} key={s.id} />
-           )}
+        <div className="  my-10 mx-5 flex flex-wrap    justify-center ">
+          {servers &&
+            servers.map((s) => (
+           
+                <ServerCard server={s} key={s.id} />
+            
+            ))}
         </div>
       </main>
     </>

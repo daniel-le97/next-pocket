@@ -88,7 +88,7 @@ const SideBar = () => {
         />
       )}
 
-      <div className="absolute bottom-3 left-1.5">
+      <div className="">
         <ThemeIcon />
         <CreateServer />
         <SideBarIcon
@@ -104,7 +104,7 @@ const SideBar = () => {
 };
 
 // @ts-ignore
-const SideBarIcon = ({ icon, text, router }) => {
+ export const SideBarIcon = ({ icon, text, router }) => {
   return (
     <Link href={router}>
       <div className=" sidebar-icon group ">

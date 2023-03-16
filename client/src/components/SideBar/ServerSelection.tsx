@@ -12,6 +12,7 @@ import type {
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { useUser } from "../../../utils/pocketBase";
 import { membersService } from "../../services/MembersService";
+import CreateServer from "./CreateServer";
 
 const ServerSelection = () => {
   const [servers, setServers] = useState<
@@ -25,16 +26,16 @@ const ServerSelection = () => {
     if (router.query.id && servers) {
       let server = servers.find((s) => s?.id == router.query.id);
       AppState.activeServer = server;
-     AppState.messages = []
-      
+      AppState.messages = [];
     }
   }, [AppState.userServers, router.query.id]);
 
   return (
-    <>
+    <div className="   server-selection  ">
       {servers &&
         servers.map((s, index) => <ServerIcon server={s} key={index} />)}
-    </>
+    
+    </div>
   );
 };
 
@@ -48,8 +49,8 @@ const ServerIcon = ({
   const [isShowing, setShowing] = useState(false);
   const handleClick = () => {
     AppState.activeServer = server;
-//     AppState.activeChannel = null
-// AppState.messages = []
+    //     AppState.activeChannel = null
+    // AppState.messages = []
     router.push(`http://localhost:3000/server/${server.id}`);
   };
   useEffect(() => {

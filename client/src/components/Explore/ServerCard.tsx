@@ -73,7 +73,7 @@ const ServerCard = ({ server }: { server: Server }) => {
   }, []);
   return (
     <div
-      className={` group  relative h-auto w-full overflow-hidden rounded-xl     text-white shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4  ${
+      className={` group m-3  relative h-auto w-full overflow-hidden rounded-xl     text-white shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4  ${
         isMember
           ? "bg-gray-300 from-zinc-900 to-green-400 hover:from-zinc-900 hover:to-green-500"
           : "bg-gray-300 from-zinc-900 to-gray-600"

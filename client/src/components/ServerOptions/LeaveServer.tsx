@@ -17,7 +17,7 @@ const LeaveServer = ({ server }: { server: Server}) => {
         user: user!.id,
       };
 
-      const yes = await Pop.confirm();
+      const yes = await Pop.confirm(`Leave ${server?.name}`,"Are You Sure?",'question','Confirm');
       if (!yes) {
         return;
       }
@@ -34,7 +34,7 @@ const LeaveServer = ({ server }: { server: Server}) => {
       className=" server-button   "
       onClick={leaveServer}
     >
-      Leave <small>{server && server.id}</small>
+      Leave <small>{server && server.name}</small>
     </button>
   );
 };

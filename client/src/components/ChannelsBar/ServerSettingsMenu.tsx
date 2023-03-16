@@ -11,8 +11,8 @@ import ServerLink from "../ServerOptions/ServerLink";
 const ServerSettingsMenu = () => {
   return (
     <Popover className="relative border-b-2 border-b-zinc-900 bg-zinc-800">
-      <Popover.Button className="flex w-full items-center justify-between p-2 text-xl font-bold text-white">
-        Solutions
+      <Popover.Button className="flex w-full items-center justify-between p-2 text-xl font-bold text-white focus:outline-none focus:bg-zinc-700 ">
+    {AppState.activeServer?.name}
         <FaArrowDown size={15} />
       </Popover.Button>
 
