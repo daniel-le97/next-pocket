@@ -22,6 +22,8 @@ import { messageService } from "../../../services/MessageService";
 import { Transition } from "@headlessui/react";
 import { setRedirect } from "../../../../utils/Redirect";
 import Pop from "../../../../utils/Pop";
+import { withAuth } from "../../../middleware/WithAuth";
+import { isMember } from "../../../middleware/ServerMember";
 
 const Server: NextPage = () => {
   const router = useRouter();
@@ -30,25 +32,25 @@ const Server: NextPage = () => {
   const server = AppState.activeServer;
   const user = pb.authStore.model;
 
-  useEffect(() => {
-    if (router.query.id) {
-      const fetchServerData = async () => {
-        try {
-          if (!user) {
-            setRedirect({ pathname: "/server/[id]", query: { id } });
-            return router.push("/login");
-          }
-          console.log(router.asPath);
-          await channelsService.getChannelsByServerId(id);
-          await messageService.getMessages();
-          await serversService.getMembers(id);
-        } catch (error) {
-          Pop.error(error);
-        }
-      };
-      fetchServerData();
-    }
-  }, [router.query.id]);
+  // useEffect(() => {
+  //   if (router.query.id) {
+  //     const fetchServerData = async () => {
+  //       try {
+  //         if (!user) {
+  //           setRedirect({ pathname: "/server/[id]", query: { id } });
+  //           return router.push("/login");
+  //         }
+  //         console.log(router.asPath);
+  //         await channelsService.getChannelsByServerId(id);
+  //         await messageService.getMessages();
+  //         await serversService.getMembers(id);
+  //       } catch (error) {
+  //         Pop.error(error);
+  //       }
+  //     };
+  //     fetchServerData();
+  //   }
+  // }, [router.query.id]);
 
   return (
     <>
@@ -68,4 +70,4 @@ const Server: NextPage = () => {
   );
 };
 
-export default observer(Server);
+export default observer(withAuth(isMember(Server)));
