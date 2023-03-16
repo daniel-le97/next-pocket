@@ -8,6 +8,7 @@ import { AppState } from "../../AppState";
 import { useUser } from "../../hooks/User";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
+import { setRedirect } from "../../utils/Redirect";
 // import { pb } from "../../utils/pocketBase";
 import Layout from "../components/Layout";
 import { membersService } from "../services/MembersService";
@@ -17,6 +18,7 @@ import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const user = pb.authStore.model;
+  
 
   useEffect(() => {
     const fetchUsers = async () => {
