@@ -1,8 +1,9 @@
 import { AppState } from "../../AppState";
-import {
-  Collections,
+import type {
   MessagesRecord,
-  MessagesResponse,
+  MessagesResponse} from "../../PocketBaseTypes/pocketbase-types";
+import {
+  Collections
 } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
@@ -14,7 +15,7 @@ class MessageService {
    * @param data - The message data to send
    * @returns The newly created message
    */
-  async sendMessage(data: MessagesRecord): Promise<Message> {
+  async sendMessage(data: MessagesRecord){
     const res = await pb.collection(Collections.Messages).create<Message>(
       data
     );

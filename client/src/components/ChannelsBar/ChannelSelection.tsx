@@ -8,6 +8,7 @@ import { ChannelsResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
 import { channelsService } from "../../services/ChannelsService";
 import { messageService } from "../../services/MessageService";
+import React from "react";
 const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = pb.authStore.model;
   const channelTitle: string | undefined = AppState.activeChannel?.title;

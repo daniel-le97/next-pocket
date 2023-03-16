@@ -1,5 +1,7 @@
+import { AppState } from "../AppState"
 import { pb } from "../utils/pocketBase"
 
 export const useUser = () => {
-  return pb.authStore.model
+  const user = pb.authStore.model || AppState.user
+  return user
 }

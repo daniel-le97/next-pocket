@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { type NextPage } from "next";
 import Head from "next/head";
@@ -5,7 +6,7 @@ import Head from "next/head";
 import ChannelsBar from "../../../components/ChannelsBar/ChannelsBar";
 
 import React, { useEffect, Fragment } from "react";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { AppState } from "../../../../AppState";
 
 import { pb } from "../../../../utils/pocketBase";
@@ -20,34 +21,31 @@ import MessagesContainer from "../../../components/Messages/MessageContainer";
 
 import { withAuth } from "../../../middleware/WithAuth";
 import { withMember } from "../../../middleware/WithMember";
+import { channelsService } from "../../../services/ChannelsService";
+import { messageService } from "../../../services/MessageService";
+import { serversService } from "../../../services/ServersService";
+import { setRedirect } from "../../../../utils/Redirect";
+import Pop from "../../../../utils/Pop";
+
 
 const Server: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
 
-  const server = AppState.activeServer;
+  // const server = AppState.activeServer;
   const user = pb.authStore.model;
   // console.log('went')
 
-  // useEffect(() => {
-  //   if (router.query.id) {
-  //     const fetchServerData = async () => {
-  //       try {
-  //         if (!user) {
-  //           setRedirect({ pathname: "/server/[id]", query: { id } });
-  //           return router.push("/login");
-  //         }
-  //         console.log(router.asPath);
-  //         await channelsService.getChannelsByServerId(id);
-  //         await messageService.getMessages();
-  //         await serversService.getMembers(id);
-  //       } catch (error) {
-  //         Pop.error(error);
-  //       }
-  //     };
-  //     fetchServerData();
-  //   }
-  // }, [router.query.id]);
+  useEffect(() => {
+    if (router.query.id) {
+      if (user) {
+        fetchServerData(id);
+        return
+      }
+      setRedirect(`/server/${id}`)
+      router.push('/login')
+    }
+  }, [router.query.id]);
 
   return (
     <>
@@ -66,5 +64,15 @@ const Server: NextPage = () => {
     </>
   );
 };
+
+async function fetchServerData(id: string) {
+  try {
+    await channelsService.getChannelsByServerId(id);
+    await messageService.getMessages();
+    await serversService.getMembers(id);
+  } catch (error) {
+    Pop.error(error);
+  }
+}
 
 export default observer(withAuth(withMember(Server)));

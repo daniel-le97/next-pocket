@@ -6,6 +6,8 @@ import { AppState } from "../../../AppState";
 import { FaLaugh, FaSmile } from "react-icons/fa";
 import { Dialog } from "@headlessui/react";
 import InputEmoji from "react-input-emoji";
+import React from "react";
+import { messageService } from "../../services/MessageService";
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
   const messages = AppState.messages;
@@ -26,7 +28,8 @@ const CreateMessage = () => {
       // // @ts-ignore
       // room: AppState?.activeRoom?.id,
     };
-    const createdMessage = await pb.collection("messages").create(data);
+    // const createdMessage = await pb.collection("messages").create(data);
+    const createMessage = await messageService.
     setNewMessage("");
   };
 

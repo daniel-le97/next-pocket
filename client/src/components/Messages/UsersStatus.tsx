@@ -1,28 +1,25 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { pb } from "../../../utils/pocketBase";
 import { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
 import {
   Collections,
   UsersResponse,
+  UsersStatusResponse,
 } from "../../../PocketBaseTypes/pocketbase-types";
 import Pop from "../../../utils/Pop";
+import { userService } from "../../services/UserService";
 export default function UserStatus({ user }: { user: UsersResponse }) {
   const [isOnline, setIsOnline] = useState(false);
-  const [userStatusRecord, setUserStatusRecord] = useState<any>(null);
+  const [userStatusRecord, setUserStatusRecord] = useState<UsersStatusResponse>(null);
 
   useEffect(() => {
 
 
     const fetchStatus = async () => {
       try {
-       
-        
-        const res = await pb
-          .collection("usersStatus")
-          .getFirstListItem(`userId="${user?.id}"`);
-
+        const res = await userService.getUserStatus(user.id)
         setUserStatusRecord(res);
-
         setIsOnline(res.isOnline);
       } catch (error) {
         if (error.status === 404) {

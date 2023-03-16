@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -50,27 +51,16 @@ const ServerCard = ({ server }: { server: Server }) => {
       Pop.error(error, "Join Server");
     }
   }
+
+      const checkIfMember = () => {
+        if (server.members?.includes(user?.id)) {
+          setIsMember(true);
+        }
+      };
   useEffect(() => {
-  
-
-    const checkIfMember = async () => {
-      // const member = await membersService.getUserMemberRecord({
-      //   user: user?.id as string,
-      //   server: server.id,
-      // });
-
-
-
-
- let result = server.members?.includes(user?.id)
-
-
-      if (result) {
-        setIsMember(true);
-      }
-    };
     checkIfMember();
   }, []);
+
   return (
     <div
       className={` group m-3  relative h-auto w-full overflow-hidden rounded-xl     text-white shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4  ${

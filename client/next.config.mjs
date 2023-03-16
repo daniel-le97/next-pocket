@@ -5,10 +5,10 @@
  * This is especially useful for Docker builds.
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
-import withRoutes from 'nextjs-routes/config'
+
 
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
 };
-export default withRoutes(config);
+export default config;
