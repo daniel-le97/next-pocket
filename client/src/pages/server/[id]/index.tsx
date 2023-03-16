@@ -10,20 +10,16 @@ import { AppState } from "../../../../AppState";
 
 import { pb } from "../../../../utils/pocketBase";
 import ServerMembersBar from "../../../components/MembersBar/ServerMembersBar";
-import { channelsService } from "../../../services/ChannelsService";
-import type { ServersResponse } from "../../../../PocketBaseTypes/pocketbase-types";
+// import { channelsService } from "../../../services/ChannelsService";
+// import type { ServersResponse } from "../../../../PocketBaseTypes/pocketbase-types";
 
-import { serversService } from "../../../services/ServersService";
-import { membersService } from "../../../services/MembersService";
+
 import { observer } from "mobx-react";
 
 import MessagesContainer from "../../../components/Messages/MessageContainer";
-import { messageService } from "../../../services/MessageService";
-import { Transition } from "@headlessui/react";
-import { setRedirect } from "../../../../utils/Redirect";
-import Pop from "../../../../utils/Pop";
+
 import { withAuth } from "../../../middleware/WithAuth";
-import { isMember } from "../../../middleware/ServerMember";
+import { withMember } from "../../../middleware/WithMember";
 
 const Server: NextPage = () => {
   const router = useRouter();
@@ -31,6 +27,7 @@ const Server: NextPage = () => {
 
   const server = AppState.activeServer;
   const user = pb.authStore.model;
+  console.log('went')
 
   // useEffect(() => {
   //   if (router.query.id) {
@@ -70,4 +67,4 @@ const Server: NextPage = () => {
   );
 };
 
-export default observer(withAuth(isMember(Server)));
+export default observer(withAuth(withMember(Server)));

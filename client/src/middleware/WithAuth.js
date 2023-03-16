@@ -10,11 +10,9 @@ import { AppState } from "../../AppState";
 export const withAuth = (/** @type {JSX.IntrinsicAttributes | (import("react").FunctionComponent<{}> & { getInitialProps?(context: import("next").NextPageContext): {} | Promise<{}>; })} */ PageComponent) => {
   const AuthenticatedPageComponent = (/** @type {JSX.IntrinsicAttributes} */ props) => {
     const router = useRouter();
-    const id = router.query.id 
     const user = pb.authStore.model;
 
-       const checkAuth = async () => {
-        // console.log(user);
+    const checkAuth = async () => {
         if (!user) {
           AppState.lastPath = router.asPath
           return router.push('/login')

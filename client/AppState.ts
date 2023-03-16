@@ -40,6 +40,7 @@ class ObservableAppState {
   loading = 0;
 
   lastPath: string | null = null
+  lastQueryId: string | null = null
 
   AppState: undefined;
 
