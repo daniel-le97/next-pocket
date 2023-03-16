@@ -11,6 +11,7 @@ import type { Server } from "../../PocketBaseTypes/utils";
 import { pb, useUser } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { channelsService } from "./ChannelsService";
+import { uploadService } from "./UploadService";
 
 type ServerData = { user: string; server: string };
 // type TServerExpand<T> = {
@@ -18,14 +19,16 @@ type ServerData = { user: string; server: string };
 // };
 
 class ServersService {
-  async getById(id:string){
-    const server = await pb.collection(Collections.Servers).getFirstListItem<Server>(`id="${id}"`, {
-      expand: 'server.image'
-    })
-    console.log('server.getById',server);
-    
-    AppState.activeServer = server
-    return server
+  async getById(id: string) {
+    const server = await pb
+      .collection(Collections.Servers)
+      .getFirstListItem<Server>(`id="${id}"`, {
+        expand: "server.image",
+      });
+    console.log("server.getById", server);
+
+    AppState.activeServer = server;
+    return server;
   }
   async getServersList() {
     const user = useUser();
@@ -53,20 +56,31 @@ class ServersService {
         expand: "image",
       });
 
-    // update the global servers state if the server is created successfully
-    // if (newServer) {
-    //   const data: ServerData = {
-    //     server: newServer.id,
-    //     user: newServer.owner!,
-    //   };
-    //   const userMemberRecord = await pb
-    //     .collection(Collections.Members)
-    //     .create(data, {
-    //       expand: "server.image",
-    //     });
-    // const defaultServerChannel = await channelsService.createChannel(newServer.id);
-    // AppState.servers = [...AppState.servers, newServer];
-    // AppState.userServers = [...AppState.userServers,newServer]
+    const channelData = {
+      members: [],
+      messages: [],
+      title: "GeneralChat",
+      server: newServer.id,
+    };
+
+    const serverMemberData = {
+      user: serverData.owner,
+      server: newServer.id,
+    };
+    const ownerServerMemberRecord = await pb
+      .collection(Collections.Members)
+      .create(serverMemberData);
+    console.log(ownerServerMemberRecord);
+
+    const defaultChannel = await pb
+      .collection(Collections.Channels)
+      .create(channelData);
+    console.log(defaultChannel);
+
+    const fileUpload = await uploadService.getFileUploadByUserAndStatus(
+      serverData.owner
+    );
+    await uploadService.updateStatus(serverData?.owner, fileUpload.id);
     return newServer;
   }
 
@@ -91,7 +105,9 @@ class ServersService {
     }
     await pb.collection(Collections.Servers).delete(serverId);
     AppState.servers = AppState.servers.filter((s) => s.id != serverId);
-    AppState.userServers = AppState.userServers.filter((s) => s?.id != serverId);
+    AppState.userServers = AppState.userServers.filter(
+      (s) => s?.id != serverId
+    );
   }
 }
 

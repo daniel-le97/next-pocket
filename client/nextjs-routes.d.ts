@@ -8,8 +8,8 @@ declare module "nextjs-routes" {
   export type Route =
     | StaticRoute<"/AccountPage">
     | StaticRoute<"/Authenticate">
-    | DynamicRoute<"/DirectMessages/[id]", { "id": string }>
     | StaticRoute<"/DirectMessages">
+    | DynamicRoute<"/DirectMessages/[id]", { "id": string }>
     | StaticRoute<"/">
     | StaticRoute<"/login">
     | DynamicRoute<"/server/[id]", { "id": string }>

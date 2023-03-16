@@ -20,7 +20,7 @@ const acceptedFileTypes = [
 ];
 class UploadService {
   async uploadFile(e: any) {
-    const user = pb.authStore.model;
+    const user = AppState.user;
     const files: File[] = Array.from(e);
     AppState.loading = files.length;
     for await (const file of files) {
@@ -33,7 +33,14 @@ class UploadService {
 
       formData.append("file", compressed);
 
-      formData.append("user", user.id);
+      formData.append("user", user?.id);
+      formData.append("status", "pending");
+
+      // If there is a previous document, delete the associated file and update the status
+      const previousFile = await this.getFileUploadByUserAndStatus(user?.id);
+      if (previousFile) {
+        await this.deleteFile(user?.id, previousFile.id);
+      }
 
       const createdFile = await this.createFile(formData);
 
@@ -44,7 +51,7 @@ class UploadService {
       AppState.loading--;
 
       const updatedFile = await pb
-        .collection("fileUploads")
+        .collection(Collections.FileUploads)
         .update(createdFile.id, { url: url });
       return updatedFile;
     }
@@ -62,31 +69,53 @@ class UploadService {
       });
     });
   }
-  // async compress(file:any) {
-  //   let compressedFile :Blob | null = null;
-  //   await new Promise<void>((resolve, reject) => {
-  //     new Compressor(file, {
-  //       quality: 0.5,
-  //       success(newFile) {
-  //         compressedFile = newFile;
-  //         resolve();
-  //       },
-  //     });
-  //   });
-  //  return compressedFile
-  // }
 
+  async getFileUploadById(id: any) {
+    const res = await pb.collection(Collections.FileUploads).getOne(id);
+    return res;
+  }
+
+  async getFileUploadByUserAndStatus(userId: any) {
+    try {
+      const res = await pb
+        .collection(Collections.FileUploads)
+        .getFirstListItem(`user = "${userId}" && status = "pending"`);
+      return res;
+    } catch (error) {
+      console.error("Error fetching previous file:", error);
+    }
+  }
   async createFile(formData: any) {
-    const file = await pb.collection("fileUploads").create(formData);
+    const file = await pb.collection(Collections.FileUploads).create(formData);
 
     return file;
   }
 
-  async deleteFile(id: string) {
-    const record = await pb.collection("fileUploads").getOne(id);
-    console.log(record);
+  async deleteFile(userId: string, id: string) {
+    const res = await pb.collection(Collections.FileUploads).getOne(id);
 
-    await pb.collection("fileUploads").delete(record.id);
+    if (!res) {
+      throw new Error("Bad or no Id");
+    }
+    if (userId != res.user) {
+      throw new Error("Unauthorized");
+    }
+    await pb.collection(Collections.FileUploads).delete(res.id);
+  }
+
+  async updateStatus(userId: string, id: string) {
+    const fileUpload = await this.getFileUploadById(id);
+    if (!fileUpload) {
+      throw new Error(" Bad or no Id");
+    }
+    if (userId != fileUpload.user) {
+      throw new Error("Unauthorized");
+    }
+
+    const updatedFileUpload = await pb
+      .collection(Collections.FileUploads)
+      .update(id, { status: "uploaded" });
+    return updatedFileUpload;
   }
 }
 

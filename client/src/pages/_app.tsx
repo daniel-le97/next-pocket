@@ -42,7 +42,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     const subscribe = async () => {
       const userStatus = await pb
         .collection("usersStatus")
-        .getFirstListItem(`userId = "${user?.id}"`);
+        .getFirstListItem(`user.id = "${user?.id}"`);
       // console.log(userStatus);
       if (!userStatus) {
         throw new Error("userStatus Not Found");

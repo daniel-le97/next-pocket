@@ -27,7 +27,7 @@ const Server: NextPage = () => {
 
   const server = AppState.activeServer;
   const user = pb.authStore.model;
-  console.log('went')
+  // console.log('went')
 
   // useEffect(() => {
   //   if (router.query.id) {
