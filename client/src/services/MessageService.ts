@@ -47,13 +47,14 @@ class MessageService {
    * @param id - The ID of the channel to get messages for
    * @returns The list of messages for the specified channel
    */
-  async getMessagesByChannelId(id: string): Promise<MessagesResponse[]> {
-    const messages = await pb.collection(Collections.Messages).getFullList<
+  async getMessagesByChannelId(id: string) {
+    const res = await pb.collection(Collections.Messages).getFullList<
       MessagesResponse
     >(200, {
       filter: `channel.id = ${id}`,
       sort: "-created",
     });
+    const messages = res.items as MessagesResponse[]
     return messages.items;
   }
 }

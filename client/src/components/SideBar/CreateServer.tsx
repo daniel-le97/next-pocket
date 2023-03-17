@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
 import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 import { useForm } from "react-hook-form";
@@ -9,6 +12,7 @@ import { pb } from "../../../utils/pocketBase";
 import ImageUploader from "../ImageUploader";
 import Loader from "../Loader";
 import { useRouter } from "next/router";
+import { ServersRecord } from "../../../PocketBaseTypes/pocketbase-types";
 const user = pb.authStore.model;
 const data = {
   name: "test",
@@ -48,7 +52,7 @@ const CreateServer = () => {
       description: "",
     },
   });
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: ServersRecord) => {
     try {
       const newServer = await serversService.createServer(data);
       reset();
@@ -58,7 +62,7 @@ const CreateServer = () => {
     } catch (error) {
       console.error("createServer", error);
 
-      await uploadService.deleteFile(data.image);
+      await uploadService.deleteFile(user?.id, data.image);
     }
   };
 
@@ -69,7 +73,8 @@ const CreateServer = () => {
       const record = await uploadService.uploadFile(event.target.files);
       setImageUrl(record.url);
       // setValue("imageUrl", record?.url);
-      setValue("image", record?.id);
+      const id = record?.id
+      setValue("image",id!);
     };
     uploadFile();
   };

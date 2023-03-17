@@ -11,7 +11,7 @@ const AddFriend = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [activeUser, setActiveUser] = useState(null);
-  const user = pb.authStore.model;
+  const user = AppState.user
   const [query, setQuery] = useState("");
   useEffect(() => {
     const fetchUsers = async () => {

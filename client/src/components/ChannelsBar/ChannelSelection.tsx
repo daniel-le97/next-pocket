@@ -10,11 +10,11 @@ import { channelsService } from "../../services/ChannelsService";
 import { messageService } from "../../services/MessageService";
 import React from "react";
 const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
-  const user = pb.authStore.model;
+  const user = AppState.user
   const channelTitle: string | undefined = AppState.activeChannel?.title;
   const joinChannel = async () => {
     try {
-      const user = pb.authStore.model;
+      const user = AppState.user
       if (!user) {
         console.error("must be logged in");
         return;

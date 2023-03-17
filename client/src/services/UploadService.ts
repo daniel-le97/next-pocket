@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -33,13 +34,13 @@ class UploadService {
 
       formData.append("file", compressed);
 
-      formData.append("user", user?.id);
+      formData.append("user", user!.id);
       formData.append("status", "pending");
 
       // If there is a previous document, delete the associated file and update the status
-      const previousFile = await this.getFileUploadByUserAndStatus(user?.id);
+      const previousFile = await this.getFileUploadStatusByUserId(user!.id);
       if (previousFile) {
-        await this.deleteFile(user?.id, previousFile.id);
+        await this.deleteFile(user!.id, previousFile.id);
       }
 
       const createdFile = await this.createFile(formData);
@@ -70,12 +71,12 @@ class UploadService {
     });
   }
 
-  async getFileUploadById(id: any) {
+  async getFileUploadById(id: string) {
     const res = await pb.collection(Collections.FileUploads).getOne(id);
     return res;
   }
 
-  async getFileUploadByUserAndStatus(userId: any) {
+  async getFileUploadStatusByUserId(userId: string) {
     try {
       const res = await pb
         .collection(Collections.FileUploads)
@@ -85,7 +86,7 @@ class UploadService {
       console.error("Error fetching previous file:", error);
     }
   }
-  async createFile(formData: any) {
+  async createFile(formData: FormData) {
     const file = await pb.collection(Collections.FileUploads).create(formData);
 
     return file;

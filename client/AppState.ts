@@ -3,7 +3,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
-import { Route } from "nextjs-routes";
+
+import { Admin, Record } from "pocketbase";
 import type {
   ChannelsResponse,
   DirectMessagesResponse,
@@ -16,19 +17,18 @@ import type {
 import type { MemberUser, Server } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
+// /** @type {import('./src/models/Account.js').Account | null} */
 class ObservableAppState {
-  user: Record<string, any> | null = null;
-  // /** @type {import('./src/models/Account.js').Account | null} */
+  user: Record | Admin | null = null;
 
   members: MemberUser[] = [];
 
   userServers: (ServersResponse<unknown> | undefined)[] = [];
 
-  account: Record<string, any> | null = null;
   messageQuery = "";
 
   activeChannel: ChannelsResponse | null = null;
-  activeServer: ServersResponse | Server = null;
+  activeServer: ServersResponse | Server | null = null;
   activeMembership: MembersResponse | null = null
 
   channelTitles: (string | undefined)[] = [];
@@ -57,11 +57,13 @@ class ObservableAppState {
 export const AppState = new Proxy(new ObservableAppState(), {
   get(target, prop) {
     isValidProp(target, prop);
+    //@ts-expect-error any
     return target[prop];
   },
   set(target, prop, value) {
     isValidProp(target, prop);
     action(() => {
+      //@ts-expect-error any
       target[prop] = value;
     })();
     return true;

@@ -16,12 +16,12 @@ export const withMember = (PageComponent) =>
     ) => {
       const router = useRouter();
       const id = router.query.id || AppState.lastQueryId;
-      const user = pb.authStore.model;
+      const user = AppState.user
       const [isMember, setIsMember] = useState(false);
 
       const checkIsMember = async () => {
         const member = await membersService.getUserMemberRecord({
-          user: user.id,
+          user: user?.id,
           server: id,
         });
 

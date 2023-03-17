@@ -33,7 +33,7 @@ const Server: NextPage = () => {
   const id = router.query.id as string;
 
   // const server = AppState.activeServer;
-  const user = pb.authStore.model;
+  const user = AppState.user
   // console.log('went')
 
   useEffect(() => {

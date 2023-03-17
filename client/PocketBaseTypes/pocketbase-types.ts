@@ -10,7 +10,6 @@ export enum Collections {
 	Friends = "friends",
 	Members = "members",
 	Messages = "messages",
-	Rooms = "rooms",
 	Servers = "servers",
 	Users = "users",
 	UsersStatus = "usersStatus",
@@ -57,14 +56,20 @@ export type ChannelsRecord = {
 export type DirectMessagesRecord = {
 	from: RecordIdString
 	to: RecordIdString
-	message: string
+	text: string
 	files?: string[]
 }
 
+export enum FileUploadsStatusOptions {
+	"uploaded" = "uploaded",
+	"rejected" = "rejected",
+	"pending" = "pending",
+}
 export type FileUploadsRecord = {
 	file?: string[]
 	url?: string
 	user: RecordIdString
+	status?: FileUploadsStatusOptions
 }
 
 export enum FriendRequestStatusOptions {
@@ -73,10 +78,10 @@ export enum FriendRequestStatusOptions {
 	"accepted" = "accepted",
 }
 export type FriendRequestRecord = {
-	from: RecordIdString
-	to: RecordIdString
-	friends: string
+	senderId: RecordIdString
+	receiverId: RecordIdString
 	status?: FriendRequestStatusOptions
+	field?: string
 }
 
 export type FriendsRecord = {
@@ -95,17 +100,11 @@ export type MessagesRecord = {
 	channel?: RecordIdString
 }
 
-export type RoomsRecord = {
-	messages?: RecordIdString
-	title?: string
-}
-
 export type ServersRecord = {
 	image?: RecordIdString
 	name: string
 	description?: string
 	members?: RecordIdString[]
-	imageUrl?: string
 	owner?: RecordIdString
 }
 
@@ -116,8 +115,8 @@ export type UsersRecord = {
 }
 
 export type UsersStatusRecord = {
-	userId?: string
 	isOnline?: boolean
+	user: RecordIdString
 }
 
 // Response types include system fields and match responses from the PocketBase API
@@ -128,10 +127,9 @@ export type FriendRequestResponse<Texpand = unknown> = FriendRequestRecord & Bas
 export type FriendsResponse<Texpand = unknown> = FriendsRecord & BaseSystemFields<Texpand>
 export type MembersResponse<Texpand = unknown> = MembersRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
-export type RoomsResponse<Texpand = unknown> = RoomsRecord & BaseSystemFields<Texpand>
 export type ServersResponse<Texpand = unknown> = ServersRecord & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = UsersRecord & AuthSystemFields<Texpand>
-export type UsersStatusResponse = UsersStatusRecord & BaseSystemFields
+export type UsersStatusResponse<Texpand = unknown> = UsersStatusRecord & BaseSystemFields<Texpand>
 
 export type CollectionRecords = {
 	channels: ChannelsRecord
@@ -141,7 +139,6 @@ export type CollectionRecords = {
 	friends: FriendsRecord
 	members: MembersRecord
 	messages: MessagesRecord
-	rooms: RoomsRecord
 	servers: ServersRecord
 	users: UsersRecord
 	usersStatus: UsersStatusRecord

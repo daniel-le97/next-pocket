@@ -31,7 +31,6 @@ class ServersService {
     return server;
   }
   async getServersList() {
-    const user = useUser();
     // get all servers available
     const res = await pb
       .collection(Collections.Servers)
@@ -77,13 +76,10 @@ class ServersService {
       .create(channelData);
     console.log(defaultChannel);
 
-
-    AppState.userServers = [...AppState.userServers,newServer]
-    AppState.activeServer = newServer
-    const fileUpload = await uploadService.getFileUploadByUserAndStatus(
-      serverData.owner
+    const fileUpload = await uploadService.getFileUploadStatusByUserId(
+      serverData.owner!
     );
-    await uploadService.updateStatus(serverData?.owner, fileUpload.id);
+    await uploadService.updateStatus(serverData.owner!, fileUpload!.id);
     return newServer;
   }
 
@@ -99,11 +95,11 @@ class ServersService {
   }
 
   async DeleteServer(ownerId: string, serverId: string) {
-    const user = AppState.user;
+    const user = AppState.user || pb.authStore.model
     if (!user) {
       throw new Error("No User");
     }
-    if (user?.id != ownerId) {
+    if (user.id != ownerId) {
       throw new Error("Not Authorized");
     }
     await pb.collection(Collections.Servers).delete(serverId);
