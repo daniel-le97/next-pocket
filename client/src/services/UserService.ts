@@ -9,6 +9,8 @@ import {
 } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 
+
+
 class UserService {
   async updateUser(userData: UsersResponse) {
     // this will update pb.authStore.model automatically

@@ -1,7 +1,9 @@
 import { AppState } from "../../AppState";
 import type {
+  DirectMessagesRecord,
   MessagesRecord,
-  MessagesResponse} from "../../PocketBaseTypes/pocketbase-types";
+  MessagesResponse,
+  UsersResponse} from "../../PocketBaseTypes/pocketbase-types";
 import {
   Collections
 } from "../../PocketBaseTypes/pocketbase-types";
@@ -18,6 +20,8 @@ class MessageService {
   async sendMessage(data: MessagesRecord){
       
   }
+
+  async sendDirectMessage(data: DirectMessagesRecord){}
 
   /**
    * Gets the list of messages for the current active channel
@@ -47,15 +51,19 @@ class MessageService {
    * @param id - The ID of the channel to get messages for
    * @returns The list of messages for the specified channel
    */
-  async getMessagesByChannelId(id: string) {
-    const res = await pb.collection(Collections.Messages).getFullList<
-      MessagesResponse
-    >(200, {
-      filter: `channel.id = ${id}`,
+  async getMessagesByChannelId(id: string, page = 1) {
+    const res = await pb
+    .collection(Collections.Messages)
+    .getList(page,50, {
+      filter: `channel.id = "${id}"`,
       sort: "-created",
+      expand: 'user'
     });
-    const messages = res.items as MessagesResponse[]
-    return messages.items;
+    console.log(res);
+    
+    const messages = res.items as unknown as MessagesResponse<UsersResponse>[]
+    AppState.messages = messages
+    return messages
   }
 }
 

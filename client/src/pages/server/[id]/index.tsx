@@ -38,6 +38,10 @@ const Server: NextPage = () => {
 
   useEffect(() => {
     if (router.query.id) {
+      const channelId = "ckxz8lx9amoq8aq";
+      console.log((channelId));
+      
+      messageService.getMessagesByChannelId(channelId)
       if (user) {
         fetchServerData(id);
         return
