@@ -28,8 +28,9 @@ const CreateMessage = () => {
       // // @ts-ignore
       // room: AppState?.activeRoom?.id,
     };
+
     // const createdMessage = await pb.collection("messages").create(data);
-    const createMessage = await messageService.
+    const createMessage = await messageService.sendMessage(data)
     setNewMessage("");
   };
 

@@ -16,10 +16,7 @@ class MessageService {
    * @returns The newly created message
    */
   async sendMessage(data: MessagesRecord){
-    const res = await pb.collection(Collections.Messages).create<Message>(
-      data
-    );
-    return res;
+      
   }
 
   /**
@@ -38,7 +35,7 @@ class MessageService {
       .collection(Collections.Messages)
       .getList<MessagesResponse>(1, 50, {
         filter: `channel = "${AppState.activeChannel.id}"`,
-        sort: "created",
+        sort: "-created",
         expand: "user",
       });
 

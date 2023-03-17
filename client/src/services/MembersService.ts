@@ -41,7 +41,7 @@ class MembersService {
     return {new: true};
   }
   async getUserMemberRecord(data: MembersRecord, setMember?:boolean) {
-    console.log(data);
+  
     
     // get the users membership for the server and return it
     const record = await pb

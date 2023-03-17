@@ -75,7 +75,7 @@ const Messages = () => {
           />
         ))
       ) : (
-        <div className=" absolute top-1/3 left-1/2">
+        <div className=" absolute top-1/4 left-1/2">
           <img src={noMessage.src} alt="" width={400} />
         </div>
       )}
