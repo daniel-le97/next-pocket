@@ -31,11 +31,16 @@ const ServerSelection = () => {
   }, [AppState.userServers, router.query.id]);
 
   return (
-    <div className="   server-selection  ">
+    <>
       {servers &&
         servers.map((s, index) => <ServerIcon server={s} key={index} />)}
-    
-    </div>
+      {servers &&
+        servers.map((s, index) => <ServerIcon server={s} key={index} />)}
+      {servers &&
+        servers.map((s, index) => <ServerIcon server={s} key={index} />)}
+      {servers &&
+        servers.map((s, index) => <ServerIcon server={s} key={index} />)}
+    </>
   );
 };
 
@@ -66,14 +71,14 @@ const ServerIcon = ({
       leaveFrom="opacity-100 translate-x-0"
       leaveTo="opacity-0 -translate-x-10"
     >
-      <div className=" sidebar-icon group  relative">
+      <div className=" sidebar-icon group  relative  snap-start ">
         <img
           src={server?.expand?.image?.url}
           alt="UserIcon"
           className={
             activeServer?.id == server.id
               ? "h-12 w-12  rounded-xl border-2 border-white object-cover  transition-all duration-300 ease-linear"
-              : "h-12 w-12 rounded-3xl object-cover transition-all duration-300 ease-linear hover:rounded-xl"
+              : "h-12 w-12  rounded-3xl object-cover transition-all duration-300 ease-linear hover:rounded-xl"
           }
           onClick={handleClick}
         />

@@ -13,27 +13,13 @@ import { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
 
 const Messages = () => {
   const messages = AppState.messages;
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  const listRef = useRef(null);
-  let unsubscribe: (() => void) | null = null;
-  const activeChannel = AppState.activeChannel;
-  const messageQuery = AppState.messageQuery;
-
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const MCRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
-  useEffect(() => {
-    // const fetchMessages = async () => {
-    //   await messageService.getMessages();
-    // };
-    // fetchMessages();
-
-    unsubscribe = async () =>
+    const unsubscribe = async () =>
       await pb
         .collection("messages")
         .subscribe("*", async ({ action, record }) => {
@@ -63,8 +49,34 @@ const Messages = () => {
     };
   }, []);
 
+  const fetchNextPage = async () => {
+    if (isLoading || !hasMore) return;
+    setIsLoading(true);
+    const lastMessage = messages[messages.length - 1];
+    const nextPage = await pb.collection("messages").getList(2, 50, {
+      expand: "user",
+    });
+    if (nextPage.items.length > 0) {
+      const updatedMessages: MessagesResponse[] = [
+        ...messages,
+        ...nextPage.items,
+      ];
+      AppState.messages = updatedMessages;
+      setIsLoading(false);
+    } else {
+      setHasMore(false);
+      setIsLoading(false);
+    }
+  };
+
+
+
   return (
-    <div className="messages snap-y snap-end  pb-14" ref={messagesContainerRef}>
+    <div
+      className="messages snap-y snap-end  pb-14  overflow-y-auto "
+      ref={MCRef}
+   
+    >
       {messages.length >= 1 ? (
         messages?.map((message, index) => (
           <MessageCard

@@ -77,6 +77,9 @@ class ServersService {
       .create(channelData);
     console.log(defaultChannel);
 
+
+    AppState.userServers = [...AppState.userServers,newServer]
+    AppState.activeServer = newServer
     const fileUpload = await uploadService.getFileUploadByUserAndStatus(
       serverData.owner
     );
@@ -96,7 +99,7 @@ class ServersService {
   }
 
   async DeleteServer(ownerId: string, serverId: string) {
-    const user = useUser();
+    const user = AppState.user;
     if (!user) {
       throw new Error("No User");
     }
