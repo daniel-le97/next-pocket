@@ -8,6 +8,7 @@ import { Dialog } from "@headlessui/react";
 import InputEmoji from "react-input-emoji";
 import React from "react";
 import { messageService } from "../../services/MessageService";
+import { containsUrl } from "../../../utils/ContainsUrl";
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
   const messages = AppState.messages;
@@ -78,13 +79,6 @@ const PlusIcon = () => (
   </button>
 );
 
-function containsUrl(text: string) {
-  // Create a regular expression to match URLs
-  const urlRegex =
-    /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
 
-  // Use the `test` method to check if a URL exists within the text
-  return urlRegex.test(text);
-}
 
 export default observer(CreateMessage);
