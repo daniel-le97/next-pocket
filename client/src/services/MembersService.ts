@@ -15,7 +15,6 @@ class MembersService {
     if (!data.user && !data.server) {
       throw new Error("No FormData Sent");
     }
-    console.log(data)
     // return;
     
 
