@@ -1,16 +1,22 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
 import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
 import { AppState } from "../../../AppState";
-import { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import { MessagesResponse, UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { containsUrl } from "../../../utils/ContainsUrl";
+type UserRes =  {
+  user: UsersResponse
+}
+type MessageWithUser = MessagesResponse<UserRes>
 
 const MessageCard = ({
   messages,
   message,
   index,
 }: {
-  messages: MessagesResponse[];
-  message: MessagesResponse;
+  messages: MessageWithUser[];
+  message: MessageWithUser
   index: number;
 }) => {
   const messageQuery = AppState.messageQuery;
@@ -26,7 +32,7 @@ const MessageCard = ({
         <img
           className="avatar"
           src={
-            message.expand.user.avatarUrl ||
+            message.expand?.user.id ||
             `https://api.dicebear.com/5.x/bottts-neutral/svg`
           }
           alt="avatar"

@@ -37,6 +37,9 @@ class ObservableAppState {
   users: UsersResponse[] = [];
   messages: MessagesResponse[] = [];
   directMessages:DirectMessagesResponse[] = []
+
+  totalPages = 0
+  page = 1
   loading = 0;
 
   lastPath: string | null = null

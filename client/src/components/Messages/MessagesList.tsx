@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react";
 import { pb } from "../../../utils/pocketBase";
@@ -40,9 +41,9 @@ const MessageList = () => {
         });
 
     return () => {
-      if (unsubscribe) {
+     
         unsubscribe();
-      }
+      
     };
   }, []);
 

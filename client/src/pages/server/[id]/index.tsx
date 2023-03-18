@@ -38,10 +38,10 @@ const Server: NextPage = () => {
 
   useEffect(() => {
     if (router.query.id) {
-      const channelId = "ckxz8lx9amoq8aq";
-      console.log((channelId));
+      // const channelId = "ckxz8lx9amoq8aq";
+      // console.log((channelId));
       
-      messageService.getMessagesByChannelId(channelId)
+      // messageService.getMessagesByChannelId(channelId)
       if (user) {
         fetchServerData(id);
         return
@@ -72,7 +72,9 @@ const Server: NextPage = () => {
 async function fetchServerData(id: string) {
   try {
     await channelsService.getChannelsByServerId(id);
-    await messageService.getMessages();
+    // await messageService.getMessages();
+     const channelId = "ckxz8lx9amoq8aq";
+     await messageService.getMessagesByChannelId(channelId)
     await serversService.getMembers(id);
   } catch (error) {
     Pop.error(error);

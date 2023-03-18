@@ -51,7 +51,9 @@ class MessageService {
    * @param id - The ID of the channel to get messages for
    * @returns The list of messages for the specified channel
    */
-  async getMessagesByChannelId(id: string, page = 1) {
+  async getMessagesByChannelId(id: string, page = AppState.page) {
+    console.log('running');
+    
     const res = await pb
     .collection(Collections.Messages)
     .getList(page,50, {
@@ -62,8 +64,10 @@ class MessageService {
     console.log(res);
     
     const messages = res.items as unknown as MessagesResponse<UsersResponse>[]
-    AppState.messages = messages
-    return messages
+    AppState.messages = [...messages,...AppState.messages]
+    AppState.totalPages = res.totalPages
+    AppState.page++
+
   }
 }
 
