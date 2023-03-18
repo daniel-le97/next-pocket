@@ -51,7 +51,7 @@ an example docker compose can be found at pocketbase/docker-compose.yml
 
 ## Authors
 
-- [@octokatherine](https://www.github.com/octokatherine)
+- [@daniel-le97](https://www.github.com/daniel-le97)
 
 
 ## Contributing
