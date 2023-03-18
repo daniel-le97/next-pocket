@@ -1,15 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { observer } from "mobx-react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { AppState } from "../../../../AppState";
-import type { MembersRecord, ServersResponse } from "../../../../PocketBaseTypes/pocketbase-types";
+import type { MembersRecord } from "../../../../PocketBaseTypes/pocketbase-types";
 import Pop from "../../../../utils/Pop";
 import { membersService } from "../../../services/MembersService";
 import { serversService } from "../../../services/ServersService";
-import React from "react";
 
 const ServerLink : NextPage = () => {
   const user = AppState.user
@@ -25,7 +25,7 @@ const ServerLink : NextPage = () => {
   useEffect(() => {
     if(id){
       const getServer = async () => {
-        const serverToJoin = await serversService.getById(id);
+        await serversService.getById(id);
       };
             if (!user) {
               AppState.lastPath = `server/${router.query.id}/join`;

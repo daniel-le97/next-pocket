@@ -1,6 +1,7 @@
 import type {
   FileUploadsResponse,
   MembersResponse,
+  MessagesResponse,
   ServersResponse,
   UsersResponse,
 } from "./pocketbase-types";
@@ -25,3 +26,8 @@ export type Server = ServersResponse<Upload>;
 export type Upload = {
   image: FileUploadsResponse;
 };
+
+type UserRes = {
+  user: UsersResponse;
+};
+export type MessageWithUser = MessagesResponse<UserRes>;

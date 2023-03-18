@@ -4,17 +4,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { action, makeAutoObservable } from "mobx";
 
-import { Admin, Record } from "pocketbase";
+import type { Admin, Record } from "pocketbase";
 import type {
   ChannelsResponse,
   DirectMessagesResponse,
   FriendRequestResponse,
   MembersResponse,
-  MessagesResponse,
   ServersResponse,
   UsersResponse,
 } from "./PocketBaseTypes/pocketbase-types";
-import type { MemberUser, Server } from "./PocketBaseTypes/utils";
+import type { MemberUser, MessageWithUser, Server } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
 // /** @type {import('./src/models/Account.js').Account | null} */
@@ -35,7 +34,7 @@ class ObservableAppState {
   channels: ChannelsResponse[] = [];
   servers: Server[] = [];
   users: UsersResponse[] = [];
-  messages: MessagesResponse[] = [];
+  messages: MessageWithUser[] = [];
   directMessages:DirectMessagesResponse[] = []
 
   totalPages = 0

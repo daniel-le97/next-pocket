@@ -1,22 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AppState } from "../../AppState";
-import {
-  MembersResponse,
+import type {
   ServersRecord,
-  ServersResponse,
-} from "../../PocketBaseTypes/pocketbase-types";
+  ServersResponse} from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
-import { MemberUser, TServerExpand } from "../../PocketBaseTypes/utils";
-import type { Server } from "../../PocketBaseTypes/utils";
-import { pb, useUser } from "../../utils/pocketBase";
-import Pop from "../../utils/Pop";
-import { channelsService } from "./ChannelsService";
+import type { Server , MemberUser} from "../../PocketBaseTypes/utils";
+import { pb} from "../../utils/pocketBase";
 import { uploadService } from "./UploadService";
-
-type ServerData = { user: string; server: string };
-// type TServerExpand<T> = {
-//   server: ServersResponse<T>;
-// };
 
 class ServersService {
   async getById(id: string) {

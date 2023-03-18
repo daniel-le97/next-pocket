@@ -5,11 +5,10 @@ import Head from "next/head";
 
 import ChannelsBar from "../../../components/ChannelsBar/ChannelsBar";
 
-import React, { useEffect, Fragment } from "react";
-import { NextRouter, useRouter } from "next/router";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { AppState } from "../../../../AppState";
 
-import { pb } from "../../../../utils/pocketBase";
 import ServerMembersBar from "../../../components/MembersBar/ServerMembersBar";
 // import { channelsService } from "../../../services/ChannelsService";
 // import type { ServersResponse } from "../../../../PocketBaseTypes/pocketbase-types";

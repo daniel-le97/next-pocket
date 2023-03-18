@@ -9,7 +9,7 @@ const MessageScroll = () => {
 console.log(AppState.messages);
 
   const fetchMore = async () => {
-    // console.log(AppState.activeChannel!.id);
+    console.log('hello');
     const channelId = "ckxz8lx9amoq8aq";
 
     await messageService.getMessagesByChannelId(channelId);
@@ -25,23 +25,13 @@ console.log(AppState.messages);
           <b>Yay! You have seen it all</b>
         </p>
       }
-      // below props only if you need pull down functionality
-      refreshFunction={fetchMore}
-      pullDownToRefresh
-      pullDownToRefreshThreshold={50}
-      pullDownToRefreshContent={
-        <h3 style={{ textAlign: "center" }}>&#8595; Pull down to refresh</h3>
-      }
-      releaseToRefreshContent={
-        <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
-      }
     >
-      {AppState.messages.map((i, index) => (
+      {AppState.messages.map((message, index) => (
         <div key={index}>
           {
             <MessageCard
               messages={AppState.messages}
-              message={i}
+              message={message}
               index={index}
             />
           }

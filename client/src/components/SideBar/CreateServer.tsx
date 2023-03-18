@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
@@ -62,7 +64,7 @@ const CreateServer = () => {
     } catch (error) {
       console.error("createServer", error);
 
-      await uploadService.deleteFile(user?.id, data.image);
+      await uploadService.deleteFile(user!.id, data.image!);
     }
   };
 

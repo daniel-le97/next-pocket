@@ -3,12 +3,9 @@
 import { observer } from "mobx-react";
 import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
 import { AppState } from "../../../AppState";
-import { MessagesResponse, UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
 import { containsUrl } from "../../../utils/ContainsUrl";
-type UserRes =  {
-  user: UsersResponse
-}
-type MessageWithUser = MessagesResponse<UserRes>
+
 
 const MessageCard = ({
   messages,

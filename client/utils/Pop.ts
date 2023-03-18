@@ -66,9 +66,10 @@ export default class Pop {
   }
 
   /**
-   * @param {import('axios').AxiosError | Error | String } Error An Error Object.
+   * @param {import('axios').AxiosError | Error | String } error An Error Object.
    * @param { String } eventTrigger Queryable trigger
    */
+  // @ts-expect-error using any
   static error(error, eventTrigger = '') {
     // @ts-ignore
     logger.error(eventTrigger, error)

@@ -1,15 +1,14 @@
 import { AppState } from "../../AppState";
 import type {
   DirectMessagesRecord,
-  MessagesRecord,
-  MessagesResponse,
-  UsersResponse} from "../../PocketBaseTypes/pocketbase-types";
+  DirectMessagesResponse,
+  MessagesRecord} from "../../PocketBaseTypes/pocketbase-types";
 import {
   Collections
 } from "../../PocketBaseTypes/pocketbase-types";
+import type { MessageWithUser } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
-import Pop from "../../utils/Pop";
-import type { Message } from "../models/Message";
+
 
 class MessageService {
   /**
@@ -18,26 +17,33 @@ class MessageService {
    * @returns The newly created message
    */
   async sendMessage(data: MessagesRecord){
-      
+    const channelId = AppState.activeChannel?.id
+    if (!channelId)throw new Error('no activeChannel.id')
+    const res = await pb.collection(Collections.Messages).create<MessageWithUser>(data, {expand: 'user'})
+
+    AppState.messages = [...AppState.messages, res]
+
+
   }
 
-  async sendDirectMessage(data: DirectMessagesRecord){}
+  async sendDirectMessage(data: DirectMessagesRecord){
+    const isUser = pb.authStore.model?.id == data.from
+    if(!isUser) throw new Error('data.from is not the currentUser')
+    const res = await pb.collection(Collections.DirectMessages).create<DirectMessagesResponse>(data)
+    AppState.directMessages = [...AppState.directMessages, res]
+  }
 
   /**
    * Gets the list of messages for the current active channel
    */
-  async getMessages(): Promise<void> {
+  async getMessages() {
     if (!AppState.activeChannel) {
       // No active channel selected, don't do anything
-      return;
+      throw new Error('unable to find channelId')
     }
-
-    
- 
-    
     const res = await pb
       .collection(Collections.Messages)
-      .getList<MessagesResponse>(1, 50, {
+      .getList<MessageWithUser>(1, 50, {
         filter: `channel = "${AppState.activeChannel.id}"`,
         sort: "-created",
         expand: "user",
@@ -63,7 +69,7 @@ class MessageService {
     });
     console.log(res);
     
-    const messages = res.items as unknown as MessagesResponse<UsersResponse>[]
+    const messages = res.items as unknown as MessageWithUser[]
     AppState.messages = [...messages,...AppState.messages]
     AppState.totalPages = res.totalPages
     AppState.page++

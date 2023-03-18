@@ -2,16 +2,17 @@ import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AppState } from "../../../AppState";
+import { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
 import Pop from "../../../utils/Pop";
 import { friendService } from "../../services/FriendService";
 import { userService } from "../../services/UserService";
 
 const AddFriend = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<UsersResponse[]>([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [activeUser, setActiveUser] = useState(null);
-  const user = AppState.user
+  const user = AppState.user!
   const [query, setQuery] = useState("");
   useEffect(() => {
     const fetchUsers = async () => {

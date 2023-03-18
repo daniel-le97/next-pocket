@@ -1,12 +1,9 @@
 import { AppState } from "../../AppState";
 import type {
-  UsersRecord,
   UsersResponse,
   UsersStatusResponse} from "../../PocketBaseTypes/pocketbase-types";
 import {
-  Collections,
-  ServersResponse
-} from "../../PocketBaseTypes/pocketbase-types";
+  Collections} from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 
 
@@ -15,6 +12,7 @@ class UserService {
   async updateUser(userData: UsersResponse) {
     // this will update pb.authStore.model automatically
     const res = await pb.collection("users").update(userData.id, userData);
+    return res
   }
 
   async getUsersList() {
