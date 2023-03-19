@@ -20,23 +20,30 @@ const MessageScroll = () => {
     <div
       id="scrollableDiv"
       style={{
-        height: 300,
+      height:1200,
         overflow: "auto",
         display: "flex",
         flexDirection: "column-reverse",
       }}
+      className="flex flex-col-reverse  overflow-auto "
     >
       {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll
         dataLength={AppState.messages.length}
         next={fetchMore}
-        style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.
+        style={{
+         
+     
+          display: "flex",
+          flexDirection: "column-reverse",
+        }}
+        className="py-5"
         inverse={true} //
         hasMore={true}
         loader={<h4>Loading...</h4>}
         scrollableTarget="scrollableDiv"
       >
-           {AppState.messages.map((message, index) => (
+        {AppState.messages.map((message, index) => (
           <div key={index}>
             {
               <MessageCard
@@ -46,7 +53,7 @@ const MessageScroll = () => {
               />
             }
             {/* {new Date(message.created).toLocaleString()} */}
-            {message.id}
+       
           </div>
         ))}
       </InfiniteScroll>

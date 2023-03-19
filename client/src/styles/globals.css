@@ -9,8 +9,6 @@
   padding: 0;
 }
 
-
-
 @layer components {
   .login-input {
     @apply w-full rounded bg-gray-100
@@ -20,10 +18,10 @@
   }
 
   .content-container {
-    @apply  min-h-screen w-full     bg-gray-300 p-3  dark:bg-zinc-700;
+    @apply min-h-screen  w-full overflow-auto bg-gray-300   dark:bg-zinc-700;
   }
   .content-list {
-    @apply w-full pt-20 flex flex-col-reverse;
+    @apply flex  pt-20 w-full flex-col-reverse  overflow-auto;
   }
 
   .bottom-bar {
@@ -246,7 +244,6 @@
   }
 }
 
-
 .server-selection::-webkit-scrollbar {
   display: none;
 
@@ -294,7 +291,7 @@
   }
 }
 
- .text-shadow {
+.text-shadow {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

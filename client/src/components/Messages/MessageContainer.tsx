@@ -12,7 +12,7 @@ const MessagesContainer = () => {
   return (
     <div className="content-container">
       <TopNavigation />
-      <div className="content-list">
+      <div className="content-list" >
         {/* <MessagesList /> */}
         <MessageScroll/>
       </div>

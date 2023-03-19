@@ -68,6 +68,7 @@ class MessageService {
 
     const messages = res.items as unknown as MessageWithUser[];
     AppState.messages = [...messages, ...AppState.messages];
+
     AppState.totalPages = res.totalPages;
     AppState.page++;
   }
