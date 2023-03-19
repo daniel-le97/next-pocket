@@ -28,6 +28,7 @@
     "react-input-emoji": "^5.0.0",
     "react-transition-group": "^4.4.5",
     "sweetalert2": "^11.7.3",
+    "timeago-react": "^3.0.6",
     "zod": "^3.21.4"
   },
   "devDependencies": {

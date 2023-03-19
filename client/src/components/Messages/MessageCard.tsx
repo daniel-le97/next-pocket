@@ -2,9 +2,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
 import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
+import TimeAgo from "timeago-react";
 import { AppState } from "../../../AppState";
 import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
 import { containsUrl } from "../../../utils/ContainsUrl";
+import { timeago } from "../../../utils/TimeAgo";
 
 
 const MessageCard = ({
@@ -41,7 +43,7 @@ const MessageCard = ({
         <p className="post-owner">
           {message.expand?.user?.username}
           <small className="timestamp">
-            {new Date(message.created).toLocaleDateString()}
+            {<TimeAgo datetime={message.created} locale={'en-US'}/>}
           </small>
         </p>
         {containsUrl(message.text) ? (
