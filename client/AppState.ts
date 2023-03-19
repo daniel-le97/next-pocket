@@ -32,7 +32,7 @@ class ObservableAppState {
 
   channelTitles: (string | undefined)[] = [];
   channels: ChannelsResponse[] = [];
-  servers: Server[] = [];
+  servers: ServersResponse[] = [];
   users: UsersResponse[] = [];
   messages: MessageWithUser[] = [];
   directMessages:DirectMessagesResponse[] = []

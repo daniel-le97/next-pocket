@@ -45,6 +45,9 @@ class ServersService {
         expand: "image",
       });
 
+      AppState.userServers = [...AppState.userServers,newServer]
+      AppState.servers = [...AppState.servers,newServer]
+      // AppState.activeServer = newServer
     const channelData = {
       members: [],
       messages: [],

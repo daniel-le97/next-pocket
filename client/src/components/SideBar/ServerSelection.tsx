@@ -34,12 +34,7 @@ const ServerSelection = () => {
     <>
       {servers &&
         servers.map((s, index) => <ServerIcon server={s} key={index} />)}
-      {servers &&
-        servers.map((s, index) => <ServerIcon server={s} key={index} />)}
-      {servers &&
-        servers.map((s, index) => <ServerIcon server={s} key={index} />)}
-      {servers &&
-        servers.map((s, index) => <ServerIcon server={s} key={index} />)}
+     
     </>
   );
 };
