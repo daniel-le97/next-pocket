@@ -2,6 +2,7 @@
 import { observer } from "mobx-react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
+import { timeago } from "../../../utils/TimeAgo";
 import { messageService } from "../../services/MessageService";
 import MessageCard from "./MessageCard";
 const MessageScroll = () => {
@@ -52,8 +53,8 @@ const MessageScroll = () => {
                 index={index}
               />
             }
-            {/* {new Date(message.created).toLocaleString()} */}
-       
+            {/* {timeago.format(message.updated)} */}
+            {message.id}
           </div>
         ))}
       </InfiniteScroll>
