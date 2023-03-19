@@ -29,7 +29,7 @@ const MessageCard = ({
         <img
           className="avatar"
           src={
-            message.expand?.user.id ||
+            message.expand?.user.avatarUrl ||
             `https://api.dicebear.com/5.x/bottts-neutral/svg`
           }
           alt="avatar"

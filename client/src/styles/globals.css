@@ -20,10 +20,10 @@
   }
 
   .content-container {
-    @apply flex h-screen w-full   snap-y  snap-end  flex-col overflow-y-scroll  bg-gray-300 p-3 pb-14  dark:bg-zinc-700;
+    @apply  min-h-screen w-full     bg-gray-300 p-3  dark:bg-zinc-700;
   }
   .content-list {
-    @apply w-full pt-20;
+    @apply w-full pt-20 flex flex-col-reverse;
   }
 
   .bottom-bar {

@@ -18,7 +18,7 @@ const ServerSelection = () => {
   const [servers, setServers] = useState<
     ServersResponse<FileUploadsResponse<unknown>>[]
   >([]);
-  const user = useUser();
+  const user = AppState.user
   const router = useRouter();
 
   useEffect(() => {

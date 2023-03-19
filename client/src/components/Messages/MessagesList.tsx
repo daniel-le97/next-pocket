@@ -7,6 +7,7 @@ import CreateMessage from "./CreateMessage";
 import noMessage from "../../assets/noMessages.png";
 import { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import MessageCard from "./MessageCard";
+import { MessageWithUser } from "../../../PocketBaseTypes/utils";
 
 
 const MessageList = () => {
@@ -26,10 +27,10 @@ const MessageList = () => {
 
             record.expand = { user };
 
-            let updatedMessages: MessagesResponse[] = [...AppState.messages];
+            let updatedMessages: MessageWithUser[] = [...AppState.messages];
             updatedMessages = [
               ...updatedMessages,
-              record as unknown as MessagesResponse,
+              record as unknown as MessageWithUser,
             ];
             AppState.messages = updatedMessages;
           }

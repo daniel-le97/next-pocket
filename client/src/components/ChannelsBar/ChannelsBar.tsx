@@ -33,7 +33,7 @@ const ChannelsBar = () => {
   const channels = AppState.channels;
   const server = AppState.activeServer;
   const router = useRouter();
-  const user = useUser();
+  const user = AppState.user
   const [expanded, setExpanded] = useState(true);
   useEffect(() => {
     if (router.query.id) {

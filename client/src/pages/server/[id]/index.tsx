@@ -72,7 +72,7 @@ async function fetchServerData(id: string) {
   try {
     await channelsService.getChannelsByServerId(id);
     // await messageService.getMessages();
-     const channelId = "ckxz8lx9amoq8aq";
+     const channelId =  AppState.activeChannel?.id
      await messageService.getMessagesByChannelId(channelId)
     await serversService.getMembers(id);
   } catch (error) {
