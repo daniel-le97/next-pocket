@@ -7,6 +7,7 @@ import { AppState } from "../../../AppState";
 import { messageService } from "../../services/MessageService";
 import { observer } from "mobx-react";
 import MessageScroll from "./MessageScroll";
+import CreateMessage from "./CreateMessage";
 
 const MessagesContainer = () => {
   return (
@@ -15,6 +16,7 @@ const MessagesContainer = () => {
       <div className="content-list" >
         {/* <MessagesList /> */}
         <MessageScroll/>
+        <CreateMessage/>
       </div>
     </div>
   );

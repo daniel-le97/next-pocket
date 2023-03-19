@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
 import { timeago } from "../../../utils/TimeAgo";
 import { messageService } from "../../services/MessageService";
+import Loader from "../Loader";
 import MessageCard from "./MessageCard";
 const MessageScroll = () => {
   const fetchMore = async () => {
@@ -26,7 +27,7 @@ const MessageScroll = () => {
         display: "flex",
         flexDirection: "column-reverse",
       }}
-      className="flex flex-col-reverse  overflow-auto "
+      className="flex flex-col-reverse  overflow-auto py-10"
     >
       {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll
@@ -41,7 +42,7 @@ const MessageScroll = () => {
         className="py-5"
         inverse={true} //
         hasMore={true}
-        loader={<h4>Loading...</h4>}
+        loader={<Loader show={true} />}
         scrollableTarget="scrollableDiv"
       >
         {AppState.messages.map((message, index) => (
@@ -54,7 +55,7 @@ const MessageScroll = () => {
               />
             }
             {/* {timeago.format(message.updated)} */}
-            {message.id}
+          
           </div>
         ))}
       </InfiniteScroll>

@@ -59,14 +59,14 @@ const MessageCard = ({
         )}
       </div>
       <div className="absolute bottom-16 right-0 mr-5 ">
-        {index === messages.length - 1 && (
+        {/* {index === messages.length - 1 && (
           <div className=" transition-all group-hover:opacity-0  ">
             <div className=" relative w-full rounded-lg bg-red-400 px-3 text-sm font-bold text-white">
               Newest Message
               <hr className=" absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400 " />
             </div>
           </div>
-        )}
+        )} */}
       </div>
       <div className="absolute bottom-16 right-0  mr-5   opacity-0 group-hover:opacity-100">
         <div className=" post-options">

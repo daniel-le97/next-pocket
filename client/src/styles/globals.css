@@ -81,7 +81,7 @@
   .top-navigation {
     max-width: 100%;
     width: 51.1rem;
-    @apply fixed  z-10    ml-1.5  flex h-16
+    @apply fixed  z-10    mt-2 ml-1.5  flex h-16
     flex-row items-center justify-evenly rounded-lg 
     bg-gray-300 bg-opacity-90 
     shadow-lg 

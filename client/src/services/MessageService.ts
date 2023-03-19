@@ -21,7 +21,7 @@ class MessageService {
       .collection(Collections.Messages)
       .create<MessageWithUser>(data, { expand: "user" });
 
-    AppState.messages = [...AppState.messages, res];
+    AppState.messages = [ res,...AppState.messages ];
   }
 
   async sendDirectMessage(data: DirectMessagesRecord) {
@@ -67,7 +67,7 @@ class MessageService {
     
 
     const messages = res.items as unknown as MessageWithUser[];
-    AppState.messages = [...messages, ...AppState.messages];
+    AppState.messages = [...AppState.messages,...messages];
 
     AppState.totalPages = res.totalPages;
     AppState.page++;
