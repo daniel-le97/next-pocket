@@ -6,6 +6,7 @@ import TimeAgo from "timeago-react";
 import { AppState } from "../../../AppState";
 import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
 import { containsUrl } from "../../../utils/ContainsUrl";
+import { getDate } from "../../../utils/helpers";
 import { timeago } from "../../../utils/TimeAgo";
 
 
@@ -43,7 +44,8 @@ const MessageCard = ({
         <p className="post-owner">
           {message.expand?.user?.username}
           <small className="timestamp">
-            {<TimeAgo datetime={message.created} locale={'en-US'}/>}
+            {getDate(message.created)},
+            {<TimeAgo datetime={message.created} locale={"en-US"} style={{margin: 5}}/>}
           </small>
         </p>
         {containsUrl(message.text) ? (
