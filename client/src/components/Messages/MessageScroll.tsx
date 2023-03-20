@@ -22,7 +22,7 @@ const MessageScroll = () => {
     <div
       id="scrollableDiv"
       style={{
-      height:1200,
+        height: 1200,
         overflow: "auto",
         display: "flex",
         flexDirection: "column-reverse",
@@ -34,50 +34,49 @@ const MessageScroll = () => {
         dataLength={AppState.messages.length}
         next={fetchMore}
         style={{
-         
-     
           display: "flex",
           flexDirection: "column-reverse",
         }}
         className="py-5"
         inverse={true} //
-        hasMore={true}
-        loader={<Loader show={true} />}
+        hasMore={AppState.totalPages != AppState.page}
+        loader={<Loader show={AppState.totalPages != AppState.page} />}
         scrollableTarget="scrollableDiv"
       >
-        {AppState.messages.map((message, index) =>{
+        {  AppState.messages.map((message, index) => {
           const currentDate = new Date(message.created).toLocaleDateString();
+          const todaysDate = new Date(Date.now()).toLocaleDateString()
           const previousDate =
             index > 0
-              ? new Date(AppState.messages[index - 1].created).toLocaleDateString()
+              ? new Date(
+                  AppState.messages[index - 1]!.created
+                ).toLocaleDateString()
               : null;
 
           // check if current message date is different from previous message date
           const isNewDay = currentDate !== previousDate;
-           return (
-             <div key={index}>
-               <div>
-                 {isNewDay && (
-                   <div className="new-date">
-                     <hr className="w-3/6  opacity-40" />
-                     <div className=" new-date-text">
-                       {currentDate}
-                     </div>
+        const notTodaysDate=currentDate !== todaysDate
+          return (
+            <div key={index}>
+              {
+                <MessageCard
+                  messages={AppState.messages}
+                  message={message}
+                  index={index}
+                />
+              }
+              <div>
+                {isNewDay  && notTodaysDate && (
+                  <div className="new-date">
+                    <hr className="w-3/6  opacity-40" />
+                    <div className=" new-date-text">{currentDate}</div>
 
-                     <hr className="w-3/6  opacity-40" />
-                   </div>
-                 )}
-               </div>
-
-               {
-                 <MessageCard
-                   messages={AppState.messages}
-                   message={message}
-                   index={index}
-                 />
-               }
-             </div>
-           );
+                    <hr className="w-3/6  opacity-40" />
+                  </div>
+                )}
+              </div>
+            </div>
+          );
         })}
       </InfiniteScroll>
     </div>
