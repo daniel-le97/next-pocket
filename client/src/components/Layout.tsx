@@ -35,6 +35,7 @@ const Layout = ({ children }: { children: any }) => {
       >
         <div className="pl-16">{children}</div>
       </Transition>
+      {/* <div className="fixed bottom-0 p-0. bg-zinc-900  w-full"></div> */}
     </>
   );
 };

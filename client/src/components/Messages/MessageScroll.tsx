@@ -45,19 +45,40 @@ const MessageScroll = () => {
         loader={<Loader show={true} />}
         scrollableTarget="scrollableDiv"
       >
-        {AppState.messages.map((message, index) => (
-          <div key={index}>
-            {
-              <MessageCard
-                messages={AppState.messages}
-                message={message}
-                index={index}
-              />
-            }
-            {/* {timeago.format(message.updated)} */}
-          
-          </div>
-        ))}
+        {AppState.messages.map((message, index) =>{
+          const currentDate = new Date(message.created).toLocaleDateString();
+          const previousDate =
+            index > 0
+              ? new Date(AppState.messages[index - 1].created).toLocaleDateString()
+              : null;
+
+          // check if current message date is different from previous message date
+          const isNewDay = currentDate !== previousDate;
+           return (
+             <div key={index}>
+               <div>
+                 {isNewDay && (
+                   <div className="new-date">
+                     <hr className="w-3/6  opacity-40" />
+                     <div className=" new-date-text">
+                       {currentDate}
+                     </div>
+
+                     <hr className="w-3/6  opacity-40" />
+                   </div>
+                 )}
+               </div>
+
+               {
+                 <MessageCard
+                   messages={AppState.messages}
+                   message={message}
+                   index={index}
+                 />
+               }
+             </div>
+           );
+        })}
       </InfiniteScroll>
     </div>
     // <div className="" id="scrollableDiv">

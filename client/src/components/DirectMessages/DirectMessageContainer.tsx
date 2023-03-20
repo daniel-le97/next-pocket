@@ -108,15 +108,15 @@ const DirectMessageCard = ({ messages, message, index }) => {
           />
           {/* <UserStatus user={message?.expand?.from} /> */}
         </div>
-        <div className="post-content">
-          <p className="post-owner">
+        <div className="message-content">
+          <p className="message-owner">
             {message.expand?.from?.username}
             <small className="timestamp">
               {new Date(message.created).toLocaleDateString()}
             </small>
           </p>
 
-          <p className="post-text">{message.text}</p>
+          <p className="message-text">{message.text}</p>
         </div>
         <div className="absolute bottom-16 right-0 mr-5 ">
           {index === messages.length - 1 && (
@@ -129,18 +129,18 @@ const DirectMessageCard = ({ messages, message, index }) => {
           )}
         </div>
         <div className="absolute bottom-16 right-0  mr-5   opacity-0 group-hover:opacity-100">
-          <div className=" post-options">
+          <div className=" message-options">
             <div className="group/item relative ">
               <BsEmojiSmile size={22} />
-              <span className=" post-icon-tooltip  ">Like</span>
+              <span className=" message-icon-tooltip  ">Like</span>
             </div>
             <div className="group/item relative">
               <BsPencil size={22} />
-              <span className=" post-icon-tooltip  ">Edit</span>
+              <span className=" message-icon-tooltip  ">Edit</span>
             </div>
             <div className="group/item relative">
               <BsXCircle size={22} />
-              <span className=" post-icon-tooltip  ">Remove</span>
+              <span className=" message-icon-tooltip  ">Remove</span>
             </div>
           </div>
         </div>

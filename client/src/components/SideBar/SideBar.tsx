@@ -57,7 +57,7 @@ const SideBar = () => {
             <LogOutIcon />
           </div>
           {/* <UserIcon user={user} /> */}
-          <div className=" server-selection my-2 flex   w-56  snap-y  flex-col  items-start   justify-start overflow-x-visible overflow-y-scroll scroll-smooth pl-1.5 ">
+          <div className=" server-selection ">
             <ServerSelection />
           </div>
         </>
@@ -69,7 +69,7 @@ const SideBar = () => {
         />
       )}
 
-      <div className="">
+      <div >
         <ThemeIcon />
         <CreateServer />
         <SideBarIcon

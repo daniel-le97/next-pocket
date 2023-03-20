@@ -12,7 +12,7 @@ const AddFriend = () => {
   const [users, setUsers] = useState<UsersResponse[]>([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [activeUser, setActiveUser] = useState(null);
-  const user = AppState.user!
+  const user = AppState.user!;
   const [query, setQuery] = useState("");
   useEffect(() => {
     const fetchUsers = async () => {
@@ -48,7 +48,9 @@ const AddFriend = () => {
     setQuery(query);
 
     const filtered = users.filter(
-      (u) => u.username.includes(query) && u.username !== user.username
+      (u) =>
+        u.username.toUpperCase().includes(query.toUpperCase()) &&
+        u.username !== user.username
     );
 
     setFilteredUsers(filtered);
@@ -93,8 +95,8 @@ const AddFriend = () => {
               {...register("receiverName", { required: true, maxLength: 30 })}
               className={
                 activeUser
-                  ? " focus:shadow-outline z-10 w-full appearance-none rounded-md border border-2  border-green-400 border-transparent bg-zinc-900 bg-transparent p-5 leading-tight text-white shadow transition-all duration-200 ease-linear placeholder:text-zinc-300 focus:border-2 focus:border-indigo-500 focus:outline-none active:border-indigo-500 "
-                  : "focus:shadow-outline z-10 w-full appearance-none rounded-md border  border-transparent bg-zinc-900 bg-transparent p-5 leading-tight text-white shadow transition-all duration-200 ease-linear placeholder:text-zinc-300 focus:border-2 focus:border-indigo-500 focus:outline-none active:border-indigo-500 "
+                  ? " add-friend-input  border-green-400  "
+                  : " add-friend-input  "
               }
               placeholder="...Username "
               onChange={handleChange}
@@ -102,9 +104,10 @@ const AddFriend = () => {
             <button
               className={
                 activeUser
-                  ? " absolute right-3  bottom-7 z-50 rounded-md bg-indigo-700 p-2 font-semibold text-white transition-all duration-150 ease-linear hover:bg-opacity-80 "
-                  : "absolute right-3  bottom-7 z-50 cursor-not-allowed rounded-md bg-indigo-700 bg-opacity-50 p-2 font-semibold text-white"
+                  ? "send-friend-request-button"
+                  : " send-friend-request-button-disabled  "
               }
+              disabled={Boolean(activeUser)}
             >
               Send Friend Request
             </button>
@@ -120,8 +123,8 @@ const AddFriend = () => {
                       onClick={handleClick(u)}
                       className={
                         activeUser == u
-                          ? "my-2  w-1/3 cursor-pointer rounded-md border-2 border-indigo-500 bg-zinc-700 p-2 text-zinc-100 transition-all duration-150 ease-linear hover:bg-opacity-70"
-                          : "my-2  w-1/3 cursor-pointer rounded-md bg-zinc-700 p-2 text-zinc-100 transition-all duration-150 ease-linear hover:bg-opacity-70"
+                          ? "active-user-list-item"
+                          : " user-list-item"
                       }
                     >
                       <div className="flex gap-x-2">

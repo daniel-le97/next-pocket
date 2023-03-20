@@ -8,14 +8,13 @@ import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
 import { containsUrl } from "../../../utils/ContainsUrl";
 import { timeago } from "../../../utils/TimeAgo";
 
-
 const MessageCard = ({
   messages,
   message,
   index,
 }: {
   messages: MessageWithUser[];
-  message: MessageWithUser
+  message: MessageWithUser;
   index: number;
 }) => {
   const messageQuery = AppState.messageQuery;
@@ -23,8 +22,8 @@ const MessageCard = ({
     <div
       className={
         messageQuery != ""
-          ? " post-filtered group relative"
-          : " post  group  relative"
+          ? " message-filtered group relative"
+          : " message  group  relative"
       }
     >
       <div className="avatar-wrapper relative">
@@ -39,11 +38,11 @@ const MessageCard = ({
         />
         {/* <UserStatus user={message?.expand?.user} /> */}
       </div>
-      <div className="post-content">
-        <p className="post-owner">
+      <div className="message-content">
+        <p className="message-owner">
           {message.expand?.user?.username}
           <small className="timestamp">
-            {<TimeAgo datetime={message.created} locale={'en-US'}/>}
+            {<TimeAgo datetime={message.created} locale={"en-US"} />}
           </small>
         </p>
         {containsUrl(message.text) ? (
@@ -55,32 +54,32 @@ const MessageCard = ({
             {message.text}
           </a>
         ) : (
-          <p className="post-text">{message.text}</p>
+          <p className="message-text">{message.text}</p>
         )}
       </div>
-      <div className="absolute bottom-16 right-0 mr-5 ">
-        {/* {index === messages.length - 1 && (
-          <div className=" transition-all group-hover:opacity-0  ">
-            <div className=" relative w-full rounded-lg bg-red-400 px-3 text-sm font-bold text-white">
+      <div className="newest-message ">
+        {index === 0 && (
+          <>
+            <div className=" newest-message-badge">
               Newest Message
-              <hr className=" absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400 " />
+              <hr className=" newest-message-line " />
             </div>
-          </div>
-        )} */}
+          </>
+        )}
       </div>
-      <div className="absolute bottom-16 right-0  mr-5   opacity-0 group-hover:opacity-100">
-        <div className=" post-options">
+      <div className="message-options">
+        <div className=" message-options-box">
           <div className="group/item relative ">
             <BsEmojiSmile size={22} />
-            <span className=" post-icon-tooltip  ">Like</span>
+            <span className=" message-icon-tooltip  ">Like</span>
           </div>
           <div className="group/item relative">
             <BsPencil size={22} />
-            <span className=" post-icon-tooltip  ">Edit</span>
+            <span className=" message-icon-tooltip  ">Edit</span>
           </div>
           <div className="group/item relative">
             <BsXCircle size={22} />
-            <span className=" post-icon-tooltip  ">Remove</span>
+            <span className=" message-icon-tooltip  ">Remove</span>
           </div>
         </div>
       </div>

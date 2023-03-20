@@ -58,7 +58,7 @@ class MessageService {
    * @returns The list of messages for the specified channel
    */
   async getMessagesByChannelId(id: string, page = AppState.page) {
-    const res = await pb.collection(Collections.Messages).getList(page, 13, {
+    const res = await pb.collection(Collections.Messages).getList(page, 50, {
       filter: `channel.id = "${id}"`,
       sort: "-created",
       expand: "user",

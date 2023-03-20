@@ -121,18 +121,18 @@ const CreateServer = () => {
                   leaveFrom="opacity-100 scale-100"
                   leaveTo="opacity-0 scale-95"
                 >
-                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-800 p-6 text-left align-middle shadow-xl shadow-zinc-800 transition-all">
+                  <Dialog.Panel className="dialog-modal">
                     <Dialog.Title
                       as="h3"
-                      className="text-lg font-medium leading-6 text-gray-300"
+                      className="dialog-title"
                     >
                       Server Form
                     </Dialog.Title>
-                    <div className="mt-2"></div>
+                 
 
                     <form
                       onSubmit={handleSubmit(onSubmit)}
-                      className="flex flex-col gap-y-3 text-white"
+                      className="create-server-form"
                     >
                       <label>
                         Name:
@@ -143,7 +143,7 @@ const CreateServer = () => {
                             minLength: 5,
                           })}
                           type="text"
-                          className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
+                          className=" create-server-input"
                         />
                         {errors.name && <span>Retry</span>}
                       </label>
@@ -159,7 +159,7 @@ const CreateServer = () => {
                           <img
                             src={imageUrl}
                             alt=""
-                            className="mt-5 h-32 w-32 rounded-full object-cover"
+                            className="upload-preview-image"
                           />
                         )}
                         <Loader show={uploading} />

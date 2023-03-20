@@ -18,7 +18,7 @@ import Pop from "../../../utils/Pop";
 import { AppState } from "../../../AppState";
 import AddFriend from "../../components/DirectMessages/AddFriend";
 import FriendRequests from "../../components/DirectMessages/FriendRequests";
-function classNames(...classes:any[]) {
+function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 function DirectMessagesPage() {
@@ -28,6 +28,8 @@ function DirectMessagesPage() {
   const handleClick = (data: any) => {
     return (event: any) => {
       setActiveCategory(data);
+      console.log(activeCategory);
+      
     };
   };
   return (
@@ -45,18 +47,12 @@ function DirectMessagesPage() {
             <div className="">
               <div className="px-2  sm:px-0">
                 <Tab.Group>
-                  <Tab.List className="flex space-x-1 rounded-xl  p-1">
+                  <Tab.List className="flex space-x-1 ">
                     {categories.map((category) => (
                       <Tab
                         key={category}
                         className={({ selected }) =>
-                          classNames(
-                            "w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-zinc-300",
-                            "ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 transition-all duration-150 ease-linear focus:outline-none focus:ring-2",
-                            selected
-                              ? "bg-zinc-200/20 shadow"
-                              : "text-blue-100 hover:bg-white/[0.12] hover:text-white"
-                          )
+                          classNames(selected ? "active-tab-list" : "tab-list")
                         }
                         onClick={handleClick(category)}
                       >

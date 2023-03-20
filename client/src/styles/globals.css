@@ -21,7 +21,7 @@
     @apply min-h-screen  w-full overflow-auto bg-gray-300   dark:bg-zinc-700;
   }
   .content-list {
-    @apply flex  pt-20 w-full flex-col-reverse  overflow-auto;
+    @apply flex  w-full flex-col-reverse overflow-auto  pt-20;
   }
 
   .bottom-bar {
@@ -40,6 +40,25 @@
 
   .server-button {
     @apply flex  w-full  items-center  justify-between rounded-sm    p-2 text-zinc-300 transition-all duration-300 ease-linear hover:bg-indigo-600 hover:text-white;
+  }
+}
+
+/* Create Server Form/Modal*/
+@layer components {
+  .create-server-form {
+    @apply flex flex-col gap-y-3 text-white;
+  }
+  .create-server-input {
+    @apply m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400 valid:outline-green-600;
+  }
+  .upload-preview-image {
+    @apply mt-5 h-32 w-32 rounded-full object-cover;
+  }
+  .dialog-title {
+    @apply mb-2 text-lg font-medium leading-6 text-gray-300;
+  }
+  .dialog-modal {
+    @apply w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-800 p-6 text-left align-middle shadow-xl shadow-zinc-800 transition-all;
   }
 }
 
@@ -74,6 +93,10 @@
     text-xs  
     font-bold text-white 
     shadow-lg shadow-zinc-900 transition-all duration-100;
+  }
+
+  .server-selection {
+    @apply my-2 flex   w-56  snap-y  flex-col  items-start   justify-start overflow-x-visible overflow-y-scroll scroll-smooth pl-1.5;
   }
 }
 /* Top Navigation */
@@ -182,14 +205,14 @@
 
 /* Message Content */
 @layer components {
-  .post {
-    @apply m-0  flex w-full cursor-pointer flex-row items-center justify-evenly rounded-sm py-4 px-8 transition-all
+  .message {
+    @apply m-0  flex w-full cursor-pointer flex-row items-center justify-evenly rounded-sm py-8 transition-all
    hover:bg-zinc-800
-    hover:bg-opacity-50
+    hover:bg-opacity-30
     hover:shadow-md
     hover:transition-all;
   }
-  .post-filtered {
+  .message-filtered {
     @apply m-0   flex w-full cursor-pointer flex-row items-center justify-evenly rounded-sm bg-gray-800 py-4 px-8 
  transition-all
     hover:bg-opacity-50
@@ -197,22 +220,25 @@
     hover:transition-all;
   }
 
-  .post-content {
+  .message-content {
     @apply ml-auto flex w-4/5 flex-col justify-start;
   }
 
-  .post-options {
-    border: 1px solid black;
-    @apply flex gap-x-2 rounded  border-zinc-900  bg-zinc-700 p-1 shadow-xl transition-all;
+  .message-options{
+    @apply absolute bottom-24 right-0  mr-5   opacity-0 group-hover:opacity-100
   }
-  .post-icon-tooltip {
-    @apply absolute bottom-8 z-50  w-auto min-w-max origin-left scale-0 rounded-md
+  .message-options-box {
+    border: 1px solid black;
+    @apply flex gap-x-2 rounded  border-zinc-900 bg-zinc-700 p-1 shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900;
+  }
+  .message-icon-tooltip {
+    @apply absolute bottom-8 right-0 z-50  w-auto min-w-max origin-left scale-0 rounded-md
     bg-zinc-900 p-2 
     text-xs font-bold 
     text-white shadow-md transition-all duration-100
     group-hover/item:scale-100;
   }
-  .post-icon-tooltip::after {
+  .message-icon-tooltip::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -223,6 +249,23 @@
     border-color: black transparent transparent transparent;
   }
 
+  .newest-message {
+    @apply absolute bottom-16 right-0 mr-5  transition-all group-hover:opacity-0;
+  }
+  .newest-message-badge {
+    @apply relative w-full rounded-lg bg-red-400 px-3 pb-0.5 text-sm font-bold text-white;
+  }
+
+  .newest-message-line {
+    @apply absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400;
+  }
+
+  .new-date {
+    @apply relative ml-3 flex items-center;
+  }
+  .new-date-text {
+    @apply w-20  text-center text-sm font-semibold text-zinc-400;
+  }
   .avatar-wrapper {
     @apply m-0 ml-auto mb-auto flex w-12 flex-col items-center;
   }
@@ -231,7 +274,7 @@
     @apply mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md shadow-zinc-500 dark:shadow-zinc-900;
   }
 
-  .post-owner {
+  .message-owner {
     @apply font-bold  text-red-500;
   }
 
@@ -239,11 +282,41 @@
     @apply ml-3 font-normal text-black dark:text-gray-300;
   }
 
-  .post-text {
+  .message-text {
     @apply text-lg font-semibold dark:text-gray-300;
   }
 }
 
+/* Direct Messages */
+@layer components {
+  .tab-list {
+    @apply w-full rounded-sm py-2.5 text-sm  font-medium leading-5 text-zinc-300 ring-0 transition-all duration-150  ease-linear hover:bg-white/[0.12] focus:outline-none;
+  }
+  .active-tab-list {
+    @apply tab-list    bg-indigo-600 shadow-md;
+  }
+
+  .add-friend-input {
+    @apply z-10 w-full appearance-none rounded-md border-2  border-green-400 border-transparent   bg-zinc-900 p-5 leading-tight text-white shadow transition-all duration-200 ease-linear placeholder:text-zinc-300 focus:border-2 focus:border-indigo-500 focus:outline-none active:border-indigo-500;
+  }
+
+  .send-friend-request-button {
+    @apply absolute right-3  bottom-7 z-50 rounded-md bg-indigo-700 p-2 font-semibold text-white transition-all duration-150 ease-linear hover:bg-opacity-80;
+  }
+  .send-friend-request-button-disabled {
+    @apply send-friend-request-button cursor-not-allowed opacity-50;
+  }
+  .user-list {
+    @apply max-h-72 overflow-y-auto  rounded-sm  p-1;
+  }
+
+  .user-list-item {
+    @apply my-2  w-1/3 cursor-pointer rounded-md bg-zinc-700 p-2 text-zinc-100 transition-all duration-150 ease-linear hover:bg-opacity-70;
+  }
+  .active-user-list-item {
+    @apply user-list-item  border-2 border-indigo-500 p-2;
+  }
+}
 .server-selection::-webkit-scrollbar {
   display: none;
 
