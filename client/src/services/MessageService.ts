@@ -63,9 +63,7 @@ class MessageService {
       sort: "-created",
       expand: "user",
     });
- 
-    
-
+    console.log(res);
     const messages = res.items as unknown as MessageWithUser[];
     AppState.messages = [...AppState.messages,...messages];
 
