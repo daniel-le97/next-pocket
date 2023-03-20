@@ -17,7 +17,7 @@ import DirectMessageContainer from "../../components/DirectMessages/DirectMessag
 const DirectMessagesId: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
-  const user = pb.authStore.model;
+  const user = AppState.user
   
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const DirectMessagesId: NextPage = () => {
       const fetchMessages = async () => {
         try {
           const res = await directMessageService.getDirectMessages(
-            user.id,
+            user!.id,
             id
           );
 

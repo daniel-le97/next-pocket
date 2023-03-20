@@ -25,7 +25,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
         channelId: selection?.id,
       };
       await channelsService.joinChannel(data);
-      await messageService.getMessages();
+      // await messageService.getMessages();
     } catch (error) {
       console.error(error);
     }

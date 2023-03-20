@@ -95,7 +95,7 @@ const DirectMessageContainer = () => {
 const DirectMessageCard = ({ messages, message, index }) => {
   return (
     <div className="rounded-md p-1 " key={index}>
-      <div className=" post  group  relative">
+      <div className=" message group  relative">
         <div className="avatar-wrapper relative">
           <img
             className="avatar"

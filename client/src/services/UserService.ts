@@ -35,7 +35,7 @@ class UserService {
 
   async getUserStatus(userId: string){
     // gets a single Users status
-    const status = await pb.collection(Collections.UsersStatus).getFirstListItem<UsersStatusResponse>(`user.id = ${userId}`,{
+    const status = await pb.collection(Collections.UsersStatus).getFirstListItem<UsersStatusResponse>(`user.id = "${userId}"`,{
       expand:'user'
     })
     // console.log(status);

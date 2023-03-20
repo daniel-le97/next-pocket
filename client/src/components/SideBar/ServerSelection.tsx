@@ -18,7 +18,7 @@ const ServerSelection = () => {
   const [servers, setServers] = useState<
     ServersResponse<FileUploadsResponse<unknown>>[]
   >([]);
-  const user = AppState.user
+  const user = AppState.user;
   const router = useRouter();
 
   useEffect(() => {
@@ -34,7 +34,6 @@ const ServerSelection = () => {
     <>
       {servers &&
         servers.map((s, index) => <ServerIcon server={s} key={index} />)}
-     
     </>
   );
 };
@@ -49,8 +48,7 @@ const ServerIcon = ({
   const [isShowing, setShowing] = useState(false);
   const handleClick = () => {
     AppState.activeServer = server;
-    //     AppState.activeChannel = null
-    // AppState.messages = []
+
     router.push(`http://localhost:3000/server/${server.id}`);
   };
   useEffect(() => {
@@ -70,11 +68,7 @@ const ServerIcon = ({
         <img
           src={server?.expand?.image?.url}
           alt="UserIcon"
-          className={
-            activeServer?.id == server.id
-              ? "h-12 w-12  rounded-xl border-2 border-white object-cover  transition-all duration-300 ease-linear"
-              : "h-12 w-12  rounded-3xl object-cover transition-all duration-300 ease-linear hover:rounded-xl"
-          }
+          className="server-icon-image"
           onClick={handleClick}
         />
 
@@ -83,28 +77,13 @@ const ServerIcon = ({
           {/* {JSON.stringify(server)} */}
         </span>
         {activeServer?.id !== server.id ? (
-          <span className=" absolute -left-3.5 h-3 w-3 rounded-full bg-white transition-all duration-300   ease-linear"></span>
+          <span className="server-icon-bubble group-hover:h-7"></span>
         ) : (
-          <span className=" absolute -left-3.5 h-10 w-2.5 rounded-full bg-white transition-all duration-300   ease-linear"></span>
+          <span className="active-server-icon-bubble"></span>
         )}
       </div>
 
-      {/* <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <Transition.Child
-                
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
-             
-                </Transition.Child>
-              </div>
-            </div>
-         */}
+  
     </Transition>
   );
 };

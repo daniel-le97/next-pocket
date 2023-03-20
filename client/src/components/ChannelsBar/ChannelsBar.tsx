@@ -33,40 +33,39 @@ const ChannelsBar = () => {
   const channels = AppState.channels;
   const server = AppState.activeServer;
   const router = useRouter();
-  const user = AppState.user
+  const user = AppState.user;
   const [expanded, setExpanded] = useState(true);
-  useEffect(() => {
-    if (router.query.id) {
-      const id = router.query.id as string;
-      const getChannels = async () => {
-        await channelsService.getChannelsByServerId(id);
-      };
-      getChannels();
+  // useEffect(() => {
+  //   if (router.query.id) {
+  //     const id = router.query.id as string;
+  //     const getChannels = async () => {
+  //       await channelsService.getChannelsByServerId(id);
+  //     };
+  //     getChannels();
 
-      const setActiveChannel = async () => {
-        try {
-          const res = await pb
-            .collection(Collections.Users)
-            .getOne<ChannelsResponse>(user?.id, {
-              expand: "currentChannel",
-            });
+  //     const setActiveChannel = async () => {
+  //       try {
+  //         const res = await pb
+  //           .collection(Collections.Users)
+  //           .getOne<ChannelsResponse>(user?.id, {
+  //             expand: "currentChannel",
+  //           });
 
-          if (res.expand.currentChannel) {
-            AppState.activeChannel = res.expand.currentChannel;
-            // await messageService.getMessages();
-          }
-        } catch (error) {}
-      };
-      setActiveChannel();
-    }
-  }, [router.query.id]);
+  //         if (res.expand.currentChannel) {
+  //           AppState.activeChannel = res.expand.currentChannel;
+  //           // await messageService.getMessages();
+  //         }
+  //       } catch (error) {}
+  //     };
+  //     setActiveChannel();
+  //   }
+  // }, [router.query.id]);
 
   return (
-    <div className="channel-bar flex flex-col justify-between">
-      <div className="">
-        <div className=" w-full">
-          <ServerSettingsMenu />
-        </div>
+    <div className="channel-bar ">
+      <div>
+        <ServerSettingsMenu />
+
         <div className="channel-container">
           <div className="dropdown">
             <div
@@ -120,15 +119,15 @@ const ChevronIcon = ({ expanded }) => {
 };
 
 const UserIcon = ({ user }: { user: UsersResponse }) => {
-  const [isHovered,setHovered] = useState(false)
+  const [isHovered, setHovered] = useState(false);
   const handleClick = () => {
-  setHovered(!isHovered)
-  }
+    setHovered(!isHovered);
+  };
   return (
     <button
-    onBlur={handleClick}
-    onFocus={handleClick}
-      className="group relative w-full bg-zinc-900 p-1 cursor-pointer"
+      onBlur={handleClick}
+      onFocus={handleClick}
+      className="group relative w-full cursor-pointer bg-zinc-900 p-1 "
       // onClick={handleClick}
     >
       <div className=" flex gap-x-2 rounded-md p-1 transition-all ease-linear  hover:bg-zinc-700">
@@ -148,30 +147,26 @@ const UserIcon = ({ user }: { user: UsersResponse }) => {
         </div>
       </div>
       {isHovered && (
-        <div className="sidebar-user-tooltip   ">
-          <div className="shadow-lx relative">
-            <div className="rounded-t-md bg-red-100 py-8"></div>
-            <img
-              src={user?.avatarUrl}
-              alt="UserIcon"
-              width={80}
-              className="absolute left-3 top-6 rounded-full border-8 border-zinc-700 shadow-md"
-            />
-            <div className="absolute"></div>
-            <div className="rounded-b-md bg-zinc-700 p-3">
-              <div className="mt-12 rounded-md bg-zinc-900 p-2 ">
-                <p className="text-xl">{user?.username}</p>
-                <hr className="my-2  border-gray-600" />
-                <div className="">
-                  <p className="text-md font-bold ">MEMBER SINCE</p>
-                  <p className="  font-mono text-gray-400  ">
-                    {new Date(user.created).toLocaleDateString()}
-                  </p>
-                </div>
-                <hr className="my-2  border-gray-600" />
-                <div className="">LogOut</div>
-              </div>
+        <div className="user-modal  ">
+          <div className="user-modal-banner"></div>
+          <img
+            src={user?.avatarUrl}
+            alt="UserIcon"
+            width={80}
+            className="user-modal-user-image"
+          />
+
+          <div className="mt-12 rounded-md bg-zinc-900 p-2 ">
+            <p className="text-xl">{user?.username}</p>
+            <hr className="my-2  border-gray-600" />
+            <div>
+              <p className="text-md font-bold ">MEMBER SINCE</p>
+              <p className="  font-mono text-gray-400  ">
+                {new Date(user.created).toLocaleDateString()}
+              </p>
             </div>
+            <hr className="my-2  border-gray-600" />
+            <div className="">LogOut</div>
           </div>
         </div>
       )}

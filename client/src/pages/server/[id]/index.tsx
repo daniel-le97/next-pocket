@@ -36,17 +36,25 @@ const Server: NextPage = () => {
   // console.log('went')
 
   useEffect(() => {
+    if (!user) {
+       setRedirect(`/server/${id}`);
+       router.push("/login");
+    }
     if (router.query.id) {
-      // const channelId = "ckxz8lx9amoq8aq";
-      // console.log((channelId));
-      
-      // messageService.getMessagesByChannelId(channelId)
-      if (user) {
-        fetchServerData(id);
-        return
+      async function fetchServerData(id: string) {
+        try {
+          await channelsService.getChannelsByServerId(id);
+          // await messageService.getMessages();
+          const channelId = AppState.activeChannel?.id;
+          await messageService.getMessagesByChannelId(channelId);
+          await serversService.getMembers(id);
+        } catch (error) {
+          Pop.error(error);
+        }
       }
-      setRedirect(`/server/${id}`)
-      router.push('/login')
+        fetchServerData(id);
+     
+     
     }
   }, [router.query.id]);
 
@@ -68,16 +76,6 @@ const Server: NextPage = () => {
   );
 };
 
-async function fetchServerData(id: string) {
-  try {
-    await channelsService.getChannelsByServerId(id);
-    // await messageService.getMessages();
-     const channelId =  AppState.activeChannel?.id
-     await messageService.getMessagesByChannelId(channelId)
-    await serversService.getMembers(id);
-  } catch (error) {
-    Pop.error(error);
-  }
-}
+
 
 export default observer(withAuth(withMember(Server)));

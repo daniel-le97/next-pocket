@@ -23,8 +23,8 @@ const MessageCard = ({
     <div
       className={
         messageQuery != ""
-          ? " message-filtered group relative"
-          : " message  group  relative"
+          ? " message-filtered group "
+          : " message  group  "
       }
     >
       <div className="avatar-wrapper relative">
@@ -56,7 +56,7 @@ const MessageCard = ({
           <a
             target="_blank"
             href={message.text}
-            className="font-semibold text-blue-500 hover:underline"
+            className="message-text-link"
           >
             {message.text}
           </a>

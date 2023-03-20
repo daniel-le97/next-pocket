@@ -16,10 +16,10 @@ class DirectMessageService {
    * @returns The newly created direct message object.
    */
   async createDirectMessage(message: DirectMessage) {
-    const response = await pb
+    const res = await pb
       .collection(Collections.DirectMessages)
       .create<DirectMessage>(message);
-    return response;
+    return res;
   }
 
   /**
@@ -29,10 +29,10 @@ class DirectMessageService {
    * @returns The updated direct message object.
    */
   async updateDirectMessage(id: string, message: DirectMessage) {
-    const response = await pb
+    const res = await pb
       .collection(Collections.DirectMessages)
       .update<DirectMessage>(id, message);
-    return response;
+    return res;
   }
 
   /**
@@ -41,8 +41,8 @@ class DirectMessageService {
    * @returns The deleted direct message object.
    */
   async deleteDirectMessage(id: string) {
-    const response = await pb.collection(Collections.DirectMessages).delete(id);
-    return response;
+    const res = await pb.collection(Collections.DirectMessages).delete(id);
+    return res;
   }
 
   /**
@@ -51,12 +51,12 @@ class DirectMessageService {
    * @returns The retrieved direct message object.
    */
   async getDirectMessage(data: any) {
-    const response = await pb
+    const res = await pb
       .collection(Collections.DirectMessages)
       .getFullList(100, {
         filter: `from.id == "${data.userid}" && to.id == "${data.userid}"`,
       });
-    return response;
+    return res;
   }
 
   // /**
@@ -67,15 +67,15 @@ class DirectMessageService {
   //  * @returns The list of direct messages that match the filter and pagination options.
   //  */
   async getDirectMessages(userId: string, friendId: string) {
-    const response = await pb
+    const res = await pb
       .collection(Collections.DirectMessages)
       .getFullList(100, {
         filter: `from = "${userId}"  && to = "${friendId}" ||  from = "${friendId}"  && to = "${userId}" `,
-        expand:"from,to"
+        expand: "from,to",
       });
-   
-AppState.directMessages = response
-    return response;
+
+    AppState.directMessages = res;
+    return res;
   }
 }
 

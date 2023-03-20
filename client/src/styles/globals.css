@@ -65,14 +65,14 @@
 /* Sidebar */
 @layer components {
   .sidebar {
-    @apply fixed  top-0 left-0 z-50 flex max-h-screen min-h-screen w-16 flex-col  bg-gray-200 shadow-lg dark:bg-zinc-900;
+    @apply fixed   top-0 left-0 z-50 flex max-h-screen min-h-screen w-16 flex-col  bg-gray-200 shadow-lg dark:bg-zinc-900;
   }
   .sidebar-hr {
     @apply mx-2 rounded-full border border-gray-700 bg-gray-800;
   }
   .sidebar-icon {
     @apply relative mx-auto mt-2 mb-2 
-    flex h-12 w-12 cursor-pointer items-center  
+    flex h-12 w-12   cursor-pointer items-center  
     justify-center rounded-3xl bg-gray-400 
   text-green-500 shadow-lg
   
@@ -82,8 +82,8 @@
   }
 
   .sidebar-tooltip {
-    z-index: 9999 !important;
-    @apply absolute left-14 z-50 m-2 w-auto min-w-max origin-left scale-0 rounded-md
+    z-index: 999999 !important;
+    @apply absolute left-14 m-2 w-auto min-w-max origin-left scale-0 rounded-md
     bg-zinc-900 p-2 
     text-xs font-bold 
     text-white shadow-md transition-all duration-100;
@@ -96,7 +96,24 @@
   }
 
   .server-selection {
-    @apply my-2 flex   w-56  snap-y  flex-col  items-start   justify-start overflow-x-visible overflow-y-scroll scroll-smooth pl-1.5;
+    z-index: -99999 !important;
+    @apply my-2 flex  
+         snap-y  flex-col  items-start   justify-start  scroll-smooth pl-1.5;
+  }
+
+  .server-icon-image {
+    @apply h-12 w-12 rounded-3xl  object-cover transition-all duration-300 ease-linear hover:rounded-xl;
+  }
+
+  .active-server-icon-image {
+    @apply h-12 w-12  rounded-xl border-2 border-white object-cover  transition-all duration-300 ease-linear;
+  }
+
+  .server-icon-bubble {
+    @apply absolute -left-3.5 h-3 w-3 rounded-full bg-white transition-all duration-300   ease-linear;
+  }
+  .active-server-icon-bubble {
+    @apply absolute -left-3.5 h-10 w-3 rounded-full bg-white transition-all duration-300   ease-linear;
   }
 }
 /* Top Navigation */
@@ -154,7 +171,7 @@
 /* Channels Bar */
 @layer components {
   .channel-bar {
-    @apply m-0 h-auto w-80  bg-gray-200 shadow-lg dark:bg-zinc-800;
+    @apply m-0 flex h-auto  w-80 flex-col  bg-gray-200 shadow-lg dark:bg-zinc-800;
   }
 
   .channel-container {
@@ -201,19 +218,32 @@
     ease-in-out hover:text-pink-500
     dark:hover:text-green-500;
   }
+
+
+
+  .user-modal{
+    @apply sidebar-user-tooltip 
+  }
+  .user-modal-banner{
+    @apply rounded-t-md bg-red-100 py-8
+  }
+  .user-modal-user-image{
+    @apply absolute left-3 top-6 rounded-full border-8 border-zinc-700 shadow-md
+  }
+
 }
 
 /* Message Content */
 @layer components {
   .message {
-    @apply m-0  flex w-full cursor-pointer flex-row items-center justify-evenly rounded-sm py-8 transition-all
+    @apply relative m-0   flex w-full cursor-pointer flex-row items-center justify-evenly rounded-sm py-8 transition-all
    hover:bg-zinc-800
     hover:bg-opacity-30
     hover:shadow-md
     hover:transition-all;
   }
   .message-filtered {
-    @apply m-0   flex w-full cursor-pointer flex-row items-center justify-evenly rounded-sm bg-gray-800 py-4 px-8 
+    @apply relative  m-0  flex w-full cursor-pointer flex-row items-center justify-evenly rounded-sm bg-gray-800 py-4 px-8 
  transition-all
     hover:bg-opacity-50
     hover:shadow-md
@@ -224,13 +254,14 @@
     @apply ml-auto flex w-4/5 flex-col justify-start;
   }
 
-  .message-options{
-    @apply absolute bottom-24 right-0  mr-5   opacity-0 group-hover:opacity-100
+  .message-options {
+    @apply absolute bottom-24 right-0  mr-5   opacity-0 group-hover:opacity-100;
   }
   .message-options-box {
     border: 1px solid black;
     @apply flex gap-x-2 rounded  border-zinc-900 bg-zinc-700 p-1 shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900;
   }
+
   .message-icon-tooltip {
     @apply absolute bottom-8 right-0 z-50  w-auto min-w-max origin-left scale-0 rounded-md
     bg-zinc-900 p-2 
@@ -285,6 +316,10 @@
   .message-text {
     @apply text-lg font-semibold dark:text-gray-300;
   }
+
+  .message-text-link {
+    @apply font-semibold text-blue-500 hover:underline;
+  }
 }
 
 /* Direct Messages */
@@ -319,28 +354,26 @@
 }
 
 /* Explore Servers */
-@layer components{
+@layer components {
+  .explore-banner {
+    @apply relative mt-8 flex items-center justify-center;
+  }
 
-.explore-banner{
-  @apply   relative mt-8 flex items-center justify-center
-}
+  .server-card {
+    @apply relative  m-3 h-auto w-full overflow-hidden rounded-xl     text-white shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4;
+  }
+  .server-name {
+    @apply text-lg font-semibold underline underline-offset-2;
+  }
+  .server-image {
+    @apply h-40 w-full rounded-t-xl object-cover;
+  }
+  .server-members-count {
+    @apply absolute bottom-0 left-0 m-2 flex items-center gap-x-2;
+  }
 
-
-  .server-card{
-    @apply   m-3  relative h-auto w-full overflow-hidden rounded-xl     text-white shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4 
-  }
-  .server-name{
-    @apply font-semibold underline underline-offset-2 text-lg
-  }
-  .server-image{
-    @apply h-40 w-full rounded-t-xl object-cover
-  }
-  .server-members-count{
-    @apply absolute bottom-0 left-0 m-2 flex items-center gap-x-2
-  }
- 
-  .join-button-tooltip{
-     @apply  absolute right-6 top-0 scale-0 rounded-md bg-zinc-900 px-2  transition-all  origin-right ease-in group-hover/join:scale-100
+  .join-button-tooltip {
+    @apply absolute right-6 top-0 origin-right scale-0 rounded-md bg-zinc-900  px-2  transition-all ease-in group-hover/join:scale-100;
   }
 }
 

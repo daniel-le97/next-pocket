@@ -44,7 +44,7 @@ const FriendsBar = () => {
       <div className="channel-block">
         <h5 className="channel-block-text">Direct Messages</h5>
       </div>
-      <div className="px-3">
+      <div className="px-3 ">
         {friends &&
           friends.map((friend, index) => <User user={friend} key={index} />)}
       </div>

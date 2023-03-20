@@ -7,8 +7,9 @@ import Pop from "../../../utils/Pop";
 import { membersService } from "../../services/MembersService";
 import type { Server } from "../../../PocketBaseTypes/utils";
 import React from "react";
+import { AppState } from "../../../AppState";
 const LeaveServer = ({ server }: { server: Server}) => {
-  const user = useUser();
+  const user = AppState.user
   const router = useRouter();
   const leaveServer = async () => {
     try {
