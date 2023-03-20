@@ -17,7 +17,7 @@ import { userService } from "../services/UserService";
 import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  const user = pb.authStore.model;
+  const user = AppState.user;
   
 
   useEffect(() => {
@@ -39,45 +39,47 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   }, []);
 
   useEffect(() => {
-    const subscribe = async () => {
-      const userStatus = await pb
-        .collection("usersStatus")
-        .getFirstListItem(`user.id = "${user?.id}"`);
-      // console.log(userStatus);
-      if (!userStatus) {
-        throw new Error("userStatus Not Found");
-      }
+   if (user) {
+     const subscribe = async () => {
+       const userStatus = await pb
+         .collection("usersStatus")
+         .getFirstListItem(`user.id = "${user?.id}"`);
+       // console.log(userStatus);
+       if (!userStatus) {
+         throw new Error("userStatus Not Found");
+       }
 
-      //     // Update isOnline status to true on component mount
-      const data = {
-        userId: user?.id,
-        isOnline: true,
-      };
-      const updatedRecord = await pb
-        .collection("usersStatus")
-        .update(userStatus.id, data);
-      // console.log(updatedRecord);
+       //     // Update isOnline status to true on component mount
+       const data = {
+         userId: user?.id,
+         isOnline: true,
+       };
+       const updatedRecord = await pb
+         .collection("usersStatus")
+         .update(userStatus.id, data);
+       // console.log(updatedRecord);
 
-      // Update isOnline status to false on beforeunload event
-      const handleBeforeUnload = () => {
-        const data = {
-          userId: user?.id,
-          isOnline: false,
-        };
-        const updatedRecord = pb
-          .collection("usersStatus")
-          .update(userStatus.id, data);
-        // console.log(updatedRecord);
-      };
-      window.addEventListener("beforeunload", handleBeforeUnload);
+       // Update isOnline status to false on beforeunload event
+       const handleBeforeUnload = () => {
+         const data = {
+           userId: user?.id,
+           isOnline: false,
+         };
+         const updatedRecord = pb
+           .collection("usersStatus")
+           .update(userStatus.id, data);
+         // console.log(updatedRecord);
+       };
+       window.addEventListener("beforeunload", handleBeforeUnload);
 
-      // Remove the event listener on unmount
-      return () => {
-        window.removeEventListener("beforeunload", handleBeforeUnload);
-      };
-    };
-    subscribe();
-  }, []);
+       // Remove the event listener on unmount
+       return () => {
+         window.removeEventListener("beforeunload", handleBeforeUnload);
+       };
+     };
+     subscribe();
+   }
+  }, [user]);
 
   return (
     <Layout>

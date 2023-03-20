@@ -2,10 +2,12 @@ import { Transition } from "@headlessui/react";
 import SideBar from "./SideBar/SideBar";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { AppState } from "../../AppState";
 
 const Layout = ({ children }: { children: any }) => {
   const [showing, setShowing] = useState(false);
   const router = useRouter();
+   const user = AppState.user
   useEffect(() => {
 
     setShowing(true);

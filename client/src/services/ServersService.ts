@@ -2,10 +2,11 @@
 import { AppState } from "../../AppState";
 import type {
   ServersRecord,
-  ServersResponse} from "../../PocketBaseTypes/pocketbase-types";
+  ServersResponse,
+} from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
-import type { Server , MemberUser} from "../../PocketBaseTypes/utils";
-import { pb} from "../../utils/pocketBase";
+import type { Server, MemberUser } from "../../PocketBaseTypes/utils";
+import { pb } from "../../utils/pocketBase";
 import { uploadService } from "./UploadService";
 
 class ServersService {
@@ -45,9 +46,9 @@ class ServersService {
         expand: "image",
       });
 
-      AppState.userServers = [...AppState.userServers,newServer]
-      AppState.servers = [...AppState.servers,newServer]
-      // AppState.activeServer = newServer
+    AppState.userServers = [...AppState.userServers, newServer];
+    AppState.servers = [...AppState.servers, newServer];
+    // AppState.activeServer = newServer
     const channelData = {
       members: [],
       messages: [],
@@ -69,6 +70,12 @@ class ServersService {
       .create(channelData);
     console.log(defaultChannel);
 
+    const welcomeMessage = await pb.collection(Collections.Messages).create({
+      text: `Welcome to ${newServer.name}! Be Respectful and have fun!`,
+      user: newServer.owner,
+      channel: defaultChannel.id,
+    });
+
     const fileUpload = await uploadService.getFileUploadStatusByUserId(
       serverData.owner!
     );
@@ -88,7 +95,7 @@ class ServersService {
   }
 
   async DeleteServer(ownerId: string, serverId: string) {
-    const user = AppState.user || pb.authStore.model
+    const user = AppState.user || pb.authStore.model;
     if (!user) {
       throw new Error("No User");
     }

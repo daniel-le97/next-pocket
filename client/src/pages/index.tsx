@@ -40,7 +40,7 @@ const Explore: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="  dark flex min-h-screen  w-full flex-col bg-gray-300  dark:bg-zinc-800 ">
-        <div className="explore-banner  relative mt-8 flex items-center justify-center">
+        <div className="explore-banner ">
           <div className="relative ">
             <img
               src="https://img.freepik.com/free-vector/telescope-science-discovery-watching-stars-planets-outer-space_107791-4920.jpg?w=900&t=st=1677706310~exp=1677706910~hmac=1f7b435bec55558f1de8b5bc54632ee088625c1772d5eb3c102107da67f9327a"
@@ -53,7 +53,7 @@ const Explore: NextPage = () => {
           </div>
         </div>
 
-        <div className="  my-10 mx-5 flex flex-wrap    justify-center ">
+        <div className="  my-10  flex  flex-wrap    justify-center ">
           {servers &&
             servers.map((s) => (
            

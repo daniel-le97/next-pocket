@@ -5,11 +5,8 @@
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { FaUserCheck, FaUserPlus } from "react-icons/fa";
-import type {
-  UsersStatusResponse} from "../../../PocketBaseTypes/pocketbase-types";
-import {
-  Collections
-} from "../../../PocketBaseTypes/pocketbase-types";
+import type { UsersStatusResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import { Collections } from "../../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
 import { useEffect, useState } from "react";
 import Pop from "../../../utils/Pop";
@@ -52,18 +49,18 @@ const ServerCard = ({ server }: { server: Server }) => {
     }
   }
 
-      const checkIfMember = () => {
-        if (server.members?.includes(user?.id)) {
-          setIsMember(true);
-        }
-      };
+  const checkIfMember = () => {
+    if (server.members?.includes(user?.id)) {
+      setIsMember(true);
+    }
+  };
   useEffect(() => {
     checkIfMember();
   }, []);
 
   return (
     <div
-      className={` group m-3  relative h-auto w-full overflow-hidden rounded-xl     text-white shadow-sm transition-all duration-200 ease-in-out hover:scale-105 hover:bg-gradient-to-t hover:from-zinc-900 hover:to-gray-700 hover:shadow-xl dark:bg-gradient-to-t sm:w-1/4  ${
+      className={`server-card group  ${
         isMember
           ? "bg-gray-300 from-zinc-900 to-green-400 hover:from-zinc-900 hover:to-green-500"
           : "bg-gray-300 from-zinc-900 to-gray-600"
@@ -72,32 +69,30 @@ const ServerCard = ({ server }: { server: Server }) => {
       <img
         src={server.expand?.image.url}
         alt=""
-        className="h-40 w-full rounded-t-xl object-cover"
+        className="server-image"
       />
 
       <div className="mt-2 p-3">
-        <div className="flex items-center gap-x-2 ">
-          <div className="rounded-3xl bg-green-600 ">
-            <BsCheck />
-          </div>
-          <h1>{server.name}</h1>
+        <button className=" flex justify-between w-full ">
+        
+          <div className=" server-name ">{server.name}</div>
           {!isMember ? (
             <div
               className="group/join relative cursor-pointer"
               onClick={joinServer}
             >
               <FaUserPlus size={20} />
-              <span className="  absolute -right-14 top-0 scale-0 rounded-md bg-zinc-900 px-2  transition-all duration-200 ease-in group-hover/join:scale-100">
+              <span className=" join-button-tooltip">
                 Join
               </span>
             </div>
           ) : (
             <FaUserCheck size={20} className="text-green-400" />
           )}
-        </div>
+        </button>
         <p className="mt-2 pb-10">{server.description}</p>
       </div>
-      <div className=" absolute bottom-0 left-0 m-2 flex items-center gap-x-2  ">
+      <div className="server-members-count  ">
         <BsCircleFill size={10} className="text-gray-300" />
         {server.members?.length}
         {/* {server.members.map((m) => (
