@@ -2,6 +2,7 @@ import type {
   FileUploadsResponse,
   MembersResponse,
   MessagesResponse,
+  ReactionsResponse,
   ServersResponse,
   UsersResponse,
 } from "./pocketbase-types";
@@ -30,4 +31,16 @@ export type Upload = {
 type UserRes = {
   user: UsersResponse;
 };
-export type MessageWithUser = MessagesResponse<UserRes>;
+type ReactionRes = {
+  reaction: ReactionsResponse
+}
+// const hi  = 'reactions(messageId)'
+
+export type MessageWithUser = MessagesResponse & {
+  expand: { 'reactions(messageId)': ReactionsResponse[]; user: UsersResponse };
+};
+
+export type ReactionWithUser = ReactionsResponse<UsersResponse>
+
+
+

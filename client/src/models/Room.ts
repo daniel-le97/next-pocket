@@ -1,3 +1,5 @@
+import { ReactionsResponse, UsersResponse } from "../../PocketBaseTypes/pocketbase-types";
+import { MessageWithUser, UnFormatedMessageWithUser } from "../../PocketBaseTypes/utils";
 import { Message } from "./Message";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */

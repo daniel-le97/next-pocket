@@ -520,8 +520,8 @@
     "listRule": "@request.auth.id != \"\"",
     "viewRule": "@request.auth.id != \"\"",
     "createRule": "@request.auth.id != \"\"",
-    "updateRule": "@request.auth.id != \"\" && owner = @request.auth.id",
-    "deleteRule": "@request.auth.id != \"\" && owner = @request.auth.id",
+    "updateRule": " @request.auth.id = owner ",
+    "deleteRule": " @request.auth.id = owner",
     "options": {}
   },
   {
@@ -648,6 +648,50 @@
     "createRule": "",
     "updateRule": "",
     "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "n3hwmku12zml77a",
+    "name": "reactions",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "hwac2vb3",
+        "name": "messageId",
+        "type": "relation",
+        "system": false,
+        "required": true,
+        "unique": false,
+        "options": {
+          "collectionId": "h9d1bbqm0bt87ey",
+          "cascadeDelete": true,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": [
+            "id"
+          ]
+        }
+      },
+      {
+        "id": "stl7cgy3",
+        "name": "reaction",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
     "options": {}
   }
 ]
