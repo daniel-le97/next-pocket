@@ -24,6 +24,15 @@ go get -u  // go ^1.19 is needed
 task start
 ```
 pocketbase and its client UI are now available at http://localhost:8080    
+### Development
+```
+once pocketbase is started navigate to the admin api
+http://localhost:8080/_/
+create an admin
+navigte to settings => import collections
+copy and paste pb_schema and accept
+your collections are ready for you!
+```
 ## Deployment
 
 To deploy this project run
