@@ -15,5 +15,6 @@
 # vendor/
 
 pb_data/
+pb/
 
 fly.toml
