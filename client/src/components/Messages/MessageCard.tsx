@@ -7,7 +7,7 @@ import { AppState } from "../../../AppState";
 import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
 import { containsUrl } from "../../../utils/ContainsUrl";
 import { getDate } from "../../../utils/helpers";
-import { timeago } from "../../../utils/TimeAgo";
+
 
 const MessageCard = ({
   messages,
