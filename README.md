@@ -1,5 +1,5 @@
 # Next-Pocket
-This project is a Discord clone that uses next.js and pocketbase. Pocketbase is in the pocketbase directory and can be extended to act as a go framework6
+This project is a Discord clone that uses next.js and pocketbase. Pocketbase is in the pocketbase directory and can be extended to act as a go framework
 
 
 ## Getting Started
