@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { type NextPage } from "next";
@@ -45,7 +46,7 @@ const Server: NextPage = () => {
         try {
           await channelsService.getChannelsByServerId(id);
           // await messageService.getMessages();
-          const channelId = AppState.activeChannel?.id;
+          const channelId = AppState.activeChannel!.id;
           await messageService.getMessagesByChannelId(channelId);
           await serversService.getMembers(id);
         } catch (error) {

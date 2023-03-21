@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState } from "react";
 import { observer } from "mobx-react";
 import { pb } from "../../../utils/pocketBase";
@@ -9,7 +11,7 @@ import InputEmoji from "react-input-emoji";
 import React from "react";
 import { messageService } from "../../services/MessageService";
 import { containsUrl } from "../../../utils/ContainsUrl";
-
+import type { MessagesRecord } from "../../../PocketBaseTypes/pocketbase-types";
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
   const messages = AppState.messages;
@@ -22,16 +24,15 @@ const CreateMessage = () => {
       console.log("No URL found.");
     }
 
-    const user = AppState.user
-    const data = {
+    const user = AppState.user;
+    const data: MessagesRecord = {
       text: newMessage,
-      user: user?.id,
+      user: user!.id,
       channel: AppState?.activeChannel?.id,
- 
     };
 
     // const createdMessage = await pb.collection("messages").create(data);
-    const createMessage = await messageService.sendMessage(data)
+    const createMessage = await messageService.sendMessage(data);
     setNewMessage("");
   };
 
@@ -78,7 +79,5 @@ const PlusIcon = () => (
     />
   </button>
 );
-
-
 
 export default observer(CreateMessage);

@@ -1,3 +1,4 @@
+
 import { AppState } from "../../AppState";
 import type {
   DirectMessagesRecord,
@@ -7,6 +8,7 @@ import type {
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import type { MessageWithUser } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
+
 
 class MessageService {
   /**
@@ -46,8 +48,10 @@ class MessageService {
       .getList<MessageWithUser>(1, 50, {
         filter: `channel = "${AppState.activeChannel.id}"`,
         sort: "-created",
-        expand: "user",
+        expand: "user,reactions(messageId)",
       });
+      console.log('messages',res);
+      
 
     AppState.messages = res.items;
   }
@@ -61,14 +65,19 @@ class MessageService {
     const res = await pb.collection(Collections.Messages).getList(page, 50, {
       filter: `channel.id = "${id}"`,
       sort: "-created",
-      expand: "user",
+      expand: "user,reactions(messageId)",
     });
-    console.log(res);
-    const messages = res.items as unknown as MessageWithUser[];
+   
+    const messages = res.items as unknown as MessageWithUser[]
     AppState.messages = [...AppState.messages,...messages];
-
     AppState.totalPages = res.totalPages;
     AppState.page++;
+  }
+
+  async getById(id:string){
+    const res = await pb.collection(Collections.Messages).getOne(id, {expand: 'reactions(messageId)'})
+    // console.log(res);
+    
   }
 }
 

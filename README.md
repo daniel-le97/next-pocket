@@ -1,5 +1,5 @@
 # Next-Pocket
-This project is a Discord clone that uses next.js and pocketbase. Pocketbase is in the pocketbase directory and can be used as a go framework if needed
+This project is a Discord clone that uses next.js and pocketbase. Pocketbase is in the pocketbase directory and can be extended to act as a go framework
 
 
 ## Getting Started
@@ -23,15 +23,27 @@ go get -u  // go ^1.19 is needed
 
 task start
 ```
-pocketbase and its client UI are now available at http://localhost:8080    
-### Development
+pocketbase and its client UI are now available at http://localhost:8080
+## Developement
+you will notice after starting the server and going to the pocketbase client ui
+at http://localhost:8080/_/ you wont have any collections
 ```
-once pocketbase is started navigate to the admin api
-http://localhost:8080/_/
-create an admin
-navigte to settings => import collections
-copy and paste pb_schema and accept
-your collections are ready for you!
+cd pocketbase
+cp pb_schema.json
+
+```
+now you'll need to go to your pocketbase client and navigate to settings => import collections and paste the pb_schema.json there
+
+### Getting your pocketbase js client typed
+this project uses npx pocketbase-typegen from (https://github.com/patmood/pocketbase-typegen)
+i use the --json flag alternatively you could use the --url flag but it was a bit more finnicky to get working
+this step is just navigating to settings => export collections and then adding that file to your pocketbase server
+```
+cd .. 
+cd client
+npm run type
+youll now see updated types in
+/PocketBaseTypes/pocktbase-types.ts
 ```
 ## Deployment
 
@@ -52,15 +64,13 @@ npm run build
 
 an example docker compose can be found at pocketbase/docker-compose.yml 
 
-## Acknowledgements
 
- - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
 
 
 ## Authors
 
-- [@daniel-le97](https://www.github.com/daniel-le97)
+- [@Daniel Le](https://www.github.com/daniel-le97)
+- [@Tung Le](https://www.github.com/TungLe0319)
 
 
 ## Contributing

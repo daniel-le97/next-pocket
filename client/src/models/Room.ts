@@ -1,4 +1,4 @@
-import { Message } from "./Message";
+import type { Message } from "./Message";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 export class Room {

@@ -12,6 +12,8 @@ import { setRedirect } from "../../utils/Redirect";
 // import { pb } from "../../utils/pocketBase";
 import Layout from "../components/Layout";
 import { membersService } from "../services/MembersService";
+import { messageService } from "../services/MessageService";
+import { reactionsService } from "../services/ReactionsService";
 import { userService } from "../services/UserService";
 
 import "../styles/globals.css";
@@ -19,7 +21,8 @@ import "../styles/globals.css";
 const MyApp: AppType = ({ Component, pageProps }) => {
   const user = AppState.user;
   
-
+  
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -29,8 +32,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       }
     };
     // fetchUsers();
-
+    
     const fetchUserServers = async () => {
+    //  await messageService.getById("hzx12x5dvpxh5mo");
+    // await reactionsService.create("hzx12x5dvpxh5mo");
+    // const reaction = await reactionsService.getById("50v85pfr0gn70tg");
       const userId = user?.id as string;
       const servers = await membersService.getUserServers(userId);
       return servers;

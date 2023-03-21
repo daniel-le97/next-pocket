@@ -10,6 +10,7 @@ export enum Collections {
 	Friends = "friends",
 	Members = "members",
 	Messages = "messages",
+	Reactions = "reactions",
 	Servers = "servers",
 	Users = "users",
 	UsersStatus = "usersStatus",
@@ -100,6 +101,12 @@ export type MessagesRecord = {
 	channel?: RecordIdString
 }
 
+export type ReactionsRecord = {
+	messageId: RecordIdString
+	reaction?: boolean
+	userId: RecordIdString
+}
+
 export type ServersRecord = {
 	image?: RecordIdString
 	name: string
@@ -127,6 +134,7 @@ export type FriendRequestResponse<Texpand = unknown> = FriendRequestRecord & Bas
 export type FriendsResponse<Texpand = unknown> = FriendsRecord & BaseSystemFields<Texpand>
 export type MembersResponse<Texpand = unknown> = MembersRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
+export type ReactionsResponse<Texpand = unknown> = ReactionsRecord & BaseSystemFields<Texpand>
 export type ServersResponse<Texpand = unknown> = ServersRecord & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = UsersRecord & AuthSystemFields<Texpand>
 export type UsersStatusResponse<Texpand = unknown> = UsersStatusRecord & BaseSystemFields<Texpand>
@@ -139,6 +147,7 @@ export type CollectionRecords = {
 	friends: FriendsRecord
 	members: MembersRecord
 	messages: MessagesRecord
+	reactions: ReactionsRecord
 	servers: ServersRecord
 	users: UsersRecord
 	usersStatus: UsersStatusRecord
