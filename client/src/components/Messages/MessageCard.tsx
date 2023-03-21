@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
+import { useState } from "react";
 import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
 import TimeAgo from "timeago-react";
 import { AppState } from "../../../AppState";
 import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
 import { containsUrl } from "../../../utils/ContainsUrl";
 import { getDate } from "../../../utils/helpers";
+import Reaction from "../Reactions/Reaction";
 
 
 const MessageCard = ({
@@ -18,13 +20,12 @@ const MessageCard = ({
   message: MessageWithUser;
   index: number;
 }) => {
+  const [reaction, setReaction] = useState(false)
   const messageQuery = AppState.messageQuery;
   return (
     <div
       className={
-        messageQuery != ""
-          ? " message-filtered group "
-          : " message  group  "
+        messageQuery != "" ? " message-filtered group " : " message  group  "
       }
     >
       <div className="avatar-wrapper relative">
@@ -53,11 +54,7 @@ const MessageCard = ({
           </small>
         </p>
         {containsUrl(message.text) ? (
-          <a
-            target="_blank"
-            href={message.text}
-            className="message-text-link"
-          >
+          <a target="_blank" href={message.text} className="message-text-link">
             {message.text}
           </a>
         ) : (
@@ -77,8 +74,15 @@ const MessageCard = ({
       <div className="message-options">
         <div className=" message-options-box">
           <div className="group/item relative ">
-            <BsEmojiSmile size={22} />
-            <span className=" message-icon-tooltip  ">Like</span>
+            <BsEmojiSmile
+              size={22}
+              onClick={() => {
+                console.log(reaction);
+                setReaction(!reaction);
+              }}
+            />
+            <span className=" message-icon-tooltip ">Like</span>
+            {reaction ? <Reaction /> : ""}
           </div>
           <div className="group/item relative">
             <BsPencil size={22} />

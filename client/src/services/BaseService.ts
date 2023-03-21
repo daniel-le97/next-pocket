@@ -6,9 +6,9 @@ import { pb } from "../../utils/pocketBase"
  export interface BaseService<T,P>{
   getById(id:string) : Promise<T> 
   getAll() : Promise<T[]>
-  delete(id:string) : Promise<T>
+  delete(id:string) : Promise<void>
   update(data: P) : Promise<void>
-  create(data: P) : Promise<T>
+  create(data: string | P) : Promise<T | undefined>
 }
 
 export class Base{

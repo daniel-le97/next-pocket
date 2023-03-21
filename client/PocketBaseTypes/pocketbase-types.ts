@@ -103,7 +103,8 @@ export type MessagesRecord = {
 
 export type ReactionsRecord = {
 	messageId: RecordIdString
-	reaction?: string
+	reaction?: boolean
+	userId: RecordIdString
 }
 
 export type ServersRecord = {

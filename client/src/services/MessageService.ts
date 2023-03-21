@@ -1,4 +1,4 @@
-import { reaction } from "mobx";
+
 import { AppState } from "../../AppState";
 import type {
   DirectMessagesRecord,
@@ -6,9 +6,9 @@ import type {
   MessagesRecord,
 } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
-import type { MessageWithUser, UnFormatedMessageWithUser } from "../../PocketBaseTypes/utils";
+import type { MessageWithUser } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
-import { Expand } from "../models/Room";
+
 
 class MessageService {
   /**

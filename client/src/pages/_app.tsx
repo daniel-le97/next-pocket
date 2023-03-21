@@ -35,8 +35,8 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     
     const fetchUserServers = async () => {
     //  await messageService.getById("hzx12x5dvpxh5mo");
-    const reaction = await reactionsService.getById("50v85pfr0gn70tg");
-    reactionsService.newUpdate(reaction)
+    // await reactionsService.create("hzx12x5dvpxh5mo");
+    // const reaction = await reactionsService.getById("50v85pfr0gn70tg");
       const userId = user?.id as string;
       const servers = await membersService.getUserServers(userId);
       return servers;
