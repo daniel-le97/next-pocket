@@ -62,22 +62,22 @@ const ChannelsBar = () => {
   // }, [router.query.id]);
 
   return (
-    <div className="channel-bar ">
+    <div className="m-0 flex h-auto    flex-col justify-between  bg-gray-200 shadow-lg dark:bg-zinc-800 ">
       <div>
         <ServerSettingsMenu />
 
-        <div className="channel-container">
-          <div className="dropdown">
+        <div className="m-0 flex h-16 flex-col items-center justify-start p-0">
+          <div className="m-0 w-full px-2 pb-2 transition duration-300 ease-in-out">
             <div
               onClick={() => setExpanded(!expanded)}
-              className="dropdown-header"
+              className="mx-0 flex cursor-pointer flex-row items-center justify-evenly text-gray-500"
             >
               <ChevronIcon expanded={expanded} />
               <h5
                 className={
                   expanded
-                    ? "dropdown-header-text-selected"
-                    : "dropdown-header-text"
+                    ? "text-lg font-bold text-blue-500 text-opacity-90"
+                    : "text-gray-500text-opacity-90  cursor-default  text-lg font-semibold"
                 }
               >
                 Text Channels
@@ -118,7 +118,7 @@ const ChevronIcon = ({ expanded }) => {
   );
 };
 
-const UserIcon = ({ user }: { user: UsersResponse }) => {
+export const UserIcon = ({ user }: { user: UsersResponse }) => {
   const [isHovered, setHovered] = useState(false);
   const handleClick = () => {
     setHovered(!isHovered);
@@ -127,10 +127,10 @@ const UserIcon = ({ user }: { user: UsersResponse }) => {
     <button
       onBlur={handleClick}
       onFocus={handleClick}
-      className="group relative w-full cursor-pointer bg-zinc-900 p-1 "
+      className="group relative w-full cursor-pointer bg-zinc-900 p-1  "
       // onClick={handleClick}
     >
-      <div className=" flex gap-x-2 rounded-md p-1 transition-all ease-linear  hover:bg-zinc-700">
+      <div className=" flex gap-x-2 rounded-md p-1 transition-all ease-linear  hover:bg-zinc-700 ">
         <img
           src={
             // @ts-ignore

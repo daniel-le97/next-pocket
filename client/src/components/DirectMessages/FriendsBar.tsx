@@ -22,6 +22,7 @@ import { Transition, Dialog } from "@headlessui/react";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { friendService } from "../../services/FriendService";
 import Link from "next/link";
+import { UserIcon } from "../ChannelsBar/ChannelsBar";
 const topics = ["general", "tailwind-css", "react"];
 
 const FriendsBar = () => {
@@ -40,14 +41,17 @@ const FriendsBar = () => {
     fetchFriends();
   }, []);
   return (
-    <div className="channel-bar ">
-      <div className="channel-block">
-        <h5 className="channel-block-text">Direct Messages</h5>
+    <div className="friends-bar">
+      <div>
+        <div className="channel-block">
+          <h5 className="channel-block-text">Direct Messages</h5>
+        </div>
+        <div className="px-3 ">
+          {friends &&
+            friends.map((friend, index) => <User user={friend} key={index} />)}
+        </div>
       </div>
-      <div className="px-3 ">
-        {friends &&
-          friends.map((friend, index) => <User user={friend} key={index} />)}
-      </div>
+      <UserIcon user={user} />
     </div>
   );
 };

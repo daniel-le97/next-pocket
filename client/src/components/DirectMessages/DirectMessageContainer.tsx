@@ -12,6 +12,8 @@ import { pb } from "../../../utils/pocketBase";
 import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
 import UserStatus from "../Messages/UsersStatus";
 import CreateMessage from "./CreateDirectMessage";
+import { FaAt } from "react-icons/fa";
+import DirectMessageScroll from "./DirectMessageScroll";
 
 const DirectMessageContainer = () => {
   const router = useRouter();
@@ -19,6 +21,7 @@ const DirectMessageContainer = () => {
 
   const user = pb.authStore.model;
   const messages = AppState.directMessages;
+  const friend = AppState.activeDirectMessage
   let unsubscribe: (() => void) | null = null;
 
   const listRef = useRef<HTMLDivElement>(null);
@@ -32,7 +35,7 @@ const DirectMessageContainer = () => {
       const fetchMessages = async () => {
         try {
           await directMessageService.getDirectMessages(
-            user?.id,
+            user!.id,
             id?.toString()
           );
         } catch (error) {
@@ -76,8 +79,14 @@ const DirectMessageContainer = () => {
   }, [router.query.id]);
 
   return (
-    <div className=" messages content-container ">
-      {messages &&
+    <div className="direct-messages-container ">
+      <div className="directMessages-top-bar border-b-2 border-b-zinc-800 bg-zinc-800/90 p-3 shadow-sm">
+        <div className="direct-message-friend flex items-center gap-x-2 text-xl font-bold text-white/80">
+          <FaAt size={22} className="text-white/40" />
+          {friend?.username}
+        </div>
+      </div>
+      {/* {messages &&
         messages.map((message, index) => (
           <DirectMessageCard
             messages={messages}
@@ -85,14 +94,16 @@ const DirectMessageContainer = () => {
             index={index}
             key={index}
           />
-        ))}
-
-      <CreateMessage />
+        ))} */}
+      <div className="direct-messages-list">
+        <DirectMessageScroll />
+        <CreateMessage />
+      </div>
     </div>
   );
 };
 
-const DirectMessageCard = ({ messages, message, index }) => {
+ export const DirectMessageCard = ({ messages, message, index }) => {
   return (
     <div className="rounded-md p-1 " key={index}>
       <div className=" message group  relative">

@@ -68,7 +68,9 @@ const ServerIcon = ({
         <img
           src={server?.expand?.image?.url}
           alt="UserIcon"
-          className="server-icon-image"
+          className={activeServer?.id !== server.id? (
+            "server-icon-image"
+          ): ("active-server-icon-image")}
           onClick={handleClick}
         />
 

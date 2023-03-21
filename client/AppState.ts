@@ -13,7 +13,11 @@ import type {
   ServersResponse,
   UsersResponse,
 } from "./PocketBaseTypes/pocketbase-types";
-import type { MemberUser, MessageWithUser, Server } from "./PocketBaseTypes/utils";
+import type {
+  MemberUser,
+  MessageWithUser,
+  Server,
+} from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
 // /** @type {import('./src/models/Account.js').Account | null} */
@@ -28,21 +32,22 @@ class ObservableAppState {
 
   activeChannel: ChannelsResponse | null = null;
   activeServer: ServersResponse | Server | null = null;
-  activeMembership: MembersResponse | null = null
+  activeMembership: MembersResponse | null = null;
 
   channelTitles: (string | undefined)[] = [];
   channels: ChannelsResponse[] = [];
   servers: ServersResponse[] = [];
   users: UsersResponse[] = [];
   messages: MessageWithUser[] = [];
-  directMessages:DirectMessagesResponse[] = []
+  directMessages: DirectMessagesResponse[] = [];
+  activeDirectMessage:UsersResponse | null = null
 
-  totalPages = 0
-  page = 1
+  totalPages = 0;
+  page = 1;
   loading = 0;
 
-  lastPath: string | null = null
-  lastQueryId: string | null = null
+  lastPath: string | null = null;
+  lastQueryId: string | null = null;
 
   AppState: undefined;
 

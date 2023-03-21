@@ -10,7 +10,7 @@ import { AppState } from "../../../AppState";
 import { userService } from "../../services/UserService";
 import type { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import UserStatus from "../Messages/UsersStatus";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { BsArrowLeft, BsArrowLeftCircle, BsArrowRight, BsArrowRightCircle } from "react-icons/bs";
 // const topics = ["general", "tailwind-css", "react"];
 
 const MembersBar = () => {
@@ -32,11 +32,11 @@ const MembersBar = () => {
       >
         <div className="channel-block">
           <h5 className="channel-block-text">Members</h5>
-          <div className=" mx-auto my-2 rounded-3xl bg-gray-800 p-2 text-green-500">
+          <div className=" mx-auto my-2 rounded-3xl  text-gray-500">
             {" "}
             {collapsed ? (
-              <BsArrowRight
-                size={22}
+              <BsArrowRightCircle
+                size={24}
                 onClick={() => setCollapsed(!collapsed)}
                 className="cursor-pointer"
               />
@@ -58,9 +58,9 @@ const MembersBar = () => {
         </div>
       </div>
       {!collapsed && (
-        <div className=" absolute top-1 right-5 mx-auto my-2 rounded-3xl bg-gray-800 p-2 text-green-500 transition-all duration-200">
-          <BsArrowLeft
-            size={22}
+        <div className=" absolute  right-5 top-1.5 mx-auto my-2 rounded-3xl   text-gray-500 transition-all duration-200">
+          <BsArrowLeftCircle
+            size={24}
             onClick={() => setCollapsed(!collapsed)}
             className="cursor-pointer"
           />

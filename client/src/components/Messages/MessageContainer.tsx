@@ -11,13 +11,12 @@ import CreateMessage from "./CreateMessage";
 
 const MessagesContainer = () => {
   return (
-    <div className="content-container">
+    <div className=" min-h-screen h-full items-stretch flex-1 relative    overflow-hidden bg-gray-300   dark:bg-zinc-700">
+      
       <TopNavigation />
-      <div className="content-list" >
-        {/* <MessagesList /> */}
-        <MessageScroll/>
-        <CreateMessage/>
-      </div>
+
+      <MessageScroll />
+      <CreateMessage />
     </div>
   );
 };

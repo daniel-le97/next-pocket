@@ -75,7 +75,32 @@ class DirectMessageService {
       });
 
     AppState.directMessages = res;
+    const friendRes = await pb.collection(Collections.Users).getOne(friendId);
+    AppState.activeDirectMessage = friendRes;
+    console.log(friendRes);
+
     return res;
+  }
+
+  /**
+   * Gets the list of messages for a specific channel
+   * @param id - The ID of the channel to get messages for
+   * @returns The list of messages for the specified channel
+   */
+  async getDirectMessagesById(userId:string,friendId: string, page = AppState.page) {
+    const res = await pb
+      .collection(Collections.DirectMessages)
+      .getList(page, 50, {
+        filter: `from = "${userId}"  && to = "${friendId}" ||  from = "${friendId}"  && to = "${userId}" `,
+        sort:'-created',
+        expand: "from,to",
+      });
+    console.log(res);
+    const messages = res.items as unknown as MessageWithUser[];
+    AppState.directMessages = [...AppState.directMessages, ...messages];
+
+    AppState.totalPages = res.totalPages;
+    AppState.page++;
   }
 }
 

@@ -2,11 +2,13 @@
 import { observer } from "mobx-react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
-import { timeago } from "../../../utils/TimeAgo";
+import { directMessageService } from "../../services/DirectMessagesService";
+
 import { messageService } from "../../services/MessageService";
 import Loader from "../Loader";
-import MessageCard from "./MessageCard";
-const MessageScroll = () => {
+import { DirectMessageCard } from "./DirectMessageContainer";
+
+const DirectMessageScroll = () => {
   const fetchMore = async () => {
     const channelId = AppState.activeChannel?.id;
     console.log(
@@ -16,31 +18,34 @@ const MessageScroll = () => {
       AppState.totalPages
     );
 
-    await messageService.getMessagesByChannelId(channelId);
+    await directMessageService.getDirectMessagesById(
+      AppState.user.id,
+      AppState.activeDirectMessage?.id
+    );
   };
   return (
     <div
-      id="scrollableDiv"
-      className="flex   h-full  flex-col-reverse overflow-auto"
+      id="scrollableDiv2"
+    
+      className="max-h-screen  overflow-auto flex flex-col-reverse "
     >
-     
       {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll
-        dataLength={AppState.messages.length}
+        dataLength={AppState.directMessages.length}
         next={fetchMore}
-        className=" mb-24 flex flex-col-reverse pt-6   "
+        className="  flex  max-h-screen flex-col-reverse "
         inverse={true} //
         hasMore={AppState.totalPages != AppState.page}
         loader={<Loader show={AppState.totalPages != AppState.page} />}
-        scrollableTarget="scrollableDiv"
+        scrollableTarget="scrollableDiv2"
       >
-        {AppState.messages.map((message, index) => {
+        {AppState.directMessages.map((message, index) => {
           const currentDate = new Date(message.created).toLocaleDateString();
           const todaysDate = new Date(Date.now()).toLocaleDateString();
           const previousDate =
             index > 0
               ? new Date(
-                  AppState.messages[index - 1]!.created
+                  AppState.directMessages[index - 1]!.created
                 ).toLocaleDateString()
               : null;
 
@@ -50,8 +55,8 @@ const MessageScroll = () => {
           return (
             <div key={index}>
               {
-                <MessageCard
-                  messages={AppState.messages}
+                <DirectMessageCard
+                  messages={AppState.directMessages}
                   message={message}
                   index={index}
                 />
@@ -103,4 +108,4 @@ const MessageScroll = () => {
   );
 };
 
-export default observer(MessageScroll);
+export default observer(DirectMessageScroll);

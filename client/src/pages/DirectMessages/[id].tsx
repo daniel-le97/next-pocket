@@ -35,6 +35,8 @@ const DirectMessagesId: NextPage = () => {
             id
           );
 
+        // AppState.activeDirectMessage = res.find(a => a.expand.from && a.expand.)
+        
         
         } catch (error) {
           Pop.error(error);

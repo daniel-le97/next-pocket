@@ -17,18 +17,19 @@
     shadow-lg outline-none;
   }
 
-  .content-container {
-    @apply min-h-screen  w-full overflow-auto bg-gray-300   dark:bg-zinc-700;
-  }
+  /* .content-container {
+    @apply ;
+  } */
   .content-list {
-    @apply flex  w-full flex-col-reverse overflow-auto  pt-20;
+    @apply flex  w-full flex-col-reverse overflow-auto  pb-24;
   }
 
-  .bottom-bar {
-    @apply fixed    bottom-2  mx-10 flex h-14 w-8/12 rounded-lg bg-gray-400  transition  duration-300 ease-in-out dark:bg-zinc-800;
+  .create-message-bar {
+  background-image:linear-gradient(180deg,rgba(53,55,64,0),#353740 58.85%)
+  
   }
-  .bottom-bar-input {
-    @apply ml-0 mr-auto w-full cursor-text bg-transparent font-semibold text-gray-500 placeholder-gray-500 outline-none;
+  .create-message-input {
+    @apply ml-0 mr-auto w-20  cursor-text bg-transparent font-semibold text-gray-500 placeholder-gray-500 outline-none focus:w-full;
   }
 
   .server-members-bar {
@@ -41,6 +42,10 @@
   .server-button {
     @apply flex  w-full  items-center  justify-between rounded-sm    p-2 text-zinc-300 transition-all duration-300 ease-linear hover:bg-indigo-600 hover:text-white;
   }
+
+  /* .infinite-scroll-container {
+    @apply ;
+  } */
 }
 
 /* Create Server Form/Modal*/
@@ -118,15 +123,13 @@
 }
 /* Top Navigation */
 @layer components {
-  .top-navigation {
-    max-width: 100%;
-    width: 51.1rem;
-    @apply fixed  z-10    mt-2 ml-1.5  flex h-16
-    flex-row items-center justify-evenly rounded-lg 
-    bg-gray-300 bg-opacity-90 
+  /* .top-navigation {
+    @apply z-10    flex w-full  
+    items-center justify-evenly bg-gray-300 
+    py-2 
     shadow-lg 
     dark:bg-zinc-800;
-  }
+  } */
 
   .top-navigation-icon {
     @apply mr-3
@@ -151,32 +154,32 @@
     transition duration-300 ease-in-out;
   }
 
-  .search {
+  /* .search {
     @apply z-10 ml-0 mr-0 flex h-9 
     w-1/5 items-center
     justify-start
     rounded-md bg-gray-400 px-2 text-gray-500 
     shadow-md transition
     duration-300 ease-in-out dark:bg-gray-600;
-  }
+  } */
 
-  .search-input {
+  /* .search-input {
     @apply w-full rounded bg-transparent
     pl-1 font-sans 
     font-semibold  text-gray-500
     placeholder-gray-500 outline-none;
-  }
+  } */
 }
 
 /* Channels Bar */
 @layer components {
-  .channel-bar {
-    @apply m-0 flex h-auto  w-80 flex-col  bg-gray-200 shadow-lg dark:bg-zinc-800;
-  }
+  /* .channel-bar {
+    @apply m-0 flex h-auto   flex-col justify-between  bg-gray-200 shadow-lg dark:bg-zinc-800;
+  } */
 
-  .channel-container {
+  /* .channel-container {
     @apply m-0 flex h-16 flex-col items-center justify-start p-0;
-  }
+  } */
 
   .channel-block {
     @apply m-0 flex h-16 items-center justify-center p-0;
@@ -186,23 +189,23 @@
     @apply my-auto  mr-auto ml-4 align-middle text-lg font-bold tracking-wide text-gray-600 dark:text-gray-400;
   }
 
-  .dropdown {
+  /* .dropdown {
     @apply m-0 w-full px-2 pb-2 transition duration-300 ease-in-out;
-  }
+  } */
 
-  .dropdown-header {
+  /* .dropdown-header {
     @apply mx-0 flex cursor-pointer flex-row items-center justify-evenly text-gray-500;
-  }
+  } */
 
-  .dropdown-header-text {
+  /* .dropdown-header-text {
     @apply cursor-default  text-lg 
     font-semibold text-gray-500
     text-opacity-90;
-  }
+  } */
 
-  .dropdown-header-text-selected {
+  /* .dropdown-header-text-selected {
     @apply text-lg font-bold text-blue-500 text-opacity-90;
-  }
+  } */
 
   .dropdown-selection {
     @apply mt-1 mr-auto ml-2 flex 
@@ -219,18 +222,15 @@
     dark:hover:text-green-500;
   }
 
-
-
-  .user-modal{
-    @apply sidebar-user-tooltip 
+  .user-modal {
+    @apply sidebar-user-tooltip;
   }
-  .user-modal-banner{
-    @apply rounded-t-md bg-red-100 py-8
+  .user-modal-banner {
+    @apply rounded-t-md bg-red-100 py-8;
   }
-  .user-modal-user-image{
-    @apply absolute left-3 top-6 rounded-full border-8 border-zinc-700 shadow-md
+  .user-modal-user-image {
+    @apply absolute left-3 top-6 rounded-full border-8 border-zinc-700 shadow-md;
   }
-
 }
 
 /* Message Content */
@@ -324,6 +324,16 @@
 
 /* Direct Messages */
 @layer components {
+  .direct-messages-container {
+    @apply max-h-screen w-full overflow-hidden bg-gray-300   dark:bg-zinc-700;
+  }
+
+  .direct-messages-list {
+    @apply flex   max-h-screen w-full flex-col-reverse;
+  }
+  .friends-bar {
+    @apply m-0 flex h-auto  w-80 flex-col  justify-between bg-gray-200 shadow-lg dark:bg-zinc-800;
+  }
   .tab-list {
     @apply w-full rounded-sm py-2.5 text-sm  font-medium leading-5 text-zinc-300 ring-0 transition-all duration-150  ease-linear hover:bg-white/[0.12] focus:outline-none;
   }

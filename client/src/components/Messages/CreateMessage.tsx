@@ -9,6 +9,7 @@ import InputEmoji from "react-input-emoji";
 import React from "react";
 import { messageService } from "../../services/MessageService";
 import { containsUrl } from "../../../utils/ContainsUrl";
+
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
   const messages = AppState.messages;
@@ -34,19 +35,19 @@ const CreateMessage = () => {
     setNewMessage("");
   };
 
+
   return (
-    <div className="bottom-bar">
-      <form onSubmit={sendMessage} className="flex w-3/4">
+    <div className="create-message-bar w-full  absolute bottom-0  pt-10   bg-white  dark:border-white/20 dark:bg-gray-800 md:border-t-0 md:border-transparent md:!bg-transparent ">
+      <form onSubmit={sendMessage} className="flex">
         {AppState.activeChannel ? (
           <>
-          
             <InputEmoji
               value={newMessage}
               onChange={setNewMessage}
               cleanOnEnter
               onEnter={sendMessage}
               placeholder="Enter message..."
-              className="bottom-bar-input  "
+              className=" "
             />
             <PlusIcon />
           </>
