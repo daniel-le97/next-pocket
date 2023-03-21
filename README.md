@@ -42,6 +42,8 @@ this step is just navigating to settings => export collections and then adding t
 cd .. 
 cd client
 npm run type
+youll now see updated types in
+/PocketBaseTypes/pocktbase-types.ts
 ```
 ## Deployment
 
@@ -62,10 +64,7 @@ npm run build
 
 an example docker compose can be found at pocketbase/docker-compose.yml 
 
-## Acknowledgements
 
- - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
 
 
 ## Authors
