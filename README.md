@@ -34,16 +34,13 @@ cp pb_schema.json
 ```
 now you'll need to go to your pocketbase client and navigate to settings => import collections and paste the pb_schema.json there
 
-### Getting your pocketbase js client typed
+### Getting your pocketbase types updated
 this project uses npx pocketbase-typegen from (https://github.com/patmood/pocketbase-typegen)
-i use the --json flag alternatively you could use the --url flag but it was a bit more finnicky to get working
-this step is just navigating to settings => export collections and then adding that file to your pocketbase server
 ```
-cd .. 
-cd client
-npm run type
-youll now see updated types in
-/PocketBaseTypes/pocktbase-types.ts
+// before running this please make sure the envs defined in preview.js are set
+
+npm run gen
+
 ```
 ## Deployment
 
