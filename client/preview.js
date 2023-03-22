@@ -1,48 +1,21 @@
-import puppeteer from "puppeteer";
-import {pb} from './utils/pocketBase'
-export default async function handleImageThingy(req, res) {
-  try {
-    let { url } = req.query;
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { execSync } = require("child_process")
+const {config} = require("dotenv")
 
-    let image = await getImageBase64(url);
 
-    res.status(200).json({
-      image,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      error: JSON.stringify(error),
-    });
-  }
+
+// Load environment variables from .env file
+module.exports = () => {
+  config()
+  const email = process.env.EMAIL
+  const pass = process.env.PASS
+  const url = process.env.NEXT_PUBLIC_POCKET_URL
+  console.log(
+    `npx pocketbase-typegen --url ${url} --email ${email} --password '${pass}'`
+  );
+  const command = `npx pocketbase-typegen --url ${url} --email ${email} --password '${pass}' --out PocketBaseTypes/pocketbase-types.ts`;
+
+  execSync(command, {stdio: 'inherit'})
 }
-
-let getImageBase64 = async (url) => {
-  let cachedImage = await getCachedImage(url);
-  if (cachedImage) return cachedImage;
-
-  let browser = await puppeteer.launch();
-  let page = await browser.newPage();
-  await page.goto(url);
-  let image = await page.screenshot({ encoding: "base64" });
-  await browser.close();
-
-  await cacheImage(url, image);
-
-  return image;
-};
-
-let getCachedImage = async (url) => {
-  let {image} = await pb.collection('cacheImage').getFirstListItem(`url="${url}"`)
-  // let { image } = await prisma.image.findUnique({ where: { url } });
-  return image;
-};
-
-let cacheImage = async (url, image) => {
-  const data = {
-    "url":url,
-    "image":image
-  }
-  await pb.collection('cacheImage').create(data)
-  // await prisma.image.create({ data: { url, image } });
-};
+module.exports()

@@ -8,7 +8,7 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "type": "npx pocketbase-typegen --out PocketBaseTypes/pocketbase-types.ts --json ../pocketbase/pb_schema.json"
+    "gen": "node preview.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
@@ -19,7 +19,6 @@
     "mobx-react": "^7.6.0",
     "next": "^13.2.4",
     "pocketbase": "^0.12.1",
-    "puppeteer": "^19.7.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.5",
@@ -40,6 +39,7 @@
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "autoprefixer": "^10.4.14",
+    "dotenv": "^16.0.3",
     "eslint": "^8.36.0",
     "eslint-config-next": "13.2.4",
     "postcss": "^8.4.21",
