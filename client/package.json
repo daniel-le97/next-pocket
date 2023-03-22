@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build-pb": "next build && next export && cp -r ./out ../pocketbase/static",
+    "build-serve": "next build && next export && cp -r ./out ../pocketbase/static",
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "gen": "node preview.js"
+    "gen": "node gen.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { pb } from "../../utils/pocketBase";
-import  handleImageThingy  from "../../preview.js";
+import  handleImageThingy  from "../../gen.js";
 export default function CustomLink({ children, href }) {
   let [imagePreview, setImagePreview] = useState("");
   let [isHovering, setIsHovering] = useState(false);

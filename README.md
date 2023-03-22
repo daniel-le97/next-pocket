@@ -30,27 +30,22 @@ at http://localhost:8080/_/ you wont have any collections
 ```
 cd pocketbase
 cp pb_schema.json
-
 ```
 now you'll need to go to your pocketbase client and navigate to settings => import collections and paste the pb_schema.json there
 
-### Getting your pocketbase js client typed
+### Getting your pocketbase types updated
 this project uses npx pocketbase-typegen from (https://github.com/patmood/pocketbase-typegen)
-i use the --json flag alternatively you could use the --url flag but it was a bit more finnicky to get working
-this step is just navigating to settings => export collections and then adding that file to your pocketbase server
 ```
-cd .. 
-cd client
-npm run type
-youll now see updated types in
-/PocketBaseTypes/pocktbase-types.ts
+// before running this please make sure the envs defined in
+// client/gen.js are set or hardcode them there and add the file to .gitignore
+
+npm run gen
 ```
 ## Deployment
-
 To deploy this project run
 
 ```node
-  npm run build-pb
+  npm run build-serve
 ```
 this will build your next.js frontend into pocketbase to allow pocketbase to serve your app for easier deployment
 
