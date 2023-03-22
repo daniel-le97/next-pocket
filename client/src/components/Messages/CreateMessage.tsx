@@ -12,45 +12,71 @@ import React from "react";
 import { messageService } from "../../services/MessageService";
 import { containsUrl } from "../../../utils/ContainsUrl";
 import type { MessagesRecord } from "../../../PocketBaseTypes/pocketbase-types";
+import { useForm } from "react-hook-form";
+import Pop from "../../../utils/Pop";
+import ReactMarkdown from "react-markdown";
 const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
   const messages = AppState.messages;
-  const sendMessage = async (event: { preventDefault: () => void }) => {
-    // event.preventDefault();
+  const user = AppState.user;
 
-    if (containsUrl(newMessage)) {
-      console.log("URL found!");
-    } else {
-      console.log("No URL found.");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
+  } = useForm({
+    defaultValues: {
+      content: "",
+      user: user!.id,
+      channel: "",
+    },
+  });
+
+  const sendMessage = async (data: MessagesRecord) => {
+    try {
+      data.channel = AppState.activeChannel?.id;
+      const createMessage = await messageService.sendMessage(data);
+      reset()
+    } catch (error) {
+      Pop.error(error);
     }
 
-    const user = AppState.user;
-    const data: MessagesRecord = {
-      text: newMessage,
-      user: user!.id,
-      channel: AppState?.activeChannel?.id,
-    };
-
     // const createdMessage = await pb.collection("messages").create(data);
-    const createMessage = await messageService.sendMessage(data);
-    setNewMessage("");
+    // setNewMessage("");
   };
 
-
   return (
-    <div className="create-message-bar w-full  absolute bottom-0  pt-10   bg-white  dark:border-white/20 dark:bg-gray-800 md:border-t-0 md:border-transparent md:!bg-transparent ">
-      <form onSubmit={sendMessage} className="flex">
+    <div className="create-message-bar absolute  bottom-0 w-full  bg-white   pt-10  dark:border-white/20 dark:bg-gray-800 md:border-t-0 md:border-transparent md:!bg-transparent ">
+      <form onSubmit={handleSubmit(sendMessage)} className="flex">
+       
         {AppState.activeChannel ? (
           <>
-            <InputEmoji
+            {/* <InputEmoji
               value={newMessage}
-              onChange={setNewMessage}
+              // onChange={setNewMessage}
               cleanOnEnter
-              onEnter={sendMessage}
+              // onEnter={sendMessage}
               placeholder="Enter message..."
             
             />
-            <PlusIcon />
+            <PlusIcon /> */}
+
+            <textarea
+              className="rounded-full border-2 border-zinc-900 bg-transparent p-2 focus:outline-none"
+              rows={2}
+              cols={100}
+              {...register("content", {
+                required: true,
+                maxLength: 20000,
+                minLength: 3,
+              })}
+            ></textarea>
+            <button type="submit" className="p-1">
+              {" "}
+              Submit
+            </button>
           </>
         ) : (
           <div className=""></div>

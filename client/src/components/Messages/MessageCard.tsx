@@ -3,6 +3,7 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import TimeAgo from "timeago-react";
 import { AppState } from "../../../AppState";
 import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
@@ -12,6 +13,7 @@ import Reaction from "../Reactions/Reaction";
 import DeleteMessage from "./MessageOptions/DeleteMessage";
 import EditMessage from "./MessageOptions/EditMessage";
 import LikeMessage from "./MessageOptions/LikeMessage";
+import rehypeRaw from "rehype-raw";
 
 const MessageCard = ({
   messages,
@@ -40,7 +42,7 @@ const MessageCard = ({
         />
         {/* <UserStatus user={message?.expand?.user} /> */}
       </div>
-      <div className="ml-auto flex w-4/5 flex-col justify-start">
+      <div className="ml-auto flex w-4/5 flex-col justify-start  whitespace-pre-wrap overflow-x-scroll ">
         <p className=" font-bold  text-red-500">
           {message.expand?.user?.username}
           <small className="ml-3 font-normal text-black dark:text-gray-300">
@@ -53,7 +55,14 @@ const MessageCard = ({
             }
           </small>
         </p>
-        {containsUrl(message.text) ? (
+        <p className="text-lg font-semibold dark:text-gray-300"></p>
+        <ReactMarkdown
+          children={message.content}
+          className="font-sans text-lg text-zinc-300  whitespace-pre-wrap"
+          rehypePlugins={[rehypeRaw]}
+          renderers={{ code: CodeBlock }}
+        ></ReactMarkdown>
+        {/* {containsUrl(message.text) ? (
           <a
             target="_blank"
             href={message.text}
@@ -62,10 +71,8 @@ const MessageCard = ({
             {message.text}
           </a>
         ) : (
-          <p className="text-lg font-semibold dark:text-gray-300">
-            {message.text}
-          </p>
-        )}
+         
+        )} */}
       </div>
       <div className=" absolute bottom-20 right-0 mr-5  transition-all group-hover:opacity-0 ">
         {/* {index === 0 && (
@@ -96,4 +103,24 @@ const MessageCard = ({
   );
 };
 
+
+const CodeBlock = {
+  code({ node, inline, className, children, ...props }) {
+    const match = /language-(\w+)/.exec(className || "");
+    return !inline && match ? (
+      <SyntaxHighlighter
+        style={vscDarkPlus}
+        language={match[1]}
+        PreTag="div"
+        {...props}
+      >
+        {String(children).replace(/\n$/, "")}
+      </SyntaxHighlighter>
+    ) : (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
+  },
+};
 export default observer(MessageCard);

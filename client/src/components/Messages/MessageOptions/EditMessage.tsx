@@ -61,7 +61,7 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      text: message.text,
+      content: message.content,
       user: message.user,
       channel: AppState.activeChannel?.id,
     },
@@ -157,7 +157,7 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
                           </p>
                           <p className="text-lg font-semibold dark:text-gray-300">
                             <textarea
-                              {...register("text", {
+                              {...register("content", {
                                 required: true,
 
                                 minLength: 1,

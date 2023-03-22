@@ -16,8 +16,8 @@ class MessageService {
    * @returns The newly created message
    */
   async sendMessage(data: MessagesRecord) {
-    const channelId = AppState.activeChannel?.id;
-    if (!channelId) throw new Error("no activeChannel.id");
+    console.log(data);
+    
     const res = await pb
       .collection(Collections.Messages)
       .create<MessageWithUser>(data, { expand: "user" });
@@ -83,17 +83,17 @@ class MessageService {
 
     AppState.messages = AppState.messages.filter((m) => m.id != id);
   }
-  async editMessage(id:string,data: MessagesRecord) {
+  async editMessage(id: string, data: MessagesRecord) {
     const res = await pb.collection(Collections.Messages).getOne(id);
 
     const updatedRes = await pb
       .collection(Collections.Messages)
-      .update<MessageWithUser>(res.id, data,{
-        expand:'user'
+      .update<MessageWithUser>(res.id, data, {
+        expand: "user",
       });
-  AppState.messages = AppState.messages.map((m) =>
-    m.id === id ? updatedRes : m
-  );
+    AppState.messages = AppState.messages.map((m) =>
+      m.id === id ? updatedRes : m
+    );
   }
 }
 
