@@ -6,7 +6,11 @@
 
 import { observer } from "mobx-react";
 import { BsEmojiSmile, BsXCircle } from "react-icons/bs";
-import { MessagesResponse, ServersRecord } from "../../../../PocketBaseTypes/pocketbase-types";
+import {
+  MessagesRecord,
+  MessagesResponse,
+  ServersRecord,
+} from "../../../../PocketBaseTypes/pocketbase-types";
 import Pop from "../../../../utils/Pop";
 import { messageService } from "../../../services/MessageService";
 
@@ -26,20 +30,9 @@ import MessageCard from "../MessageCard";
 import { AppState } from "../../../../AppState";
 import { MessageWithUser } from "../../../../PocketBaseTypes/utils";
 import TimeAgo from "timeago-react";
-const EditMessage = ({message}:{message:MessageWithUser}) => {
-  const editMessage = async () => {
-    try {
-      const yes = await Pop.confirm();
-      if (!yes) {
-        return;
-      }
-      await messageService.editMessage(message.id);
-    } catch (error) {
-      Pop.error(error);
-    }
-  };
+const EditMessage = ({ message }: { message: MessageWithUser }) => {
   return (
-    <div className="group/item hover:bg-zinc-600 relative p-1 transition-all ease-linear ">
+    <div className="group/item relative p-2 transition-all ease-linear hover:bg-zinc-600 ">
       <EditMessageModal message={message} />
       <span
         className="absolute  bottom-8  z-50  w-auto min-w-max origin-left scale-0 rounded-md
@@ -48,34 +41,17 @@ const EditMessage = ({message}:{message:MessageWithUser}) => {
     text-white shadow-md transition-all duration-100
     group-hover/item:scale-100 "
       >
-       Edit
+        Edit
       </span>
     </div>
   );
 };
 
 const user = pb.authStore.model;
-const data = {
-  name: "test",
-  description: "test",
-  members: ["RELATION_RECORD_ID"],
-  imageUrl: "test",
-  imageFile: null,
-};
-const initialFormData = {
-  name: "",
-  description: "",
-  members: [user?.id],
-  imageUrl: "",
-  // imageFile: null,
-};
-const EditMessageModal = ({message}:{message:MessageWithUser}) => {
+
+const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState(initialFormData);
-  const [progress, setProgress] = useState(0);
-  const [uploading, setUploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
-  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -85,43 +61,41 @@ const EditMessageModal = ({message}:{message:MessageWithUser}) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
-      image: "",
-      members: [user?.id],
-      // imageUrl: "",
-      owner: user?.id,
-      description: "",
+      text: message.text,
+      user: message.user,
+      channel: AppState.activeChannel?.id,
     },
   });
-  const onSubmit = async (data: ServersRecord) => {
+  const onSubmit = async (data: MessagesRecord) => {
     try {
-      const newServer = await serversService.createServer(data);
+    
+      data.text += " (edited)";
+      const updatedMessage = await messageService.editMessage(message.id, data);
       reset();
-      setImageUrl("");
-      closeModal();
-      router.push(`http://localhost:3000/server/${newServer.id}`);
-    } catch (error) {
-      console.error("createServer", error);
 
-      await uploadService.deleteFile(user!.id, data.image!);
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Edit MMessage", error);
     }
   };
 
- 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
   return (
     <div className="  group ">
-      <FaEdit size={22} onClick={openModal} />
+      <FaEdit
+        size={22}
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      />
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -182,42 +156,34 @@ const EditMessageModal = ({message}:{message:MessageWithUser}) => {
                             </small>
                           </p>
                           <p className="text-lg font-semibold dark:text-gray-300">
-                            {message.text}
-                            <input
+                            <textarea
                               {...register("text", {
                                 required: true,
-                             
+
                                 minLength: 1,
                               })}
-                              type="text"
-                              className="  bg-zinc-600/40 p-1 m-1 rounded-md "
-                            />
+                              rows={4}
+                              cols={50}
+                              className="peer m-2 block min-h-[auto] w-full rounded border-0 bg-zinc-700/20  py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 "
+                            ></textarea>
                           </p>
-                        </div>
-                        <div className=" absolute bottom-20 right-0 mr-5  transition-all group-hover:opacity-0 "></div>
-                        <div className="absolute bottom-24 right-0  mr-5   opacity-0 group-hover:opacity-100">
-                          <div className=" flex gap-x-2 rounded  border-zinc-900 bg-zinc-700  shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900">
-                            <div className="group/item relative ">
-                              <BsEmojiSmile
-                                size={22}
-                                onClick={() => {
-                                  console.log(reaction);
-                                  setReaction(!reaction);
-                                }}
-                              />
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>
 
-
-                    <div className="">
+                    <div className=" flex gap-x-2">
+                      <button
+                      type="button"
+                        onClick={() => setIsOpen(false)}
+                        className="rounded-md bg-purple-500 p-2 font-bold text-zinc-300 hover:bg-opacity-80"
+                      >
+                        Cancel
+                      </button>
                       <button
                         type="submit"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        className="rounded-md bg-indigo-500 p-2 font-bold text-zinc-300 hover:bg-opacity-80"
                       >
-                        Submit
+                        Submit Edit
                       </button>
                     </div>
                   </form>
@@ -230,7 +196,6 @@ const EditMessageModal = ({message}:{message:MessageWithUser}) => {
     </div>
   );
 };
-
 
 const EditMessageCard = ({
   messages,
@@ -268,13 +233,9 @@ const EditMessageCard = ({
         </p>
         <p className="text-lg font-semibold dark:text-gray-300">
           {message.text}
-
-         
         </p>
       </div>
-      <div className=" absolute bottom-20 right-0 mr-5  transition-all group-hover:opacity-0 ">
-     
-      </div>
+      <div className=" absolute bottom-20 right-0 mr-5  transition-all group-hover:opacity-0 "></div>
       <div className="absolute bottom-24 right-0  mr-5   opacity-0 group-hover:opacity-100">
         <div className=" flex gap-x-2 rounded  border-zinc-900 bg-zinc-700  shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900">
           <div className="group/item relative ">
@@ -285,19 +246,12 @@ const EditMessageCard = ({
                 setReaction(!reaction);
               }}
             />
-         
-         
           </div>
-      
-         
         </div>
       </div>
     </div>
   );
-}
-
-
-
+};
 
 // const MessageCard = ({
 //   messages,

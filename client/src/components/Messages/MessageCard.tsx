@@ -11,15 +11,14 @@ import { getDate } from "../../../utils/helpers";
 import Reaction from "../Reactions/Reaction";
 import DeleteMessage from "./MessageOptions/DeleteMessage";
 import EditMessage from "./MessageOptions/EditMessage";
+import LikeMessage from "./MessageOptions/LikeMessage";
 
 const MessageCard = ({
   messages,
   message,
- 
 }: {
   messages: MessageWithUser[];
   message: MessageWithUser;
-
 }) => {
   const [reaction, setReaction] = useState(false);
   const messageQuery = AppState.messageQuery;
@@ -79,51 +78,8 @@ const MessageCard = ({
         )} */}
       </div>
       <div className="absolute bottom-24 right-0  mr-5   opacity-0 group-hover:opacity-100">
-        <div className=" flex gap-x-2 rounded  border-zinc-900 bg-zinc-700  shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900">
-          <div className="group/item relative ">
-            <BsEmojiSmile
-              size={22}
-              onClick={() => {
-                console.log(reaction);
-                setReaction(!reaction);
-              }}
-            />
-            <span
-              className=" absolute bottom-8 right-0 z-50  w-auto min-w-max origin-left scale-0 rounded-md
-    bg-zinc-900 p-2 
-    text-xs font-bold 
-    text-white shadow-md transition-all duration-100
-    group-hover/item:scale-100"
-            >
-              Like
-            </span>
-            {reaction ? <Reaction /> : ""}
-          </div>
-          {/* <div className="group/item relative">
-            <BsPencil size={22} />
-            <span
-              className=" absolute bottom-8 right-0 z-50  w-auto min-w-max origin-left scale-0 rounded-md
-    bg-zinc-900 p-2 
-    text-xs font-bold 
-    text-white shadow-md transition-all duration-100
-    group-hover/item:scale-100 "
-            >
-              Edit
-            </span>
-          </div> */}
-          {/* <div className="group/item relative">
-            <BsXCircle size={22} />
-            <span
-              className="absolute bottom-8 right-0 z-50  w-auto min-w-max origin-left scale-0 rounded-md
-    bg-zinc-900 p-2 
-    text-xs font-bold 
-    text-white shadow-md transition-all duration-100
-    group-hover/item:scale-100 "
-            >
-              Remove
-            </span>
-          </div> */}
-          {AppState.user?.id == message.user && (
+        <div className=" flex rounded border-zinc-900  bg-zinc-700 shadow-sm  shadow-zinc-900 transition-all hover:shadow-md hover:shadow-zinc-900">
+          {AppState.user?.id == message.user ? (
             <>
               <EditMessage message={message} />
               <DeleteMessage
@@ -131,6 +87,8 @@ const MessageCard = ({
                 userId={AppState.user!.id}
               />
             </>
+          ) : (
+            <LikeMessage messageId={message.id} />
           )}
         </div>
       </div>

@@ -83,13 +83,17 @@ class MessageService {
 
     AppState.messages = AppState.messages.filter((m) => m.id != id);
   }
-  async editMessage(data: MessagesRecord) {
-    const res = await pb.collection(Collections.Messages).getOne(data.id);
+  async editMessage(id:string,data: MessagesRecord) {
+    const res = await pb.collection(Collections.Messages).getOne(id);
 
     const updatedRes = await pb
       .collection(Collections.Messages)
-      .update<MessageWithUser>(res.id, data);
-    AppState.messages = [updatedRes, ...AppState.messages];
+      .update<MessageWithUser>(res.id, data,{
+        expand:'user'
+      });
+  AppState.messages = AppState.messages.map((m) =>
+    m.id === id ? updatedRes : m
+  );
   }
 }
 
