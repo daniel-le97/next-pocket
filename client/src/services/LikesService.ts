@@ -3,22 +3,19 @@
 // import { pb } from "../../utils/pocketBase";
 import type { RecordFullListQueryParams } from "pocketbase";
 import type {
-  ReactionsRecord,
-  ReactionsResponse,
-} from "../../PocketBaseTypes/pocketbase-types";
-import type {
+  LikesWithUser,
   MessageWithUser,
-  ReactionWithUser,
 } from "../../PocketBaseTypes/utils";
 import type { BaseService } from "./BaseService";
 import { Base } from "./BaseService";
 import { AppState } from "../../AppState";
+import { LikesRecord } from "../../PocketBaseTypes/pocketbase-types";
 
-class ReactionsService
+class LikesService
   extends Base
-  implements BaseService<ReactionWithUser, ReactionsRecord>
+  implements BaseService<LikesWithUser, LikesRecord>
 {
-  update(data: ReactionsRecord): Promise<void> {
+  update(data: LikesRecord): Promise<void> {
     throw new Error("Method not implemented.");
   }
   async getOne(messageId: string) {
@@ -29,10 +26,10 @@ class ReactionsService
     return res.items[0]
   }
 
-  async getById(id: string): Promise<ReactionWithUser> {
+  async getById(id: string): Promise<LikesWithUser> {
     return this.pb.getOne(id);
   }
-  getAll(): Promise<ReactionWithUser[]> {
+  getAll(): Promise<LikesWithUser[]> {
     throw new Error("Method not implemented.");
   }
   async delete(id: string): Promise<void> {
@@ -40,7 +37,7 @@ class ReactionsService
 
     if (res) {
       const filtered = AppState.messages.map((message) => {
-        message.expand["reactions(messageId)"].filter(
+        message.expand["Likes(messageId)"].filter(
           (reaction) => reaction.id != id
         );
       });
@@ -48,7 +45,7 @@ class ReactionsService
     }
     return;
   }
-  async create(id: string): Promise<ReactionWithUser | undefined> {
+  async create(id: string): Promise<LikesWithUser | undefined> {
     const alreadyReacted = await this.getOne(id);
     if (alreadyReacted) {
       console.log(alreadyReacted);
@@ -58,14 +55,14 @@ class ReactionsService
       console.log("deleted");
       return;
     }
-    const data: ReactionsRecord = {
+    const data: LikesRecord = {
       messageId: id,
       userId: this.user!.id,
-      reaction: true
+      liked: true
     }
     
     const created = await this.pb
-    .create<ReactionWithUser>(data, {
+    .create<LikesWithUser>(data, {
       expand: "userId",
     });
     // console.log(created);
@@ -73,7 +70,7 @@ class ReactionsService
     
     AppState.messages.map((message) => {
       if (message.id == id) {
-        message.expand["reactions(messageId)"]
+        message.expand["likes(messageId)"]
         .push(created);
       }
     });
@@ -84,4 +81,4 @@ class ReactionsService
     return;
   }
 }
-export const reactionsService = new ReactionsService("Reactions");
+export const likesService = new LikesService("Likes");

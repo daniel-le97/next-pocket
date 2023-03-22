@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
+import React from "react";
 import { useState } from "react";
 import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -91,7 +92,7 @@ const MessageCard = ({
               <EditMessage message={message} />
               <DeleteMessage
                 messageId={message.id}
-                userId={AppState.user!.id}
+                userId={AppState.user?.id}
               />
             </>
           ) : (
