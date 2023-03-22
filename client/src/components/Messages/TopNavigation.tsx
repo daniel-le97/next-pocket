@@ -26,8 +26,8 @@ const TopNavigation = () => {
     <div
       className="z-10 flex w-full items-center justify-evenly bg-gray-300 
     py-2 
-    shadow-lg 
-    dark:bg-zinc-800 pr-14"
+    
+    dark:bg-zinc-800 pr-14 shadow-md "
     >
       <HashtagIcon />
       <Title room={channel} query={query} />

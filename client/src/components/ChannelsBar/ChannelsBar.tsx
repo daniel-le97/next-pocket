@@ -62,11 +62,11 @@ const ChannelsBar = () => {
   // }, [router.query.id]);
 
   return (
-    <div className="m-0 flex h-auto    flex-col justify-between  bg-gray-200 shadow-lg dark:bg-zinc-800 ">
+    <div className="m-0 flex h-auto     w-60  flex-col justify-between  bg-gray-200 shadow-lg dark:bg-zinc-800 ">
       <div>
         <ServerSettingsMenu />
 
-        <div className="m-0 flex h-16 flex-col items-center justify-start p-0">
+        <div className="m-0 flex h-16 flex-col mt-1 items-center justify-start p-0">
           <div className="m-0 w-full px-2 pb-2 transition duration-300 ease-in-out">
             <div
               onClick={() => setExpanded(!expanded)}

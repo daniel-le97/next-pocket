@@ -42,11 +42,14 @@ const Server: NextPage = () => {
        router.push("/login");
     }
     if (router.query.id) {
-      async function fetchServerData(id: string) {
+     const fetchServerData = async(id: string)=> {
         try {
+          AppState.page = 1
           await channelsService.getChannelsByServerId(id);
           // await messageService.getMessages();
           const channelId = AppState.activeChannel!.id;
+          console.log(channelId);
+          
           await messageService.getMessagesByChannelId(channelId);
           await serversService.getMembers(id);
         } catch (error) {

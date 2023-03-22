@@ -2,7 +2,7 @@
 import { observer } from "mobx-react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
-import { timeago } from "../../../utils/TimeAgo";
+
 import { messageService } from "../../services/MessageService";
 import Loader from "../Loader";
 import MessageCard from "./MessageCard";
@@ -21,7 +21,7 @@ const MessageScroll = () => {
   return (
     <div
       id="scrollableDiv"
-      className="flex   h-full  flex-col-reverse overflow-auto"
+      className="flex   h-full  flex-col-reverse overflow-auto pb-16"
     >
      
       {/*Put the scroll bar always on the bottom*/}
@@ -31,7 +31,7 @@ const MessageScroll = () => {
         className=" mb-24 flex flex-col-reverse pt-6   "
         inverse={true} //
         hasMore={AppState.totalPages != AppState.page}
-        loader={<Loader show={AppState.totalPages != AppState.page} />}
+        loader={<Loader  show={AppState.totalPages != AppState.page} />}
         scrollableTarget="scrollableDiv"
       >
         {AppState.messages.map((message, index) => {
@@ -53,7 +53,7 @@ const MessageScroll = () => {
                 <MessageCard
                   messages={AppState.messages}
                   message={message}
-                  index={index}
+                
                 />
               }
               <div>

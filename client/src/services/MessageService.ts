@@ -1,14 +1,13 @@
-
 import { AppState } from "../../AppState";
 import type {
   DirectMessagesRecord,
   DirectMessagesResponse,
   MessagesRecord,
+  MessagesResponse,
 } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import type { MessageWithUser } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
-
 
 class MessageService {
   /**
@@ -23,7 +22,7 @@ class MessageService {
       .collection(Collections.Messages)
       .create<MessageWithUser>(data, { expand: "user" });
 
-    AppState.messages = [ res,...AppState.messages ];
+    AppState.messages = [res, ...AppState.messages];
   }
 
   async sendDirectMessage(data: DirectMessagesRecord) {
@@ -50,8 +49,7 @@ class MessageService {
         sort: "-created",
         expand: "user,reactions(messageId)",
       });
-      console.log('messages',res);
-      
+    console.log("messages", res);
 
     AppState.messages = res.items;
   }
@@ -67,17 +65,31 @@ class MessageService {
       sort: "-created",
       expand: "user,reactions(messageId)",
     });
-   
-    const messages = res.items as unknown as MessageWithUser[]
-    AppState.messages = [...AppState.messages,...messages];
+
+    const messages = res.items as unknown as MessageWithUser[];
+    AppState.messages = [...AppState.messages, ...messages];
     AppState.totalPages = res.totalPages;
     AppState.page++;
   }
 
-  async getById(id:string){
-    const res = await pb.collection(Collections.Messages).getOne(id, {expand: 'reactions(messageId)'})
+  async getById(id: string) {
+    const res = await pb
+      .collection(Collections.Messages)
+      .getOne(id, { expand: "reactions(messageId)" });
     // console.log(res);
-    
+  }
+  async deleteMessage(id: string) {
+    await pb.collection(Collections.Messages).delete(id);
+
+    AppState.messages = AppState.messages.filter((m) => m.id != id);
+  }
+  async editMessage(data: MessagesRecord) {
+    const res = await pb.collection(Collections.Messages).getOne(data.id);
+
+    const updatedRes = await pb
+      .collection(Collections.Messages)
+      .update<MessageWithUser>(res.id, data);
+    AppState.messages = [updatedRes, ...AppState.messages];
   }
 }
 

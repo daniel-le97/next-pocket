@@ -2,7 +2,7 @@ import React from "react";
 import MessagesList from "./MessagesList";
 
 import TopNavigation from "./TopNavigation";
-import InfiniteScroll from 'react-infinite-scroll-component';
+import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
 import { messageService } from "../../services/MessageService";
 import { observer } from "mobx-react";
@@ -11,8 +11,7 @@ import CreateMessage from "./CreateMessage";
 
 const MessagesContainer = () => {
   return (
-    <div className=" min-h-screen h-full items-stretch flex-1 relative    overflow-hidden bg-gray-300   dark:bg-zinc-700">
-      
+    <div className=" relative h-full flex-1 items-stretch    overflow-hidden bg-gray-300   dark:bg-zinc-700  ">
       <TopNavigation />
 
       <MessageScroll />
@@ -23,10 +22,10 @@ const MessagesContainer = () => {
 
 // const InfiniteMessages = () => {
 //   console.log('mounted');
-  
+
 //   const fetchMore = async()=> {
 //     console.log(AppState.activeChannel!.id);
-    
+
 //     await messageService.getMessagesByChannelId(AppState.activeChannel!.id)
 //   }
 //   return (

@@ -27,7 +27,7 @@ const DirectMessageScroll = () => {
     <div
       id="scrollableDiv2"
     
-      className="max-h-screen  overflow-auto flex flex-col-reverse "
+      className="max-h-screen  overflow-auto flex flex-col-reverse  "
     >
       {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll

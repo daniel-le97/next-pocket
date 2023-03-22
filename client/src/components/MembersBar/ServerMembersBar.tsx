@@ -27,7 +27,9 @@ const MembersBar = () => {
     <>
       <div
         className={
-          collapsed ? "server-members-bar   " : " server-members-bar-collapsed "
+          collapsed
+            ? "m-0  h-auto  w-64 overflow-hidden bg-gray-200 shadow-lg transition-all duration-300 dark:bg-zinc-800   "
+            : " h-0 w-0 cursor-none overflow-hidden bg-zinc-800  opacity-0 transition-all duration-300 "
         }
       >
         <div className="channel-block">

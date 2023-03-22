@@ -48,7 +48,7 @@ const CreateMessage = () => {
               cleanOnEnter
               onEnter={sendMessage}
               placeholder="Enter message..."
-              className=" "
+            
             />
             <PlusIcon />
           </>
