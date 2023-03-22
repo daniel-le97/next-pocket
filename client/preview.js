@@ -3,16 +3,14 @@
 const { execSync } = require("child_process")
 const {config} = require("dotenv")
 
-
-
-// Load environment variables from .env file
+// this function is just used to generate the pocketbase client types by running npm run gen in the command line
 module.exports = () => {
   config()
-  const email = process.env.EMAIL
-  const pass = process.env.PASS
+  const email = process.env.POCKET_EMAIL
+  const pass = process.env.POCKET_PASS
   const url = process.env.NEXT_PUBLIC_POCKET_URL
   console.log(
-    `npx pocketbase-typegen --url ${url} --email ${email} --password '${pass}'`
+    `running: npx pocketbase-typegen --url ${url} --email ${email} --password '${pass}'`
   );
   const command = `npx pocketbase-typegen --url ${url} --email ${email} --password '${pass}' --out PocketBaseTypes/pocketbase-types.ts`;
 
