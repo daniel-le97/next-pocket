@@ -8,9 +8,9 @@ export enum Collections {
 	FileUploads = "fileUploads",
 	FriendRequest = "friendRequest",
 	Friends = "friends",
+	Likes = "likes",
 	Members = "members",
 	Messages = "messages",
-	Reactions = "reactions",
 	Servers = "servers",
 	Users = "users",
 	UsersStatus = "usersStatus",
@@ -90,6 +90,12 @@ export type FriendsRecord = {
 	friends?: RecordIdString[]
 }
 
+export type LikesRecord = {
+	messageId: RecordIdString
+	liked?: boolean
+	userId: RecordIdString
+}
+
 export type MembersRecord = {
 	user: RecordIdString
 	server: RecordIdString
@@ -99,12 +105,6 @@ export type MessagesRecord = {
 	text: string
 	user: RecordIdString
 	channel?: RecordIdString
-}
-
-export type ReactionsRecord = {
-	messageId: RecordIdString
-	reaction?: boolean
-	userId: RecordIdString
 }
 
 export type ServersRecord = {
@@ -132,9 +132,9 @@ export type DirectMessagesResponse<Texpand = unknown> = DirectMessagesRecord & B
 export type FileUploadsResponse<Texpand = unknown> = FileUploadsRecord & BaseSystemFields<Texpand>
 export type FriendRequestResponse<Texpand = unknown> = FriendRequestRecord & BaseSystemFields<Texpand>
 export type FriendsResponse<Texpand = unknown> = FriendsRecord & BaseSystemFields<Texpand>
+export type LikesResponse<Texpand = unknown> = LikesRecord & BaseSystemFields<Texpand>
 export type MembersResponse<Texpand = unknown> = MembersRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
-export type ReactionsResponse<Texpand = unknown> = ReactionsRecord & BaseSystemFields<Texpand>
 export type ServersResponse<Texpand = unknown> = ServersRecord & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = UsersRecord & AuthSystemFields<Texpand>
 export type UsersStatusResponse<Texpand = unknown> = UsersStatusRecord & BaseSystemFields<Texpand>
@@ -145,9 +145,9 @@ export type CollectionRecords = {
 	fileUploads: FileUploadsRecord
 	friendRequest: FriendRequestRecord
 	friends: FriendsRecord
+	likes: LikesRecord
 	members: MembersRecord
 	messages: MessagesRecord
-	reactions: ReactionsRecord
 	servers: ServersRecord
 	users: UsersRecord
 	usersStatus: UsersStatusRecord
