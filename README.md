@@ -30,17 +30,16 @@ at http://localhost:8080/_/ you wont have any collections
 ```
 cd pocketbase
 cp pb_schema.json
-
 ```
 now you'll need to go to your pocketbase client and navigate to settings => import collections and paste the pb_schema.json there
 
 ### Getting your pocketbase types updated
 this project uses npx pocketbase-typegen from (https://github.com/patmood/pocketbase-typegen)
 ```
-// before running this please make sure the envs defined in client/gen.js are set or hardcode them there and add the file to .gitignore
+// before running this please make sure the envs defined in
+// client/gen.js are set or hardcode them there and add the file to .gitignore
 
 npm run gen
-
 ```
 ## Deployment
 To deploy this project run
