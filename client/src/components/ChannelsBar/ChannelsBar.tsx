@@ -12,7 +12,7 @@ import {
 import { observer } from "mobx-react";
 
 import ChannelSelection from "./ChannelSelection";
-import { pb, useUser } from "../../../utils/pocketBase";
+
 import { channelsService } from "../../services/ChannelsService";
 import { AppState } from "../../../AppState";
 import LeaveServer from "../ServerOptions/LeaveServer";
@@ -27,7 +27,12 @@ import ServerLink from "../ServerOptions/ServerLink";
 import DeleteServer from "../ServerOptions/DeleteServer";
 import { Popover } from "@headlessui/react";
 import ServerSettingsMenu from "./ServerSettingsMenu";
+import { pb } from "utils/pocketBase";
+import { likesService } from "@/services/LikesService";
+import CreateServer from "../SideBar/CreateServer";
+
 const topics = ["general", "tailwind-css", "react"];
+
 
 const ChannelsBar = () => {
   const channels = AppState.channels;

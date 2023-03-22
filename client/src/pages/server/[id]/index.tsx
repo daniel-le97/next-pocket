@@ -3,29 +3,23 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { type NextPage } from "next";
 import Head from "next/head";
-
-import ChannelsBar from "../../../components/ChannelsBar/ChannelsBar";
-
+import ChannelsBar from "@/components/ChannelsBar/ChannelsBar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { AppState } from "../../../../AppState";
-
-import ServerMembersBar from "../../../components/MembersBar/ServerMembersBar";
-// import { channelsService } from "../../../services/ChannelsService";
-// import type { ServersResponse } from "../../../../PocketBaseTypes/pocketbase-types";
-
-
 import { observer } from "mobx-react";
+import MessagesContainer from "@/components/Messages/MessageContainer";
+import { withAuth } from "@/middleware/WithAuth";
+import { withMember } from "@/middleware/WithMember";
+import { channelsService } from "@/services/ChannelsService";
+import { messageService } from "@/services/MessageService";
+import { serversService } from "@/services/ServersService";
 
-import MessagesContainer from "../../../components/Messages/MessageContainer";
 
-import { withAuth } from "../../../middleware/WithAuth";
-import { withMember } from "../../../middleware/WithMember";
-import { channelsService } from "../../../services/ChannelsService";
-import { messageService } from "../../../services/MessageService";
-import { serversService } from "../../../services/ServersService";
-import { setRedirect } from "../../../../utils/Redirect";
-import Pop from "../../../../utils/Pop";
+import Pop from "utils/Pop";
+import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";
+import { AppState } from "AppState";
+import { setRedirect } from "utils/Redirect";
+
 
 
 const Server: NextPage = () => {
@@ -46,10 +40,8 @@ const Server: NextPage = () => {
         try {
           AppState.page = 1
           await channelsService.getChannelsByServerId(id);
-          // await messageService.getMessages();
           const channelId = AppState.activeChannel!.id;
           console.log(channelId);
-          
           await messageService.getMessagesByChannelId(channelId);
           await serversService.getMembers(id);
         } catch (error) {
