@@ -37,13 +37,12 @@ now you'll need to go to your pocketbase client and navigate to settings => impo
 ### Getting your pocketbase types updated
 this project uses npx pocketbase-typegen from (https://github.com/patmood/pocketbase-typegen)
 ```
-// before running this please make sure the envs defined in preview.js are set
+// before running this please make sure the envs defined in client/gen.js are set or hardcode them there and add the file to .gitignore
 
 npm run gen
 
 ```
 ## Deployment
-
 To deploy this project run
 
 ```node
