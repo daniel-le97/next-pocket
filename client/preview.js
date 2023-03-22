@@ -11,7 +11,9 @@ module.exports = () => {
   const email = process.env.EMAIL
   const pass = process.env.PASS
   const url = process.env.NEXT_PUBLIC_POCKET_URL
-  console.log(email,pass,url);
+  console.log(
+    `npx pocketbase-typegen --url ${url} --email ${email} --password '${pass}'`
+  );
   const command = `npx pocketbase-typegen --url ${url} --email ${email} --password '${pass}' --out PocketBaseTypes/pocketbase-types.ts`;
 
   execSync(command, {stdio: 'inherit'})
