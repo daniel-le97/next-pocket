@@ -45,7 +45,7 @@ npm run gen
 To deploy this project run
 
 ```node
-  npm run build-pb
+  npm run build-serve
 ```
 this will build your next.js frontend into pocketbase to allow pocketbase to serve your app for easier deployment
 
