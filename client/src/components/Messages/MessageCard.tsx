@@ -66,12 +66,12 @@ const MessageCard = ({
           components={{ code: CodeBlock }}
         ></ReactMarkdown>
       </div>
-      <div className=" absolute bottom-20 right-0 mr-5  transition-all group-hover:opacity-0 ">
+      <div className=" absolute -top-2 right-0 mr-5  transition-all group-hover:opacity-0 ">
         {index === 0 && (
           <>
             <div className=" relative w-full rounded-lg bg-red-400 px-3 pb-0.5 text-sm font-bold text-white">
               Newest Message
-              <hr className="  absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400" />
+              <hr className="   absolute top-1/2 right-32  z-0  w-96   rounded-full border border-red-400 bg-red-400" />
             </div>
           </>
         )}

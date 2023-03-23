@@ -19,7 +19,7 @@ const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
   const messages = AppState.messages;
   const user = AppState.user;
-const [characterCount,setCharacterCount] = useState(0)
+  const [characterCount, setCharacterCount] = useState(0);
   const {
     register,
     handleSubmit,
@@ -44,7 +44,7 @@ const [characterCount,setCharacterCount] = useState(0)
       if (el) {
         el.style.height = "initial";
       }
-       setCharacterCount(0)
+      setCharacterCount(0);
     } catch (error) {
       Pop.error(error);
     }
@@ -73,22 +73,22 @@ const [characterCount,setCharacterCount] = useState(0)
 
             <textarea
               id="createMessageInput"
-              className="create-message-input   mt-2 max-h-96 w-full  resize-none  rounded-xl  bg-zinc-600/90 pl-4 pr-12 text-lg  font-semibold text-zinc-300 focus:outline-none"
+              rows={1}
+              className="max-h-96 w-full py-3.5 resize-none  rounded-xl  create-message-input bg-zinc-600/90 pl-4 pr-12 text-lg  font-semibold text-zinc-300 focus:outline-none"
               {...register("content", {
                 required: true,
                 maxLength: 1200,
                 minLength: 3,
-              
               })}
               onInput={(e) => {
                 e.target.style.height = "auto";
                 e.target.style.height = `${e.target.scrollHeight}px`;
-                 setCharacterCount(e.target.value.length)
+                setCharacterCount(e.target.value.length);
                 //  const limitEl = document.getElementById("charLimit");
                 //  limitEl.textContent = `${charCount}/600`;
-                 if (characterCount >= 1200) {
-                   e.preventDefault();
-                 }
+                if (characterCount >= 1200) {
+                  e.preventDefault();
+                }
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
@@ -96,12 +96,15 @@ const [characterCount,setCharacterCount] = useState(0)
                 }
               }}
 
-              // onBlur={(e) => {
-              //   e.target.style.height = "initial";
-              // }}
+           
             ></textarea>
-            <p id="charLimit" className={` absolute bottom-14 right-2 text-sm  ${characterCount <= 1200 ? "text-zinc-300" : "text-red-400"}`}>
-             {characterCount}/1200
+            <p
+              id="charLimit"
+              className={` absolute bottom-14 right-2 text-sm  ${
+                characterCount <= 1200 ? "text-zinc-300" : "text-red-400"
+              }`}
+            >
+              {characterCount}/1200
             </p>
             <button
               type="submit"

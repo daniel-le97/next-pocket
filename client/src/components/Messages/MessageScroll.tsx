@@ -51,6 +51,7 @@ const MessageScroll = () => {
             <div key={index}>
               {
                 <MessageCard
+                index={index}
                   messages={AppState.messages}
                   message={message}
                 
