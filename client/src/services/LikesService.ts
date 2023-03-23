@@ -9,7 +9,7 @@ import type {
 import type { BaseService } from "./BaseService";
 import { Base } from "./BaseService";
 import { AppState } from "../../AppState";
-import { LikesRecord } from "../../PocketBaseTypes/pocketbase-types";
+import type { LikesRecord } from "../../PocketBaseTypes/pocketbase-types";
 
 class LikesService
   extends Base
@@ -20,10 +20,10 @@ class LikesService
   }
   async getOne(messageId: string) {
     const userId = this.user!.id;
-   const res =  await this.pb.getList(1, 1, {
-      filter: `messageId = "${messageId}" && userId = "${userId}"`,
+    const res = await this.pb.getList(1, 1, {
+      filter: `message = "${messageId}" && user = "${userId}"`,
     });
-    return res.items[0]
+    return res.items[0];
   }
 
   async getById(id: string): Promise<LikesWithUser> {
@@ -32,50 +32,66 @@ class LikesService
   getAll(): Promise<LikesWithUser[]> {
     throw new Error("Method not implemented.");
   }
-  async delete(id: string): Promise<void> {
-    const res = await this.pb.delete(id);
+  async delete(id: string, likeId:string): Promise<void> {
+    const res = await this.pb.delete(likeId);
 
     if (res) {
-      const filtered = AppState.messages.map((message) => {
-        message.expand["Likes(messageId)"].filter(
-          (reaction) => reaction.id != id
-        );
-      });
-      AppState.messages = filtered as unknown as MessageWithUser[];
+      const foundMessage = AppState.messages.find(message => message.id == id)
+      AppState.messages.map(message => {
+        if (message.id == foundMessage?.id) {
+          const found = message.expand["likes(message)"].find(like => like.id == likeId)
+          if (found) {
+            // console.log(Array.isArray(message.expand["likes(message)"]), message.expand["likes(message)"].length);
+            console.log(message.expand["likes(message)"]);
+            
+            message.expand["likes(message)"] = message.expand["likes(message)"].filter(like => like.id != likeId)
+            console.log(message.expand["likes(message)"]);
+          }
+          
+          // message.expand["likes(message)"] = message.expand["likes(message)"].filter(like => like.id != likeId)
+        }
+      })
+      // console.log(AppState.messages.find(message => message.id == id), foundMessage);
+      
+      // console.log(AppState.messages);
+
+      // AppState.messages = filtered as unknown as MessageWithUser[];
     }
     return;
   }
   async create(id: string): Promise<LikesWithUser | undefined> {
     const alreadyReacted = await this.getOne(id);
     if (alreadyReacted) {
-      console.log(alreadyReacted);
-      
-      const id = alreadyReacted.id
-      await this.delete(id);
+      // console.log(alreadyReacted);
+
+      const likeId = alreadyReacted.id;
+      await this.delete(id, likeId);
       console.log("deleted");
       return;
     }
     const data: LikesRecord = {
-      messageId: id,
-      userId: this.user!.id,
-      liked: true
-    }
-    
-    const created = await this.pb
-    .create<LikesWithUser>(data, {
-      expand: "userId",
+      message: id,
+      user: this.user!.id,
+      liked: true,
+    };
+
+    const created = await this.pb.create<LikesWithUser>(data, {
+      expand: "user",
     });
     // console.log(created);
-    console.log(AppState.messages);
-    
+    // console.log(AppState.messages);
+
     AppState.messages.map((message) => {
       if (message.id == id) {
-        message.expand["likes(messageId)"]
-        .push(created);
+        console.log("1", message.expand["likes(message)"]);
+        
+        message.expand["likes(message)"] = [...message.expand["likes(message)"], created]
+        console.log("2", message.expand["likes(message)"]);
       }
+      return;
     });
-    console.log(AppState.messages);
-    
+    // console.log(AppState.messages);
+
     // console.log("created");
 
     return;

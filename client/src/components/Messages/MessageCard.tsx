@@ -89,6 +89,7 @@ const MessageCard = ({
           ) : (
             <LikeMessage messageId={message.id} />
           )}
+          <div>{message.expand["likes(message)"] ? JSON.stringify(message.expand["likes(message)"].length) : ''}</div>
         </div>
       </div>
     </div>

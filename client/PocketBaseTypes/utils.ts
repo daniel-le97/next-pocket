@@ -34,7 +34,7 @@ type UserRes = {
 
 
 export type MessageWithUser = MessagesResponse & {
-  expand: { 'likes(messageId)': LikesResponse[]; user: UsersResponse };
+  expand: { 'likes(message)': LikesWithUser[]; user: UsersResponse };
 };
 export type LikesWithUser = LikesResponse & {
   expand: {user: UsersResponse}

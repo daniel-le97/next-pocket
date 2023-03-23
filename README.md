@@ -4,7 +4,7 @@ This project is a Discord clone that uses next.js and pocketbase. Pocketbase is 
 
 ## Getting Started
 
-Fork this project and open the pocket.code-workspace
+Fork this project
 
 ### client (Next.js)
 ```node
