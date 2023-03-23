@@ -1,13 +1,12 @@
 import { Popover } from "@headlessui/react";
 
 import { observer } from "mobx-react";
-import { FaArrowDown, FaClipboard, FaUserMinus } from "react-icons/fa";
-
 import { AppState } from "../../../AppState";
-
 import LeaveServer from "../ServerOptions/LeaveServer";
 import DeleteServer from "../ServerOptions/DeleteServer";
-import ServerLink from "../ServerOptions/ServerLink";
+import CreateChannel from "../ServerOptions/CreateChannel";
+import InvitePeople from "../ServerOptions/InvitePeople";
+
 const ServerSettingsMenu = () => {
   return (
     <Popover className="relative   shadow-md shadow-zinc-900 ">
@@ -19,10 +18,13 @@ const ServerSettingsMenu = () => {
       <Popover.Panel className=" duration-00 absolute top-12 z-10 flex w-full flex-col items-start justify-center rounded-lg bg-zinc-900 p-2 text-white transition-all ease-linear ">
         <LeaveServer server={AppState.activeServer} />
         <DeleteServer />
-        <ServerLink />
+        <InvitePeople />
+        <CreateChannel/>
       </Popover.Panel>
     </Popover>
   );
 };
+
+//  ANCHOR this is where we need to do our autth checks
 
 export default observer(ServerSettingsMenu);

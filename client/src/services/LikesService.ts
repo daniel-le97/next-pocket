@@ -84,17 +84,10 @@ class LikesService
 
    AppState.messages = AppState.messages.map((message) => {
       if (message.id == id) {
-        console.log("1", message.expand["likes(message)"]);
-        
         message.expand["likes(message)"] = [...message.expand["likes(message)"], created]
-        console.log("2", message.expand["likes(message)"]);
       }
       return message
     }) as unknown as MessageWithUser[];
-    // console.log(AppState.messages);
-
-    // console.log("created");
-
     return;
   }
 }

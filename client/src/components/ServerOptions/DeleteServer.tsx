@@ -1,20 +1,22 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 // import { Server } from "http"
+import { serversService } from "@/services/ServersService";
+import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React from "react";
 import { FaUserMinus } from "react-icons/fa";
-import { AppState } from "../../../AppState";
-import { pb, useUser } from "../../../utils/pocketBase";
-import Pop from "../../../utils/Pop";
-import { serversService } from "../../services/ServersService";
+import Pop from "utils/Pop";
+
 // import type { Server } from "../../../PocketBaseTypes/utils"
 
 const DeleteServer = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const server = AppState.activeServer;
-  const user = pb.authStore.model;
+  const user = AppState.user
   const handleClick = async () => {
     try {
       const yes = await Pop.confirm();
@@ -23,7 +25,7 @@ const DeleteServer = () => {
       }
       console.log(server?.owner, server?.id);
 
-      await serversService.DeleteServer(server?.owner, id);
+      await serversService.DeleteServer(server!.owner!, id);
       router.push("/");
     } catch (error) {
       Pop.error(error);

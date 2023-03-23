@@ -4,25 +4,18 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
-import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
+import { BsPlusCircleFill } from "react-icons/bs";
 import { useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { serversService } from "../../services/ServersService";
 import { uploadService } from "../../services/UploadService";
 import { pb } from "../../../utils/pocketBase";
-import ImageUploader from "../ImageUploader";
 import Loader from "../Loader";
 import { useRouter } from "next/router";
-import { ServersRecord } from "../../../PocketBaseTypes/pocketbase-types";
+import type { ServersRecord } from "../../../PocketBaseTypes/pocketbase-types";
 const user = pb.authStore.model;
-const data = {
-  name: "test",
-  description: "test",
-  members: ["RELATION_RECORD_ID"],
-  imageUrl: "test",
-  imageFile: null,
-};
+
 const initialFormData = {
   name: "",
   description: "",

@@ -23,7 +23,7 @@ import {
   UsersResponse,
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { messageService } from "../../services/MessageService";
-import ServerLink from "../ServerOptions/ServerLink";
+import ServerLink from "../ServerOptions/InvitePeople";
 import DeleteServer from "../ServerOptions/DeleteServer";
 import { Popover } from "@headlessui/react";
 import ServerSettingsMenu from "./ServerSettingsMenu";
