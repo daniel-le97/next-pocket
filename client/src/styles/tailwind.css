@@ -1,0 +1,19 @@
+/* src/tailwind.css */
+@tailwind base;
+@tailwind components;
+
+.btn {
+  @apply px-5 py-3 shadow-sm transition ease-in-out duration-300 rounded leading-snug whitespace-nowrap text-base font-semibold;
+}
+
+.btn.btn-sm {
+  @apply px-4 py-2 text-sm;
+}
+
+.btn.btn-lg {
+  @apply text-lg px-8 py-4;
+}
+
+
+
+@tailwind utilities;

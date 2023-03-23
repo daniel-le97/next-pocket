@@ -72,7 +72,7 @@ const FriendRequests = () => {
                 </div>
                 <div className="flex gap-x-2">
                   <button
-                    className="rounded-md bg-indigo-500 p-2 font-bold text-zinc-300 hover:bg-opacity-80"
+                    className="btn-primary"
                     onClick={() => handleAccept(f.id)}
                   >
                     Accept

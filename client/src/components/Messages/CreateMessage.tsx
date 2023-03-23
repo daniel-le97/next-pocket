@@ -19,7 +19,7 @@ const CreateMessage = () => {
   const [newMessage, setNewMessage] = useState("");
   const messages = AppState.messages;
   const user = AppState.user;
-
+const [characterCount,setCharacterCount] = useState(0)
   const {
     register,
     handleSubmit,
@@ -36,9 +36,15 @@ const CreateMessage = () => {
 
   const sendMessage = async (data: MessagesRecord) => {
     try {
+      let el = document.getElementById("createMessageInput");
+
       data.channel = AppState.activeChannel?.id;
       const createMessage = await messageService.sendMessage(data);
-      reset()
+      reset();
+      if (el) {
+        el.style.height = "initial";
+      }
+       setCharacterCount(0)
     } catch (error) {
       Pop.error(error);
     }
@@ -48,9 +54,11 @@ const CreateMessage = () => {
   };
 
   return (
-    <div className="create-message-bar absolute  bottom-0 w-full  bg-white   pt-10  dark:border-white/20 dark:bg-gray-800 md:border-t-0 md:border-transparent md:!bg-transparent ">
-      <form onSubmit={handleSubmit(sendMessage)} className="flex">
-       
+    <div className=" absolute  bottom-2  max-h-full w-full  bg-white   pt-10  dark:border-white/20 dark:bg-gray-800 md:border-t-0 md:border-transparent md:!bg-transparent ">
+      <form
+        onSubmit={handleSubmit(sendMessage)}
+        className="relative mx-4  flex"
+      >
         {AppState.activeChannel ? (
           <>
             {/* <InputEmoji
@@ -64,17 +72,41 @@ const CreateMessage = () => {
             <PlusIcon /> */}
 
             <textarea
-              className="rounded-full border-2 border-zinc-900 bg-transparent p-2 focus:outline-none"
-              rows={2}
-              cols={100}
+              id="createMessageInput"
+              className="create-message-input   mt-2 max-h-96 w-full  resize-none  rounded-xl  bg-zinc-600/90 pl-4 pr-12 text-lg  font-semibold text-zinc-300 focus:outline-none"
               {...register("content", {
                 required: true,
-                maxLength: 20000,
+                maxLength: 1200,
                 minLength: 3,
+              
               })}
+              onInput={(e) => {
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+                 setCharacterCount(e.target.value.length)
+                //  const limitEl = document.getElementById("charLimit");
+                //  limitEl.textContent = `${charCount}/600`;
+                 if (characterCount >= 1200) {
+                   e.preventDefault();
+                 }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                }
+              }}
+
+              // onBlur={(e) => {
+              //   e.target.style.height = "initial";
+              // }}
             ></textarea>
-            <button type="submit" className="p-1">
-              {" "}
+            <p id="charLimit" className={` absolute bottom-14 right-2 text-sm  ${characterCount <= 1200 ? "text-zinc-300" : "text-red-400"}`}>
+             {characterCount}/1200
+            </p>
+            <button
+              type="submit"
+              className="btn-primary absolute bottom-2 right-2 "
+            >
               Submit
             </button>
           </>
