@@ -63,10 +63,11 @@ class MessageService {
     const res = await pb.collection(Collections.Messages).getList(page, 50, {
       filter: `channel.id = "${id}"`,
       sort: "-created",
-      expand: "user,reactions(messageId)",
+      expand: "user,likes(message).user",
     });
-
+    
     const messages = res.items as unknown as MessageWithUser[];
+    console.log(messages.map(message => message.expand["likes(message)"]));
     AppState.messages = [...AppState.messages, ...messages];
     AppState.totalPages = res.totalPages;
     AppState.page++;

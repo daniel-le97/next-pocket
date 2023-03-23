@@ -91,9 +91,9 @@ export type FriendsRecord = {
 }
 
 export type LikesRecord = {
-	messageId: RecordIdString
+	message: RecordIdString
 	liked?: boolean
-	userId: RecordIdString
+	user: RecordIdString
 }
 
 export type MembersRecord = {
@@ -102,9 +102,9 @@ export type MembersRecord = {
 }
 
 export type MessagesRecord = {
-	text: string
 	user: RecordIdString
 	channel?: RecordIdString
+	content?: HTMLString
 }
 
 export type ServersRecord = {

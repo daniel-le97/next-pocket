@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import CreateServer from "@/components/SideBar/CreateServer";
+import { likesService } from "@/services/LikesService";
+import { messageService } from "@/services/MessageService";
 import { observer } from "mobx-react";
-import { BsXCircle, BsXCircleFill } from "react-icons/bs";
-import { FaHeart, FaRemoveFormat, FaThumbsUp } from "react-icons/fa";
-import { MessagesResponse } from "../../../../PocketBaseTypes/pocketbase-types";
-import Pop from "../../../../utils/Pop";
-import { messageService } from "../../../services/MessageService";
+import { FaThumbsUp } from "react-icons/fa";
+import Pop from "utils/Pop";
 
 const LikeMessage = ({ messageId }: { messageId: string }) => {
   const likeMessage = async () => {
@@ -12,7 +13,7 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
       if (!yes) {
         return;
       }
-      // await messageService.likeMessage(messageId);
+      await likesService.create(messageId)
     } catch (error) {
       Pop.error(error);
     }
