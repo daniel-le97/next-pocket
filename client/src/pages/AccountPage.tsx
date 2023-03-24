@@ -12,31 +12,31 @@ import type {
   ServersResponse,
   UsersRecord,
 } from "../../PocketBaseTypes/pocketbase-types";
-// import { AppState } from "../../AppState.js";
+
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { accountsService } from "../services/AccountsService";
 import { membersService } from "../services/MembersService";
 import { Menu } from "@headlessui/react";
 import { AppState } from "AppState";
+import router from "next/router";
 function AccountPage() {
-  const [user, setUser] = useState<Record | Admin | null>();
-  const [servers, setServers] = useState<ServersResponse<unknown>>();
+  const user = AppState.user;
+  const servers = AppState.userServers;
   useEffect(() => {
-    console.log(pb.authStore.model);
-    const currentUser = pb.authStore.model;
-    if (currentUser) {
-      setUser(currentUser);
-      const getServers = async () => {
-        const servers = await membersService.getUserServers(currentUser.id);
-        setServers(servers);
-      };
-      getServers();
+    if (!user) {
+      router.push("/");
     }
-    // membersService
-    //   .getUserServers(pb.authStore.model?.id)
-    //   .then((value) => setServers(value));
+    const fetchUserServers = async () => {
+      try {
+        const servers = await membersService.getUserServers(user!.id);
+      } catch (error) {
+        Pop.error(error);
+      }
+    };
+    fetchUserServers();
   }, []);
+  
 
   return (
     <main className="  min-h-screen dark:bg-zinc-800  ">
@@ -54,17 +54,7 @@ function AccountPage() {
           <div className="card-body justify-center p-5 text-center">
             {/* {JSON.stringify(user)} */}
             <EditAccount />
-            {/* <Menu>
-              <Menu.Button className=" rounded-md bg-indigo-500 p-3   font-bold text-white ">
-                More
-              </Menu.Button>
-              <Menu.Items>
-                <Menu.Item>
-                  <div className="flex items-center justify-center">
-                  </div>
-                </Menu.Item>
-              </Menu.Items>
-            </Menu> */}
+            
           </div>
         </div>
       </div>
@@ -72,9 +62,7 @@ function AccountPage() {
   );
 }
 
-const DropDown = () => {
-  return <div className=""></div>;
-};
+
 
 const EditAccount = () => {
   const user = AppState.user;
@@ -97,8 +85,7 @@ const EditAccount = () => {
 
   const onSubmit = async (data: UsersRecord) => {
     try {
-
-      await accountsService.update(data)
+      await accountsService.update(data);
     } catch (error) {
       Pop.error(error);
     }
@@ -125,9 +112,11 @@ const EditAccount = () => {
       <div className="flex flex-col text-start">
         <label>AvatarUrl:</label>
         <input
-          {...register("avatarUrl", {})}
+          {...register("avatarUrl", {
+            required:true
+          })}
           type="url"
-          // onChange={handleChange}
+        
 
           className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
         />

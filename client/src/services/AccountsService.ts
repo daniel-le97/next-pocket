@@ -22,6 +22,7 @@ class AccountsService
   }
   async update(data: UsersRecord): Promise<void> {
     const updatedUser =  await this.pb.update<UsersResponse>(this.user!.id, data);
+  console.log(updatedUser);
   
  AppState.user = updatedUser
   
