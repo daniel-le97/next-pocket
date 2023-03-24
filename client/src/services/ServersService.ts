@@ -94,6 +94,10 @@ class ServersService {
     AppState.members = members;
   }
 
+  async subscribeMembers(serverId: string){
+    const subscribe = await pb.collection(Collections.Members).subscribe("*")
+  }
+
   async DeleteServer(ownerId: string, serverId: string) {
     const user = AppState.user || pb.authStore.model;
     if (!user) {

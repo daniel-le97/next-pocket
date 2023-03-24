@@ -19,6 +19,7 @@ import Pop from "utils/Pop";
 import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";
 import { AppState } from "AppState";
 import { setRedirect } from "utils/Redirect";
+import { membersService } from "@/services/MembersService";
 
 
 
