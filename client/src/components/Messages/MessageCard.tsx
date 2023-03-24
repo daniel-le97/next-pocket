@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
@@ -34,7 +35,16 @@ const MessageCard = ({
   const likes = message.expand["likes(message)"];
 
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(message.content);
+    function removeBackticks(str: string): string {
+      const pattern = /```([\s\S]*)```/;
+      const match = pattern.exec(str);
+      if (match) {
+        return match[1] as string;
+      }
+      return str;
+    }
+
+    navigator.clipboard.writeText(removeBackticks(message.content!));
     Pop.success('Copied To Clipboard')
   };
 

@@ -65,9 +65,12 @@ class MessageService {
       sort: "-created",
       expand: "user,likes(message).user",
     });
+
     
     const messages = res.items as unknown as MessageWithUser[];
-    console.log(messages.map(message => message.expand["likes(message)"]));
+    console.log(messages);
+    
+    // console.log(messages.map(message => message.expand["likes(message)"]));
     AppState.messages = [...AppState.messages, ...messages];
     AppState.totalPages = res.totalPages;
     AppState.page++;
