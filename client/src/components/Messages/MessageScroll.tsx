@@ -23,7 +23,6 @@ const MessageScroll = () => {
       id="scrollableDiv"
       className="flex   h-full  flex-col-reverse overflow-auto pb-16"
     >
-     
       {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll
         dataLength={AppState.messages.length}
@@ -31,7 +30,7 @@ const MessageScroll = () => {
         className=" mb-24 flex flex-col-reverse pt-6   "
         inverse={true} //
         hasMore={AppState.totalPages != AppState.page}
-        loader={<Loader  show={AppState.totalPages != AppState.page} />}
+        loader={<Loader show={AppState.totalPages != AppState.page} />}
         scrollableTarget="scrollableDiv"
       >
         {AppState.messages.map((message, index) => {
@@ -51,10 +50,9 @@ const MessageScroll = () => {
             <div key={index}>
               {
                 <MessageCard
-                index={index}
+                  index={index}
                   messages={AppState.messages}
                   message={message}
-                
                 />
               }
               <div>
@@ -72,35 +70,7 @@ const MessageScroll = () => {
         })}
       </InfiniteScroll>
     </div>
-    // <div className="" id="scrollableDiv">
-    //   <InfiniteScroll
-    //     dataLength={AppState.messages.length}
-    //     next={fetchMore}
-    //     hasMore={AppState.totalPages != AppState.page}
-    //     loader={<div>loading</div>}
-    //     // style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.
-    //     // inverse={true} //
-    //     endMessage={
-    //       <p style={{ textAlign: "center" }}>
-    //         <b>Yay! You have seen it all</b>
-    //       </p>
-    //     }
-    //   >
-    //     {AppState.messages.map((message, index) => (
-    //       <div key={index}>
-    //         {
-    //           <MessageCard
-    //             messages={AppState.messages}
-    //             message={message}
-    //             index={index}
-    //           />
-    //         }
-    //         {/* {new Date(message.created).toLocaleString()} */}
-    //         {message.id}
-    //       </div>
-    //     ))}
-    //   </InfiniteScroll>
-    // </div>
+  
   );
 };
 

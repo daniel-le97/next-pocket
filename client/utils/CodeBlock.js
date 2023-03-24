@@ -1,10 +1,9 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { atomOneDark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
-
-
-class CodeBlock extends PureComponent {
+export default class CodeBlock extends React.PureComponent {
   static propTypes = {
     value: PropTypes.string.isRequired,
     language: PropTypes.string,
@@ -14,19 +13,23 @@ class CodeBlock extends PureComponent {
     language: null,
   };
 
+ 
   render() {
     const { language, value } = this.props;
+
     return (
-      <SyntaxHighlighter
-        language={language}
+      <>
        
+          <SyntaxHighlighter
+            style={atomOneDark}
+            language={language}
+            wrapLongLines={true}
+            showLineNumbers={true}
+          >
+            {value}
+          </SyntaxHighlighter>
       
-        wrapLongLines={true}
-      >
-        {value}
-      </SyntaxHighlighter>
+      </>
     );
   }
 }
-
-export default CodeBlock;

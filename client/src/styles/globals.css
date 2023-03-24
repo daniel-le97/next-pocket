@@ -8,6 +8,10 @@
   margin: 0;
   padding: 0;
 }
+
+pre{
+  @apply rounded-b-xl
+}
 .btn-primary {
   @apply rounded-md bg-indigo-500 p-2 font-bold text-zinc-300 hover:bg-opacity-80;
 }
@@ -16,11 +20,10 @@
 }
 
 .scrollbar-h-sm::-webkit-scrollbar {
-
- @apply h-1
+  @apply h-1;
 }
-.scrollbar-h-sm::-webkit-scrollbar-thumb{
-  @apply rounded-full
+.scrollbar-h-sm::-webkit-scrollbar-thumb {
+  @apply rounded-full;
 }
 
 @layer components {
@@ -253,7 +256,7 @@
 /* Message Content */
 @layer components {
   .message {
-    @apply relative m-0  px-4 flex w-full   cursor-pointer flex-row items-center justify-evenly rounded-sm py-8 transition-all
+    @apply relative m-0  flex w-full cursor-pointer   flex-row items-center justify-evenly rounded-sm px-4 py-8 transition-all
    hover:bg-zinc-800
     hover:bg-opacity-30
     hover:shadow-md
