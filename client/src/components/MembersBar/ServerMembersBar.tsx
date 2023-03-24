@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
-
+/* eslint-disable @next/next/no-img-element */
+import { useEffect, useState } from "react";
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
-
 import { observer } from "mobx-react";
-
-import { pb } from "../../../utils/pocketBase";
-import ChannelSelection from "../ChannelsBar/ChannelSelection";
-import { AppState } from "../../../AppState";
-import { userService } from "../../services/UserService";
-import type { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import UserStatus from "../Messages/UsersStatus";
-import { BsArrowLeft, BsArrowLeftCircle, BsArrowRight, BsArrowRightCircle } from "react-icons/bs";
+import { BsArrowLeftCircle, BsArrowRightCircle } from "react-icons/bs";
+import { AppState } from "AppState";
+import type { UsersResponse } from "PocketBaseTypes/pocketbase-types";
+import ChannelSelection from "../ChannelsBar/ChannelSelection";
+import { MemberUser } from "PocketBaseTypes/utils";
 // const topics = ["general", "tailwind-css", "react"];
 
 const MembersBar = () => {
-  const users = AppState.users;
+  const users = AppState.members;
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
     const getUsersList = async () => {
@@ -52,7 +49,7 @@ const MembersBar = () => {
             users.map((u, index) => (
               <div
                 className="relative cursor-pointer rounded-lg p-2 transition-all duration-200 hover:bg-slate-500"
-                key={u.id}
+                key={index}
               >
                 <User user={u} />
               </div>
@@ -72,40 +69,39 @@ const MembersBar = () => {
   );
 };
 
-// @ts-ignore
-const Dropdown = ({ header, selections }) => {
-  const [expanded, setExpanded] = useState(true);
+// // @ts-ignore
+// const Dropdown = ({ header, selections }) => {
+//   const [expanded, setExpanded] = useState(true);
 
-  return (
-    <div className="dropdown">
-      <div onClick={() => setExpanded(!expanded)} className="dropdown-header">
-        <ChevronIcon expanded={expanded} />
-        <h5
-          className={
-            expanded ? "dropdown-header-text-selected" : "dropdown-header-text"
-          }
-        >
-          {header}
-        </h5>
-        <FaPlus
-          size="12"
-          className="text-accent my-auto ml-auto text-opacity-80"
-        />
-      </div>
-      {expanded &&
-        selections &&
-        // @ts-ignore
-        selections.map((selection) => (
-          <ChannelSelection selection={selection} key={selection} />
-        ))}
+//   return (
+//     <div className="dropdown">
+//       <div onClick={() => setExpanded(!expanded)} className="dropdown-header">
+//         <ChevronIcon expanded={expanded} />
+//         <h5
+//           className={
+//             expanded ? "dropdown-header-text-selected" : "dropdown-header-text"
+//           }
+//         >
+//           {header}
+//         </h5>
+//         <FaPlus
+//           size="12"
+//           className="text-accent my-auto ml-auto text-opacity-80"
+//         />
+//       </div>
+//       {expanded &&
+//         selections &&
+//         selections.map((selection) => (
+//           <ChannelSelection selection={selection} key={selection} />
+//         ))}
 
-      <div className="mt-10"></div>
-    </div>
-  );
-};
+//       <div className="mt-10"></div>
+//     </div>
+//   );
+// };
 
-// @ts-ignore
-const ChevronIcon = ({ expanded }) => {
+
+const ChevronIcon = ({expanded = false}) => {
   const chevClass = "text-accent text-opacity-80 my-auto mr-1";
   return expanded ? (
     <FaChevronDown size="14" className={chevClass} />
@@ -114,29 +110,29 @@ const ChevronIcon = ({ expanded }) => {
   );
 };
 
-// @ts-ignore
+// // @ts-ignore
 
-const ChannelBlock = () => (
-  <div className="channel-block">
-    <h5 className="channel-block-text">Channels</h5>
-  </div>
-);
+// const ChannelBlock = () => (
+//   <div className="channel-block">
+//     <h5 className="channel-block-text">Channels</h5>
+//   </div>
+// );
 
-const User = ({ user }: { user: UsersResponse }) => {
+const User = ({ user }: { user: MemberUser}) => {
   return (
     <div className="user-container flex gap-x-2  ">
       <div className="relative">
         <img
-          src={user.avatarUrl}
+          src={user.expand?.user.avatarUrl}
           alt="userIcon"
           width={30}
           className="rounded-full shadow-md shadow-zinc-900"
         />
         <div className="absolute left-8 top-9">
-          {user && <UserStatus user={user} />}
+          {user && <UserStatus user={user.expand!.user} />}
         </div>
       </div>
-      <small className=" font-bold text-rose-600">{user.username}</small>
+      <small className=" font-bold text-rose-600">{user.expand?.user.username}</small>
     </div>
   );
 };

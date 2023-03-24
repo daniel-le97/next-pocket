@@ -7,7 +7,7 @@ import { pb } from "../../utils/pocketBase"
   getById(id:string) : Promise<T> 
   getAll() : Promise<T[]>
   delete(id:string) : Promise<void>
-  update(data: P) : Promise<void>
+  update(data: P) : Promise<T>
   create(data: string | P) : Promise<T | undefined>
 }
 
