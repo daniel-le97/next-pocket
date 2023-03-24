@@ -70,7 +70,7 @@ const MessageCard = ({
         </p>
 
         <ReactMarkdown
-          children={message.content}
+          children={message.content as string}
           className="scrollbar-h-sm overflow-x-scroll font-sans text-lg text-zinc-300"
           rehypePlugins={[rehypeRaw]}
           components={{
@@ -153,8 +153,8 @@ const MessageLikes = ({ message }) => {
           <div className="flex flex-col">
             Thumbs Up By
             <div className="flex flex-col overflow-y-scroll">
-              {likes.map((l) => (
-                <div className="">{l.expand.user.username}</div>
+              {likes.map((l,index) => (
+                <div className="" key={index}>{l.expand.user.username}</div>
               ))}
             </div>
           </div>
