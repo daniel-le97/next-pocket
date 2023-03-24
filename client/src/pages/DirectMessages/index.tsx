@@ -40,10 +40,10 @@ function DirectMessagesPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
-        <div className="flex  w-full ">
+        <div className="flex  h-screen  w-full ">
           <FriendsBar />
 
-          <div className="content-container">
+          <div className=" relative h-full flex-1 items-stretch    overflow-hidden bg-gray-300   dark:bg-zinc-700  ">
             <div className="">
               <div className="px-2  sm:px-0">
                 <Tab.Group>

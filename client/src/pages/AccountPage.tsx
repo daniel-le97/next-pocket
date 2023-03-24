@@ -14,7 +14,7 @@ import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { accountsService } from "../services/AccountsService";
 import { membersService } from "../services/MembersService";
-
+import { Menu } from "@headlessui/react";
 function AccountPage() {
   const [user, setUser] = useState<Record | Admin | null>();
   const [servers, setServers] = useState<ServersResponse<unknown>>();
@@ -45,8 +45,38 @@ function AccountPage() {
               className="h-32 w-32 rounded-full shadow-md shadow-zinc-900"
             />
           </div>
-          <div className="card-body flex justify-center p-5 text-center">
+          <div className="card-body justify-center p-5 text-center">
             {/* {JSON.stringify(user)} */}
+            <Menu>
+              <Menu.Button>More</Menu.Button>
+              <Menu.Items>
+                <Menu.Item>
+                  {({ active }) => (
+                    <a
+                      className={`${active && "bg-blue-500"}`}
+                      href="/account-settings"
+                    >
+                      Account settings
+                    </a>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <a
+                      className={`${active && "bg-blue-500"}`}
+                      href="/account-settings"
+                    >
+                      Documentation
+                    </a>
+                  )}
+                </Menu.Item>
+                <Menu.Item disabled>
+                  <span className="opacity-75">
+                    Invite a friend (coming soon!)
+                  </span>
+                </Menu.Item>
+              </Menu.Items>
+            </Menu>
             <EditAccount />
           </div>
         </div>
@@ -54,6 +84,12 @@ function AccountPage() {
     </main>
   );
 }
+
+const DropDown = () => {
+  return <div className="">
+
+  </div>;
+};
 
 const EditAccount = () => {
   const {

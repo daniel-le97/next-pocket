@@ -56,9 +56,9 @@ const Explore: NextPage = () => {
         <div className="  my-10  flex  flex-wrap    justify-center ">
           {servers &&
             servers.map((s) => (
-           
-                <ServerCard server={s} key={s.id} />
-            
+
+              <ServerCard server={s} key={s.id} />
+
             ))}
         </div>
       </main>

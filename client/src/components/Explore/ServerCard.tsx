@@ -60,11 +60,10 @@ const ServerCard = ({ server }: { server: Server }) => {
 
   return (
     <div
-      className={`server-card group  ${
-        isMember
-          ? "bg-gray-300 from-zinc-900 to-green-400 hover:from-zinc-900 hover:to-green-500"
-          : "bg-gray-300 from-zinc-900 to-gray-600"
-      }`}
+      className={`server-card group  ${isMember
+        ? "bg-gray-300 from-zinc-900 to-green-400 hover:from-zinc-900 hover:to-green-500"
+        : "bg-gray-300 from-zinc-900 to-gray-600"
+        }`}
     >
       <img
         src={server.expand?.image.url}
@@ -74,7 +73,7 @@ const ServerCard = ({ server }: { server: Server }) => {
 
       <div className="mt-2 p-3">
         <button className=" flex justify-between w-full ">
-        
+
           <div className=" server-name ">{server.name}</div>
           {!isMember ? (
             <div
@@ -95,6 +94,8 @@ const ServerCard = ({ server }: { server: Server }) => {
       <div className="server-members-count  ">
         <BsCircleFill size={10} className="text-gray-300" />
         {server.members?.length}
+        
+
         {/* {server.members.map((m) => (
           <div className=" ">{JSON.stringify(m)}</div>
         ))} */}
