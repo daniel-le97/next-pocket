@@ -8,7 +8,7 @@ import { AppState } from "../../../AppState";
 import Pop from "../../../utils/Pop";
 // import type { Server } from "../../../PocketBaseTypes/utils"
 
-const ServerLink = () => {
+const InvitePeople = () => {
   const router = useRouter();
   const handleClick = async () => {
     const origin =
@@ -29,4 +29,4 @@ const ServerLink = () => {
     </button>
   );
 };
-export default observer(ServerLink);
+export default observer(InvitePeople);

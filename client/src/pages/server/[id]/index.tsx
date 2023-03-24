@@ -35,23 +35,7 @@ const Server: NextPage = () => {
        setRedirect(`/server/${id}`);
        router.push("/login");
     }
-    if (router.query.id) {
-     const fetchServerData = async(id: string)=> {
-        try {
-          AppState.page = 1
-          await channelsService.getChannelsByServerId(id);
-          const channelId = AppState.activeChannel!.id;
-          console.log(channelId);
-          await messageService.getMessagesByChannelId(channelId);
-          await serversService.getMembers(id);
-        } catch (error) {
-          Pop.error(error);
-        }
-      }
-        fetchServerData(id);
-     
-     
-    }
+    if (router.query.id) fetchServerData(id);
   }, [router.query.id]);
 
   return (
@@ -71,7 +55,18 @@ const Server: NextPage = () => {
     </>
   );
 };
-
+     const fetchServerData = async (id: string) => {
+       try {
+         AppState.page = 1;
+         await channelsService.getChannelsByServerId(id);
+         const channelId = AppState.activeChannel!.id;
+         console.log(channelId);
+         await messageService.getMessagesByChannelId(channelId);
+         await serversService.getMembers(id);
+       } catch (error) {
+         Pop.error(error);
+       }
+     };
 
 
 export default observer(withAuth(withMember(Server)));
