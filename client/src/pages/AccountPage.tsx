@@ -48,36 +48,17 @@ function AccountPage() {
           <div className="card-body justify-center p-5 text-center">
             {/* {JSON.stringify(user)} */}
             <Menu>
-              <Menu.Button>More</Menu.Button>
+              <Menu.Button className=" rounded-md bg-indigo-500 p-3   font-bold text-white ">
+                More
+              </Menu.Button>
               <Menu.Items>
                 <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      className={`${active && "bg-blue-500"}`}
-                      href="/account-settings"
-                    >
-                      Account settings
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <a
-                      className={`${active && "bg-blue-500"}`}
-                      href="/account-settings"
-                    >
-                      Documentation
-                    </a>
-                  )}
-                </Menu.Item>
-                <Menu.Item disabled>
-                  <span className="opacity-75">
-                    Invite a friend (coming soon!)
-                  </span>
+                  <div className="flex items-center justify-center">
+                    <EditAccount />
+                  </div>
                 </Menu.Item>
               </Menu.Items>
             </Menu>
-            <EditAccount />
           </div>
         </div>
       </div>
@@ -107,6 +88,7 @@ const EditAccount = () => {
       avatarUrl: "",
     },
   });
+
   const onSubmit = async (data: any) => {
     try {
       await accountsService.updateAccount(data);
