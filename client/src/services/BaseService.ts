@@ -10,7 +10,7 @@ export interface BaseService<T,P>{
   getById(id:string) : Promise<T> 
   getAll() : Promise<T[]>
   delete(id:string) : Promise<void>
-  update(data: P) : Promise<T>
+  update(data: P) : Promise<T | void>
   create(data: string | P) : Promise<T | undefined>
 }
 

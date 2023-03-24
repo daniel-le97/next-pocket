@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @next/next/no-img-element */
@@ -141,7 +142,7 @@ const MessageCard = ({
   );
 };
 
-const MessageLikes = ({ message }) => {
+const MessageLikes = ({ message} : {message: MessageWithUser}) => {
   const likes = message.expand["likes(message)"];
   return (
     <div className="group/like  relative mt-1 w-16">

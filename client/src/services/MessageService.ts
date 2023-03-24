@@ -1,3 +1,5 @@
+import { Record } from "pocketbase";
+import { addItemOrSkip} from "utils/Functions";
 import { AppState } from "../../AppState";
 import type {
   DirectMessagesRecord,
@@ -17,21 +19,23 @@ class MessageService {
    */
   async sendMessage(data: MessagesRecord) {
     console.log(data);
-    
+
     const res = await pb
       .collection(Collections.Messages)
       .create<MessageWithUser>(data, { expand: "user" });
 
-    AppState.messages = [res, ...AppState.messages];
+    // AppState.messages = [res, ...AppState.messages];
+    addItemOrSkip<MessageWithUser>(AppState.messages, res, "id");
   }
 
   async sendDirectMessage(data: DirectMessagesRecord) {
-    const isUser = pb.authStore.model?.id == data.from;
-    if (!isUser) throw new Error("data.from is not the currentUser");
+    // const isUser = pb.authStore.model?.id == data.from;
+    // if (!isUser) throw new Error("data.from is not the currentUser");
     const res = await pb
       .collection(Collections.DirectMessages)
       .create<DirectMessagesResponse>(data);
-    AppState.directMessages = [...AppState.directMessages, res];
+    // AppState.directMessages = [...AppState.directMessages, res];
+    addItemOrSkip<DirectMessagesResponse>(AppState.directMessages, res, "id");
   }
 
   /**
@@ -60,26 +64,48 @@ class MessageService {
    * @returns The list of messages for the specified channel
    */
   async getMessagesByChannelId(id: string, page = AppState.page) {
+    AppState.messages = [];
     const res = await pb.collection(Collections.Messages).getList(page, 50, {
       filter: `channel.id = "${id}"`,
       sort: "-created",
       expand: "user,likes(message).user",
     });
 
-    
     const messages = res.items as unknown as MessageWithUser[];
     console.log(messages);
-    
+
     // console.log(messages.map(message => message.expand["likes(message)"]));
     AppState.messages = [...AppState.messages, ...messages];
     AppState.totalPages = res.totalPages;
     AppState.page++;
   }
 
+ filterSubscribe() {
+  const subscribe = pb.collection(Collections.Messages).subscribe("*", ({action, record}) => {
+    if (action == 'Create') {
+      this.getById(record.id)
+        .then(message => addItemOrSkip<MessageWithUser>(AppState.messages, message, "id"))
+        .catch(error => console.error(error));
+    }
+    if (action == "Delete") {
+      this.deleteMessage(record.id)
+        .catch(error => console.error(error));
+    }
+    if (action == "Update") {
+      this.editMessage(record.id, record as unknown as MessagesRecord)
+        .catch(error => console.error(error));
+    }
+  });
+  return subscribe;
+}
+
+
+
   async getById(id: string) {
     const res = await pb
       .collection(Collections.Messages)
-      .getOne(id, { expand: "reactions(messageId)" });
+      .getOne<MessageWithUser>(id, { expand: "user,likes(message)" });
+    return res;
     // console.log(res);
   }
   async deleteMessage(id: string) {
@@ -93,7 +119,7 @@ class MessageService {
     const updatedRes = await pb
       .collection(Collections.Messages)
       .update<MessageWithUser>(res.id, data, {
-        expand: "user",
+        expand: "user,likes(message)",
       });
     AppState.messages = AppState.messages.map((m) =>
       m.id === id ? updatedRes : m

@@ -30,11 +30,8 @@ class ObservableAppState {
   Likes = [];
   UsersStatus = [];
 
-  AppState: undefined;
   constructor() {
     makeAutoObservable(this);
-    this.AppState = undefined;
-    this.AppState = undefined;
   }
 }
 

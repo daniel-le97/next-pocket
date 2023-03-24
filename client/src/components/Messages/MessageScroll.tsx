@@ -16,7 +16,7 @@ const MessageScroll = () => {
       AppState.totalPages
     );
 
-    await messageService.getMessagesByChannelId(channelId);
+    await messageService.getMessagesByChannelId(channelId!);
   };
   return (
     <div
