@@ -8,13 +8,17 @@ import type { Admin, Record } from "pocketbase";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUser } from "../../hooks/User";
-import type { ServersResponse } from "../../PocketBaseTypes/pocketbase-types";
+import type {
+  ServersResponse,
+  UsersRecord,
+} from "../../PocketBaseTypes/pocketbase-types";
 // import { AppState } from "../../AppState.js";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import { accountsService } from "../services/AccountsService";
 import { membersService } from "../services/MembersService";
 import { Menu } from "@headlessui/react";
+import { AppState } from "AppState";
 function AccountPage() {
   const [user, setUser] = useState<Record | Admin | null>();
   const [servers, setServers] = useState<ServersResponse<unknown>>();
@@ -38,27 +42,29 @@ function AccountPage() {
     <main className="  min-h-screen dark:bg-zinc-800  ">
       <div className="account-page">
         <div className="card  flex flex-col  justify-center   ">
-          <div className=" flex justify-center p-5 text-center ">
+          <div className=" flex flex-col items-center justify-center p-5 text-center ">
             <img
               src={user?.avatarUrl}
               alt="Profile Image"
               className="h-32 w-32 rounded-full shadow-md shadow-zinc-900"
             />
+
+            {user?.username}
           </div>
           <div className="card-body justify-center p-5 text-center">
             {/* {JSON.stringify(user)} */}
-            <Menu>
+            <EditAccount />
+            {/* <Menu>
               <Menu.Button className=" rounded-md bg-indigo-500 p-3   font-bold text-white ">
                 More
               </Menu.Button>
               <Menu.Items>
                 <Menu.Item>
                   <div className="flex items-center justify-center">
-                    <EditAccount />
                   </div>
                 </Menu.Item>
               </Menu.Items>
-            </Menu>
+            </Menu> */}
           </div>
         </div>
       </div>
@@ -67,12 +73,11 @@ function AccountPage() {
 }
 
 const DropDown = () => {
-  return <div className="">
-
-  </div>;
+  return <div className=""></div>;
 };
 
 const EditAccount = () => {
+  const user = AppState.user;
   const {
     register,
     handleSubmit,
@@ -82,21 +87,20 @@ const EditAccount = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      username: "",
+      username: user?.username,
       emailVisibility: false,
+      currentChannel: user?.currentChannel,
 
-      avatarUrl: "",
+      avatarUrl: user?.avatarUrl,
     },
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: UsersRecord) => {
     try {
-      await accountsService.updateAccount(data);
-      reset();
-    } catch (error) {
-      console.error("createServer", error);
 
-      // await uploadService.deleteFile(data.image);
+      await accountsService.update(data)
+    } catch (error) {
+      Pop.error(error);
     }
   };
 
@@ -108,36 +112,21 @@ const EditAccount = () => {
       <div className="flex flex-col text-start">
         <label>UserName:</label>
         <input
-          {...register("username", {
-            required: true,
-            maxLength: 30,
-            minLength: 5,
-          })}
           type="text"
           // onChange={handleChange}
-
+          {...register("username", {
+            minLength: 3,
+            maxLength: 30,
+            required: true,
+          })}
           className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
         />
       </div>
       <div className="flex flex-col text-start">
         <label>AvatarUrl:</label>
         <input
-          {...register("avatarUrl", {
-            required: true,
-          })}
+          {...register("avatarUrl", {})}
           type="url"
-          // onChange={handleChange}
-
-          className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
-        />
-      </div>
-      <div className="flex flex-col text-start">
-        <label>Email Visibility</label>
-        <input
-          {...register("emailVisibility", {
-            required: true,
-          })}
-          type="checkbox"
           // onChange={handleChange}
 
           className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
