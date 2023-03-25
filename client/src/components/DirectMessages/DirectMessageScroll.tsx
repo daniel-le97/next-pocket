@@ -26,14 +26,13 @@ const DirectMessageScroll = () => {
   return (
     <div
       id="scrollableDiv2"
-    
-      className="max-h-screen  overflow-auto flex flex-col-reverse  "
+      className=" flex h-full flex-col-reverse overflow-auto pb-16 "
     >
       {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll
         dataLength={AppState.directMessages.length}
         next={fetchMore}
-        className="  flex  max-h-screen flex-col-reverse "
+        className="  flex  pt-6 mb-24 flex-col-reverse "
         inverse={true} //
         hasMore={AppState.totalPages != AppState.page}
         loader={<Loader show={AppState.totalPages != AppState.page} />}
@@ -76,35 +75,7 @@ const DirectMessageScroll = () => {
         })}
       </InfiniteScroll>
     </div>
-    // <div className="" id="scrollableDiv">
-    //   <InfiniteScroll
-    //     dataLength={AppState.messages.length}
-    //     next={fetchMore}
-    //     hasMore={AppState.totalPages != AppState.page}
-    //     loader={<div>loading</div>}
-    //     // style={{ display: "flex", flexDirection: "column-reverse" }} //To put endMessage and loader to the top.
-    //     // inverse={true} //
-    //     endMessage={
-    //       <p style={{ textAlign: "center" }}>
-    //         <b>Yay! You have seen it all</b>
-    //       </p>
-    //     }
-    //   >
-    //     {AppState.messages.map((message, index) => (
-    //       <div key={index}>
-    //         {
-    //           <MessageCard
-    //             messages={AppState.messages}
-    //             message={message}
-    //             index={index}
-    //           />
-    //         }
-    //         {/* {new Date(message.created).toLocaleString()} */}
-    //         {message.id}
-    //       </div>
-    //     ))}
-    //   </InfiniteScroll>
-    // </div>
+   
   );
 };
 

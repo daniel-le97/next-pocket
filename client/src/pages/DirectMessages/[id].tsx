@@ -17,15 +17,12 @@ import DirectMessageContainer from "../../components/DirectMessages/DirectMessag
 const DirectMessagesId: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
-  const user = AppState.user
-  
+  const user = AppState.user;
 
   useEffect(() => {
-      if (!user) {
-        router.push("/login");
-      }
-
-   
+    if (!user) {
+      router.push("/login");
+    }
 
     if (router.query.id) {
       const fetchMessages = async () => {
@@ -35,9 +32,7 @@ const DirectMessagesId: NextPage = () => {
             id
           );
 
-        // AppState.activeDirectMessage = res.find(a => a.expand.from && a.expand.)
-        
-        
+          // AppState.activeDirectMessage = res.find(a => a.expand.from && a.expand.)
         } catch (error) {
           Pop.error(error);
         }
@@ -54,7 +49,7 @@ const DirectMessagesId: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
-        <div className="flex  w-full    ">
+        <div className="flex  h-screen   w-full ">
           <FriendsBar />
 
           <DirectMessageContainer />

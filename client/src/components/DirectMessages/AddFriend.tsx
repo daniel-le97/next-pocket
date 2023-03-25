@@ -65,7 +65,7 @@ const AddFriend = () => {
 
       setValue("receiverId", user?.id);
       setValue("receiverName", user?.username);
-      console.log(getValues("receiverName"));
+      console.log(getValues());
     };
   };
   const onSubmit = async (data: any) => {
@@ -107,7 +107,8 @@ const AddFriend = () => {
                   ? "send-friend-request-button"
                   : " send-friend-request-button-disabled  "
               }
-              disabled={Boolean(activeUser)}
+              // disabled={Boolean(activeUser)}
+              type="submit"
             >
               Send Friend Request
             </button>

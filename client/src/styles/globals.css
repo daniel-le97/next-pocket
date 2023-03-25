@@ -52,12 +52,12 @@ pre{
     @apply ml-0 mr-auto w-20  cursor-text bg-transparent font-semibold text-gray-500 placeholder-gray-500 outline-none focus:w-full;
   }
 
-  /* .server-members-bar {
+  .server-members-bar {
     @apply m-0  h-auto  w-64 overflow-hidden bg-gray-200 shadow-lg transition-all duration-300 dark:bg-zinc-800;
   }
   .server-members-bar-collapsed {
     @apply h-0 w-0 cursor-none overflow-hidden bg-zinc-800  opacity-0 transition-all duration-300;
-  } */
+  }
 
   .server-button {
     @apply flex  w-full  items-center  justify-between rounded-sm    p-2 text-zinc-300 transition-all duration-300 ease-linear hover:bg-indigo-600 hover:text-white;
@@ -209,23 +209,23 @@ pre{
     @apply my-auto  mr-auto ml-4 align-middle text-lg font-bold tracking-wide text-gray-600 dark:text-gray-400;
   }
 
-  /* .dropdown {
+  .dropdown {
     @apply m-0 w-full px-2 pb-2 transition duration-300 ease-in-out;
-  } */
+  }
 
-  /* .dropdown-header {
+  .dropdown-header {
     @apply mx-0 flex cursor-pointer flex-row items-center justify-evenly text-gray-500;
-  } */
+  }
 
-  /* .dropdown-header-text {
+  .dropdown-header-text {
     @apply cursor-default  text-lg 
     font-semibold text-gray-500
     text-opacity-90;
-  } */
+  }
 
-  /* .dropdown-header-text-selected {
+  .dropdown-header-text-selected {
     @apply text-lg font-bold text-blue-500 text-opacity-90;
-  } */
+  }
 
   .dropdown-selection {
     @apply mt-1 mr-auto ml-2 flex 
@@ -270,26 +270,26 @@ pre{
     hover:transition-all;
   }
 
-  /* .message-content {
+  .message-content {
     @apply ml-auto flex w-4/5 flex-col justify-start;
-  } */
+  }
 
-  /* .message-options {
+  .message-options {
     @apply absolute bottom-24 right-0  mr-5   opacity-0 group-hover:opacity-100;
-  } */
-  /* .message-options-box {
+  }
+  .message-options-box {
     border: 1px solid black;
     @apply flex gap-x-2 rounded  border-zinc-900 bg-zinc-700 p-1 shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900;
-  } */
+  }
 
-  /* .message-icon-tooltip {
+  .message-icon-tooltip {
     @apply absolute bottom-8 right-0 z-50  w-auto min-w-max origin-left scale-0 rounded-md
     bg-zinc-900 p-2 
     text-xs font-bold 
     text-white shadow-md transition-all duration-100
     group-hover/item:scale-100;
-  } */
-  /* .message-icon-tooltip::after {
+  }
+  .message-icon-tooltip::after {
     content: "";
     position: absolute;
     top: 100%;
@@ -298,9 +298,9 @@ pre{
     border-width: 5px;
     border-style: solid;
     border-color: black transparent transparent transparent;
-  } */
+  }
 
-  /* .newest-message {
+  .newest-message {
     @apply absolute bottom-16 right-0 mr-5  transition-all group-hover:opacity-0;
   }
   .newest-message-badge {
@@ -309,7 +309,7 @@ pre{
 
   .newest-message-line {
     @apply absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400;
-  } */
+  }
 
   .new-date {
     @apply relative ml-3 flex items-center;
@@ -317,29 +317,29 @@ pre{
   .new-date-text {
     @apply w-20  text-center text-sm font-semibold text-zinc-400;
   }
-  /* .avatar-wrapper {
+  .avatar-wrapper {
     @apply m-0 ml-auto mb-auto flex w-12 flex-col items-center;
-  } */
+  }
 
-  /* .avatar {
+  .avatar {
     @apply mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md shadow-zinc-500 dark:shadow-zinc-900;
-  } */
+  }
 
-  /* .message-owner {
+  .message-owner {
     @apply font-bold  text-red-500;
-  } */
+  }
 
-  /* .timestamp {
+  .timestamp {
     @apply ml-3 font-normal text-black dark:text-gray-300;
-  } */
+  }
 
-  /* .message-text {
+  .message-text {
     @apply text-lg font-semibold dark:text-gray-300;
-  } */
+  }
 
-  /* .message-text-link {
+  .message-text-link {
     @apply font-semibold text-blue-500 hover:underline;
-  } */
+  }
 }
 
 /* Direct Messages */
@@ -366,7 +366,7 @@ pre{
   }
 
   .send-friend-request-button {
-    @apply absolute right-3  bottom-7 z-50 rounded-md bg-indigo-700 p-2 font-semibold text-white transition-all duration-150 ease-linear hover:bg-opacity-80;
+    @apply absolute right-3  cursor-pointer bottom-7 z-50 rounded-md bg-indigo-700 p-2 font-semibold text-white transition-all duration-150 ease-linear hover:bg-opacity-80;
   }
   .send-friend-request-button-disabled {
     @apply send-friend-request-button cursor-not-allowed opacity-50;

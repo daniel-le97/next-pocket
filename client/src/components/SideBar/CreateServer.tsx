@@ -14,6 +14,7 @@ import { pb } from "../../../utils/pocketBase";
 import Loader from "../Loader";
 import { useRouter } from "next/router";
 import type { ServersRecord } from "../../../PocketBaseTypes/pocketbase-types";
+import MyModal from "../GlobalComponents/Modal";
 const user = pb.authStore.model;
 
 const initialFormData = {
@@ -83,13 +84,60 @@ const CreateServer = () => {
   }
 
   return (
-    <div className=" sidebar-icon group ">
-      <BsPlusCircleFill size={28} onClick={openModal} />
+    <div className=" sidebar-icon group justify-center ">
+      {/* <BsPlusCircleFill size={28} onClick={openModal} /> */}
+      <MyModal
+        title="Create Server"
+        buttonIcon={
+          <div className="flex items-center justify-center">
+            <BsPlusCircleFill size={28} onClick={openModal} />
+          </div>
+        }
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className="create-server-form">
+          <label>
+            Name:
+            <input
+              {...register("name", {
+                required: true,
+                maxLength: 30,
+                minLength: 5,
+              })}
+              type="text"
+              className=" create-server-input"
+            />
+            {errors.name && <span>Retry</span>}
+          </label>
 
+          <label>
+            Image:
+            <input type="file" name="imageFile" onChange={handleFileChange} />
+            {!uploading && imageUrl && (
+              <img src={imageUrl} alt="" className="upload-preview-image" />
+            )}
+            <Loader show={uploading} />
+          </label>
+
+          <label>
+            Description:
+            <textarea
+              {...register("description", { required: true })}
+              name="description"
+              className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 w-fit px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            Submit
+          </button>
+        </form>
+      </MyModal>
       <span className=" sidebar-tooltip group-hover:scale-100">
         Create Server
-        <div className="fixed inset-0 flex items-center justify-center"></div>
-        <Transition appear show={isOpen} as={Fragment}>
+        {/* <Transition appear show={isOpen} as={Fragment}>
           <Dialog as="div" className="relative z-10" onClose={closeModal}>
             <Transition.Child
               as={Fragment}
@@ -179,7 +227,7 @@ const CreateServer = () => {
               </div>
             </div>
           </Dialog>
-        </Transition>
+        </Transition> */}
       </span>
     </div>
   );

@@ -97,7 +97,7 @@ class FriendService {
     const res = await pb
       .collection(Collections.FriendRequest)
       .getFullList<FriendRequestResponse>(200, {
-        filter: `receiverId = "${userId}"`,
+        filter: `receiverId = "${userId}" ||  senderId = "${userId}"`,
         expand:'senderId,receiverId'
       });
       // AppState.friendRequests = res

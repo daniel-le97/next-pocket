@@ -57,7 +57,7 @@ const SideBar = () => {
             <LogOutIcon />
           </div>
           {/* <UserIcon user={user} /> */}
-          <div className=" server-selection ">
+          <div className=" server-selection overflow-y-scroll ">
             <ServerSelection />
           </div>
         </>

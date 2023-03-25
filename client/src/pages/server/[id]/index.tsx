@@ -13,8 +13,6 @@ import { withMember } from "@/middleware/WithMember";
 import { channelsService } from "@/services/ChannelsService";
 import { messageService } from "@/services/MessageService";
 import { serversService } from "@/services/ServersService";
-
-
 import Pop from "utils/Pop";
 import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";
 import { AppState } from "AppState";
