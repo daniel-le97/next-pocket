@@ -17,6 +17,7 @@ import type {
   MemberUser,
   MessageWithUser,
   Server,
+  UsersStatusWithUser,
 } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
@@ -37,7 +38,7 @@ class ObservableAppState {
   channelTitles: (string | undefined)[] = [];
   channels: ChannelsResponse[] = [];
   servers: ServersResponse[] = [];
-  users: UsersResponse[] = [];
+  users: UsersStatusWithUser[] = [];
   messages: MessageWithUser[] = [];
   directMessages: DirectMessagesResponse[] = [];
   activeDirectMessage:UsersResponse | null = null

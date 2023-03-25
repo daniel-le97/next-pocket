@@ -1,46 +1,59 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import type { UsersStatusWithUser } from "PocketBaseTypes/utils";
+import { addItemOrReplace, filterArray } from "utils/Functions";
 import { AppState } from "../../AppState";
 import type {
   UsersResponse,
-  UsersStatusResponse} from "../../PocketBaseTypes/pocketbase-types";
-import {
-  Collections} from "../../PocketBaseTypes/pocketbase-types";
+  UsersStatusResponse,
+} from "../../PocketBaseTypes/pocketbase-types";
+import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
-
-
 
 class UserService {
   async updateUser(userData: UsersResponse) {
     // this will update pb.authStore.model automatically
     const res = await pb.collection("users").update(userData.id, userData);
-    return res
+    return res;
   }
 
   async getUsersList() {
     // get all users and set users state
     const res = await pb.collection("users").getFullList<UsersResponse>(200);
-    AppState.users = res;
+    // AppState.users = res;
     return AppState.users;
   }
 
-  // async getUsersByServerId() {
-  //   //testing for now Fancy server : t39a63nklbnlm19
-  //   const res = await pb
-  //     .collection(Collections.Servers)
-  //     .getOne<ServersResponse>("t39a63nklbnlm19", {
-  //       expand: "members",
-  //     });
+  async subscribeToStatus() {
+    const subscribe = await pb
+      .collection(Collections.UsersStatus)
+      .subscribe<UsersStatusResponse>("*", async ({ action, record }) => {
+        if (action != "Delete") {
+          const status = await this.getUserStatus(record.user);
+          addItemOrReplace(AppState.users, status, "id");
+          return;
+        }
+        await this.deleteStatus(record.id, true);
+      });
+    return subscribe;
+  }
 
-  //   AppState.users = res.expand.members;
-  // }
-
-  async getUserStatus(userId: string){
+  async getUserStatus(userId: string) {
     // gets a single Users status
-    const status = await pb.collection(Collections.UsersStatus).getFirstListItem<UsersStatusResponse>(`user.id = "${userId}"`,{
-      expand:'user'
-    })
+    const status = await pb
+      .collection(Collections.UsersStatus)
+      .getFirstListItem<UsersStatusWithUser>(`user.id = "${userId}"`, {
+        expand: "user",
+      });
     // console.log(status);
-    
-    return status
+
+    return status;
+  }
+  async deleteStatus(id: string, skipCall = false) {
+    filterArray(AppState.users, id, 'id')
+    // only invoke this when needed otherwise just filter AppState and proceed
+    if (!skipCall) {
+      await pb.collection(Collections.UsersStatus).delete(id);
+    }
   }
 }
 export const userService = new UserService();

@@ -4,11 +4,16 @@
  * @param {object} item item to be added
  * @param {string} field index to filter from
  */
-export function addItemOrSkip<T>(array: T[], item: T, field: keyof T) {
-  const found = array.find((i) => i[field] == item[field]);
-  if (!found) {
-    array = [...array, found!];
+export function addItemOrReplace<T>(array: T[], item: T, field: keyof T) {
+  const index = array.findIndex((i) => i[field] == item[field]);
+  if (index === -1) {
+    array = [...array, item];
+    return
   }
+  array[index] = item
+}
+export function filterArray<T, K extends keyof T>(array: T[], property: T[K] , field: K){
+  array = array.filter(i => i[field] != property)
 }
 
 export function getDate(date: Date) {

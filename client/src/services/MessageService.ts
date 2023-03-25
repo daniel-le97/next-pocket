@@ -1,5 +1,7 @@
-import { Record } from "pocketbase";
-import { addItemOrSkip} from "utils/Functions";
+/* eslint-disable @typescript-eslint/no-misused-promises */
+// /* eslint-disable @typescript-eslint/no-misused-promises */
+import type { Record } from "pocketbase";
+import { addItemOrReplace } from "utils/Functions";
 import { AppState } from "../../AppState";
 import type {
   DirectMessagesRecord,
@@ -25,7 +27,7 @@ class MessageService {
       .create<MessageWithUser>(data, { expand: "user" });
 
     // AppState.messages = [res, ...AppState.messages];
-    addItemOrSkip<MessageWithUser>(AppState.messages, res, "id");
+    addItemOrReplace(AppState.messages, res, "id");
   }
 
   async sendDirectMessage(data: DirectMessagesRecord) {
@@ -35,7 +37,7 @@ class MessageService {
       .collection(Collections.DirectMessages)
       .create<DirectMessagesResponse>(data);
     // AppState.directMessages = [...AppState.directMessages, res];
-    addItemOrSkip<DirectMessagesResponse>(AppState.directMessages, res, "id");
+    addItemOrReplace(AppState.directMessages, res, "id");
   }
 
   /**
@@ -80,25 +82,20 @@ class MessageService {
     AppState.page++;
   }
 
- filterSubscribe() {
-  const subscribe = pb.collection(Collections.Messages).subscribe("*", ({action, record}) => {
-    if (action == 'Create') {
-      this.getById(record.id)
-        .then(message => addItemOrSkip<MessageWithUser>(AppState.messages, message, "id"))
-        .catch(error => console.error(error));
-    }
-    if (action == "Delete") {
-      this.deleteMessage(record.id)
-        .catch(error => console.error(error));
-    }
-    if (action == "Update") {
-      this.editMessage(record.id, record as unknown as MessagesRecord)
-        .catch(error => console.error(error));
-    }
-  });
-  return subscribe;
-}
-
+  async filterSubscribe() {
+    const subscribe = await pb
+      .collection(Collections.Messages)
+      .subscribe("*", async({ action, record }) =>{
+          if (action != "Delete") {
+            const message = await this.getById(record.id);
+            addItemOrReplace(AppState.messages, message, "id");
+            }
+          if (action == "Delete") {
+            await this.deleteMessage(record.id, true)
+            }
+      });
+    return subscribe;
+  }
 
 
   async getById(id: string) {
@@ -108,17 +105,18 @@ class MessageService {
     return res;
     // console.log(res);
   }
-  async deleteMessage(id: string) {
-    await pb.collection(Collections.Messages).delete(id);
-
+  async deleteMessage(id: string, skipCall = false) {
     AppState.messages = AppState.messages.filter((m) => m.id != id);
+    if (skipCall == false) {
+      await pb.collection(Collections.Messages).delete(id);
+    }
   }
   async editMessage(id: string, data: MessagesRecord) {
-    const res = await pb.collection(Collections.Messages).getOne(id);
+    // const res = await pb.collection(Collections.Messages).getOne(id);
 
     const updatedRes = await pb
       .collection(Collections.Messages)
-      .update<MessageWithUser>(res.id, data, {
+      .update<MessageWithUser>(id, data, {
         expand: "user,likes(message)",
       });
     AppState.messages = AppState.messages.map((m) =>
