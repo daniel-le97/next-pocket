@@ -5,6 +5,7 @@ import type {
   MessagesResponse,
   ServersResponse,
   UsersResponse,
+  UsersStatusResponse,
 } from "./pocketbase-types";
 
 export type TServerExpand<T> = {
@@ -37,6 +38,10 @@ export type MessageWithUser = MessagesResponse & {
   expand: { 'likes(message)': LikesWithUser[]; user: UsersResponse };
 };
 export type LikesWithUser = LikesResponse & {
+  expand: {user: UsersResponse}
+}
+
+export type UsersStatusWithUser = UsersStatusResponse & {
   expand: {user: UsersResponse}
 }
 

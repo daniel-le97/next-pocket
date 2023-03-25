@@ -1,5 +1,5 @@
 # Next-Pocket
-This project is a Discord clone that uses next.js and pocketbase. Pocketbase is in the pocketbase directory and can be extended to act as a go framework
+This project is a Discord clone that uses next.js and pocketbase. It builds next.js into pocketbase to be deployed as a single executeable.
 
 
 ## Getting Started
@@ -66,6 +66,7 @@ an example docker compose can be found at pocketbase/docker-compose.yml
 
 - [@Daniel Le](https://www.github.com/daniel-le97)
 - [@Tung Le](https://www.github.com/TungLe0319)
+- [@Tri Le](https://www.github.com/trile1122
 
 
 ## Contributing

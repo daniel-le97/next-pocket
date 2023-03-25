@@ -5,10 +5,10 @@ import { pb } from "../../../utils/pocketBase";
 import { AppState } from "../../../AppState";
 import CreateMessage from "./CreateMessage";
 import noMessage from "../../assets/noMessages.png";
-import { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import type { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import MessageCard from "./MessageCard";
-import { MessageWithUser } from "../../../PocketBaseTypes/utils";
-
+import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
+import { messageService } from "@/services/MessageService";
 
 const MessageList = () => {
   const messages = AppState.messages;
@@ -16,57 +16,20 @@ const MessageList = () => {
   const [hasMore, setHasMore] = useState(true);
 
   const MCRef = useRef<HTMLDivElement>(null);
+  // const unsubscribe = async () => {
+  //   const subscribe = await pb
+  //     .collection("messages")
+  //     .subscribe("*", ({ action, record }) => {
+  //      messageService.filterSubscribe(action, record)})
+  //   return subscribe;
+  // };
 
   useEffect(() => {
-    const unsubscribe = async () =>
-      await pb
-        .collection("messages")
-        .subscribe("*", async ({ action, record }) => {
-          if (action === "create") {
-            const user = await pb.collection("users").getOne(record.user);
-
-            record.expand = { user };
-
-            let updatedMessages: MessageWithUser[] = [...AppState.messages];
-            updatedMessages = [
-              ...updatedMessages,
-              record as unknown as MessageWithUser,
-            ];
-            AppState.messages = updatedMessages;
-          }
-          // if (action === "delete") {
-          //   setMessages((prevMessages) =>
-          //     prevMessages.filter((m) => m.id !== record.id)
-          //   );
-          // }
-        });
-
-    return () => {
-     
-        unsubscribe();
-      
-    };
+    messageService.filterSubscribe()
+    return messageService.filterSubscribe() as unknown as void
   }, []);
 
-  const fetchNextPage = async () => {
-    if (isLoading || !hasMore) return;
-    setIsLoading(true);
-    const lastMessage = messages[messages.length - 1];
-    const nextPage = await pb.collection("messages").getList(2, 50, {
-      expand: "user",
-    });
-    if (nextPage.items.length > 0) {
-      const updatedMessages: MessagesResponse[] = [
-        ...messages,
-        ...nextPage.items,
-      ];
-      AppState.messages = updatedMessages;
-      setIsLoading(false);
-    } else {
-      setHasMore(false);
-      setIsLoading(false);
-    }
-  };
+ 
 
   return (
     <div

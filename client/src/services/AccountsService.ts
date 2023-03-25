@@ -17,17 +17,17 @@ class AccountsService
   getAll(): Promise<UsersResponse<unknown>[]> {
     throw new Error("Method not implemented.");
   }
-  async delete(id: string): Promise<void> {
+   delete(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
   async update(data: UsersRecord): Promise<void> {
-    const updatedUser =  await this.pb.update<UsersResponse>(this.user!.id, data);
+    const updatedUser =  await this.pb.update(this.user!.id, data);
   console.log(updatedUser);
   
  AppState.user = updatedUser
   
   }
-  async create(
+  create(
     data: string | UsersRecord
   ): Promise<UsersResponse<unknown> | undefined> {
     throw new Error("Method not implemented.");
