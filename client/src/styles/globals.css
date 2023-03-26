@@ -211,7 +211,7 @@ pre {
 /* Channels Bar */
 @layer components {
   .channel-bar {
-    @apply m-0 flex h-auto   flex-col justify-between  bg-gray-200 shadow-lg dark:bg-zinc-800;
+    @apply m-0 flex h-auto w-60 max-w-xs   flex-col justify-between  bg-gray-200 shadow-lg dark:bg-zinc-800;
   }
 
   .channel-container {
