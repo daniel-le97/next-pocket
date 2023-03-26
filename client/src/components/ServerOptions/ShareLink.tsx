@@ -8,7 +8,7 @@ import { AppState } from "../../../AppState";
 import Pop from "../../../utils/Pop";
 // import type { Server } from "../../../PocketBaseTypes/utils"
 
-const InvitePeople = () => {
+const ShareLink = () => {
   const router = useRouter();
   const handleClick = async () => {
     const origin =
@@ -23,10 +23,10 @@ const InvitePeople = () => {
   };
 
   return (
-    <button className="  server-button" onClick={handleClick}>
+    <button className=" server-options" onClick={handleClick}>
       getLink
       <FaClipboard size={15} />
     </button>
   );
 };
-export default observer(InvitePeople);
+export default observer(ShareLink);

@@ -3,11 +3,12 @@ import { AppState } from "../../../AppState";
 import LeaveServer from "../ServerOptions/LeaveServer";
 import DeleteServer from "../ServerOptions/DeleteServer";
 import CreateChannel from "../ServerOptions/CreateChannel";
-import InvitePeople from "../ServerOptions/InvitePeople";
+import ShareLink from "../ServerOptions/ShareLink";
 import SearchMembers from "../ServerOptions/SearchMembers";
 import { useState, useRef, useEffect } from "react";
+import ServerGuidelines from "../ServerOptions/ServerGuidelines";
 
-const ServerSettingsMenu = () => {
+const ServerOptionsMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -52,12 +53,14 @@ const ServerSettingsMenu = () => {
           ref={dropdownRef}
           className="   absolute   z-10  flex w-full flex-col items-start justify-center rounded-lg  p-2 text-white transition-all ease-linear"
         >
-          <div className="bg-zinc-900 p-2 rounded w-full">
+          <div className="w-full rounded bg-zinc-900 p-2">
             <LeaveServer server={AppState.activeServer} />
             <DeleteServer />
-            <InvitePeople />
+            <ShareLink />
             <CreateChannel />
             <SearchMembers />
+            <ServerGuidelines/>
+            
           </div>
         </div>
       )}
@@ -67,4 +70,4 @@ const ServerSettingsMenu = () => {
 
 //  ANCHOR this is where we need to do our autth checks
 
-export default observer(ServerSettingsMenu);
+export default observer(ServerOptionsMenu);

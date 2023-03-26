@@ -56,10 +56,10 @@ const MyModal = ({ buttonIcon, title, children }: ModalProps) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-screen-md transform overflow-hidden rounded-2xl bg-zinc-900 p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="dialog-modal">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-zinc-300"
+                    className="dialog-title"
                   >
                  {title}
                   </Dialog.Title>
@@ -73,7 +73,7 @@ const MyModal = ({ buttonIcon, title, children }: ModalProps) => {
                   <div className="mt-4">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="btn-secondary"
                       onClick={closeModal}
                     >
                     Cancel

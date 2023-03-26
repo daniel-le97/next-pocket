@@ -5,7 +5,7 @@ import Modal from "../GlobalComponents/Modal";
 
 const SearchMembers = () => {
   return (
-    <div className=" server-button">
+    <button className=" server-options">
       <MyModal
         buttonIcon={
           <div className="flex w-full  justify-between">
@@ -22,7 +22,7 @@ const SearchMembers = () => {
           labore eum cum.
         </div>
       </MyModal>
-    </div>
+    </button>
   );
 };
 export default observer(SearchMembers);

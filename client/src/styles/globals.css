@@ -9,12 +9,10 @@
   padding: 0;
 }
 
-pre{
-  @apply rounded-b-xl
+pre {
+  @apply rounded-b-xl;
 }
-.btn-primary {
-  @apply rounded-md bg-indigo-500 p-2 font-bold text-zinc-300 hover:bg-opacity-80;
-}
+
 .create-message-input::-webkit-scrollbar {
   width: 2px;
 }
@@ -26,7 +24,29 @@ pre{
   @apply rounded-full;
 }
 
+/* Global Components.. Inputs, Buttons... etc */
 @layer components {
+  input {
+    @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-indigo-500   dark:focus:ring-indigo-500;
+  }
+  [type="file"] {
+    @apply block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400;
+  }
+
+  textarea {
+    @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-indigo-500 dark:focus:ring-indigo-500;
+  }
+
+  .btn {
+    @apply rounded-md  py-2 px-3 font-bold text-zinc-300 transition-all duration-200 ease-linear hover:bg-opacity-80;
+  }
+  .btn-primary {
+    @apply btn bg-indigo-500;
+  }
+  .btn-secondary {
+    @apply btn bg-violet-500;
+  }
+
   .login-input {
     @apply w-full rounded bg-gray-100
     p-1 pl-1 font-sans font-semibold 
@@ -59,31 +79,28 @@ pre{
     @apply h-0 w-0 cursor-none overflow-hidden bg-zinc-800  opacity-0 transition-all duration-300;
   }
 
-  .server-button {
-    @apply flex  w-full  items-center  justify-between rounded-sm    p-2 text-zinc-300 transition-all duration-300 ease-linear hover:bg-indigo-600 hover:text-white;
-  }
-
-  /* .infinite-scroll-container {
-    @apply ;
-  } */
-}
-
-/* Create Server Form/Modal*/
-@layer components {
-  .create-server-form {
-    @apply flex flex-col gap-y-3 text-white;
-  }
-  .create-server-input {
-    @apply m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400 valid:outline-green-600;
-  }
-  .upload-preview-image {
-    @apply mt-5 h-32 w-32 rounded-full object-cover;
+  .server-options {
+    @apply flex  w-full  items-center  justify-between rounded-sm my-1   p-2 text-zinc-300 transition-all ease-linear hover:bg-indigo-600 hover:text-white;
   }
   .dialog-title {
     @apply mb-2 text-lg font-medium leading-6 text-gray-300;
   }
   .dialog-modal {
-    @apply w-full max-w-md transform overflow-hidden rounded-2xl bg-zinc-800 p-6 text-left align-middle shadow-xl shadow-zinc-800 transition-all;
+    @apply w-full max-w-xl transform overflow-hidden rounded-2xl bg-zinc-800 p-6 text-left align-middle shadow-xl shadow-zinc-800 transition-all;
+  }
+
+}
+
+/* Create Server Form/Modal*/
+@layer components {
+
+
+  .upload-preview-image {
+    @apply mt-5 h-32 w-32 rounded-full object-cover;
+  }
+
+  .file-upload-input {
+    @apply block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400;
   }
 }
 
@@ -366,7 +383,7 @@ pre{
   }
 
   .send-friend-request-button {
-    @apply absolute right-3  cursor-pointer bottom-7 z-50 rounded-md bg-indigo-700 p-2 font-semibold text-white transition-all duration-150 ease-linear hover:bg-opacity-80;
+    @apply absolute right-3  bottom-7 z-50 cursor-pointer rounded-md bg-indigo-700 p-2 font-semibold text-white transition-all duration-150 ease-linear hover:bg-opacity-80;
   }
   .send-friend-request-button-disabled {
     @apply send-friend-request-button cursor-not-allowed opacity-50;

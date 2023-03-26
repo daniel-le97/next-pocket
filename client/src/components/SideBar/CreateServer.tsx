@@ -69,8 +69,8 @@ const CreateServer = () => {
       const record = await uploadService.uploadFile(event.target.files);
       setImageUrl(record.url);
       // setValue("imageUrl", record?.url);
-      const id = record?.id
-      setValue("image",id!);
+      const id = record?.id;
+      setValue("image", id!);
     };
     uploadFile();
   };
@@ -94,140 +94,50 @@ const CreateServer = () => {
           </div>
         }
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="create-server-form">
-          <label>
-            Name:
-            <input
-              {...register("name", {
-                required: true,
-                maxLength: 30,
-                minLength: 5,
-              })}
-              type="text"
-              className=" create-server-input"
-            />
-            {errors.name && <span>Retry</span>}
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-3">
+          <label className=" block text-sm font-bold text-zinc-300">
+            Server Name
           </label>
+          <input
+            {...register("name", {
+              required: true,
+              maxLength: 30,
+              minLength: 5,
+            })}
+            type="text"
+            className=" create-server-input"
+          />
+          {errors.name && <span>Retry</span>}
 
-          <label>
+          <label className=" block text-sm font-bold text-zinc-300">
             Image:
-            <input type="file" name="imageFile" onChange={handleFileChange} />
-            {!uploading && imageUrl && (
-              <img src={imageUrl} alt="" className="upload-preview-image" />
-            )}
-            <Loader show={uploading} />
           </label>
+          <input
+            type="file"
+            name="imageFile"
+            onChange={handleFileChange}
+            className="file-upload-input"
+          />
+          {!uploading && imageUrl && (
+            <img src={imageUrl} alt="" className="upload-preview-image" />
+          )}
+          <Loader show={uploading} />
 
-          <label>
-            Description:
-            <textarea
-              {...register("description", { required: true })}
-              name="description"
-              className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
-            />
+          <label className=" block text-sm font-bold text-zinc-300">
+            Description :
           </label>
+          <textarea
+            {...register("description", { required: true })}
+            name="description"
+          />
 
-          <button
-            type="submit"
-            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 w-fit px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-          >
+          <button type="submit" className="btn-primary w-fit">
             Submit
           </button>
         </form>
       </MyModal>
       <span className=" sidebar-tooltip group-hover:scale-100">
         Create Server
-        {/* <Transition appear show={isOpen} as={Fragment}>
-          <Dialog as="div" className="relative z-10" onClose={closeModal}>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <div className="fixed inset-0 bg-black bg-opacity-25" />
-            </Transition.Child>
-
-            <div className="fixed inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center p-4 text-center">
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-300"
-                  enterFrom="opacity-0 scale-95"
-                  enterTo="opacity-100 scale-100"
-                  leave="ease-in duration-200"
-                  leaveFrom="opacity-100 scale-100"
-                  leaveTo="opacity-0 scale-95"
-                >
-                  <Dialog.Panel className="dialog-modal">
-                    <Dialog.Title
-                      as="h3"
-                      className="dialog-title"
-                    >
-                      Server Form
-                    </Dialog.Title>
-                 
-
-                    <form
-                      onSubmit={handleSubmit(onSubmit)}
-                      className="create-server-form"
-                    >
-                      <label>
-                        Name:
-                        <input
-                          {...register("name", {
-                            required: true,
-                            maxLength: 30,
-                            minLength: 5,
-                          })}
-                          type="text"
-                          className=" create-server-input"
-                        />
-                        {errors.name && <span>Retry</span>}
-                      </label>
-
-                      <label>
-                        Image:
-                        <input
-                          type="file"
-                          name="imageFile"
-                          onChange={handleFileChange}
-                        />
-                        {!uploading && imageUrl && (
-                          <img
-                            src={imageUrl}
-                            alt=""
-                            className="upload-preview-image"
-                          />
-                        )}
-                        <Loader show={uploading} />
-                      </label>
-
-                      <label>
-                        Description:
-                        <textarea
-                          {...register("description", { required: true })}
-                          name="description"
-                          className="m-1 ml-3 rounded-sm bg-gray-300 p-1 text-black placeholder:text-gray-100 required:border-2 required:border-red-400"
-                        />
-                      </label>
-
-                      <button
-                        type="submit"
-                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      >
-                        Submit
-                      </button>
-                    </form>
-                  </Dialog.Panel>
-                </Transition.Child>
-              </div>
-            </div>
-          </Dialog>
-        </Transition> */}
       </span>
     </div>
   );

@@ -23,17 +23,16 @@ import {
   UsersResponse,
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { messageService } from "../../services/MessageService";
-import ServerLink from "../ServerOptions/InvitePeople";
+import ServerLink from "../ServerOptions/ShareLink";
 import DeleteServer from "../ServerOptions/DeleteServer";
 import { Popover } from "@headlessui/react";
-import ServerSettingsMenu from "./ServerSettingsMenu";
+import ServerSettingsMenu from "./ServerOptionsMenu";
 import { pb } from "utils/pocketBase";
 import { likesService } from "@/services/LikesService";
 import CreateServer from "../SideBar/CreateServer";
 import MyModal from "../GlobalComponents/Modal";
 
 const topics = ["general", "tailwind-css", "react"];
-
 
 const ChannelsBar = () => {
   const channels = AppState.channels;
@@ -72,9 +71,8 @@ const ChannelsBar = () => {
       <div className="">
         <ServerSettingsMenu />
 
-        <div className="m-0 flex h-16 flex-col mt-1 items-center justify-start p-0">
+        <div className="m-0 mt-1 flex h-16 flex-col items-center justify-start p-0">
           <div className="m-0 w-full px-2 pb-2 transition duration-300 ease-in-out">
-           
             <div
               onClick={() => setExpanded(!expanded)}
               className="mx-0 flex cursor-pointer flex-row items-center justify-evenly text-gray-500"

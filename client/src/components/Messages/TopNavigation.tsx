@@ -27,7 +27,7 @@ const TopNavigation = () => {
       className="z-10 flex w-full items-center justify-evenly bg-gray-300 
     py-2 
     
-    dark:bg-zinc-800 pr-14 shadow-md "
+    pr-14 shadow-md dark:bg-zinc-800 "
     >
       <HashtagIcon />
       <Title room={channel} query={query} />
@@ -58,18 +58,15 @@ const Search = () => {
 
   return (
     <div
-      className="dark:bg-gray-600; z-10 ml-0 mr-0 flex 
-    h-9 w-1/5
+      className=" flex 
+    
     items-center
-    justify-start rounded-md bg-gray-400 px-2 
-    text-gray-500 shadow-md
-    transition duration-300 ease-in-out"
+    justify-start  
+   
+    "
     >
       <input
-        className="w-full rounded bg-transparent
-    pl-1 font-sans 
-    font-semibold  text-gray-500
-    placeholder-gray-500 outline-none"
+        className=""
         type="text"
         placeholder="Search..."
         value={query}
@@ -91,4 +88,4 @@ const Title = ({ room, query }: { room: string; query: string }) => {
   return <h5 className="title-text">{room ? room : query}</h5>;
 };
 
-export default observer(TopNavigation);
+export default observer(TopNavigation);   

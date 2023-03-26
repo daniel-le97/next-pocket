@@ -35,10 +35,7 @@ const DeleteServer = () => {
   return (
     <div className="w-full">
       {user?.id == server?.owner ? (
-        <button
-          className=" server-button"
-          onClick={handleClick}
-        >
+        <button className=" server-options" onClick={handleClick}>
           Delete Server
           <FaUserMinus size={15} />
         </button>
