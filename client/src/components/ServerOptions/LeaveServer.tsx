@@ -10,8 +10,8 @@ import type { Server } from "../../../PocketBaseTypes/utils";
 import React from "react";
 import { AppState } from "../../../AppState";
 const LeaveServer = () => {
-  const user = AppState.user
-  const server = AppState.activeServer
+  const user = AppState.user;
+  const server = AppState.activeServer;
   const router = useRouter();
   const leaveServer = async () => {
     try {
@@ -20,7 +20,12 @@ const LeaveServer = () => {
         user: user?.id,
       };
 
-      const yes = await Pop.confirm(`Leave ${server?.name}`,"Are You Sure?",'question','Confirm');
+      const yes = await Pop.confirm(
+        `Leave ${server?.name}`,
+        "Are You Sure?",
+        "question",
+        "Confirm"
+      );
       if (!yes) {
         return;
       }
@@ -33,7 +38,7 @@ const LeaveServer = () => {
   };
 
   return (
-    <button className=" server-options   " onClick={leaveServer}>
+    <button className=" server-options-selection   " onClick={leaveServer}>
       Leave <small>{server && server.name}</small>
     </button>
   );

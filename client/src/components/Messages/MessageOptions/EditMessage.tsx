@@ -32,17 +32,9 @@ import { MessageWithUser } from "../../../../PocketBaseTypes/utils";
 import TimeAgo from "timeago-react";
 const EditMessage = ({ message }: { message: MessageWithUser }) => {
   return (
-    <div className="group/item relative p-2 transition-all ease-linear hover:bg-zinc-600 ">
+    <div className="message-options-icon  group/item">
       <EditMessageModal message={message} />
-      <span
-        className="absolute  bottom-8  z-50  w-auto min-w-max origin-left scale-0 rounded-md
-    bg-zinc-900 p-2 
-    text-xs font-bold 
-    text-white shadow-md transition-all duration-100
-    group-hover/item:scale-100 "
-      >
-        Edit
-      </span>
+      <span className="message-options-tooltip ">Edit</span>
     </div>
   );
 };
@@ -68,7 +60,6 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
   });
   const onSubmit = async (data: MessagesRecord) => {
     try {
-    
       data.text += " (edited)";
       const updatedMessage = await messageService.editMessage(message.id, data);
       reset();
@@ -173,7 +164,7 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
 
                     <div className=" flex gap-x-2">
                       <button
-                      type="button"
+                        type="button"
                         onClick={() => setIsOpen(false)}
                         className="rounded-md bg-purple-500 p-2 font-bold text-zinc-300 hover:bg-opacity-80"
                       >

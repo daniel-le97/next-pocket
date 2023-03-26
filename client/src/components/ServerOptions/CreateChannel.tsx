@@ -39,9 +39,7 @@ const CreateChannel = () => {
     }
   };
   return (
-  
-
-    <button className=" server-options">
+    <button className=" server-options-selection">
       <MyModal
         buttonIcon={
           <div className="flex w-full  justify-between">
@@ -53,7 +51,7 @@ const CreateChannel = () => {
       >
         <form onSubmit={handleSubmit(onsubmit)}>
           <input
-            className=" ml-0 mr-auto bg-zinc-800 p-2 rounded-md w-full  cursor-text bg-transparent font-semibold text-gray-500 placeholder-gray-500 outline-none focus:w-full"
+            className=" ml-0 mr-auto w-full cursor-text rounded-md bg-zinc-800  bg-transparent p-2 font-semibold text-gray-500 placeholder-gray-500 outline-none focus:w-full"
             type="text"
             placeholder="Enter Title"
             {...register("title", {
@@ -63,9 +61,7 @@ const CreateChannel = () => {
             })}
           />
 
-          <button  type="submit">
-            Submit
-          </button>
+          <button type="submit">Submit</button>
         </form>
       </MyModal>
     </button>

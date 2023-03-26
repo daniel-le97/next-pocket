@@ -24,20 +24,9 @@ const DeleteMessage = ({
     }
   };
   return (
-    <div
-      className="group/item relative p-2 transition-all ease-linear hover:bg-zinc-600 "
-      onClick={deleteMessage}
-    >
+    <div className="message-options-icon  group/item " onClick={deleteMessage}>
       <BsXCircleFill size={22} />
-      <span
-        className="absolute  bottom-8 right-0 z-50  w-auto min-w-max origin-left scale-0 rounded-md
-    bg-zinc-900 p-2 
-    text-xs font-bold 
-    text-white shadow-md transition-all duration-100
-    group-hover/item:scale-100 "
-      >
-        Remove
-      </span>
+      <span className="message-options-tooltip ">Remove</span>
     </div>
   );
 };

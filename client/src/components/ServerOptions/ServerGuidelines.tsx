@@ -39,7 +39,7 @@ const ServerGuidelines = () => {
     }
   };
   return (
-    <button className=" server-options">
+    <button className=" server-options-selection">
       <MyModal
         buttonIcon={
           <div className="flex w-full  justify-between">
@@ -49,7 +49,7 @@ const ServerGuidelines = () => {
         }
         title="Server Guidelines"
       >
-        <div className=" text-white p-2">
+        <div className=" p-2 text-white">
           <ul className=" list-decimal">
             <li>
               Respect others: Treat other users with respect and refrain from

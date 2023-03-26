@@ -69,20 +69,20 @@ const ServerCard = ({ server }: { server: Server }) => {
       <img src={server.expand?.image.url} alt="" className="server-image" />
 
       <div className="mt-2 p-3">
-        <button className=" flex w-full justify-between ">
+        <div className=" flex w-full justify-between ">
           <div className=" server-name ">{server.name}</div>
           {!isMember ? (
-            <div
-              className="group/join relative cursor-pointer"
+            <button
+              className="group/join relative  "
               onClick={joinServer}
             >
               <FaUserPlus size={20} />
               <span className=" join-button-tooltip">Join</span>
-            </div>
+            </button>
           ) : (
             <FaUserCheck size={20} className="text-green-400" />
           )}
-        </button>
+        </div>
         <p className="mt-2 pb-10">{server.description}</p>
       </div>
       <div className="server-members-count  ">

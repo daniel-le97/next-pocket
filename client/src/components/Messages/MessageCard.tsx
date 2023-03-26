@@ -21,6 +21,7 @@ import CodeBlock from "../../../utils/CodeBlock";
 import { FaThumbsUp } from "react-icons/fa";
 import Markdown from "./Markdown";
 import Pop from "utils/Pop";
+import UserAvatar from "../GlobalComponents/UserAvatar";
 
 const MessageCard = ({
   messages,
@@ -46,7 +47,7 @@ const MessageCard = ({
     }
 
     navigator.clipboard.writeText(removeBackticks(message.content!));
-    Pop.success('Copied To Clipboard')
+    Pop.success("Copied To Clipboard");
   };
 
   return (
@@ -55,21 +56,18 @@ const MessageCard = ({
         messageQuery != "" ? " message-filtered group " : " message    group  "
       }
     >
-      <div className="relative  ml-auto mb-auto flex  flex-col items-center ">
-        <img
-          className="mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md shadow-zinc-500 dark:shadow-zinc-800"
-          src={
-            message.expand?.user.avatarUrl ||
-            `https://api.dicebear.com/5.x/bottts-neutral/svg`
-          }
-          alt="avatar"
+      <div className="message-user-avatar-status ">
+        <UserAvatar
+          width="w-12"
+          height="h-12"
+          avatarUrl={message.expand?.user.avatarUrl}
         />
         {/* <UserStatus user={message?.expand?.user} /> */}
       </div>
-      <div className="  ml-auto flex w-4/5 flex-col justify-start      ">
+      <div className=" message-content      ">
         <p className=" font-bold  text-red-500">
           {message.expand?.user?.username}
-          <small className="ml-3 font-normal text-black dark:text-gray-300">
+          <small className="message-timestamp">
             {
               <TimeAgo
                 datetime={message.created}
@@ -113,18 +111,18 @@ const MessageCard = ({
 
         {likes && <MessageLikes message={message} />}
       </div>
-      <div className=" absolute -top-2 right-0 mr-5  transition-all group-hover:opacity-0 ">
-        {index === 0 && (
-          <>
-            <div className=" relative w-full rounded-lg bg-red-400 px-3 pb-0.5 text-sm font-bold text-white">
+      {index === 0 && (
+        <>
+          <div className=" newest-message">
+            <div className="newest-message-container">
               Newest Message
-              <hr className="   absolute top-1/2 right-32  z-0  w-96   rounded-full border border-red-400 bg-red-400" />
+              <hr className="  newest-message-line" />
             </div>
-          </>
-        )}
-      </div>
-      <div className="absolute top-0.5    right-0.5     opacity-0 group-hover:opacity-100">
-        <div className=" flex items-center rounded border-zinc-900  bg-zinc-700 shadow-sm  shadow-zinc-900 transition-all hover:shadow-md hover:shadow-zinc-900">
+          </div>
+        </>
+      )}
+      <div className="message-options">
+        <div className="message-options-container">
           {AppState.user?.id == message.user ? (
             <>
               <EditMessage message={message} />
@@ -142,11 +140,11 @@ const MessageCard = ({
   );
 };
 
-const MessageLikes = ({ message} : {message: MessageWithUser}) => {
+const MessageLikes = ({ message }: { message: MessageWithUser }) => {
   const likes = message.expand["likes(message)"];
   return (
     <div className="group/like  relative mt-1 w-16">
-      <div className="flex items-center gap-x-2 rounded-xl border-2 border-indigo-500 p-1 text-xl font-bold text-zinc-300">
+      <div className="message-like-container">
         <img
           src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
           alt="Thumbs Up Icon"
@@ -154,8 +152,8 @@ const MessageLikes = ({ message} : {message: MessageWithUser}) => {
         />
         {likes.length}
       </div>
-      <div className=" absolute bottom-12 left-0 w-72 origin-bottom-left  scale-0 rounded-lg bg-zinc-900  p-2 text-zinc-300 transition-all  ease-linear group-hover/like:scale-100  ">
-        <div className="flex items-center gap-x-2 rounded-xl    p-1 text-sm font-bold text-zinc-300">
+      <div className=" message-like-tooltip   ">
+        <div className="message-like-tooltip-container">
           <img
             src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
             alt="Thumbs Up Icon"
@@ -164,8 +162,10 @@ const MessageLikes = ({ message} : {message: MessageWithUser}) => {
           <div className="flex flex-col">
             Thumbs Up By
             <div className="flex flex-col overflow-y-scroll">
-              {likes.map((l,index) => (
-                <div className="" key={index}>{l.expand.user.username}</div>
+              {likes.map((l, index) => (
+                <div className="" key={index}>
+                  {l.expand.user.username}
+                </div>
               ))}
             </div>
           </div>

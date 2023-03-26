@@ -16,7 +16,7 @@ const DeleteServer = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const server = AppState.activeServer;
-  const user = AppState.user
+  const user = AppState.user;
   const handleClick = async () => {
     try {
       const yes = await Pop.confirm();
@@ -35,7 +35,7 @@ const DeleteServer = () => {
   return (
     <div className="w-full">
       {user?.id == server?.owner ? (
-        <button className=" server-options" onClick={handleClick}>
+        <button className=" server-options-selection" onClick={handleClick}>
           Delete Server
           <FaUserMinus size={15} />
         </button>
@@ -46,4 +46,3 @@ const DeleteServer = () => {
   );
 };
 export default observer(DeleteServer);
-    

@@ -5,7 +5,7 @@ import Modal from "../GlobalComponents/Modal";
 
 const SearchMembers = () => {
   return (
-    <button className=" server-options">
+    <button className=" server-options-selection">
       <MyModal
         buttonIcon={
           <div className="flex w-full  justify-between">

@@ -31,6 +31,7 @@ import { pb } from "utils/pocketBase";
 import { likesService } from "@/services/LikesService";
 import CreateServer from "../SideBar/CreateServer";
 import MyModal from "../GlobalComponents/Modal";
+import UserAvatar from "../GlobalComponents/UserAvatar";
 
 const topics = ["general", "tailwind-css", "react"];
 
@@ -115,11 +116,10 @@ const ChannelsBar = () => {
 
 // @ts-ignore
 const ChevronIcon = ({ expanded }) => {
-  const chevClass = "text-accent text-opacity-80 my-auto mr-1";
   return expanded ? (
-    <FaChevronDown size="14" className={chevClass} />
+    <FaChevronDown size="14" className="chevron-icon " />
   ) : (
-    <FaChevronRight size="14" className={chevClass} />
+    <FaChevronRight size="14" className="chevron-icon" />
   );
 };
 
@@ -132,21 +132,12 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
     <button
       onBlur={handleClick}
       onFocus={handleClick}
-      className="group relative w-full cursor-pointer bg-zinc-900 p-1  "
+      className="user-bar group "
       // onClick={handleClick}
     >
-      <div className=" flex gap-x-2 rounded-md p-1 transition-all ease-linear  hover:bg-zinc-700 ">
-        <img
-          src={
-            // @ts-ignore
-            user?.avatarUrl
-              ? // @ts-ignore
-                user?.avatarUrl
-              : `https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${user.username}`
-          }
-          alt="UserIcon"
-          className="h-9 w-9 rounded-full"
-        />
+      <div className=" user-bar-container">
+        <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
+     
         <div className=" truncate font-semibold  text-white">
           {user?.username}
         </div>

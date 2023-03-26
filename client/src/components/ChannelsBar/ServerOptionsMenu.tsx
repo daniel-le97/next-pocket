@@ -5,8 +5,9 @@ import DeleteServer from "../ServerOptions/DeleteServer";
 import CreateChannel from "../ServerOptions/CreateChannel";
 import ShareLink from "../ServerOptions/ShareLink";
 import SearchMembers from "../ServerOptions/SearchMembers";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Fragment } from "react";
 import ServerGuidelines from "../ServerOptions/ServerGuidelines";
+import { Transition } from "@headlessui/react";
 
 const ServerOptionsMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,27 +42,32 @@ const ServerOptionsMenu = () => {
 
   return (
     <div className="relative ">
-      <button
-        className="text-md flex w-full items-center justify-between truncate p-2 py-3.5 font-bold text-white focus:bg-zinc-700 focus:outline-none"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <button className="server-options-btn" onClick={() => setIsOpen(!isOpen)}>
         {AppState.activeServer?.name}
       </button>
 
       {isOpen && (
-        <div
-          ref={dropdownRef}
-          className="   absolute   z-10  flex w-full flex-col items-start justify-center rounded-lg  p-2 text-white transition-all ease-linear"
+        <Transition
+          show={isOpen}
+          as={Fragment}
+          enter="transition-opacity duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
-          <div className="w-full rounded bg-zinc-900 p-2">
-            <LeaveServer />
-            <DeleteServer />
-            <ShareLink />
-            <CreateChannel />
-            <SearchMembers />
-            <ServerGuidelines />
+          <div ref={dropdownRef} className="  server-options ">
+            <div className="server-options-container">
+              <LeaveServer />
+              <DeleteServer />
+              <ShareLink />
+              <CreateChannel />
+              <SearchMembers />
+              <ServerGuidelines />
+            </div>
           </div>
-        </div>
+        </Transition>
       )}
     </div>
   );
