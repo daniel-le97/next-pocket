@@ -13,7 +13,7 @@ import ContentContainer from "../../components/Messages/MessageContainer";
 
 import Head from "next/head";
 import FriendsBar from "../../components/DirectMessages/FriendsBar";
-import { userService } from "../../services/UserService";
+import { userService } from "../../services/UsersService";
 import Pop from "../../../utils/Pop";
 import { AppState } from "../../../AppState";
 import AddFriend from "../../components/DirectMessages/AddFriend";

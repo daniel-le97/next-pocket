@@ -1,8 +1,13 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable prefer-rest-params */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 // import { dev } from '../env'
+// import {Consola} from 'consola'
+
+
 
 function log(type, content) {
   const dev = true

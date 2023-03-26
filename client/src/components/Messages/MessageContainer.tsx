@@ -4,7 +4,7 @@ import MessagesList from "./MessagesList";
 import TopNavigation from "./TopNavigation";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
-import { messageService } from "../../services/MessageService";
+import { messageService } from "../../services/MessagesService";
 import { observer } from "mobx-react";
 import MessageScroll from "./MessageScroll";
 import CreateMessage from "./CreateMessage";

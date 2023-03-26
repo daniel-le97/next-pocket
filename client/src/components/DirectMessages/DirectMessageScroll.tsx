@@ -4,7 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
 import { directMessageService } from "../../services/DirectMessagesService";
 
-import { messageService } from "../../services/MessageService";
+import { messageService } from "../../services/MessagesService";
 import Loader from "../Loader";
 import { DirectMessageCard } from "./DirectMessageContainer";
 

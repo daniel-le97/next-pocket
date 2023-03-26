@@ -5,8 +5,8 @@ import { AppState } from "../../../AppState";
 import { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
 import Pop from "../../../utils/Pop";
-import { friendService } from "../../services/FriendService";
-import { userService } from "../../services/UserService";
+import { friendService } from "../../services/FriendsService";
+import { userService } from "../../services/UsersService";
 
 const AddFriend = () => {
   const [users, setUsers] = useState<UsersResponse[]>([]);

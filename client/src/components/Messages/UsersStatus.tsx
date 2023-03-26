@@ -1,55 +1,21 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { pb } from "../../../utils/pocketBase";
+
 import { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
-import {
-  Collections,
-  UsersResponse,
-  UsersStatusResponse,
-} from "../../../PocketBaseTypes/pocketbase-types";
-import Pop from "../../../utils/Pop";
-import { userService } from "../../services/UserService";
-export default function UserStatus({ user }: { user: UsersResponse }) {
+
+
+import { usersService } from "@/services/UsersService";
+import { pb } from "utils/pocketBase";
+import type { UsersResponse, UsersStatusResponse } from "PocketBaseTypes/pocketbase-types";
+// import * as consola  from "consola";
+import consola from 'consola'
+// import { userService, usersService } from "../../services/UserService";
+export default function UserStatus({ user }: { user: UsersResponse | undefined }) {
   const [isOnline, setIsOnline] = useState(false);
-  const [userStatusRecord, setUserStatusRecord] = useState<UsersStatusResponse>(null);
+  const [userStatusRecord, setUserStatusRecord] = useState<UsersStatusResponse | null>(null);
 
   useEffect(() => {
-
-
-    const fetchStatus = async () => {
-      try {
-        const res = await userService.getUserStatus(user.id)
-        setUserStatusRecord(res);
-        setIsOnline(res.isOnline);
-      } catch (error) {
-        if (error.status === 404) {
-          console.error(error);
-
-          return;
-        }
-        Pop.error(error);
-      }
-    };
-    fetchStatus();
-
-
-    
-    const unsubscribe = async () => {
-    if (userStatusRecord) {
-        await pb
-          .collection("usersStatus")
-          .subscribe(userStatusRecord?.id, function (e) {
-            console.log(e.record);
-
-            setIsOnline(e.record.isOnline);
-          });
-    }
-    };
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
+    consola.error(new Error('UserStatus'))
   }, []);
 
   return (

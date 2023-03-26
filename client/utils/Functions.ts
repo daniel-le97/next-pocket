@@ -19,7 +19,7 @@ export function addItemOrReplace<T>(array: T[], item: T, field: keyof T) {
  * @param {string} field index of the item
  */
 export function filterArray<T, K extends keyof T>(array: T[], item: T[K] , field: K){
-  array = array.filter(i => i[field] != item)
+  array = array.filter(i => i[field] == item)
 }
 
 export function getDate(date: Date) {

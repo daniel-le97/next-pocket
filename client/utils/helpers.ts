@@ -1,3 +1,4 @@
+
 export function getDate (date: string){
   return new Date(date).toLocaleString("en-US", {
     month: "2-digit",
@@ -8,3 +9,6 @@ export function getDate (date: string){
     hour12: true,
   });
 }
+
+
+// export const consola = 
