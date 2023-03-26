@@ -12,8 +12,14 @@ export function addItemOrReplace<T>(array: T[], item: T, field: keyof T) {
   }
   array[index] = item
 }
-export function filterArray<T, K extends keyof T>(array: T[], property: T[K] , field: K){
-  array = array.filter(i => i[field] != property)
+
+/**
+ * @param {Array} array an array to add data to
+ * @param {object} item item to remove from an array
+ * @param {string} field index of the item
+ */
+export function filterArray<T, K extends keyof T>(array: T[], item: T[K] , field: K){
+  array = array.filter(i => i[field] != item)
 }
 
 export function getDate(date: Date) {
@@ -31,7 +37,3 @@ export function getDateTime(date: Date) {
     minute: "2-digit",
   });
 }
-/**
- * @param {Object} newData data to replace existing fields
- * @param {object} originalData old data to update
- */

@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import { action, makeAutoObservable } from "mobx";
 
 import type { Admin, Record } from "pocketbase";
@@ -61,19 +58,23 @@ class ObservableAppState {
   }
 }
 
-// eslint-disable-next-line no-undef
-export const AppState = new Proxy(new ObservableAppState(), {
-  get(target, prop) {
+
+export const AppState = new Proxy<ObservableAppState>(new ObservableAppState(), {
+  get<T extends ObservableAppState>(target: T, prop: keyof T): T[keyof T] {
     isValidProp(target, prop);
-    //@ts-expect-error any
     return target[prop];
   },
-  set(target, prop, value) {
+  set<T extends ObservableAppState>(
+    target: T,
+    prop: keyof T,
+    value: T[keyof T]
+  ) {
     isValidProp(target, prop);
     action(() => {
-      //@ts-expect-error any
       target[prop] = value;
     })();
     return true;
   },
 });
+
+

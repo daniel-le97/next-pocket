@@ -85,18 +85,17 @@ class MessageService {
   async filterSubscribe() {
     const subscribe = await pb
       .collection(Collections.Messages)
-      .subscribe("*", async({ action, record }) =>{
-          if (action != "Delete") {
-            const message = await this.getById(record.id);
-            addItemOrReplace(AppState.messages, message, "id");
-            }
-          if (action == "Delete") {
-            await this.deleteMessage(record.id, true)
-            }
+      .subscribe("*", async ({ action, record }) => {
+        if (action != "Delete") {
+          const message = await this.getById(record.id);
+          addItemOrReplace(AppState.messages, message, "id");
+        }
+        if (action == "Delete") {
+          await this.deleteMessage(record.id, true);
+        }
       });
     return subscribe;
   }
-
 
   async getById(id: string) {
     const res = await pb
