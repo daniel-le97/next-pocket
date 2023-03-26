@@ -3,7 +3,7 @@ import { BsXCircle, BsXCircleFill } from "react-icons/bs";
 import { FaRemoveFormat } from "react-icons/fa";
 import { MessagesResponse } from "../../../../PocketBaseTypes/pocketbase-types";
 import Pop from "../../../../utils/Pop";
-import { messageService } from "../../../services/MessageService";
+import { messageService } from "../../../services/MessagesService";
 
 const DeleteMessage = ({
   messageId,

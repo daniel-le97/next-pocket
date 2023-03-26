@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
@@ -8,15 +9,13 @@ import { AppState } from "AppState";
 import type { UsersResponse } from "PocketBaseTypes/pocketbase-types";
 import ChannelSelection from "../ChannelsBar/ChannelSelection";
 import { MemberUser } from "PocketBaseTypes/utils";
-import { usersService } from "@/services/UserService";
+import { usersService } from "@/services/UsersService";
 // const topics = ["general", "tailwind-css", "react"];
 
 const MembersBar = () => {
   const users = AppState.members;
   const [collapsed, setCollapsed] = useState(false);
-  useEffect(() => {
-   
-  }, []);
+
 
   return (
     <>
@@ -44,12 +43,12 @@ const MembersBar = () => {
         </div>
         <div className=" flex flex-col gap-y-3 px-3">
           {users &&
-            users.map((u, index) => (
+            users.map((user, index) => (
               <div
                 className="relative cursor-pointer rounded-lg p-2 transition-all duration-200 hover:bg-slate-500"
                 key={index}
               >
-                <User user={u} />
+                <User user={user} />
               </div>
             ))}
         </div>
@@ -127,7 +126,7 @@ const User = ({ user }: { user: MemberUser}) => {
           className="rounded-full shadow-md shadow-zinc-900"
         />
         <div className="absolute left-8 top-9">
-          {user && <UserStatus user={user.expand!.user} />}
+          {user && <UserStatus user={user.expand?.user} />}
         </div>
       </div>
       <small className=" font-bold text-rose-600">{user.expand?.user.username}</small>

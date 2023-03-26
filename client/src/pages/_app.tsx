@@ -12,9 +12,9 @@ import { setRedirect } from "../../utils/Redirect";
 // import { pb } from "../../utils/pocketBase";
 import Layout from "../components/Layout";
 import { membersService } from "../services/MembersService";
-import { messageService } from "../services/MessageService";
-import { reactionsService } from "../services/LikesService";
-import { userService } from "../services/UserService";
+import { messageService } from "../services/MessagesService";
+import { Service } from "../services/LikesService";
+import { userService } from "../services/UsersService";
 import "../styles/tailwind.css"
 import "../styles/globals.css";
 

@@ -9,7 +9,7 @@ import { FaLaugh, FaSmile } from "react-icons/fa";
 import { Dialog } from "@headlessui/react";
 import InputEmoji from "react-input-emoji";
 import React from "react";
-import { messageService } from "../../services/MessageService";
+import { messageService } from "../../services/MessagesService";
 import { containsUrl } from "../../../utils/ContainsUrl";
 import type { MessagesRecord } from "../../../PocketBaseTypes/pocketbase-types";
 import { useForm } from "react-hook-form";

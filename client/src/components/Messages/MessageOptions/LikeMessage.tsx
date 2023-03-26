@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import CreateServer from "@/components/SideBar/CreateServer";
 import { likesService } from "@/services/LikesService";
-import { messageService } from "@/services/MessageService";
+import { messageService } from "@/services/MessagesService";
 import { observer } from "mobx-react";
 import { FaThumbsUp } from "react-icons/fa";
 import Pop from "utils/Pop";

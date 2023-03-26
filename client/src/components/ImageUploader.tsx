@@ -4,7 +4,7 @@ import Loader from "./Loader";
 import React from "react";
 import { observer } from "";
 import { pb } from "../../utils/pocketBase";
-import { uploadService } from "../services/UploadService";
+import { uploadService } from "../services/UploadsService";
 
 // Uploads images to Firebase Storage
 const ImageUploader = () => {

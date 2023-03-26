@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { serversService } from "../../services/ServersService";
-import { uploadService } from "../../services/UploadService";
+import { uploadService } from "../../services/UploadsService";
 import { pb } from "../../../utils/pocketBase";
 import Loader from "../Loader";
 import { useRouter } from "next/router";

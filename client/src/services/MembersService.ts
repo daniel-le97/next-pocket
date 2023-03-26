@@ -50,11 +50,11 @@ class MembersService {
       });
       const membership = record.items[0]
       if (setMember) {
-        AppState.activeMembership = membership
+        AppState.activeMembership = membership ?? null
       }
     return membership
   }
-  async leaveServer(data: Partial<MembersRecord>) {
+  async leaveServer(data: MembersRecord) {
     // get the memberShip to be deleted
     const memberShip = await this.getUserMemberRecord(data);
     if (!memberShip) {

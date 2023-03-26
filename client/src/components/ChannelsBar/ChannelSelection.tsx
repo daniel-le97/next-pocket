@@ -7,7 +7,7 @@ import { AppState } from "../../../AppState";
 import { ChannelsResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
 import { channelsService } from "../../services/ChannelsService";
-import { messageService } from "../../services/MessageService";
+import { messageService } from "../../services/MessagesService";
 import React from "react";
 const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user

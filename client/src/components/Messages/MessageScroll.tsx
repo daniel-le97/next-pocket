@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
 
-import { messageService } from "../../services/MessageService";
+import { messageService } from "../../services/MessagesService";
 import Loader from "../Loader";
 import MessageCard from "./MessageCard";
 const MessageScroll = () => {

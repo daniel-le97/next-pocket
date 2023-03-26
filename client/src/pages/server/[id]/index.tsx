@@ -11,7 +11,7 @@ import MessagesContainer from "@/components/Messages/MessageContainer";
 import { withAuth } from "@/middleware/WithAuth";
 import { withMember } from "@/middleware/WithMember";
 import { channelsService } from "@/services/ChannelsService";
-import { messageService } from "@/services/MessageService";
+import { messageService } from "@/services/MessagesService";
 import { serversService } from "@/services/ServersService";
 import Pop from "utils/Pop";
 import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";

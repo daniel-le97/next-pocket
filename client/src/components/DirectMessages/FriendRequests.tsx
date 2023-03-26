@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FriendRequestResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
 import Pop from "../../../utils/Pop";
-import { friendService } from "../../services/FriendService";
+import { friendService } from "../../services/FriendsService";
 import UserBadge from "../UserBadge";
 
 const FriendRequests = () => {

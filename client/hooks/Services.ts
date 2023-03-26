@@ -1,9 +1,9 @@
 import { authsService } from "../src/services/AuthsService";
 import { membersService } from "../src/services/MembersService";
-import { messageService } from "../src/services/MessageService";
+import { messageService } from "../src/services/MessagesService";
 import { serversService } from "../src/services/ServersService";
-import { uploadService } from "../src/services/UploadService";
-import { userService } from "../src/services/UserService";
+import { uploadService } from "../src/services/UploadsService";
+import { userService } from "../src/services/UsersService";
 
 const services = {
   members: membersService,

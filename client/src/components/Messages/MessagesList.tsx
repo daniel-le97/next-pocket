@@ -8,7 +8,7 @@ import noMessage from "../../assets/noMessages.png";
 import type { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import MessageCard from "./MessageCard";
 import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
-import { messageService } from "@/services/MessageService";
+import { messageService } from "@/services/MessagesService";
 
 const MessageList = () => {
   const messages = AppState.messages;

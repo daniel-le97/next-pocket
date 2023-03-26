@@ -7,7 +7,7 @@ import type {
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import type { Server, MemberUser } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
-import { uploadService } from "./UploadService";
+import { uploadService } from "./UploadsService";
 
 class ServersService {
   async getById(id: string) {

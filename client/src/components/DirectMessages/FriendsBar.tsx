@@ -6,7 +6,7 @@ import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 
 import { observer } from "mobx-react";
 
-import { userService } from "../../services/UserService";
+import { userService } from "../../services/UsersService";
 import { pb } from "../../../utils/pocketBase";
 import { channelsService } from "../../services/ChannelsService";
 import { AppState } from "../../../AppState";
@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { Transition, Dialog } from "@headlessui/react";
 import { BsPlusCircleFill } from "react-icons/bs";
-import { friendService } from "../../services/FriendService";
+import { friendService } from "../../services/FriendsService";
 import Link from "next/link";
 import { UserIcon } from "../ChannelsBar/ChannelsBar";
 const topics = ["general", "tailwind-css", "react"];

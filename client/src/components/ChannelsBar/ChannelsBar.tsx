@@ -22,7 +22,7 @@ import {
   Collections,
   UsersResponse,
 } from "../../../PocketBaseTypes/pocketbase-types";
-import { messageService } from "../../services/MessageService";
+import { messageService } from "../../services/MessagesService";
 import ServerLink from "../ServerOptions/ShareLink";
 import DeleteServer from "../ServerOptions/DeleteServer";
 import { Popover } from "@headlessui/react";
