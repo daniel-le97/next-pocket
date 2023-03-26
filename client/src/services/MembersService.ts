@@ -54,7 +54,7 @@ class MembersService {
       }
     return membership
   }
-  async leaveServer(data: MembersRecord) {
+  async leaveServer(data: Partial<MembersRecord>) {
     // get the memberShip to be deleted
     const memberShip = await this.getUserMemberRecord(data);
     if (!memberShip) {

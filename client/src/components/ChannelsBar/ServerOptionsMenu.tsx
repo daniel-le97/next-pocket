@@ -54,13 +54,12 @@ const ServerOptionsMenu = () => {
           className="   absolute   z-10  flex w-full flex-col items-start justify-center rounded-lg  p-2 text-white transition-all ease-linear"
         >
           <div className="w-full rounded bg-zinc-900 p-2">
-            <LeaveServer server={AppState.activeServer} />
+            <LeaveServer />
             <DeleteServer />
             <ShareLink />
             <CreateChannel />
             <SearchMembers />
-            <ServerGuidelines/>
-            
+            <ServerGuidelines />
           </div>
         </div>
       )}

@@ -57,8 +57,6 @@ const Server: NextPage = () => {
 };
      const fetchServerData = async (id: string) => {
        try {
-        
-        await helloS()
         // 
          AppState.page = 1;
          await channelsService.getChannelsByServerId(id);
