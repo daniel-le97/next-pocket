@@ -8,16 +8,14 @@ import { AppState } from "AppState";
 import type { UsersResponse } from "PocketBaseTypes/pocketbase-types";
 import ChannelSelection from "../ChannelsBar/ChannelSelection";
 import { MemberUser } from "PocketBaseTypes/utils";
+import { usersService } from "@/services/UserService";
 // const topics = ["general", "tailwind-css", "react"];
 
 const MembersBar = () => {
   const users = AppState.members;
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
-    const getUsersList = async () => {
-      // await userService.getUsersByServerId();
-    };
-    // getUsersList();
+   
   }, []);
 
   return (

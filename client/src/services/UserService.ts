@@ -8,17 +8,20 @@ import type {
 } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
+type ACTION = {
+  Create: 'Create'
+}
 
-class UserService {
+class UsersService {
   async updateUser(userData: UsersResponse) {
     // this will update pb.authStore.model automatically
-    const res = await pb.collection("users").update(userData.id, userData);
+    const res = await pb.collection(Collections.Users).update(userData.id, userData);
     return res;
   }
 
   async getUsersList() {
     // get all users and set users state
-    const res = await pb.collection("users").getFullList<UsersResponse>(200);
+    const res = await pb.collection(Collections.Users).getFullList<UsersResponse>(200);
     // AppState.users = res;
     return AppState.users;
   }
@@ -32,9 +35,11 @@ class UserService {
           addItemOrReplace(AppState.users, status, "id");
           return;
         }
+
         await this.deleteStatus(record.id, true);
       });
     return subscribe;
+    
   }
 
   async getUserStatus(userId: string) {
@@ -56,4 +61,4 @@ class UserService {
     }
   }
 }
-export const userService = new UserService();
+export const usersService = new UsersService();
