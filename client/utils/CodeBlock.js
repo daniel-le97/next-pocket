@@ -5,7 +5,7 @@ import { atomOneDark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 export default class CodeBlock extends React.PureComponent {
   static propTypes = {
-    value: PropTypes.string.isRequired,
+    value: PropTypes.array.isRequired,
     language: PropTypes.string,
   };
 

@@ -36,7 +36,7 @@ const LeaveServer = () => {
   };
 
   return (
-    <button className="server-options" onClick={leaveServer}>
+    <button className="server-options-selection" onClick={leaveServer}>
       Leave <small>{server && server.name}</small>
     </button>
   );

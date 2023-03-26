@@ -84,6 +84,8 @@ const MessageCard = ({
           rehypePlugins={[rehypeRaw]}
           components={{
             code: ({ node, inline, className, children, ...props }) => {
+           
+              
               if (inline) {
                 return <code className="text-zinc-300">{children}</code>;
               }
