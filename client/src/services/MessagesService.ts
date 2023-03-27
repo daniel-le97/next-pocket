@@ -9,7 +9,7 @@ import type {
   MessageWithUser,
 } from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
-import { addItemOrReplace} from "utils/Functions";
+import { addItemOrReplace, addItemOrReplaceV2} from "utils/Functions";
 import { pb } from "utils/pocketBase";
 
 class MessageService {
@@ -24,13 +24,9 @@ class MessageService {
     const res = await pb
       .collection(Collections.Messages)
       .create<MessageWithUser>(data, { expand: "user" });
-
-    // AppState.messages = [res, ...AppState.messages];
-    console.log("starting", AppState.messages);
     if (res.id) {
-      AppState.messages = addItemOrReplace(AppState.messages, res, "id");
+      addItemOrReplaceV2('messages', res, "id");
     }
-    console.log("finished", AppState.messages);
   }
 
   async sendDirectMessage(data: DirectMessagesRecord) {
@@ -40,7 +36,7 @@ class MessageService {
       .collection(Collections.DirectMessages)
       .create<DirectMessagesResponse>(data);
     // AppState.directMessages = [...AppState.directMessages, res];
-    addItemOrReplace(AppState.directMessages, res, "id");
+    addItemOrReplaceV2('directMessages', res, "id");
   }
 
   /**
@@ -89,9 +85,11 @@ class MessageService {
     const subscribe = await pb
       .collection(Collections.Messages)
       .subscribe("*", async ({ action, record }) => {
+        console.log('message subscribe triggered');
         if (action != "Delete") {
+          
           const message = await this.getById(record.id);
-          addItemOrReplace(AppState.messages, message, "id");
+          // addItemOrReplace(AppState.messages, message, "id");
         }
         if (action == "Delete") {
           await this.deleteMessage(record.id, true);

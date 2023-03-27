@@ -11,23 +11,34 @@ export function addItemOrReplace<T>(array: T[], item: T, field: keyof T) {
   const index = array.findIndex((i) => i[field] == item[field]);
   if (index === -1) {
     // console.log('adding',array);
-    array = [...array, item];
+    array = [item,...array];
     // console.log('adding',array);
     return array
   }
   array[index] = item
   return array
 }
-// export function addItemOrReplaceTest<T>(stateKey: keyof typeof AppState, item: T, field: keyof T) {
-//   AppState[stateKey] =  AppState[stateKey] as unknown as T[];
-//   const index = state.findIndex((i) => i[field] == item[field]);
-//   if (index === -1) {
-//    state = [...state, item]
-//     return
-//   }
-//   state[index] = item
-  
-// }
+import { AppState } from "AppState";
+import { action } from "mobx";
+import Pop from "./Pop";
+/**
+ * @param {string} state Must be an array
+ * @param {object} item item to be added
+ * @param {string} field index to filter from
+ */
+export function addItemOrReplaceV2<T>(state: keyof typeof AppState, item: T, field: keyof T) {
+  if (!Array.isArray(AppState[state])) {
+    return Pop.error('please supply a key in AppState that is an array')
+  }
+ action(() => {
+    const index = (AppState[state] as unknown as T[]).findIndex((i) => i[field] == item[field]);
+    if (index === -1) {
+      (AppState[state] as unknown as T[]) = [item, ...(AppState[state] as unknown as T[])]
+    } else {
+      (AppState[state] as unknown as T[])[index] = item
+    }
+  })();
+}
 
 /**
  * @param {Array} array an array to add data to

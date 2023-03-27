@@ -1,31 +1,23 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState } from "react";
 import { observer } from "mobx-react";
-import { pb } from "../../../utils/pocketBase";
-import { BsPlusCircleFill } from "react-icons/bs";
+// import { BsPlusCircleFill } from "react-icons/bs";
 import { AppState } from "../../../AppState";
-import { FaLaugh, FaSmile } from "react-icons/fa";
-import { Dialog } from "@headlessui/react";
-import InputEmoji from "react-input-emoji";
-import React from "react";
 import { messageService } from "../../services/MessagesService";
-import { containsUrl } from "../../../utils/ContainsUrl";
 import type { MessagesRecord } from "../../../PocketBaseTypes/pocketbase-types";
 import { useForm } from "react-hook-form";
 import Pop from "../../../utils/Pop";
-import ReactMarkdown from "react-markdown";
 const CreateMessage = () => {
-  const [newMessage, setNewMessage] = useState("");
-  const messages = AppState.messages;
+  // const [newMessage, setNewMessage] = useState("");
+  // const messages = AppState.messages;
   const user = AppState.user;
   const [characterCount, setCharacterCount] = useState(0);
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
-    watch,
   } = useForm({
     defaultValues: {
       content: "",
@@ -36,7 +28,7 @@ const CreateMessage = () => {
 
   const sendMessage = async (data: MessagesRecord) => {
     try {
-      let el = document.getElementById("createMessageInput");
+      const el = document.getElementById("createMessageInput");
 
       data.channel = AppState.activeChannel?.id;
       await messageService.sendMessage(data);
@@ -74,16 +66,16 @@ const CreateMessage = () => {
             <textarea
               id="createMessageInput"
               rows={1}
-              className="max-h-96 w-full py-3.5 resize-none  rounded-xl  create-message-input bg-zinc-600/90 pl-4 pr-12 text-lg  font-semibold text-zinc-300 focus:outline-none"
+              className="create-message-input max-h-96 w-full resize-none  rounded-xl  bg-zinc-600/90 py-3.5 pl-4 pr-12 text-lg  font-semibold text-zinc-300 focus:outline-none"
               {...register("content", {
                 required: true,
                 maxLength: 1200,
                 minLength: 3,
               })}
-              onInput={(e) => {
-                e.target.style.height = "auto";
-                e.target.style.height = `${e.target.scrollHeight}px`;
-                setCharacterCount(e.target.value.length);
+              onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
+                e.currentTarget.style.height = "auto";
+                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+                setCharacterCount(e.currentTarget.value.length);
                 //  const limitEl = document.getElementById("charLimit");
                 //  limitEl.textContent = `${charCount}/600`;
                 if (characterCount >= 1200) {
@@ -95,8 +87,6 @@ const CreateMessage = () => {
                   e.preventDefault();
                 }
               }}
-
-           
             ></textarea>
             <p
               id="charLimit"
@@ -132,13 +122,13 @@ const CreateMessage = () => {
     </div>
   );
 };
-const PlusIcon = () => (
-  <button type="submit">
-    <BsPlusCircleFill
-      size="22"
-      className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
-    />
-  </button>
-);
+// const PlusIcon = () => (
+//   <button type="submit">
+//     <BsPlusCircleFill
+//       size="22"
+//       className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
+//     />
+//   </button>
+// );
 
 export default observer(CreateMessage);
