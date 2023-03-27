@@ -1,17 +1,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 // /* eslint-disable @typescript-eslint/no-misused-promises */
+import { AppState } from "AppState";
 import type { Record } from "pocketbase";
+import type { DirectMessagesRecord, DirectMessagesResponse, MessagesRecord, MessageWithUser } from "PocketBaseTypes";
+import { Collections } from "PocketBaseTypes";
 import { addItemOrReplace } from "utils/Functions";
-import { AppState } from "../../AppState";
-import type {
-  DirectMessagesRecord,
-  DirectMessagesResponse,
-  MessagesRecord,
-  MessagesResponse,
-} from "../../PocketBaseTypes/pocketbase-types";
-import { Collections } from "../../PocketBaseTypes/pocketbase-types";
-import type { MessageWithUser } from "../../PocketBaseTypes/utils";
-import { pb } from "../../utils/pocketBase";
+import { pb } from "utils/pocketBase";
+
 
 class MessageService {
   /**
