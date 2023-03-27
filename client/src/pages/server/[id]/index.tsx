@@ -7,7 +7,7 @@ import ChannelsBar from "@/components/ChannelsBar/ChannelsBar";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { observer } from "mobx-react";
-import MessagesContainer from "@/components/Messages/MessageContainer";
+
 
 
 import Pop from "utils/Pop";
