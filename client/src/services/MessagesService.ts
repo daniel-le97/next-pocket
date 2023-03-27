@@ -2,11 +2,15 @@
 // /* eslint-disable @typescript-eslint/no-misused-promises */
 import { AppState } from "AppState";
 import type { Record } from "pocketbase";
-import type { DirectMessagesRecord, DirectMessagesResponse, MessagesRecord, MessageWithUser } from "PocketBaseTypes";
+import type {
+  DirectMessagesRecord,
+  DirectMessagesResponse,
+  MessagesRecord,
+  MessageWithUser,
+} from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
-import { addItemOrReplace } from "utils/Functions";
+import { addItemOrReplace} from "utils/Functions";
 import { pb } from "utils/pocketBase";
-
 
 class MessageService {
   /**
@@ -22,7 +26,11 @@ class MessageService {
       .create<MessageWithUser>(data, { expand: "user" });
 
     // AppState.messages = [res, ...AppState.messages];
-    addItemOrReplace(AppState.messages, res, "id");
+    console.log("starting", AppState.messages);
+    if (res.id) {
+      AppState.messages = addItemOrReplace(AppState.messages, res, "id");
+    }
+    console.log("finished", AppState.messages);
   }
 
   async sendDirectMessage(data: DirectMessagesRecord) {

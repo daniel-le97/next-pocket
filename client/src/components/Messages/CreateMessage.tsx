@@ -39,7 +39,7 @@ const CreateMessage = () => {
       let el = document.getElementById("createMessageInput");
 
       data.channel = AppState.activeChannel?.id;
-      const createMessage = await messageService.sendMessage(data);
+      await messageService.sendMessage(data);
       reset();
       if (el) {
         el.style.height = "initial";
