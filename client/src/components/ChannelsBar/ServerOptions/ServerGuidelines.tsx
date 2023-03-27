@@ -7,7 +7,7 @@ import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import router from "next/router";
 import { serversService } from "@/services/ServersService";
-import MyModal from "../GlobalComponents/Modal";
+import MyModal from "../../GlobalComponents/Modal";
 const ServerGuidelines = () => {
   const [isOpen, setIsOpen] = useState(false);
 

@@ -15,7 +15,7 @@ import ChannelSelection from "./ChannelSelection";
 
 import { channelsService } from "../../services/ChannelsService";
 import { AppState } from "../../../AppState";
-import LeaveServer from "../ServerOptions/LeaveServer";
+import LeaveServer from "./ServerOptions/LeaveServer";
 import { useRouter } from "next/router";
 import {
   ChannelsResponse,
@@ -23,8 +23,8 @@ import {
   UsersResponse,
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { messageService } from "../../services/MessagesService";
-import ServerLink from "../ServerOptions/ShareLink";
-import DeleteServer from "../ServerOptions/DeleteServer";
+import ServerLink from "./ServerOptions/ShareLink";
+import DeleteServer from "./ServerOptions/DeleteServer";
 import { Popover } from "@headlessui/react";
 import ServerSettingsMenu from "./ServerOptionsMenu";
 import { pb } from "utils/pocketBase";
@@ -137,7 +137,7 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
     >
       <div className=" user-bar-container">
         <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
-     
+
         <div className=" truncate font-semibold  text-white">
           {user?.username}
         </div>

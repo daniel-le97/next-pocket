@@ -13,7 +13,7 @@ import Pop from "../../utils/Pop";
 import Layout from "../components/Layout";
 
 import "../styles/tailwind.css"
-import "../styles/globals.css";
+import "../styles/scss/globals.scss";
 import { membersService } from "../services";
 
 

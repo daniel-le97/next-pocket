@@ -4,8 +4,8 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React from "react";
 import { FaClipboard } from "react-icons/fa";
-import { AppState } from "../../../AppState";
-import Pop from "../../../utils/Pop";
+import { AppState } from "../../../../AppState";
+import Pop from "../../../../utils/Pop";
 // import type { Server } from "../../../PocketBaseTypes/utils"
 
 const ShareLink = () => {

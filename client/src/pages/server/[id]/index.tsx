@@ -8,17 +8,12 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { observer } from "mobx-react";
 
-
-
 import Pop from "utils/Pop";
 import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";
 import { AppState } from "AppState";
 import { setRedirect } from "utils/Redirect";
 import { channelsService, messageService, serversService } from "@/services";
 import { withAuth, withMember } from "@/middleware";
-
-
-
 
 import TopNavigation from "@/components/Messages/TopNavigation";
 import MessageScroll from "@/components/Messages/MessageScroll";
@@ -31,19 +26,19 @@ const Server: NextPage = () => {
   // const server = AppState.activeServer;
   const user = AppState.user;
   // console.log('went')
-const fetchServerData = async (id: string) => {
-  try {
-    //
-    AppState.page = 1;
-    await channelsService.getChannelsByServerId(id);
-    const channelId = AppState.activeChannel!.id;
-    console.log(channelId);
-    await messageService.getMessagesByChannelId(channelId);
-    await serversService.getMembers(id);
-  } catch (error) {
-    Pop.error(error);
-  }
-};
+  const fetchServerData = async (id: string) => {
+    try {
+      //
+      AppState.page = 1;
+      await channelsService.getChannelsByServerId(id);
+      const channelId = AppState.activeChannel!.id;
+      console.log(channelId);
+      await messageService.getMessagesByChannelId(channelId);
+      await serversService.getMembers(id);
+    } catch (error) {
+      Pop.error(error);
+    }
+  };
   useEffect(() => {
     if (!user) {
       setRedirect(`/server/${id}`);
@@ -62,19 +57,17 @@ const fetchServerData = async (id: string) => {
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  h-screen w-full  ">
           <ChannelsBar />
-        <div className=" message-container ">
-      <TopNavigation />
+          <div className=" message-container ">
+            <TopNavigation />
 
-      <MessageScroll />
-      <CreateMessage />
-    </div>
+            <MessageScroll />
+            <CreateMessage />
+          </div>
           <ServerMembersBar />
         </div>
       </main>
     </>
   );
 };
-
-
 
 export default observer(withAuth(withMember(Server)));

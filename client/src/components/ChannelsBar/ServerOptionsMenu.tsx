@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
 import { AppState } from "../../../AppState";
-import LeaveServer from "../ServerOptions/LeaveServer";
-import DeleteServer from "../ServerOptions/DeleteServer";
-import CreateChannel from "../ServerOptions/CreateChannel";
-import ShareLink from "../ServerOptions/ShareLink";
-import SearchMembers from "../ServerOptions/SearchMembers";
+import LeaveServer from "./ServerOptions/LeaveServer";
+import DeleteServer from "./ServerOptions/DeleteServer";
+import CreateChannel from "./ServerOptions/CreateChannel";
+import ShareLink from "./ServerOptions/ShareLink";
+import SearchMembers from "./ServerOptions/SearchMembers";
 import { useState, useRef, useEffect, Fragment } from "react";
-import ServerGuidelines from "../ServerOptions/ServerGuidelines";
+import ServerGuidelines from "./ServerOptions/ServerGuidelines";
 import { Transition } from "@headlessui/react";
 
 const ServerOptionsMenu = () => {

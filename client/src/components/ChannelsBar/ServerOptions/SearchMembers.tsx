@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import { FaSearch } from "react-icons/fa";
-import MyModal from "../GlobalComponents/Modal";
-import Modal from "../GlobalComponents/Modal";
+import MyModal from "../../GlobalComponents/Modal";
+import Modal from "../../GlobalComponents/Modal";
 
 const SearchMembers = () => {
   return (
