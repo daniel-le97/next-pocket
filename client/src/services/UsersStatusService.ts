@@ -1,5 +1,5 @@
-import { UsersStatusRecord } from "PocketBaseTypes/pocketbase-types";
-import { UsersStatusWithUser } from "PocketBaseTypes/utils";
+
+import type { UsersStatusWithUser } from "PocketBaseTypes";
 import { BaseT } from "./BaseService";
 
 class UsersStatusService extends BaseT<UsersStatusWithUser>  {
