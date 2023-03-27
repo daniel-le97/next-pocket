@@ -8,17 +8,16 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { observer } from "mobx-react";
 import MessagesContainer from "@/components/Messages/MessageContainer";
-import { withAuth } from "@/middleware/WithAuth";
-import { withMember } from "@/middleware/WithMember";
-import { channelsService } from "@/services/ChannelsService";
-import { messageService } from "@/services/MessagesService";
-import { serversService } from "@/services/ServersService";
+
+
 import Pop from "utils/Pop";
 import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";
 import { AppState } from "AppState";
 import { setRedirect } from "utils/Redirect";
-import { membersService } from "@/services/MembersService";
-import { helloS } from "@/services/TestService";
+import { channelsService, messageService, serversService } from "@/services";
+import { withAuth, withMember } from "@/middleware";
+
+
 
 
 

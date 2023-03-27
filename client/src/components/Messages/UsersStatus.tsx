@@ -15,7 +15,7 @@ export default function UserStatus({ user }: { user: UsersResponse | undefined }
   const [userStatusRecord, setUserStatusRecord] = useState<UsersStatusResponse | null>(null);
 
   useEffect(() => {
-    consola.error(new Error('UserStatus'))
+    // consola.error(new Error('UserStatus'))
   }, []);
 
   return (

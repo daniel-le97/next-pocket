@@ -8,38 +8,33 @@ import { AppState } from "../../AppState";
 import { useUser } from "../../hooks/User";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
-import { setRedirect } from "../../utils/Redirect";
+
 // import { pb } from "../../utils/pocketBase";
 import Layout from "../components/Layout";
-import { membersService } from "../services/MembersService";
-import { messageService } from "../services/MessagesService";
-import { Service } from "../services/LikesService";
-import { userService } from "../services/UsersService";
+
 import "../styles/tailwind.css"
 import "../styles/globals.css";
+import { membersService, usersService } from "@/services";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const user = AppState.user;
 
+  
+  
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        await userService.getUsersList();
-      } catch (error) {
-        Pop.error(error);
+    // if you want it to be fetch before anything else put your call here
+      async function initialFetch() {
+        try {
+          //  only call these if we have a user logged in
+          if (user?.id) {
+            await membersService.getUserServers(user.id);
+          }
+        } catch (error) {
+          Pop.error(error);
+        }
       }
-    };
-    // fetchUsers();
 
-    const fetchUserServers = async () => {
-      //  await messageService.getById("hzx12x5dvpxh5mo");
-      // await reactionsService.create("hzx12x5dvpxh5mo");
-      // const reaction = await reactionsService.getById("50v85pfr0gn70tg");
-      const userId = user?.id as string;
-      const servers = await membersService.getUserServers(userId);
-      return servers;
-    };
-    fetchUserServers();
+    initialFetch()
   }, []);
 
   useEffect(() => {

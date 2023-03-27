@@ -21,6 +21,7 @@ import { isValidProp } from "./utils/isValidProp";
 // /** @type {import('./src/models/Account.js').Account | null} */
 class ObservableAppState {
   user: Record | Admin | null = null;
+  UsersStatus: UsersStatusWithUser[] = []
 
   members: MemberUser[] = [];
 
