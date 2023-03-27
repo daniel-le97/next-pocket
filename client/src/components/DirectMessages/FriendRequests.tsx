@@ -5,7 +5,7 @@ import { FriendRequestResponse } from "../../../PocketBaseTypes/pocketbase-types
 import { pb } from "../../../utils/pocketBase";
 import Pop from "../../../utils/Pop";
 import { friendService } from "../../services/FriendsService";
-import UserBadge from "../UserBadge";
+import UserBadge from "../GlobalComponents/UserBadge";
 
 const FriendRequests = () => {
   const [receivedRequests, setReceivedRequests] = useState<

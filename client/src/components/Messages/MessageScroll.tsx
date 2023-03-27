@@ -4,17 +4,17 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
 
 import { messageService } from "../../services/MessagesService";
-import Loader from "../Loader";
+import Loader from "../GlobalComponents/Loader";
 import MessageCard from "./MessageCard";
 const MessageScroll = () => {
   const fetchMore = async () => {
     const channelId = AppState.activeChannel?.id;
-    console.log(
-      "CurrentPage:",
-      AppState.page,
-      "TotalPages:",
-      AppState.totalPages
-    );
+    // console.log(
+    //   "CurrentPage:",
+    //   AppState.page,
+    //   "TotalPages:",
+    //   AppState.totalPages
+    // );
 
     await messageService.getMessagesByChannelId(channelId!);
   };
@@ -23,7 +23,6 @@ const MessageScroll = () => {
       id="scrollableDiv"
       className="flex   h-full  flex-col-reverse overflow-auto pb-16"
     >
-      {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll
         dataLength={AppState.messages.length}
         next={fetchMore}
@@ -70,7 +69,6 @@ const MessageScroll = () => {
         })}
       </InfiniteScroll>
     </div>
-  
   );
 };
 

@@ -5,7 +5,7 @@ import { AppState } from "../../../AppState";
 import { directMessageService } from "../../services/DirectMessagesService";
 
 import { messageService } from "../../services/MessagesService";
-import Loader from "../Loader";
+import Loader from "../GlobalComponents/Loader";
 import { DirectMessageCard } from "./DirectMessageContainer";
 
 const DirectMessageScroll = () => {

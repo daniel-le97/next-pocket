@@ -36,7 +36,7 @@ const MessageList = () => {
       className="messages snap-y snap-end  overflow-y-auto  pb-14 "
       ref={MCRef}
     >
-      {messages.length >= 1 ? (
+      {messages ? (
         messages?.map((message, index) => (
           <MessageCard
             messages={messages}

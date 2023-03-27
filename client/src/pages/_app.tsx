@@ -16,7 +16,7 @@ import { messageService } from "../services/MessagesService";
 import { Service } from "../services/LikesService";
 import { userService } from "../services/UsersService";
 import "../styles/tailwind.css"
-import "../styles/globals.css";
+import "../styles/scss/globals.scss";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const user = AppState.user;

@@ -10,9 +10,8 @@ import {
 } from "react-icons/fa";
 import { AppState } from "../../../AppState";
 import { pb } from "../../../utils/pocketBase";
-import useDarkMode from "../../../hooks/useDarkMode";
-import { BsMoon, BsSun } from "react-icons/bs";
 import { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import { MessageWithUser } from "PocketBaseTypes/utils";
 const TopNavigation = () => {
   const [channel, setRoom] = useState<string>("");
   const [message, setMessage] = useState("");
@@ -23,18 +22,12 @@ const TopNavigation = () => {
   }, [AppState?.activeChannel?.title]);
 
   return (
-    <div
-      className="z-10 flex w-full items-center justify-evenly bg-gray-300 
-    py-2 
-    
-    pr-14 shadow-md dark:bg-zinc-800 "
-    >
-      <HashtagIcon />
-      <Title room={channel} query={query} />
-      {/* <ThemeIcon/> */}
+    <div className="top-navigation">
+      <FaHashtag size="20" className="title-hashtag" />
+      <h5 className="title-text">{channel ? channel : query}</h5>
       <Search />
-      <BellIcon />
-      <UserCircle />
+      <FaRegBell size="24" className="top-navigation-icon" />
+      <FaUserCircle size="24" className="top-navigation-icon" />
     </div>
   );
 };
@@ -50,7 +43,7 @@ const Search = () => {
         expand: "user",
       });
       let updatedMessages = AppState.messages;
-      updatedMessages = res.items as unknown as MessagesResponse<unknown>[];
+      updatedMessages = res.items as unknown as MessageWithUser[];
       AppState.messages = updatedMessages;
     };
     await getMessage();
@@ -79,13 +72,5 @@ const Search = () => {
     </div>
   );
 };
-const BellIcon = () => <FaRegBell size="24" className="top-navigation-icon" />;
-const UserCircle = () => (
-  <FaUserCircle size="24" className="top-navigation-icon" />
-);
-const HashtagIcon = () => <FaHashtag size="20" className="title-hashtag" />;
-const Title = ({ room, query }: { room: string; query: string }) => {
-  return <h5 className="title-text">{room ? room : query}</h5>;
-};
 
-export default observer(TopNavigation);   
+export default observer(TopNavigation);

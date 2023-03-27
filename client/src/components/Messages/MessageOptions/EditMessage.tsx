@@ -23,7 +23,7 @@ import { useRouter } from "next/router";
 
 import { FaEdit } from "react-icons/fa";
 import { serversService } from "../../../services/ServersService";
-import Loader from "../../Loader";
+import Loader from "../../GlobalComponents/Loader";
 import { uploadService } from "../../../services/UploadsService";
 import { pb } from "../../../../utils/pocketBase";
 import MessageCard from "../MessageCard";

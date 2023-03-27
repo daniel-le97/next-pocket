@@ -80,7 +80,7 @@ const MessageCard = ({
 
         <ReactMarkdown
           children={message.content as string}
-          className="scrollbar-h-sm overflow-x-scroll font-sans text-lg text-zinc-300"
+          className="markdown"
           rehypePlugins={[rehypeRaw]}
           components={{
             code: ({ node, inline, className, children, ...props }) => {
@@ -90,12 +90,12 @@ const MessageCard = ({
                 return <code className="text-zinc-300">{children}</code>;
               }
               return (
-                <div className="rounded-t-xl">
-                  <div className="  flex justify-between rounded-t-md bg-zinc-900 p-2  ">
+                <div className="markdown-container ">
+                  <div className=" markdown-banner ">
                     {/* <span className="language-label">{language}</span> */}
                     <button
                       onClick={handleCopyClick}
-                      className="copy-button rounded-lg bg-zinc-700 p-1 px-2 hover:bg-opacity-90 active:bg-indigo-400"
+                      className="markdown-copy-btn"
                     >
                       Copy
                     </button>
@@ -144,16 +144,16 @@ const MessageCard = ({
 
 const MessageLikes = ({ message }: { message: MessageWithUser }) => {
   const likes = message.expand["likes(message)"];
+  
   return (
-    <div className="group/like  relative mt-1 w-16">
-      <div className="message-like-container">
+    
+      <div className="message-like-container group/like">
         <img
           src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
           alt="Thumbs Up Icon"
           className="h-6 w-6 rounded-full"
         />
         {likes.length}
-      </div>
       <div className=" message-like-tooltip   ">
         <div className="message-like-tooltip-container">
           <img
@@ -173,7 +173,8 @@ const MessageLikes = ({ message }: { message: MessageWithUser }) => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    
   );
 };
 

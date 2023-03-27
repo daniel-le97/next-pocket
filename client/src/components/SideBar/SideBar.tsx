@@ -12,9 +12,8 @@ import { FaArrowCircleRight, FaCompass } from "react-icons/fa";
 import { pb } from "../../../utils/pocketBase";
 import ServerSelection from "./ServerSelection";
 import CreateServer from "./CreateServer";
-import ThemeIcon from "./ThemeIcon";
 import Pop from "../../../utils/Pop";
-
+import useDarkMode from "../../../hooks/useDarkMode";
 const SideBar = () => {
   const [user, setUser] = useState(null);
 
@@ -33,27 +32,27 @@ const SideBar = () => {
           text={"Explore Servers"}
           router={"/"}
         />
-        <Divider />
+        <hr className="sidebar-hr" />
         <SideBarIcon
           icon={<BsMessenger size={22} />}
           text={"Direct Messages"}
           router={"/DirectMessages"}
         />
 
-        <Divider />
+        <hr className="sidebar-hr" />
         <SideBarIcon
           icon={<BsPerson size="32" />}
           text={"Account"}
           router={"/AccountPage"}
         />
 
-        <Divider />
+        <hr className="sidebar-hr" />
       </div>
 
       {user ? (
         <>
           <div>
-            <Divider />
+            <hr className="sidebar-hr" />
             <LogOutIcon />
           </div>
           {/* <UserIcon user={user} /> */}
@@ -69,7 +68,7 @@ const SideBar = () => {
         />
       )}
 
-      <div >
+      <div>
         <ThemeIcon />
         <CreateServer />
         <SideBarIcon
@@ -84,9 +83,8 @@ const SideBar = () => {
   );
 };
 
-
 // @ts-ignore
-export const SideBarIcon = ({ icon, text, router }) => {
+const SideBarIcon = ({ icon, text, router }) => {
   return (
     <Link href={router}>
       <div className=" sidebar-icon group ">
@@ -97,7 +95,6 @@ export const SideBarIcon = ({ icon, text, router }) => {
   );
 };
 
-const Divider = () => <hr className="sidebar-hr" />;
 const LogOutIcon = () => {
   const router = useRouter();
   // const logOut = useLogOut();
@@ -129,6 +126,33 @@ const LogOutIcon = () => {
       <FaArrowCircleRight size="28" />
       <span className=" sidebar-tooltip group-hover:scale-100">Logout</span>
     </div>
+  );
+};
+
+const ThemeIcon = () => {
+  const [darkTheme, setDarkTheme] = useDarkMode();
+
+  const handleMode = () => setDarkTheme(!darkTheme);
+  return (
+    <span
+      onClick={handleMode}
+      className="group flex items-center justify-center"
+    >
+      {/* {darkTheme ? (
+        <BsSun size="24" className="top-navigation-icon" />
+      ) : (
+        <BsMoon size="24" className="top-navigation-icon" />
+      )} */}
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/3751/3751403.png"
+        alt=""
+        width={40}
+        className="mx-3 cursor-pointer"
+      />
+      <span className="sidebar-tooltip group-hover:scale-100">
+        Toggle Theme
+      </span>
+    </span>
   );
 };
 export default observer(SideBar);

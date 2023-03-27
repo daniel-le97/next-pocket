@@ -11,7 +11,7 @@ import { Fragment, useState } from "react";
 import { serversService } from "../../services/ServersService";
 import { uploadService } from "../../services/UploadsService";
 import { pb } from "../../../utils/pocketBase";
-import Loader from "../Loader";
+import Loader from "../GlobalComponents/Loader";
 import { useRouter } from "next/router";
 import type { ServersRecord } from "../../../PocketBaseTypes/pocketbase-types";
 import MyModal from "../GlobalComponents/Modal";

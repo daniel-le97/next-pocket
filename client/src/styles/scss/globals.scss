@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "mixins";
+@import "utilities";
+
 *,
 *::before,
 *::after {
@@ -8,6 +11,16 @@
   margin: 0;
   padding: 0;
 }
+::-webkit-scrollbar {
+  width: 12px;
+
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-500 dark:bg-green-400;
+}
+
 
 pre {
   @apply rounded-b-xl;
@@ -54,9 +67,6 @@ pre {
     shadow-lg outline-none;
   }
 
-  /* .content-container {
-    @apply ;
-  } */
   .content-list {
     @apply flex  w-full flex-col-reverse overflow-auto  pb-24;
   }
@@ -98,10 +108,16 @@ pre {
   }
 }
 
-/* Sidebar */
+/* Sidebar / Server Selection  */
 @layer components {
   .sidebar {
     @apply fixed   top-0 left-0 z-50 flex max-h-screen min-h-screen w-16 flex-col  bg-gray-200 shadow-lg dark:bg-zinc-900;
+  }
+  .sidebar::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+
+    background-color: transparent;
   }
   .sidebar-hr {
     @apply mx-2 rounded-full border border-gray-700 bg-gray-800;
@@ -136,6 +152,14 @@ pre {
     @apply my-2 flex  
          snap-y  flex-col  items-start   justify-start  scroll-smooth pl-1.5;
   }
+  .server-selection::-webkit-scrollbar {
+    display: none;
+
+    background-color: transparent;
+  }
+  .server-selection::-webkit-scrollbar-thumb {
+    @apply bg-gray-500 dark:bg-transparent;
+  }
 
   .server-icon-image {
     @apply h-12 w-12 rounded-3xl  object-cover transition-all duration-300 ease-linear hover:rounded-xl;
@@ -154,13 +178,13 @@ pre {
 }
 /* Top Navigation */
 @layer components {
-  /* .top-navigation {
+  .top-navigation {
     @apply z-10    flex w-full  
     items-center justify-evenly bg-gray-300 
     py-2 
     shadow-lg 
     dark:bg-zinc-800;
-  } */
+  }
 
   .top-navigation-icon {
     @apply mr-3
@@ -295,6 +319,10 @@ pre {
     hover:shadow-md
     hover:transition-all;
   }
+
+  .message-container {
+    @apply relative h-full flex-1 items-stretch    overflow-hidden bg-gray-300   dark:bg-zinc-700;
+  }
   .message-filtered {
     @apply relative  m-0  flex w-full  flex-row items-center justify-evenly rounded-sm bg-gray-800 py-4 px-8 
  transition-all
@@ -389,7 +417,7 @@ pre {
     @apply font-semibold text-blue-500 hover:underline;
   }
   .message-like-container {
-    @apply flex items-center w-16  gap-x-2 rounded-xl border-2 border-indigo-500 p-1 text-xl font-bold text-zinc-300 relative;
+    @apply relative flex w-16  items-center gap-x-2 rounded-xl border-2 border-indigo-500 p-1 text-xl font-bold text-zinc-300;
   }
   .message-like-tooltip {
     @apply absolute bottom-12 left-0 w-72 origin-bottom-left   scale-0 rounded-lg  bg-zinc-900 p-2 text-zinc-300  transition-all ease-linear group-hover/like:scale-100;
@@ -398,20 +426,17 @@ pre {
     @apply flex items-center gap-x-2 rounded-xl    p-1 text-sm font-bold text-zinc-300;
   }
 
-
-
-
-  .markdown{
-    @apply scrollbar-h-sm overflow-x-scroll font-sans text-lg text-zinc-300
+  .markdown {
+    @apply scrollbar-h-sm overflow-x-scroll font-sans text-lg text-zinc-300;
   }
-  .markdown-container{
-    @apply rounded-t-xl mt-3
+  .markdown-container {
+    @apply mt-3 rounded-t-xl;
   }
-  .markdown-banner{
-    @apply  flex justify-between rounded-t-md bg-zinc-900 p-2 
+  .markdown-banner {
+    @apply flex justify-between rounded-t-md bg-zinc-900 p-2;
   }
-  .markdown-copy-btn{
-    @apply  rounded-lg bg-zinc-700 p-1 px-2 hover:bg-opacity-90 active:bg-indigo-400
+  .markdown-copy-btn {
+    @apply rounded-lg bg-zinc-700 p-1 px-2 hover:bg-opacity-90 active:bg-indigo-400;
   }
 }
 
@@ -476,98 +501,8 @@ pre {
   }
 
   .join-button-tooltip {
-    @apply absolute right-8 -top-1/3 origin-right scale-0 p-2 rounded-md bg-zinc-900  px-2  transition-all ease-in group-hover/join:scale-100;
-  }
-  .join-button-tooltip::after {
-    @apply bg-zinc-900;
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: -4px; /* Adjust this value to position the tail */
-  transform: translateY(-50%) rotate(45deg);
-  width: 8px;
-  height: 8px;
- 
-}
-}
-
-.server-selection::-webkit-scrollbar {
-  display: none;
-
-  background-color: transparent;
-}
-.server-selection::-webkit-scrollbar-thumb {
-  @apply bg-gray-500 dark:bg-transparent;
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 2px;
-  height: 2px;
-
-  background-color: transparent;
-}
-
-::-webkit-scrollbar {
-  width: 12px;
-
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-500 dark:bg-green-400;
-}
-
-/* Loader */
-
-.loader {
-  border: 10px solid #eef0f1;
-  border-top: 10px solid #3b49df;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
-  /* @apply border-8 border-green-500 border-t-8 w-40 h-40  */
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
+    @include tooltip-arrow("right", rgb(24 24 27 / var(--tw-bg-opacity)));
+    @apply absolute right-8 -top-1/3 origin-right scale-0 rounded-md bg-zinc-900 p-2  px-2  transition-all ease-in group-hover/join:scale-100;
   }
 }
 
-.text-shadow {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.text-shadow-md {
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
-.text-shadow-lg {
-  text-shadow: 0 15px 30px rgba(0, 0, 0, 0.11), 0 5px 15px rgba(0, 0, 0, 0.08);
-}
-
-.text-shadow-none {
-  text-shadow: none;
-}
-
-.fade-enter {
-  opacity: 0;
-}
-
-.fade-enter-active {
-  opacity: 1;
-  transition: opacity 300ms ease-in-out;
-}
-
-.fade-exit {
-  opacity: 1;
-}
-
-.fade-exit-active {
-  opacity: 0;
-  transition: opacity 300ms ease-in-out;
-}
