@@ -32,7 +32,7 @@ class UsersService {
       .subscribe<UsersStatusResponse>("*", async ({ action, record }) => {
         if (action != "Delete") {
           const status = await this.getUserStatus(record.user);
-          addItemOrReplace(AppState.users, status, "id");
+          if (status) addItemOrReplace(AppState.users, status, 'id')
           return;
         }
 
@@ -42,8 +42,12 @@ class UsersService {
     
   }
 
-  async getUserStatus(userId: string) {
+  async getUserStatus(userId = AppState.user?.id) {
     // gets a single Users status
+    if (!userId) {
+      console.log('no user was supplied')
+      return
+    }
     const status = await pb
       .collection(Collections.UsersStatus)
       .getFirstListItem<UsersStatusWithUser>(`user.id = "${userId}"`, {
