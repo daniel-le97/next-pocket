@@ -1,45 +1,54 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable prefer-rest-params */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-// import { dev } from '../env'
-// import {Consola} from 'consola'
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
 
-function log(type, content) {
-  const dev = true
+
+type LogLevel = "log" | "error" | "warn" | "assert" | "trace";
+
+type LogFunction = {
+  (message?: any, ...optionalParams: any[]): void;
+};
+
+type Logger = {
+  [key in LogLevel]: LogFunction;
+};
+
+function log(type: LogLevel, content: any[]): void {
+  const dev = true;
   if (dev) {
-   
-    console[type](`[${type}] :: ${new Date().toLocaleTimeString()} :: `, ...content)
+    console[type](
+      `[${type}] :: ${new Date().toLocaleTimeString()} :: `,
+      ...(content as Parameters<Console[LogLevel]>)
+    );
   } else {
     switch (type) {
-      case 'log':
-      case 'assert':
-        return
+      case "log":
+      case "assert":
+        return;
     }
     // TODO SEND LOGS TO EXTERNAL SERVICE
     // eslint-disable-next-line no-console
-    console[type](`[${type}] :: ${new Date().toLocaleTimeString()} :: `, ...content)
+    console[type](
+      `[${type}] :: ${new Date().toLocaleTimeString()} :: `,
+      ...(content as Parameters<Console[LogLevel]>)
+    );
   }
 }
 
-export const logger = {
-  log() {
-    log('log', arguments)
+export const logger: Logger = {
+  log(...args) {
+    log("log", args);
   },
-  error() {
-    log('error', arguments)
+  error(...args) {
+    log("error", args);
   },
-  warn() {
-    log('warn', arguments)
+  warn(...args) {
+    log("warn", args);
   },
-  assert() {
-    log('assert', arguments)
+  assert(...args) {
+    log("assert", args);
   },
-  trace() {
-    log('trace', arguments)
-  }
-}
+  trace(...args) {
+    log("trace", args);
+  },
+};

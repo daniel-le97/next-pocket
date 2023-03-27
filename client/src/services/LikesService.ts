@@ -6,14 +6,14 @@ import type {
   LikesWithUser,
   MessageWithUser,
 } from "../../PocketBaseTypes/utils";
-import type { BaseService } from "./BaseService";
-import { Base } from "./BaseService";
+import { BaseService, IBaseService } from "./BaseService";
+
 import { AppState } from "../../AppState";
 import type { LikesRecord } from "../../PocketBaseTypes/pocketbase-types";
 
 class LikesService
-  extends Base
-  implements BaseService<LikesWithUser, LikesRecord>
+  extends BaseService
+  implements IBaseService<LikesWithUser, LikesRecord>
 {
   update(data: LikesRecord): Promise<void> {
     throw new Error("Method not implemented.");
@@ -58,7 +58,7 @@ class LikesService
 
       // AppState.messages = filtered as unknown as MessageWithUser[];
     }
-    return;
+    return
   }
   async create(id: string): Promise<LikesWithUser | undefined> {
     const alreadyReacted = await this.getOne(id);

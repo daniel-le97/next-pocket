@@ -24,7 +24,7 @@ go get -u  // go ^1.19 is needed
 task start
 ```
 pocketbase and its client UI are now available at http://localhost:8080
-## Developement
+# Developement
 you will notice after starting the server and going to the pocketbase client ui
 at http://localhost:8080/_/ you wont have any collections
 ```
@@ -41,7 +41,7 @@ this project uses npx pocketbase-typegen from (https://github.com/patmood/pocket
 
 npm run gen
 ```
-## Deployment
+# Deployment
 To deploy this project run
 
 ```node
