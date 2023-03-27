@@ -48,6 +48,7 @@ class ObservableAppState {
   lastPath: string | null = null;
   lastQueryId: string | null = null;
 
+  test = 'hello'
   AppState: undefined;
 
   friendRequests: FriendRequestResponse[] = [];

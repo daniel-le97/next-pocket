@@ -1,15 +1,11 @@
 import { AppState } from "AppState";
-import {
-  Collections,
-  UsersRecord,
-  UsersResponse,
-} from "../../PocketBaseTypes/pocketbase-types";
-import { pb } from "../../utils/pocketBase";
-import { Base, BaseService } from "./BaseService";
+import { UsersRecord, UsersResponse } from "PocketBaseTypes";
+import { BaseService, IBaseService } from "./BaseService";
+
 
 class AccountsService
-  extends Base
-  implements BaseService<UsersResponse, UsersRecord>
+  extends BaseService
+  implements IBaseService<UsersResponse, UsersRecord>
 {
   async getById(id: string): Promise<UsersResponse<unknown>> {
     return this.pb.getOne(id);

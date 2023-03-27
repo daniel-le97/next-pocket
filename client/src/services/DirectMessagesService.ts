@@ -55,15 +55,18 @@ class DirectMessageService {
    * @param data - The ID of the from and  to to retrieve.
    * @returns The retrieved direct message object.
    */
-  async getDirectMessage(data: any) {
-    const res = await pb
-      .collection(Collections.DirectMessages)
-      .getFullList(100, {
-        filter: `from.id == "${data.userid}" && to.id == "${data.userid}"`,
-      });
-    return res;
-  }
 
+  // STUB not sure what this was doing
+  // async getDirectMessage(data: any) {
+  //   const res = await pb
+  //     .collection(Collections.DirectMessages)
+  //     .getFullList(100, {
+  //       filter: `from.id == "${data.userid}" && to.id == "${data.userid}"`,
+  //     });
+  //   return res;
+  // }
+
+  //  STUB this was a duplicate
   // /**
   //  * Retrieves a list of direct messages with the specified filter and pagination options.
   //  * @param filter - The filter to apply to the direct messages list.
@@ -93,7 +96,7 @@ class DirectMessageService {
    * @param page - which page to fetch from the list
    * @returns The list of messages for the specified channel
    */
-  async getDirectMessagesById(friendId: string, page = AppState.page) {
+  async getDirectMessages(friendId: string, page = AppState.page) {
     const userId = AppState.user?.id;
     if (!userId) {
       logger.error('please log in or refresh the page')

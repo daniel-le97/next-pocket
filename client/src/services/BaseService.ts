@@ -24,7 +24,7 @@ export class BaseT<T> {
   pb: RecordService;
   user: Record | Admin | null;
   collection: keyof typeof Collections;
-  state: T[];
+  state: T;
   constructor(
     collection: keyof typeof Collections,
     state: keyof typeof AppState
@@ -32,7 +32,7 @@ export class BaseT<T> {
     this.collection = collection;
     this.pb = pb.collection(Collections[collection]);
     this.user = pb.authStore.model;
-    this.state = AppState[state] as unknown as T[];
+    this.state = AppState[state] as unknown as T;
   }
  protected async _getAll(): Promise<T[]> {
     const res = await this.pb.getFullList();
@@ -45,3 +45,4 @@ export class BaseT<T> {
     return item;
   }
 }
+
