@@ -31,8 +31,16 @@
   opacity: 0;
   transition: opacity 300ms ease-in-out;
 }
+.scrollbar-h-sm::-webkit-scrollbar {
+  @apply h-1;
+}
+.scrollbar-h-sm::-webkit-scrollbar-thumb {
+  @apply rounded-full;
+}
 
-
+.scrollbar-w-sm::-webkit-scrollbar {
+  @apply w-2;
+}
 /* Loader */
 
 .loader {

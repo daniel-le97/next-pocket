@@ -84,8 +84,6 @@ const MessageCard = ({
           rehypePlugins={[rehypeRaw]}
           components={{
             code: ({ node, inline, className, children, ...props }) => {
-           
-              
               if (inline) {
                 return <code className="text-zinc-300">{children}</code>;
               }
@@ -144,16 +142,15 @@ const MessageCard = ({
 
 const MessageLikes = ({ message }: { message: MessageWithUser }) => {
   const likes = message.expand["likes(message)"];
-  
+
   return (
-    
-      <div className="message-like-container group/like">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
-          alt="Thumbs Up Icon"
-          className="h-6 w-6 rounded-full"
-        />
-        {likes.length}
+    <div className="message-like-container group/like">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
+        alt="Thumbs Up Icon"
+        className="h-6 w-6 rounded-full"
+      />
+      {likes.length}
       <div className=" message-like-tooltip   ">
         <div className="message-like-tooltip-container">
           <img
@@ -173,8 +170,7 @@ const MessageLikes = ({ message }: { message: MessageWithUser }) => {
           </div>
         </div>
       </div>
-      </div>
-    
+    </div>
   );
 };
 
