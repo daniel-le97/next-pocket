@@ -30,9 +30,12 @@ export default class Pop {
         confirmButtonText,
         showCancelButton: true,
         reverseButtons: true,
-        confirmButtonColor: "#353dab)",
+        confirmButtonColor: "#353dab",
         cancelButtonColor: "#FB542B",
-      });
+        background: "#17171a",
+       
+      } 
+   );
       if (res.isConfirmed) {
         return true
       }
