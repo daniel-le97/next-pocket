@@ -14,12 +14,15 @@ import Layout from "../components/Layout";
 
 import "../styles/tailwind.css"
 import "../styles/globals.css";
-import { membersService, usersService } from "@/services";
-import { testHello } from "@/services/BaseService";
+import { membersService } from "../services";
+
+
+
+
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const user = AppState.user;
-  testHello.set('hello world')
+
 
   
   
