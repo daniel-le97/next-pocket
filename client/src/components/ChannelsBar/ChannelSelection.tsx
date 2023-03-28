@@ -44,7 +44,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
         {selection.title}
        
       </h5>
-      {selection.title === channelTitle ? (
+      {/* {selection.title === channelTitle ? (
         <img
           src={user?.avatarUrl}
           alt="UserIcon"
@@ -53,7 +53,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
         />
       ) : (
         <div className=""></div>
-      )}
+      )} */}
     </div>
   );
 };
