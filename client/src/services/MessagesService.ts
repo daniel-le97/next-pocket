@@ -9,7 +9,7 @@ import type {
   MessageWithUser,
 } from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
-import { addItemOrReplace, addItemOrReplaceV2} from "utils/Functions";
+import { addItemOrReplace, addItemOrReplaceV2, filterStateArray} from "utils/Functions";
 import { pb } from "utils/pocketBase";
 
 class MessageService {
@@ -19,24 +19,24 @@ class MessageService {
    * @returns The newly created message
    */
   async sendMessage(data: MessagesRecord) {
-    console.log(data);
+    // console.log(data);
 
-    const res = await pb
+    await pb
       .collection(Collections.Messages)
       .create<MessageWithUser>(data, { expand: "user" });
-    if (res.id) {
-      addItemOrReplaceV2('messages', res, "id");
-    }
+    // if (res.id) {
+    //   addItemOrReplaceV2('messages', res, "id");
+    // }
   }
 
   async sendDirectMessage(data: DirectMessagesRecord) {
     // const isUser = pb.authStore.model?.id == data.from;
     // if (!isUser) throw new Error("data.from is not the currentUser");
-    const res = await pb
+    await pb
       .collection(Collections.DirectMessages)
       .create<DirectMessagesResponse>(data);
     // AppState.directMessages = [...AppState.directMessages, res];
-    addItemOrReplaceV2('directMessages', res, "id");
+    // addItemOrReplaceV2('directMessages', res, "id");
   }
 
   /**
@@ -81,18 +81,16 @@ class MessageService {
     AppState.page++;
   }
 
-  async filterSubscribe() {
+  async subscribe() {
     const subscribe = await pb
       .collection(Collections.Messages)
       .subscribe("*", async ({ action, record }) => {
-        console.log('message subscribe triggered');
-        if (action != "Delete") {
-          
+        if (action.toString() != "delete") {
           const message = await this.getById(record.id);
-          // addItemOrReplace(AppState.messages, message, "id");
+          addItemOrReplaceV2('messages', message, "id");
         }
-        if (action == "Delete") {
-          await this.deleteMessage(record.id, true);
+        if (action.toString() == "delete") {
+          filterStateArray('messages', record, 'id')
         }
       });
     return subscribe;
@@ -105,23 +103,15 @@ class MessageService {
     return res;
     // console.log(res);
   }
-  async deleteMessage(id: string, skipCall = false) {
-    AppState.messages = AppState.messages.filter((m) => m.id != id);
-    if (skipCall == false) {
-      await pb.collection(Collections.Messages).delete(id);
-    }
+  async deleteMessage(id: string) {
+    await pb.collection(Collections.Messages).delete(id);
   }
   async editMessage(id: string, data: MessagesRecord) {
-    // const res = await pb.collection(Collections.Messages).getOne(id);
-
-    const updatedRes = await pb
+    await pb
       .collection(Collections.Messages)
       .update<MessageWithUser>(id, data, {
         expand: "user,likes(message)",
       });
-    AppState.messages = AppState.messages.map((m) =>
-      m.id === id ? updatedRes : m
-    );
   }
 }
 

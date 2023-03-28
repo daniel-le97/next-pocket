@@ -10,10 +10,11 @@ import EditMessage from "./MessageOptions/EditMessage";
 import LikeMessage from "./MessageOptions/LikeMessage";
 import rehypeRaw from "rehype-raw";
 import Pop from "utils/Pop";
-import type { MessageWithUser } from "PocketBaseTypes";
+import type { LikesWithUser, MessageWithUser } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import UserAvatar from "../GlobalComponents/UserAvatar";
 import CodeBlock from "utils/CodeBlock";
+
 
 
 const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}) => {
@@ -32,6 +33,9 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
     navigator.clipboard.writeText(removeBackticks(message.content!));
     Pop.success("Copied To Clipboard");
   };
+
+ 
+  
 
   return (
     <div
@@ -92,7 +96,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           }}
         />
 
-        {likes && <MessageLikes message={message} />}
+        {likes && <MessageLikes likes={likes} />}
       </div>
       {index === 0 && (
         <>
@@ -109,10 +113,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           {AppState.user?.id == message.user ? (
             <>
               <EditMessage message={message} />
-              <DeleteMessage
-                messageId={message.id}
-                userId={AppState.user?.id}
-              />
+              <DeleteMessage messageId={message.id}/>
             </>
           ) : (
             <LikeMessage messageId={message.id} />
@@ -123,8 +124,8 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
   );
 };
 
-const MessageLikes = ({ message }: { message: MessageWithUser }) => {
-  const likes = message.expand["likes(message)"];
+const MessageLikes = ({ likes }: {likes: LikesWithUser[]}) => {
+  // const likes = message.expand["likes(message)"];
 
   return (
     <div className="message-like-container group/like">

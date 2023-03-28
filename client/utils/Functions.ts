@@ -45,8 +45,14 @@ export function addItemOrReplaceV2<T>(state: keyof typeof AppState, item: T, fie
  * @param {object} item item to remove from an array
  * @param {string} field index of the item
  */
-export function filterArray<T, K extends keyof T>(array: T[], item: T[K] , field: K){
-  array = array.filter(i => i[field] == item)
+export function filterStateArray<T>(
+  state: keyof typeof AppState,
+  item: T,
+  field: keyof T
+) {
+  action(() => {
+    (AppState[state] as unknown as T[]) = (AppState[state] as unknown as T[]).filter(i => i[field] != item[field])
+  })();
 }
 
 export function getDate(date: Date) {
