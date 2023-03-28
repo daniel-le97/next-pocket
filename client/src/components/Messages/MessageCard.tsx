@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
-import { useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import TimeAgo from "timeago-react";
 import DeleteMessage from "./MessageOptions/DeleteMessage";
@@ -67,7 +66,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           className="markdown"
           rehypePlugins={[rehypeRaw]}
           components={{
-            code: ({ node, inline, className, children, ...props }) => {
+            code: ({ inline, className, children, ...props }) => {
               if (inline) {
                 return <code className="text-zinc-300">{children}</code>;
               }
