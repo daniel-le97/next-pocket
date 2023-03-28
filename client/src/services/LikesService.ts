@@ -37,24 +37,24 @@ class LikesService
 
     if (res) {
       const foundMessage = AppState.messages.find(message => message.id == id)
-      if (foundMessage?.expand["likes(message)"]) {
-        foundMessage.expand["likes(message)"] = foundMessage.expand["likes(message)"].filter(like => like.id != likeId)
-      }
-    //  AppState.messages = AppState.messages.map(message => {
-    //     if (message.id == foundMessage?.id) {
-    //       const found = message.expand["likes(message)"].find(like => like.id == likeId)
-    //       if (found) {
-    //         // console.log(Array.isArray(message.expand["likes(message)"]), message.expand["likes(message)"].length);
-    //         console.log(message.expand["likes(message)"]);
+      // if (foundMessage?.expand["likes(message)"]) {
+      //   foundMessage.expand["likes(message)"] = foundMessage.expand["likes(message)"].filter(like => like.id != likeId)
+      // }
+     AppState.messages = AppState.messages.map(message => {
+        if (message.id == foundMessage?.id) {
+          const found = message.expand["likes(message)"].find(like => like.id == likeId)
+          if (found) {
+            // console.log(Array.isArray(message.expand["likes(message)"]), message.expand["likes(message)"].length);
+            console.log(message.expand["likes(message)"]);
             
-    //         message.expand["likes(message)"] = message.expand["likes(message)"].filter(like => like.id != likeId)
-    //         console.log(message.expand["likes(message)"]);
-    //       }
+            message.expand["likes(message)"] = message.expand["likes(message)"].filter(like => like.id != likeId)
+            console.log(message.expand["likes(message)"]);
+          }
           
-    //       // message.expand["likes(message)"] = message.expand["likes(message)"].filter(like => like.id != likeId)
-    //     }
-    //     return message
-    //   }) as unknown as MessageWithUser[]
+          // message.expand["likes(message)"] = message.expand["likes(message)"].filter(like => like.id != likeId)
+        }
+        return message
+      }) as unknown as MessageWithUser[]
       // console.log(AppState.messages.find(message => message.id == id), foundMessage);
       
       // console.log(AppState.messages);
