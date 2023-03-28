@@ -3,39 +3,23 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
-import React from "react";
 import { useState } from "react";
-import { BsEmojiSmile, BsPencil, BsXCircle } from "react-icons/bs";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import TimeAgo from "timeago-react";
-import { AppState } from "../../../AppState";
-import type { MessageWithUser } from "../../../PocketBaseTypes/utils";
-import { containsUrl } from "../../../utils/ContainsUrl";
-import { getDate } from "../../../utils/helpers";
-import Reaction from "../Reactions/Reaction";
 import DeleteMessage from "./MessageOptions/DeleteMessage";
 import EditMessage from "./MessageOptions/EditMessage";
 import LikeMessage from "./MessageOptions/LikeMessage";
 import rehypeRaw from "rehype-raw";
-import CodeBlock from "../../../utils/CodeBlock";
-import { FaThumbsUp } from "react-icons/fa";
-import Markdown from "./Markdown";
 import Pop from "utils/Pop";
+import type { MessageWithUser } from "PocketBaseTypes";
+import { AppState } from "AppState";
 import UserAvatar from "../GlobalComponents/UserAvatar";
+import CodeBlock from "utils/CodeBlock";
 
-const MessageCard = ({
-  messages,
-  message,
-  index,
-}: {
-  messages: MessageWithUser[];
-  message: MessageWithUser;
-  index: number;
-}) => {
-  const [reaction, setReaction] = useState(false);
+
+const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}) => {
   const messageQuery = AppState.messageQuery;
   const likes = message.expand["likes(message)"];
-
   const handleCopyClick = () => {
     function removeBackticks(str: string): string {
       const pattern = /```([\s\S]*)```/;

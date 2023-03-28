@@ -50,7 +50,6 @@ const MessageScroll = () => {
               {
                 <MessageCard
                   index={index}
-                  messages={AppState.messages}
                   message={message}
                 />
               }
