@@ -54,7 +54,7 @@ const MembersBar = () => {
         </div>
       </div>
       {!collapsed && (
-        <div className=" absolute  right-5 top-1.5 mx-auto my-2 rounded-3xl   text-gray-500 transition-all duration-200">
+        <div className=" absolute  right-3   top-2 mx-auto my-2 rounded-3xl   text-gray-500 transition-all duration-200">
           <BsArrowLeftCircle
             size={24}
             onClick={() => setCollapsed(!collapsed)}

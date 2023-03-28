@@ -10,10 +10,11 @@ import EditMessage from "./MessageOptions/EditMessage";
 import LikeMessage from "./MessageOptions/LikeMessage";
 import rehypeRaw from "rehype-raw";
 import Pop from "utils/Pop";
-import type { MessageWithUser } from "PocketBaseTypes";
+import type { LikesWithUser, MessageWithUser } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import UserAvatar from "../GlobalComponents/UserAvatar";
 import CodeBlock from "utils/CodeBlock";
+import { useEffect, useState } from "react";
 
 
 const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}) => {
@@ -92,18 +93,9 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           }}
         />
 
-        {likes && <MessageLikes message={message} />}
+         <MessageLikes message={message} />
       </div>
-      {index === 0 && (
-        <>
-          <div className=" newest-message">
-            <div className="newest-message-container">
-              Newest Message
-              <hr className="  newest-message-line" />
-            </div>
-          </div>
-        </>
-      )}
+      {index === 0 && <IsNewestMessage/>}
       <div className="message-options">
         <div className="message-options-container">
           {AppState.user?.id == message.user ? (
@@ -123,9 +115,29 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
   );
 };
 
+const IsNewestMessage = () => {
+return (
+  <>
+    <div className=" newest-message">
+      <div className="newest-message-container">
+        Newest Message
+        <hr className="  newest-message-line" />
+      </div>
+    </div>
+  </>
+);
+}
+
 const MessageLikes = ({ message }: { message: MessageWithUser }) => {
   const likes = message.expand["likes(message)"];
+  const [test,setLikes] = useState<LikesWithUser>([])
+useEffect(()=>{
+ 
+  
 
+
+
+},[likes])
   return (
     <div className="message-like-container group/like">
       <img
@@ -133,7 +145,7 @@ const MessageLikes = ({ message }: { message: MessageWithUser }) => {
         alt="Thumbs Up Icon"
         className="h-6 w-6 rounded-full"
       />
-      {likes.length}
+      {likes?.length | 0}
       <div className=" message-like-tooltip   ">
         <div className="message-like-tooltip-container">
           <img
@@ -144,7 +156,7 @@ const MessageLikes = ({ message }: { message: MessageWithUser }) => {
           <div className="flex flex-col">
             Thumbs Up By
             <div className="flex flex-col overflow-y-scroll">
-              {likes.map((l, index) => (
+              { likes && likes.map((l, index) => (
                 <div className="" key={index}>
                   {l.expand.user.username}
                 </div>
