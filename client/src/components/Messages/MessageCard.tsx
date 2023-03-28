@@ -129,16 +129,9 @@ return (
 );
 }
 
-const MessageLikes = ({ message }: { message: MessageWithUser }) => {
-  const likes = message.expand["likes(message)"];
-  const [test,setLikes] = useState<LikesWithUser>([])
-useEffect(()=>{
- 
-  
+const MessageLikes = ({ likes }: { likes: LikesWithUser }) => {
+  // const likes = message.expand["likes(message)"];
 
-
-
-},[likes])
   return (
     <div className="message-like-container group/like">
       <img
