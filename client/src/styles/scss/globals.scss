@@ -309,7 +309,7 @@
   }
 
   .message-container {
-    @apply relative h-full flex-1 items-stretch    overflow-hidden bg-gray-300   dark:bg-zinc-700;
+    @apply relative h-full pb-16 flex-1 items-stretch    overflow-hidden bg-gray-300   dark:bg-zinc-700;
   }
   .message-filtered {
     @apply relative  m-0  flex w-full  flex-row items-center justify-evenly rounded-sm bg-gray-800 py-4 px-8 

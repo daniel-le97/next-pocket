@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { Transition } from "@headlessui/react";
 import { observer } from "mobx-react";
 import { UnsubscribeFunc } from "pocketbase";
 import { useEffect } from "react";
@@ -9,27 +10,28 @@ import { messageService } from "../../services/MessagesService";
 import Loader from "../GlobalComponents/Loader";
 import MessageCard from "./MessageCard";
 const MessageScroll = () => {
-  async function fetchMore ()  {
+  async function fetchMore() {
+    console.log('page',AppState.page,'totalPages',AppState.totalPages)
     const channelId = AppState.activeChannel?.id;
     await messageService.getMessagesByChannelId(channelId!);
   }
   useEffect(() => {
-     let subscribe: UnsubscribeFunc 
-     const hello = (async () => {
-       console.log("subscribed");
-      subscribe =  await messageService.subscribe();
-     })();
-     return () => subscribe as unknown as void
-   }, []);
+    let subscribe: UnsubscribeFunc;
+    const hello = (async () => {
+      // console.log("subscribed");
+      subscribe = await messageService.subscribe();
+    })();
+    return () => subscribe as unknown as void;
+  }, []);
   return (
     <div
       id="scrollableDiv"
-      className="flex   h-full  flex-col-reverse overflow-auto pb-16"
+      className="flex pb-32  h-full flex-col-reverse overflow-auto pt-6"
     >
       <InfiniteScroll
         dataLength={AppState.messages.length}
         next={fetchMore}
-        className=" mb-24 flex flex-col-reverse pt-6   "
+        className="flex flex-col-reverse pt-6   "
         inverse={true} //
         hasMore={AppState.totalPages != AppState.page}
         loader={<Loader show={AppState.totalPages != AppState.page} />}
@@ -50,12 +52,7 @@ const MessageScroll = () => {
           const notTodaysDate = currentDate !== todaysDate;
           return (
             <div key={index}>
-              {
-                <MessageCard
-                  index={index}
-                  message={message}
-                />
-              }
+              {<MessageCard index={index} message={message} />}
               <div>
                 {isNewDay && notTodaysDate && (
                   <div className="new-date">

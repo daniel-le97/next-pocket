@@ -66,14 +66,14 @@ class MessageService {
    */
   async getMessagesByChannelId(id: string, page = AppState.page) {
     AppState.messages = [];
-    const res = await pb.collection(Collections.Messages).getList(page, 50, {
+    const res = await pb.collection(Collections.Messages).getList(page, 25, {
       filter: `channel.id = "${id}"`,
       sort: "-created",
       expand: "user,likes(message).user",
     });
 
     const messages = res.items as unknown as MessageWithUser[];
-    console.log(messages);
+    // console.log(messages);
 
     // console.log(messages.map(message => message.expand["likes(message)"]));
     AppState.messages = [...AppState.messages, ...messages];

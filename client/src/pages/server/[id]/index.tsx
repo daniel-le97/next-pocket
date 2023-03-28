@@ -32,9 +32,11 @@ const Server: NextPage = () => {
       AppState.page = 1;
       await channelsService.getChannelsByServerId(id);
       const channelId = AppState.activeChannel!.id;
-      console.log(channelId);
+      // console.log(channelId);
       await messageService.getMessagesByChannelId(channelId);
       await serversService.getMembers(id);
+      console.log('page',AppState.page,"totalPage",AppState.totalPages);
+      
     } catch (error) {
       Pop.error(error);
     }
