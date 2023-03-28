@@ -17,6 +17,7 @@ import CodeBlock from "utils/CodeBlock";
 import { useEffect, useState } from "react";
 
 
+
 const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}) => {
   const messageQuery = AppState.messageQuery;
   const likes = message.expand["likes(message)"];
@@ -33,6 +34,9 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
     navigator.clipboard.writeText(removeBackticks(message.content!));
     Pop.success("Copied To Clipboard");
   };
+
+ 
+  
 
   return (
     <div
@@ -93,7 +97,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           }}
         />
 
-         <MessageLikes message={message} />
+        {likes && <MessageLikes likes={likes} />}
       </div>
       {index === 0 && <IsNewestMessage/>}
       <div className="message-options">
@@ -101,10 +105,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           {AppState.user?.id == message.user ? (
             <>
               <EditMessage message={message} />
-              <DeleteMessage
-                messageId={message.id}
-                userId={AppState.user?.id}
-              />
+              <DeleteMessage messageId={message.id}/>
             </>
           ) : (
             <LikeMessage messageId={message.id} />

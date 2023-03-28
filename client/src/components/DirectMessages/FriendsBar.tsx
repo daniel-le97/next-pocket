@@ -1,37 +1,33 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, { useEffect, useState, Fragment } from "react";
+import { useEffect, useState, Fragment } from "react";
 
-import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
 
 import { observer } from "mobx-react";
 
-import { userService } from "../../services/UsersService";
-import { pb } from "../../../utils/pocketBase";
-import { channelsService } from "../../services/ChannelsService";
-import { AppState } from "../../../AppState";
-import UserStatus from "../Messages/UsersStatus";
-import Pop from "../../../utils/Pop";
-import {
-  FriendsResponse,
-  UsersResponse,
-} from "../../../PocketBaseTypes/pocketbase-types";
+
+
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { Transition, Dialog } from "@headlessui/react";
-import { BsPlusCircleFill } from "react-icons/bs";
-import { friendService } from "../../services/FriendsService";
-import Link from "next/link";
+
 import { UserIcon } from "../ChannelsBar/ChannelsBar";
+
+import Pop from "utils/Pop";
+import type { UsersResponse } from "PocketBaseTypes";
+import UserStatus from "../Messages/UsersStatus";
+import { AppState } from "AppState";
+import { friendService } from "@/services";
 const topics = ["general", "tailwind-css", "react"];
 
 const FriendsBar = () => {
   const [friends, setFriends] = useState([]);
-  const user = pb.authStore.model;
+  const user = AppState.user
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        const res = await friendService.getUserFriendsList(user?.id);
+        const res = await friendService.getUserFriendsList(user!.id);
 
         setFriends(res?.expand?.friends);
       } catch (error) {
@@ -118,7 +114,7 @@ const Menu = (props: { isOpen: boolean }) => {
       reset();
       setImageUrl("");
 
-      router.push(`http://localhost:3000/server/${newServer.id}`);
+      await router.push(`http://localhost:3000/server/${newServer.id}`);
     } catch (error) {
       console.error("createServer", error);
     }

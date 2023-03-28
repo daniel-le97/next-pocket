@@ -1,35 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
 
 import { observer } from "mobx-react";
-import { BsEmojiSmile, BsXCircle } from "react-icons/bs";
-import {
-  MessagesRecord,
-  MessagesResponse,
-  ServersRecord,
-} from "../../../../PocketBaseTypes/pocketbase-types";
-import Pop from "../../../../utils/Pop";
-import { messageService } from "../../../services/MessagesService";
-
-import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
+import { BsEmojiSmile } from "react-icons/bs";
 import { useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
-
-import { useRouter } from "next/router";
-
+import { Fragment, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { serversService } from "../../../services/ServersService";
-import Loader from "../../GlobalComponents/Loader";
-import { uploadService } from "../../../services/UploadsService";
-import { pb } from "../../../../utils/pocketBase";
-import MessageCard from "../MessageCard";
-import { AppState } from "../../../../AppState";
-import { MessageWithUser } from "../../../../PocketBaseTypes/utils";
 import TimeAgo from "timeago-react";
+import { messageService } from "@/services";
+import type { MessagesRecord, MessageWithUser } from "PocketBaseTypes";
+import { AppState } from "AppState";
+
 const EditMessage = ({ message }: { message: MessageWithUser }) => {
   return (
     <div className="message-options-icon  group/item">
@@ -39,7 +21,7 @@ const EditMessage = ({ message }: { message: MessageWithUser }) => {
   );
 };
 
-const user = pb.authStore.model;
+
 
 const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,10 +29,6 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
-    reset,
-    formState: { errors },
   } = useForm({
     defaultValues: {
       content: message.content,
@@ -60,13 +38,13 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
   });
   const onSubmit = async (data: MessagesRecord) => {
     try {
-      data.text += " (edited)";
-      const updatedMessage = await messageService.editMessage(message.id, data);
-      reset();
+      data.content += " *(edited)*";
+      await messageService.editMessage(message.id, data);
+
 
       setIsOpen(false);
     } catch (error) {
-      console.error("Edit MMessage", error);
+      console.error("Edit Message", error);
     }
   };
 
@@ -188,71 +166,6 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
   );
 };
 
-const EditMessageCard = ({
-  messages,
-  message,
-}: {
-  messages: MessageWithUser[];
-  message: MessageWithUser;
-}) => {
-  return (
-    <div className="message group">
-      <div className="relative m-0 ml-auto mb-auto flex w-12 flex-col items-center">
-        <img
-          className="mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md shadow-zinc-500 dark:shadow-zinc-800"
-          src={
-            message.expand?.user.avatarUrl ||
-            `https://api.dicebear.com/5.x/bottts-neutral/svg`
-          }
-          alt="avatar"
-          width="40px"
-        />
-        {/* <UserStatus user={message?.expand?.user} /> */}
-      </div>
-      <div className="ml-auto flex w-4/5 flex-col items-start">
-        <p className=" font-bold  text-red-500">
-          {message.expand?.user?.username}
-          <small className="ml-3 font-normal text-black dark:text-gray-300">
-            {
-              <TimeAgo
-                datetime={message.created}
-                locale={"en-US"}
-                style={{ margin: 5 }}
-              />
-            }
-          </small>
-        </p>
-        <p className="text-lg font-semibold dark:text-gray-300">
-          {message.text}
-        </p>
-      </div>
-      <div className=" absolute bottom-20 right-0 mr-5  transition-all group-hover:opacity-0 "></div>
-      <div className="absolute bottom-24 right-0  mr-5   opacity-0 group-hover:opacity-100">
-        <div className=" flex gap-x-2 rounded  border-zinc-900 bg-zinc-700  shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900">
-          <div className="group/item relative ">
-            <BsEmojiSmile
-              size={22}
-              onClick={() => {
-                console.log(reaction);
-                setReaction(!reaction);
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
-// const MessageCard = ({
-//   messages,
-//   message,
-// }: {
-//   messages: MessageWithUser[];
-//   message: MessageWithUser;
-// }) => {
-//   const [reaction, setReaction] = useState(false);
-//   const messageQuery = AppState.messageQuery;
 
-// };
 export default observer(EditMessage);

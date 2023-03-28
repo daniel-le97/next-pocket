@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { observer } from "mobx-react";
+import { UnsubscribeFunc } from "pocketbase";
+import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
 
@@ -7,17 +9,18 @@ import { messageService } from "../../services/MessagesService";
 import Loader from "../GlobalComponents/Loader";
 import MessageCard from "./MessageCard";
 const MessageScroll = () => {
-  const fetchMore = async () => {
+  async function fetchMore ()  {
     const channelId = AppState.activeChannel?.id;
-    // console.log(
-    //   "CurrentPage:",
-    //   AppState.page,
-    //   "TotalPages:",
-    //   AppState.totalPages
-    // );
-
     await messageService.getMessagesByChannelId(channelId!);
-  };
+  }
+  useEffect(() => {
+     let subscribe: UnsubscribeFunc 
+     const hello = (async () => {
+       console.log("subscribed");
+      subscribe =  await messageService.subscribe();
+     })();
+     return () => subscribe as unknown as void
+   }, []);
   return (
     <div
       id="scrollableDiv"

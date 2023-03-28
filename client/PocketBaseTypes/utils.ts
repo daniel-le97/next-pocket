@@ -1,5 +1,6 @@
 import type {
   FileUploadsResponse,
+  FriendsResponse,
   LikesResponse,
   MembersResponse,
   MessagesResponse,
@@ -43,6 +44,10 @@ export type LikesWithUser = LikesResponse & {
 
 export type UsersStatusWithUser = UsersStatusResponse & {
   expand: {user: UsersResponse}
+}
+
+export type friendsWithUser = FriendsResponse & {
+  // expand: {}
 }
 
 
