@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 // /* eslint-disable @typescript-eslint/no-misused-promises */
 import { AppState } from "AppState";
-import type { Record } from "pocketbase";
 import type {
   DirectMessagesRecord,
   DirectMessagesResponse,
@@ -9,7 +8,7 @@ import type {
   MessageWithUser,
 } from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
-import { addItemOrReplace, addItemOrReplaceV2, filterStateArray} from "utils/Functions";
+import { addItemOrReplaceV2, filterStateArray} from "utils/Functions";
 import { pb } from "utils/pocketBase";
 
 class MessageService {
@@ -80,7 +79,7 @@ class MessageService {
         message.expand["likes(message)"] = []
       }
     })
-    // console.log(messages);
+    console.log(messages.map(message=> message.expand["likes(message)"]));
 
     // console.log(messages.map(message => message.expand["likes(message)"]));
     AppState.messages = [...AppState.messages, ...messages];
