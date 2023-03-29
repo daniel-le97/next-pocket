@@ -72,7 +72,14 @@ class MessageService {
       expand: "user,likes(message).user",
     });
 
+   
+
     const messages = res.items as unknown as MessageWithUser[];
+    messages.map(message =>{
+      if(!message.expand["likes(message)"]){
+        message.expand["likes(message)"] = []
+      }
+    })
     // console.log(messages);
 
     // console.log(messages.map(message => message.expand["likes(message)"]));

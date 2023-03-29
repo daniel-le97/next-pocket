@@ -92,7 +92,6 @@ export type FriendsRecord = {
 
 export type LikesRecord = {
 	message: RecordIdString
-	liked?: boolean
 	user: RecordIdString
 }
 

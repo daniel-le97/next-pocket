@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Transition } from "@headlessui/react";
+import { likesService } from "@/services/LikesService";
 import { observer } from "mobx-react";
-import { UnsubscribeFunc } from "pocketbase";
+import type { UnsubscribeFunc } from "pocketbase";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Pop from "utils/Pop";
 import { AppState } from "../../../AppState";
 
 import { messageService } from "../../services/MessagesService";
@@ -11,22 +14,30 @@ import Loader from "../GlobalComponents/Loader";
 import MessageCard from "./MessageCard";
 const MessageScroll = () => {
   async function fetchMore() {
-    console.log('page',AppState.page,'totalPages',AppState.totalPages)
     const channelId = AppState.activeChannel?.id;
     await messageService.getMessagesByChannelId(channelId!);
   }
+  let subscribeMessage: UnsubscribeFunc | null;
+  let subscribeLike: UnsubscribeFunc | null;
   useEffect(() => {
-    let subscribe: UnsubscribeFunc;
-    const hello = (async () => {
-      // console.log("subscribed");
-      subscribe = await messageService.subscribe();
+    (async () => {
+      try {
+        subscribeMessage = await messageService.subscribe();
+        subscribeLike = await likesService.subscribe();
+        console.log("subscribed");
+      } catch (error) {
+        Pop.error(error, "like or message subscription failed");
+      }
     })();
-    return () => subscribe as unknown as void;
+    return () => {
+      subscribeLike?.();
+      subscribeMessage?.();
+    };
   }, []);
   return (
     <div
       id="scrollableDiv"
-      className="flex pb-32  h-full flex-col-reverse overflow-auto pt-6"
+      className="flex h-full  flex-col-reverse overflow-auto pb-32 pt-6"
     >
       <InfiniteScroll
         dataLength={AppState.messages.length}
@@ -52,6 +63,7 @@ const MessageScroll = () => {
           const notTodaysDate = currentDate !== todaysDate;
           return (
             <div key={index}>
+              {<MessageCard index={index} message={message} />}
               {<MessageCard index={index} message={message} />}
               <div>
                 {isNewDay && notTodaysDate && (

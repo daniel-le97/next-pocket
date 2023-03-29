@@ -8,7 +8,7 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "gen": "node gen.js"
+    "pb:gen": "node gen.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",

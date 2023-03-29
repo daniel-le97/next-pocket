@@ -97,7 +97,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           }}
         />
 
-        {likes && <MessageLikes likes={likes} />}
+        {likes && <MessageLikes message={message} />}
       </div>
       {index === 0 && <IsNewestMessage/>}
       <div className="message-options">
