@@ -105,6 +105,9 @@ class LikesService
       "*",
       async ({ action, record }) => {
         if (action.toString() != "delete") {
+       
+          console.log('tetusbg');
+          
           const like = await this.getById(record.id);
           console.log("creating", like);
 

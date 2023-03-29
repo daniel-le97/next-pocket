@@ -97,7 +97,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           }}
         />
 
-        {likes && <MessageLikes message={message} />}
+        {likes && <MessageLikes likes={likes} />}
       </div>
       {index === 0 && <IsNewestMessage/>}
       <div className="message-options">
@@ -129,7 +129,7 @@ return (
 );
 }
 
-const MessageLikes = ({ likes }: { likes: LikesWithUser }) => {
+const MessageLikes = ({ likes }: { likes: LikesWithUser[] }) => {
   // const likes = message.expand["likes(message)"];
 
   return (

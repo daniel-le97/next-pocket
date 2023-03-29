@@ -30,6 +30,7 @@ const Server: NextPage = () => {
     try {
       //
       AppState.page = 1;
+       console.log("page", AppState.page, "totalPage", AppState.totalPages);
       await channelsService.getChannelsByServerId(id);
       const channelId = AppState.activeChannel!.id;
       // console.log(channelId);

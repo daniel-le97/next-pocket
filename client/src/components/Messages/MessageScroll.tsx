@@ -16,6 +16,8 @@ const MessageScroll = () => {
   async function fetchMore() {
     const channelId = AppState.activeChannel?.id;
     await messageService.getMessagesByChannelId(channelId!);
+    AppState.page++
+      console.log("page", AppState.page, "totalPage", AppState.totalPages);
   }
   let subscribeMessage: UnsubscribeFunc | null;
   let subscribeLike: UnsubscribeFunc | null;
@@ -64,7 +66,7 @@ const MessageScroll = () => {
           return (
             <div key={index}>
               {<MessageCard index={index} message={message} />}
-              {<MessageCard index={index} message={message} />}
+            
               <div>
                 {isNewDay && notTodaysDate && (
                   <div className="new-date">

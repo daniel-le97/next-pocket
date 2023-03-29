@@ -85,18 +85,20 @@ class MessageService {
     // console.log(messages.map(message => message.expand["likes(message)"]));
     AppState.messages = [...AppState.messages, ...messages];
     AppState.totalPages = res.totalPages;
-    AppState.page++;
+  
   }
 
   async subscribe() {
     const subscribe = await pb
       .collection(Collections.Messages)
       .subscribe("*", async ({ action, record }) => {
-        if (action.toString() != "delete") {
+        if (action === "create") {
+          console.log(action);
+          
           const message = await this.getById(record.id);
           addItemOrReplaceV2('messages', message, "id");
         }
-        if (action.toString() == "delete") {
+        if (action === "delete") {
           filterStateArray('messages', record, 'id')
         }
       });
