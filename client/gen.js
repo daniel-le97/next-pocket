@@ -8,7 +8,7 @@ module.exports = () => {
   const email = process.env.POCKET_EMAIL;
   const pass = process.env.POCKET_PASS;
   const url = process.env.NEXT_PUBLIC_POCKET_URL;
-  const running = `nix pocketbase-typegen --url ${url} --email ${email} --password '${pass}'`;
+  const running = `npx pocketbase-typegen --url ${url} --email ${email} --password '${pass}'`;
   console.log(`running: ${running}`);
   const command = `${running} --out PocketBaseTypes/pocketbase-types.ts`;
 
