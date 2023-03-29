@@ -10,7 +10,10 @@ import {
 } from "react-icons/fa";
 import { AppState } from "../../../AppState";
 import { pb } from "../../../utils/pocketBase";
-import { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import {
+  Collections,
+  MessagesResponse,
+} from "../../../PocketBaseTypes/pocketbase-types";
 import { MessageWithUser } from "PocketBaseTypes/utils";
 const TopNavigation = () => {
   const [channel, setRoom] = useState<string>("");
@@ -24,51 +27,63 @@ const TopNavigation = () => {
   return (
     <div className="top-navigation">
       <FaHashtag size="20" className="title-hashtag" />
-      <h5 className="title-text">{channel ? channel : query}</h5>
+      <h5 className="channel-room-title">{channel ? channel : query}</h5>
       <Search />
       <FaRegBell size="24" className="top-navigation-icon" />
       <FaUserCircle size="24" className="top-navigation-icon" />
+      
     </div>
   );
 };
 
 const Search = () => {
   const [query, setQuery] = useState("");
+  const [expanded, setExpanded] = useState(true);
+  const findMessage = async (query: string) => {
+    AppState.page = 1;
+    setQuery(query);
+    AppState.messageQuery = query;
 
-  const findMessage = async (e: any) => {
-    AppState.messageQuery = e;
-    const getMessage = async () => {
-      const res = await pb.collection("messages").getList(1, 10, {
-        filter: `text~"${e}"`,
-        expand: "user",
+    const res = await pb
+      .collection(Collections.Messages)
+      .getList<MessageWithUser>(1, 10, {
+        filter: `content ~ "${query}"`,
+        expand: "user,reactions(messageId)",
       });
-      let updatedMessages = AppState.messages;
-      updatedMessages = res.items as unknown as MessageWithUser[];
-      AppState.messages = updatedMessages;
-    };
-    await getMessage();
+    AppState.totalPages = res.totalPages;
+    let updatedMessages = AppState.messages;
+    updatedMessages = res.items as unknown as MessageWithUser[];
+    AppState.messages = updatedMessages;
+  };
+  const toggleInput = () => {
+    setExpanded(!expanded);
   };
 
   return (
     <div
-      className=" flex 
+      className=" relative  flex
     
     items-center
-    justify-start  
+    justify-start  gap-x-2
    
     "
     >
       <input
-        className=""
+        className={` text-gray-300  transition-all  duration-700 focus:w-72  ${
+          expanded ? "w-full" : ""
+        }`}
         type="text"
-        placeholder="Search..."
+        placeholder="Search"
         value={query}
         onChange={async (event) => {
           await findMessage(event.target.value);
-          setQuery(event.target.value);
         }}
       />
-      <FaSearch size="18" className="text-secondary my-auto" />
+      <FaSearch
+        size={22}
+        className="   text-secondary absolute right-2 z-10 my-auto text-gray-500"
+        onClick={toggleInput}
+      />
     </div>
   );
 };

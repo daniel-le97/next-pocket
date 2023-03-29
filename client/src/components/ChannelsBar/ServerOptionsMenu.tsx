@@ -12,37 +12,16 @@ import { Transition } from "@headlessui/react";
 const ServerOptionsMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+const isServerOwner = AppState.activeServer?.owner === AppState.user?.id;
+const isMember = AppState.activeServer?.members.find(a => a === AppState.user?.id)
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-  //       setIsOpen(false);
-  //     }
-  //   };
-
-  //   const handleEscape = (event) => {
-  //     if (event.key === "Escape") {
-  //       setIsOpen(false);
-  //     }
-  //   };
-
-  //   if (isOpen) {
-  //     window.addEventListener("mousedown", handleClickOutside);
-  //     window.addEventListener("keydown", handleEscape);
-  //   } else {
-  //     window.removeEventListener("mousedown", handleClickOutside);
-  //     window.removeEventListener("keydown", handleEscape);
-  //   }
-
-  //   return () => {
-  //     window.removeEventListener("mousedown", handleClickOutside);
-  //     window.removeEventListener("keydown", handleEscape);
-  //   };
-  // }, [isOpen]);
 
   return (
     <div className="relative ">
-      <button className="server-options-btn" onClick={() => setIsOpen(!isOpen)}>
+      <button
+        className="server-options-btn py-[17px]"
+        onClick={() => setIsOpen(!isOpen)}
+      >
         {AppState.activeServer?.name}
       </button>
 
@@ -59,12 +38,20 @@ const ServerOptionsMenu = () => {
         >
           <div ref={dropdownRef} className="  server-options ">
             <div className="server-options-container">
-              <LeaveServer />
-              <DeleteServer />
-              <ShareLink />
-              <CreateChannel />
-              <SearchMembers />
-              <ServerGuidelines />
+              {isMember && (
+                <>
+                  <LeaveServer />
+                  {isServerOwner && (
+                    <>
+                      <DeleteServer />
+                      <CreateChannel />
+                    </>
+                  )}
+                  <ShareLink />
+                  <SearchMembers />
+                  <ServerGuidelines />
+                </>
+              )}
             </div>
           </div>
         </Transition>
@@ -74,5 +61,8 @@ const ServerOptionsMenu = () => {
 };
 
 //  ANCHOR this is where we need to do our autth checks
+//check if they are a member of the server and if they are the owner
+// if they are the owner, show the delete server option
+// if they are a member, show the leave server option
 
 export default observer(ServerOptionsMenu);
