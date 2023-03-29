@@ -12,9 +12,6 @@ import type {
 import type { IBaseService } from "./BaseService";
 import { BaseService } from "./BaseService";
 
-
-
-
 class LikesService
   extends BaseService
   implements IBaseService<LikesWithUser, LikesRecord>
@@ -111,7 +108,7 @@ class LikesService
         if (action.toString() != "delete") {
           const like = await this.getById(record.id);
           console.log("likeService.subscribe(create)", like);
-          // this.addLikeOrReplaceToMessage(like, like.message);
+          this.addLikeOrReplaceToMessage(like, like.message);
         }
         if (action.toString() == "delete") {
           const message = AppState.messages.find((message) =>
@@ -121,10 +118,10 @@ class LikesService
           );
           if (message) {
             console.log("likeService.subscribe(delete)", message);
-            // this.filterLikeFromMessage(
-            //   record as unknown as LikesWithUser,
-            //   message
-            // );
+            this.filterLikeFromMessage(
+              record as unknown as LikesWithUser,
+              message
+            );
           }
         }
       }
