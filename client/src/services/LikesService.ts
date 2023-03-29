@@ -106,9 +106,6 @@ class LikesService
       "*",
       async ({ action, record }) => {
         if (action.toString() != "delete") {
-       
-          console.log('tetusbg');
-          
           const like = await this.getById(record.id);
           this.addOrReplace(like, like.message);
         }
@@ -118,7 +115,11 @@ class LikesService
               (like) => like.id == record.id
             )
           );
-          this.filter(record as unknown as LikesWithUser, message!.id);
+          if (message) {
+            // console.log("message to delete", message);
+
+            this.filterMessages(record as unknown as LikesWithUser, message.id);
+          }
         }
       }
     );
@@ -132,22 +133,36 @@ class LikesService
   ) {
     AppState.messages = AppState.messages.map((message) => {
       if (message.id == messageId) {
-        message.expand["likes(message)"] = [
-          ...message.expand["likes(message)"],
-          like,
-        ];
+        const found = message.expand["likes(message)"].find(_like => _like.id == like.id)
+        if (!found) {
+          message.expand["likes(message)"] = [
+            ...message.expand["likes(message)"],
+            like,
+          ];
+          console.log('like was added to message', message);
+        }
       }
       return message;
     });
   }
 
-  protected filter(like: LikesWithUser, messageId: string) {
+  protected filterMessages(like: LikesWithUser, messageId: string) {
     AppState.messages = AppState.messages.map((message) => {
-      if (message.id != messageId) {
-        return message;
+      if (message.id == messageId) {
+        message.expand["likes(message)"] = message.expand[
+          "likes(message)"
+        ].filter((_like) => _like.id != like.id);
+        console.log('like was deleted from message', message);
       }
-      message.expand?.["likes(message)"].filter((_like) => _like.id != like.id);
       return message;
+
+      // AppState.messages = AppState.messages.map((message) => {
+      //   if (message.id != messageId) {
+      //     return message;
+      //   }
+      //   message.expand?.["likes(message)"].filter((_like) => _like.id != like.id);
+      //   return message;
+      // });
     });
   }
 }
