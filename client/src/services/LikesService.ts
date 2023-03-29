@@ -13,6 +13,7 @@ import { BaseService } from "./BaseService";
 import { AppState } from "../../AppState";
 import type { LikesRecord } from "../../PocketBaseTypes/pocketbase-types";
 import { action } from "mobx";
+import consola from "consola";
 
 class LikesService
   extends BaseService
@@ -68,7 +69,7 @@ class LikesService
 
       const likeId = alreadyReacted.id;
       await this.delete(id, likeId);
-      console.log("deleted");
+      // console.log("deleted");
       return;
     }
     const data: LikesRecord = {
@@ -109,12 +110,15 @@ class LikesService
           console.log('tetusbg');
           
           const like = await this.getById(record.id);
-          console.log("creating", like);
-
           this.addOrReplace(like, like.message);
         }
         if (action.toString() == "delete") {
-          console.log("deleting", record);
+          const message = AppState.messages.find((message) =>
+            message.expand["likes(message)"].find(
+              (like) => like.id == record.id
+            )
+          );
+          this.filter(record as unknown as LikesWithUser, message!.id);
         }
       }
     );
@@ -128,13 +132,24 @@ class LikesService
   ) {
     AppState.messages = AppState.messages.map((message) => {
       if (message.id == messageId) {
-        console.log('changes');
-        
-        message.expand["likes(message)"] = 
-        [...message.expand["likes(message)"],like];
+        message.expand["likes(message)"] = [
+          ...message.expand["likes(message)"],
+          like,
+        ];
       }
       return message;
-    })
+    });
+  }
+
+  protected filter(like: LikesWithUser, messageId: string) {
+    AppState.messages = AppState.messages.map((message) => {
+      if (message.id != messageId) {
+        return message;
+      }
+      message.expand?.["likes(message)"].filter((_like) => _like.id != like.id);
+      return message;
+    });
   }
 }
+
 export const likesService = new LikesService("Likes");

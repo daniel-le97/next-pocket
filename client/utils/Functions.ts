@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 // import { AppState } from "AppState";
+import { action } from "mobx";
+import { AppState } from "AppState";
+import Pop from "./Pop";
 
 /**
  * @param {Array} array an array to add data to
@@ -18,9 +21,7 @@ export function addItemOrReplace<T>(array: T[], item: T, field: keyof T) {
   array[index] = item
   return array
 }
-import { AppState } from "AppState";
-import { action } from "mobx";
-import Pop from "./Pop";
+
 /**
  * @param {string} state Must be an array
  * @param {object} item item to be added
