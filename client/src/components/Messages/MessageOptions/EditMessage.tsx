@@ -26,19 +26,24 @@ const EditMessage = ({ message }: { message: MessageWithUser }) => {
 const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const checkIfEdited = (data: MessagesRecord) => {
+    if(data.content?.includes(" *(edited)*")) return
+    data.content += " *(edited)*";
+  }
+
   const {
     register,
     handleSubmit,
   } = useForm({
     defaultValues: {
-      content: message.content,
+      content: message.content?.replace(" *(edited)*", ""),
       user: message.user,
       channel: AppState.activeChannel?.id,
     },
   });
   const onSubmit = async (data: MessagesRecord) => {
     try {
-      data.content += " *(edited)*";
+      checkIfEdited(data);
       await messageService.editMessage(message.id, data);
 
 

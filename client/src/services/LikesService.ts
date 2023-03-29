@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// import { pb } from "../../utils/pocketBase";
-import type { RecordFullListQueryParams } from "pocketbase";
+
+import { AppState } from "AppState";
+import type { LikesRecord } from "PocketBaseTypes";
+import { logger } from "utils/Logger";
 import type {
   LikesWithUser,
   MessageWithUser,
@@ -10,10 +12,8 @@ import type {
 import type { IBaseService } from "./BaseService";
 import { BaseService } from "./BaseService";
 
-import { AppState } from "../../AppState";
-import type { LikesRecord } from "../../PocketBaseTypes/pocketbase-types";
-import { action } from "mobx";
-import consola from "consola";
+
+
 
 class LikesService
   extends BaseService
@@ -104,12 +104,14 @@ class LikesService
     return;
   }
   async subscribe() {
+    logger.log("likeService.subscribe()");
     const subscribe = await this.pb.subscribe(
       "*",
       async ({ action, record }) => {
         if (action.toString() != "delete") {
           const like = await this.getById(record.id);
-          this.addLikeOrReplaceToMessage(like, like.message);
+          console.log("likeService.subscribe(create)", like);
+          // this.addLikeOrReplaceToMessage(like, like.message);
         }
         if (action.toString() == "delete") {
           const message = AppState.messages.find((message) =>
@@ -118,10 +120,11 @@ class LikesService
             )
           );
           if (message) {
-            this.filterLikeFromMessage(
-              record as unknown as LikesWithUser,
-              message
-            );
+            console.log("likeService.subscribe(delete)", message);
+            // this.filterLikeFromMessage(
+            //   record as unknown as LikesWithUser,
+            //   message
+            // );
           }
         }
       }

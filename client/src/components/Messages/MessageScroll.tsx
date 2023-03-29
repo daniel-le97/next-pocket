@@ -24,9 +24,9 @@ const MessageScroll = () => {
   useEffect(() => {
     (async () => {
       try {
-        subscribeMessage = await messageService.subscribe();
+        // if(subscribeLike && subscribeMessage) return console.log("already subscribed")
+        subscribeMessage =  await messageService.subscribe();
         subscribeLike = await likesService.subscribe();
-        console.log("subscribed");
       } catch (error) {
         Pop.error(error, "like or message subscription failed");
       }

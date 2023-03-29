@@ -9,6 +9,7 @@ import type {
 } from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
 import { addItemOrReplaceV2, filterStateArray} from "utils/Functions";
+import { logger } from "utils/Logger";
 import { pb } from "utils/pocketBase";
 
 class MessageService {
@@ -88,11 +89,13 @@ class MessageService {
   }
 
   async subscribe() {
+    logger.log("messagesService.subscribe()")
     const subscribe = await pb
       .collection(Collections.Messages)
       .subscribe("*", async ({ action, record }) => {
-        if (action === "create") {
-          console.log(action);
+        logger.assert(action, "action")
+        if (action !== "delete") {
+          // console.log(action);
           
           const message = await this.getById(record.id);
           addItemOrReplaceV2('messages', message, "id");
