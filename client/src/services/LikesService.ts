@@ -38,6 +38,7 @@ class LikesService
   }
   async delete(id: string, likeId: string): Promise<void> {
     const res = await this.pb.delete(likeId);
+    console.log("likeService.delete()");
 
     // if (res) {
     //   const foundMessage = AppState.messages.find(
@@ -80,6 +81,7 @@ class LikesService
     await this.pb.create<LikesWithUser>(data, {
       expand: "user",
     });
+    console.log("likeService.create()");
     // console.log(created);
     // console.log(AppState.messages);
 
@@ -107,7 +109,7 @@ class LikesService
       async ({ action, record }) => {
         if (action.toString() != "delete") {
           const like = await this.getById(record.id);
-          this.addOrReplace(like, like.message);
+          this.addLikeOrReplaceToMessage(like, like.message);
         }
         if (action.toString() == "delete") {
           const message = AppState.messages.find((message) =>
@@ -116,9 +118,10 @@ class LikesService
             )
           );
           if (message) {
-            // console.log("message to delete", message);
-
-            this.filterMessages(record as unknown as LikesWithUser, message.id);
+            this.filterLikeFromMessage(
+              record as unknown as LikesWithUser,
+              message
+            );
           }
         }
       }
@@ -126,44 +129,44 @@ class LikesService
     return subscribe;
   }
 
-  protected addOrReplace(
+  protected addLikeOrReplaceToMessage(
     like: LikesWithUser,
     messageId: string,
     user = AppState.user
   ) {
-    AppState.messages = AppState.messages.map((message) => {
-      if (message.id == messageId) {
-        const found = message.expand["likes(message)"].find(_like => _like.id == like.id)
-        if (!found) {
-          message.expand["likes(message)"] = [
-            ...message.expand["likes(message)"],
-            like,
-          ];
-          console.log('like was added to message', message);
-        }
+    const message = AppState.messages.find(
+      (message) => message.id == messageId
+    );
+    if (message) {
+      const hasLike = message.expand["likes(message)"].findIndex(
+        (_like) => _like.id == like.id
+      );
+      if (hasLike != -1) {
+        message.expand["likes(message)"][hasLike] = like;
+        return;
       }
-      return message;
-    });
+      message.expand["likes(message)"].push(like);
+    }
+    const updatedMessage = AppState.messages.find(
+      (_message) => _message.id == messageId
+    );
+    console.log("like was added to message", updatedMessage);
   }
 
-  protected filterMessages(like: LikesWithUser, messageId: string) {
-    AppState.messages = AppState.messages.map((message) => {
-      if (message.id == messageId) {
-        message.expand["likes(message)"] = message.expand[
-          "likes(message)"
-        ].filter((_like) => _like.id != like.id);
-        console.log('like was deleted from message', message);
-      }
-      return message;
-
-      // AppState.messages = AppState.messages.map((message) => {
-      //   if (message.id != messageId) {
-      //     return message;
-      //   }
-      //   message.expand?.["likes(message)"].filter((_like) => _like.id != like.id);
-      //   return message;
-      // });
-    });
+  protected filterLikeFromMessage(
+    like: LikesWithUser,
+    message: MessageWithUser
+  ) {
+    const likes = message.expand["likes(message)"];
+    if (likes) {
+      message.expand["likes(message)"] = likes.filter(
+        (_like) => _like.id != like.id
+      );
+    }
+    const updatedMessage = AppState.messages.find(
+      (_message) => _message.id == message.id
+    );
+    console.log("like was removed from message", updatedMessage);
   }
 }
 

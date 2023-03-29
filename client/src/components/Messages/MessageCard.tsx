@@ -14,7 +14,7 @@ import type { LikesWithUser, MessageWithUser } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import UserAvatar from "../GlobalComponents/UserAvatar";
 import CodeBlock from "utils/CodeBlock";
-import { useEffect, useState } from "react";
+
 
 
 
@@ -131,15 +131,25 @@ return (
 
 const MessageLikes = ({ likes }: { likes: LikesWithUser[] }) => {
   // const likes = message.expand["likes(message)"];
+  function getLikes(likes: LikesWithUser[]){
+    const length = likes.length
+    if(length > 0){
+      return length
+    }
+    return 0
+  }
+
+  const hasLikes = getLikes(likes) !== 0
 
   return (
-    <div className="message-like-container group/like">
+    
+      <div className="message-like-container group/like"> 
       <img
         src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
         alt="Thumbs Up Icon"
         className="h-6 w-6 rounded-full"
-      />
-      {likes?.length | 0}
+        />
+      {getLikes(likes)}
       <div className=" message-like-tooltip   ">
         <div className="message-like-tooltip-container">
           <img
@@ -160,6 +170,8 @@ const MessageLikes = ({ likes }: { likes: LikesWithUser[] }) => {
         </div>
       </div>
     </div>
+    
+
   );
 };
 
