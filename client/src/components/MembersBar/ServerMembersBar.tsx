@@ -10,13 +10,23 @@ import type { UsersResponse } from "PocketBaseTypes/pocketbase-types";
 import ChannelSelection from "../ChannelsBar/ChannelSelection";
 import { MemberUser } from "PocketBaseTypes/utils";
 import { usersService } from "@/services/UsersService";
+import { log } from "console";
 // const topics = ["general", "tailwind-css", "react"];
 
 const MembersBar = () => {
   const users = AppState.members;
   const [collapsed, setCollapsed] = useState(false);
 
-
+// useEffect(() => {
+//   const subscribeToMembers = async() => {
+//   try {
+//     await  usersService.subscribeToStatus()
+//   } catch (error) {
+//     console.log(error);
+    
+//   }
+//   }
+// }, [])
   return (
     <>
       <div
@@ -45,6 +55,7 @@ const MembersBar = () => {
           {users &&
             users.map((user, index) => (
               <div
+                 
                 className="relative cursor-pointer rounded-lg p-2 transition-all duration-200 hover:bg-slate-500"
                 key={index}
               >
@@ -116,6 +127,13 @@ const ChevronIcon = ({expanded = false}) => {
 // );
 
 const User = ({ user }: { user: MemberUser}) => {
+
+   console.log(user.expand.user.username , user.expand.user.expand.onlineStatus.isOnline);
+   
+
+ 
+  
+  
   return (
     <div className="user-container flex gap-x-2  ">
       <div className="relative">
@@ -125,11 +143,16 @@ const User = ({ user }: { user: MemberUser}) => {
           width={30}
           className="rounded-full shadow-md shadow-zinc-900"
         />
+
         <div className="absolute left-8 top-9">
-          {user && <UserStatus user={user.expand?.user} />}
+          {user && (
+            <UserStatus isOnline={user?.expand?.user?.expand?.onlineStatus?.isOnline} />
+          )}
         </div>
       </div>
-      <small className=" font-bold text-rose-600">{user.expand?.user.username}</small>
+      <small className=" font-bold text-rose-600">
+        {user.expand?.user.username}
+      </small>
     </div>
   );
 };

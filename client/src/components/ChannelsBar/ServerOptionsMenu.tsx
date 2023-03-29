@@ -8,12 +8,13 @@ import SearchMembers from "./ServerOptions/SearchMembers";
 import { useState, useRef, useEffect, Fragment } from "react";
 import ServerGuidelines from "./ServerOptions/ServerGuidelines";
 import { Transition } from "@headlessui/react";
+import { withMember } from "@/middleware";
+import { FaArrowDown, FaArrowUp, FaDropbox } from "react-icons/fa";
 
 const ServerOptionsMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 const isServerOwner = AppState.activeServer?.owner === AppState.user?.id;
-const isMember = AppState.activeServer?.members.find(a => a === AppState.user?.id)
 
 
   return (
@@ -23,6 +24,8 @@ const isMember = AppState.activeServer?.members.find(a => a === AppState.user?.i
         onClick={() => setIsOpen(!isOpen)}
       >
         {AppState.activeServer?.name}
+     {isOpen ? <FaArrowUp  /> : <FaArrowDown />}
+      
       </button>
 
       {isOpen && (
@@ -38,8 +41,8 @@ const isMember = AppState.activeServer?.members.find(a => a === AppState.user?.i
         >
           <div ref={dropdownRef} className="  server-options ">
             <div className="server-options-container">
-              {isMember && (
-                <>
+           
+                
                   <LeaveServer />
                   {isServerOwner && (
                     <>
@@ -50,19 +53,22 @@ const isMember = AppState.activeServer?.members.find(a => a === AppState.user?.i
                   <ShareLink />
                   <SearchMembers />
                   <ServerGuidelines />
-                </>
-              )}
+           
             </div>
           </div>
         </Transition>
       )}
+
+    
     </div>
   );
 };
+
+
 
 //  ANCHOR this is where we need to do our autth checks
 //check if they are a member of the server and if they are the owner
 // if they are the owner, show the delete server option
 // if they are a member, show the leave server option
 
-export default observer(ServerOptionsMenu);
+export default observer(withMember(ServerOptionsMenu));

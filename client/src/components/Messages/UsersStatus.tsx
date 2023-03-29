@@ -10,8 +10,8 @@ import type { UsersResponse, UsersStatusResponse } from "PocketBaseTypes/pocketb
 // import * as consola  from "consola";
 import consola from 'consola'
 // import { userService, usersService } from "../../services/UserService";
-export default function UserStatus({ user }: { user: UsersResponse | undefined }) {
-  const [isOnline, setIsOnline] = useState(false);
+export default function UserStatus({ isOnline }: { isOnline:boolean}) {
+  // const [isOnline, setIsOnline] = useState(false);
   const [userStatusRecord, setUserStatusRecord] = useState<UsersStatusResponse | null>(null);
 
   useEffect(() => {

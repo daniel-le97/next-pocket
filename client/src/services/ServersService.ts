@@ -88,7 +88,7 @@ class ServersService {
       .collection(Collections.Members)
       .getFullList<MemberUser>({
         filter: `server="${serverId}"`,
-        expand: "user",
+        expand: "user.onlineStatus",
       });
 
     AppState.members = members;

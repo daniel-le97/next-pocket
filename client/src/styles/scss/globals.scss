@@ -35,7 +35,7 @@
   }
 
   textarea {
-    @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-indigo-500 dark:focus:ring-indigo-500;
+    @apply block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-zinc-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-indigo-500 dark:focus:ring-indigo-500;
   }
 
   .btn {
@@ -291,7 +291,7 @@
   }
   .server-options-btn {
     
-    @apply flex w-full  items-center justify-center truncate    shadow-md  font-bold text-white focus:bg-zinc-700 focus:outline-none;
+    @apply flex w-full px-2  items-center justify-between truncate    shadow-md  font-bold text-white focus:bg-zinc-600 focus:outline-none transition-colors;
   }
   .server-options-selection {
     @apply my-1  flex  w-full  items-center justify-between rounded-sm   p-2 text-zinc-300 transition-all ease-linear hover:bg-indigo-600 hover:text-white;
