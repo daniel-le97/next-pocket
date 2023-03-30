@@ -11,6 +11,7 @@ import ChannelSelection from "../ChannelsBar/ChannelSelection";
 import { MemberUser } from "PocketBaseTypes/utils";
 import { usersService } from "@/services/UsersService";
 import { log } from "console";
+import UserAvatar from "../GlobalComponents/UserAvatar";
 // const topics = ["general", "tailwind-css", "react"];
 
 const MembersBar = () => {
@@ -69,7 +70,7 @@ const MembersBar = () => {
           <BsArrowLeftCircle
             size={24}
             onClick={() => setCollapsed(!collapsed)}
-            className="cursor-pointer"
+            className="hover:text-green-500 cursor-pointer"
           />
         </div>
       )}
@@ -128,7 +129,7 @@ const ChevronIcon = ({expanded = false}) => {
 
 const User = ({ user }: { user: MemberUser}) => {
 
-   console.log(user.expand.user.username , user.expand.user.expand.onlineStatus.isOnline);
+  //  console.log(user.expand.user.username , user.expand.user.expand.onlineStatus.isOnline);
    
 
  
@@ -137,12 +138,13 @@ const User = ({ user }: { user: MemberUser}) => {
   return (
     <div className="user-container flex gap-x-2  ">
       <div className="relative">
-        <img
+        {/* <img
           src={user.expand?.user.avatarUrl}
           alt="userIcon"
           width={30}
           className="rounded-full shadow-md shadow-zinc-900"
-        />
+        /> */}
+      <UserAvatar height="h-8" width="w-8" avatarUrl={user.expand?.user.avatarUrl} />
 
         <div className="absolute left-8 top-9">
           {user && (

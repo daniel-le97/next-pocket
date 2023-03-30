@@ -97,18 +97,18 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           }}
         />
 
-        {likes && <MessageLikes likes={likes} />}
+        {likes?.length >= 1 && <MessageLikes likes={likes} />}
       </div>
-      {index === 0 && <IsNewestMessage/>}
+      {index === 0 && <IsNewestMessage />}
       <div className="message-options">
         <div className="message-options-container">
           {AppState.user?.id == message.user.id ? (
             <>
               <EditMessage message={message} />
-              <DeleteMessage messageId={message.id}/>
+              <DeleteMessage messageId={message.id} />
             </>
           ) : (
-            <LikeMessage messageId={message.id} />
+            <LikeMessage messageId={message.id}  />
           )}
         </div>
       </div>
@@ -129,8 +129,8 @@ return (
 );
 }
 
-const MessageLikes = ({ likes }: { likes: LikesWithUser[] }) => {
-  // const likes = message.expand["likes(message)"];
+const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
+
   function getLikes(likes: LikesWithUser[]){
     const length = likes.length
     if(length > 0){
@@ -149,7 +149,7 @@ const MessageLikes = ({ likes }: { likes: LikesWithUser[] }) => {
         alt="Thumbs Up Icon"
         className="h-6 w-6 rounded-full"
         />
-      {getLikes(likes)}
+      {likes?.length}
       <div className=" message-like-tooltip   ">
         <div className="message-like-tooltip-container">
           <img

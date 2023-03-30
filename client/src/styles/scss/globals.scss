@@ -128,12 +128,9 @@
     text-xs font-bold 
     text-white shadow-md transition-all duration-100;
   }
-  .sidebar-user-tooltip {
-    @apply absolute bottom-12 z-50 m-2 w-96  min-w-max  origin-bottom-left rounded-md   bg-zinc-900
-    text-xs  
-    font-bold text-white 
-    shadow-lg shadow-zinc-900 transition-all duration-100;
-  }
+  // .sidebar-user-tooltip {
+  //   @apply
+  // }
 
   .server-selection {
     z-index: -99999 !important;
@@ -179,7 +176,7 @@
     ml-4 cursor-pointer
     text-gray-500 transition duration-300 
     ease-in-out 
-    hover:text-pink-400;
+    hover:text-green-500;
   }
 
   .top-navigation-icon:first {
@@ -267,20 +264,23 @@
     dark:hover:text-green-500;
   }
   .user-bar {
-    @apply relative w-full cursor-pointer bg-zinc-900 p-1;
+    @apply relative w-full  bg-zinc-900 p-1;
   }
   .user-bar-container {
     @apply flex gap-x-2 rounded-md p-1 transition-all ease-linear  hover:bg-zinc-700;
   }
 
   .user-modal {
-    @apply sidebar-user-tooltip;
+    @apply  absolute bottom-16 z-50 m-2 w-96  min-w-max h-96  origin-bottom-left rounded-md   bg-zinc-900
+    text-xs  
+    font-bold text-white 
+    shadow-lg shadow-zinc-900 transition-all duration-100;
   }
   .user-modal-banner {
     @apply rounded-t-md bg-red-100 py-8;
   }
   .user-modal-user-image {
-    @apply absolute left-3 top-6 rounded-full border-8 border-zinc-700 shadow-md;
+    @apply absolute left-3 top-3 rounded-full border-8 border-zinc-900 shadow-md;
   }
 
   .server-options {
@@ -405,10 +405,11 @@
     @apply font-semibold text-blue-500 hover:underline;
   }
   .message-like-container {
-    @apply relative flex w-16  items-center gap-x-2 rounded-xl border-2 border-indigo-500 p-1 text-xl font-bold text-zinc-300;
+    @apply relative flex w-16 mt-2  items-center gap-x-2 rounded-xl border-2 border-indigo-500 p-1 text-xl font-bold text-zinc-300;
   }
   .message-like-tooltip {
-    @apply absolute bottom-12 left-0 w-72 origin-bottom-left   scale-0 rounded-lg  bg-zinc-900 p-2 text-zinc-300  transition-all ease-linear group-hover/like:scale-100;
+    @include tooltip-arrow("bottom", rgb(24 24 27 / var(--tw-bg-opacity)));
+    @apply absolute bottom-12 -left-28 w-72 origin-bottom   scale-0 rounded-lg  bg-zinc-900 p-2 text-zinc-300  transition-all ease-linear group-hover/like:scale-100;
   }
   .message-like-tooltip-container {
     @apply flex items-center gap-x-2 rounded-xl    p-1 text-sm font-bold text-zinc-300;

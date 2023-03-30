@@ -75,44 +75,52 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
     setHovered(!isHovered);
   };
   return (
-    <button
-      onBlur={handleClick}
-      onFocus={handleClick}
-      className="user-bar group "
-      // onClick={handleClick}
-    >
-      <div className=" user-bar-container">
-        <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
+    <div className="group">
+      <button
+        onBlur={handleClick}
+        onFocus={handleClick}
+        className="user-bar group "
+        // onClick={handleClick}
+      >
+        <div className=" user-bar-container">
+          <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
 
-        <div className=" truncate font-semibold  text-white">
-          {user?.username}
-        </div>
-      </div>
-      {isHovered && (
-        <div className="user-modal  ">
-          <div className="user-modal-banner"></div>
-          <img
-            src={user?.avatarUrl}
-            alt="UserIcon"
-            width={80}
-            className="user-modal-user-image"
-          />
-
-          <div className="mt-12 rounded-md bg-zinc-900 p-2 ">
-            <p className="text-xl">{user?.username}</p>
-            <hr className="my-2  border-gray-600" />
-            <div>
-              <p className="text-md font-bold ">MEMBER SINCE</p>
-              <p className="  font-mono text-gray-400  ">
-                {new Date(user.created).toLocaleDateString()}
-              </p>
-            </div>
-            <hr className="my-2  border-gray-600" />
-            <div className="">LogOut</div>
+          <div className=" truncate font-semibold  text-white">
+            {user?.username}
           </div>
         </div>
-      )}
-    </button>
+      </button>
+
+      <div className={`user-modal  ${isHovered ? "scale-100" : "scale-0"} `}>
+        <div className="user-modal-banner"></div>
+        <div className="user-modal-user-image">
+          <UserAvatar avatarUrl={user.avatarUrl} height="w-20" width="h-20" />
+        </div>
+        {/* <img
+          src={user?.avatarUrl}
+          alt="UserIcon"
+          className="user-modal-user-image"
+        /> */}
+
+        <div
+          className="mx-2 mt-16  rounded-md p-2 "
+          style={{
+            backgroundColor: "#111214",
+          }}
+        >
+          <p className="text-xl">{user?.username}</p>
+          <hr className="my-2  border-gray-600" />
+          <div>
+            <p className="text-md font-bold ">MEMBER SINCE</p>
+            <p className="  font-mono text-gray-400  ">
+              {new Date(user.created).toLocaleDateString()}
+            </p>
+          </div>
+          <hr className="my-2  border-gray-600" />
+          <div className="">LogOut</div>
+        </div>
+      </div>
+    </div>
   );
 };
 

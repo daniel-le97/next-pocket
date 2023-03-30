@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import router from "next/router";
 import { serversService } from "@/services/ServersService";
 import MyModal from "../../GlobalComponents/Modal";
+import { channelsService } from "@/services";
 const CreateChannel = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -29,13 +30,13 @@ const CreateChannel = () => {
   });
   const onSubmit = async (data: ServersRecord) => {
     try {
-      const newServer = await serversService.createServer(data);
+      const newChannel = await channelsService.createChannel(data)
       reset();
 
       setIsOpen(false);
-      router.push(`http://localhost:3000/server/${newServer.id}`);
+    
     } catch (error) {
-      console.error("createServer", error);
+      console.error( error);
     }
   };
   return (
@@ -49,7 +50,7 @@ const CreateChannel = () => {
         }
         title="Create Channel"
       >
-        <form onSubmit={handleSubmit(onsubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <input
             className=" ml-0 mr-auto w-full cursor-text rounded-md bg-zinc-800  bg-transparent p-2 font-semibold text-gray-500 placeholder-gray-500 outline-none focus:w-full"
             type="text"

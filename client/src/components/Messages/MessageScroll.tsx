@@ -39,48 +39,54 @@ const MessageScroll = () => {
   return (
     <div
       id="scrollableDiv"
-      className={`flex h-full  flex-col-reverse overflow-auto pb-32 pt-6  ${ AppState.messageQuery != "" ?"border-2 border-indigo-500 shadow-inner rounded-sm  ":" " }`}
+      className={`flex h-full  flex-col-reverse overflow-auto pb-32 pt-6  ${
+        AppState.messageQuery != ""
+          ? "rounded-sm border-2 border-indigo-500 shadow-inner  "
+          : " "
+      }`}
     >
-      <InfiniteScroll
-        dataLength={AppState.messages.length}
-        next={fetchMore}
-        className="flex flex-col-reverse pt-6    "
-        inverse={true} //
-        hasMore={AppState.totalPages != AppState.page}
-        loader={<Loader show={AppState.totalPages != AppState.page} />}
-        scrollableTarget="scrollableDiv"
-      >
-        {AppState.messages.map((message, index) => {
-          const currentDate = new Date(message.created).toLocaleDateString();
-          const todaysDate = new Date(Date.now()).toLocaleDateString();
-          const previousDate =
-            index > 0
-              ? new Date(
-                  AppState.messages[index - 1]!.created
-                ).toLocaleDateString()
-              : null;
+      {AppState.messages.length >=1 && (
+        <InfiniteScroll
+          dataLength={AppState.messages.length}
+          next={fetchMore}
+          className="flex flex-col-reverse pt-6    "
+          inverse={true} //
+          hasMore={AppState.totalPages != AppState.page}
+          loader={<Loader show={AppState.totalPages != AppState.page} />}
+          scrollableTarget="scrollableDiv"
+        >
+          {AppState.messages.map((message, index) => {
+            const currentDate = new Date(message.created).toLocaleDateString();
+            const todaysDate = new Date(Date.now()).toLocaleDateString();
+            const previousDate =
+              index > 0
+                ? new Date(
+                    AppState.messages[index - 1]!.created
+                  ).toLocaleDateString()
+                : null;
 
-          // check if current message date is different from previous message date
-          const isNewDay = currentDate !== previousDate;
-          const notTodaysDate = currentDate !== todaysDate;
-          return (
-            <div key={index}>
-              {<MessageCard index={index} message={message} />}
-            
-              <div>
-                {isNewDay && notTodaysDate && (
-                  <div className="new-date">
-                    <hr className="w-3/6  opacity-40" />
-                    <div className=" new-date-text">{currentDate}</div>
+            // check if current message date is different from previous message date
+            const isNewDay = currentDate !== previousDate;
+            const notTodaysDate = currentDate !== todaysDate;
+            return (
+              <div key={index}>
+                {<MessageCard index={index} message={message} />}
 
-                    <hr className="w-3/6  opacity-40" />
-                  </div>
-                )}
+                <div>
+                  {isNewDay && notTodaysDate && (
+                    <div className="new-date">
+                      <hr className="w-3/6  opacity-40" />
+                      <div className=" new-date-text">{currentDate}</div>
+
+                      <hr className="w-3/6  opacity-40" />
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </InfiniteScroll>
+            );
+          })}
+        </InfiniteScroll>
+      )}
     </div>
   );
 };

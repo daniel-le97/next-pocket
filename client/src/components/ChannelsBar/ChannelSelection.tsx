@@ -24,7 +24,9 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
         memberId: user?.id,
         channelId: selection?.id,
       };
+
       await channelsService.joinChannel(data);
+      await messageService.getMessagesByChannelId(selection.id);
       // await messageService.getMessages();
     } catch (error) {
       console.error(error);
@@ -32,12 +34,12 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   };
 
   return (
-    <div className="dropdown-selection " onClick={joinChannel}>
+    <div className={`dropdown-selection  ${selection.title === channelTitle? "rounded bg-zinc-700" : ""}`} onClick={joinChannel}>
       <BsHash size="24" className="text-gray-400" />
       <h5
         className={
           selection.title ===  channelTitle
-            ? " dropdown-selection-text text-pink-700 dark:text-green-400"
+            ? " dropdown-selection-text text-pink-700 dark:text-green-400 "
             : " dropdown-selection-text text-gray-500"
         }
       >

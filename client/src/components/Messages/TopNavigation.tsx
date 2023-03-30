@@ -89,7 +89,7 @@ const Search = () => {
       />
       <FaSearch
         size={22}
-        className="   text-secondary absolute right-2 z-10 my-auto text-gray-500"
+        className="   text-secondary absolute right-2 z-10 my-auto text-gray-500 hover:text-green-500"
         onClick={toggleInput}
       />
     </div>

@@ -1,5 +1,5 @@
 import { AppState } from "../../AppState";
-import type { ChannelsResponse } from "../../PocketBaseTypes/pocketbase-types";
+import type { ChannelsRecord, ChannelsResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 
@@ -7,6 +7,8 @@ type Data = { memberId: string; channelId: string };
 
 class ChannelsService {
   async joinChannel(data: Data) {
+    console.log(data);
+    
     const channelToLeave = await pb
       .collection(Collections.Channels)
       .getFirstListItem(`members.id ?= "${data.memberId}"`);
@@ -24,10 +26,10 @@ class ChannelsService {
         expand: "members",
       });
 
-    if (!channelToJoin) {
-      throw new Error("Channel not found");
-    }
+   
     AppState.activeChannel = channelToJoin;
+    console.log(AppState.activeChannel);
+    
     // console.log(AppState.activeChannel);
 
     // Add the user to the channel's member list
@@ -69,7 +71,8 @@ class ChannelsService {
       
       
       AppState.activeChannel = res.items[0];
-  
+
+   await this.joinChannel({memberId: AppState.user.id, channelId: res.items[0].id})
       
 
       const channelTitles = res.items.map((i) => i.title);
@@ -82,13 +85,8 @@ class ChannelsService {
     }
   }
 
-  async createChannel(serverId: string) {
-    const data = {
-      members: [],
-      messages: [],
-      title: "general",
-      server: serverId,
-    };
+  async createChannel(data: ChannelsRecord) {
+  
     const newChannel = await pb
       .collection(Collections.Channels)
       .create<ChannelsResponse>(data);

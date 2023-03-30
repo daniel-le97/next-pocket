@@ -7,10 +7,10 @@ import Pop from "utils/Pop";
 const LikeMessage = ({ messageId }: { messageId: string }) => {
   const likeMessage = async () => {
     try {
-      const yes = await Pop.confirm();
-      if (!yes) {
-        return;
-      }
+      // const yes = await Pop.confirm();
+      // if (!yes) {
+      //   return;
+      // }
       await likesService.create(messageId);
     } catch (error) {
       Pop.error(error);
