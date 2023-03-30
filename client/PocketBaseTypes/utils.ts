@@ -1,4 +1,4 @@
-import { FormattedMessage } from "utils/NewMessage";
+import type { FormattedMessage } from "utils/NewMessage";
 import type {
   FileUploadsResponse,
   FriendsResponse,
@@ -29,10 +29,6 @@ type UserExpand<T = unknown> = {
 export type Server = ServersResponse<Upload>;
 export type Upload = {
   image: FileUploadsResponse;
-};
-
-type UserRes = {
-  user: UsersResponse;
 };
 
 
