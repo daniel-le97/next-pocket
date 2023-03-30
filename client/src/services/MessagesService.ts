@@ -6,10 +6,12 @@ import type {
   DirectMessagesResponse,
   MessagesRecord,
   MessageWithUser,
+  TMessageWithUser,
 } from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
 import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
 import { logger } from "utils/Logger";
+import { FormattedMessage } from "utils/NewMessage";
 import { pb } from "utils/pocketBase";
 
 class MessageService {
@@ -52,7 +54,7 @@ class MessageService {
       .getList<MessageWithUser>(1, 50, {
         filter: `channel = "${AppState.activeChannel.id}"`,
         sort: "-created",
-        expand: "user,reactions(messageId)",
+        expand: "user,likes(message)",
       });
     console.log("messages", res);
 
@@ -72,18 +74,12 @@ class MessageService {
       expand: "user,likes(message).user",
     });
 
-    const messages = res.items as unknown as MessageWithUser[];
-    messages.map((message, index) => {
-      if (!message.expand["likes(message)"]) {
-        message.expand["likes(message)"] = [];
-      }
-      AppState.messageLikes[index] = message.expand["likes(message)"];
-      message.expand["likes(message)"] = [];
+    const unFormattedMessages = res.items as unknown as TMessageWithUser[];
+    const messages = unFormattedMessages.map((message, index) => {
+      const _Message: MessageWithUser = new FormattedMessage(message);
+      AppState.messageLikes[index] = message.expand["likes(message)"] || [];
+      return _Message;
     });
-    console.log(AppState.messageLikes);
-    console.log(messages.map((message) => message.expand["likes(message)"]));
-
-    // console.log(messages.map(message => message.expand["likes(message)"]));
     AppState.messages = [...AppState.messages, ...messages];
     AppState.totalPages = res.totalPages;
   }
@@ -110,8 +106,8 @@ class MessageService {
   async getById(id: string) {
     const res = await pb
       .collection(Collections.Messages)
-      .getOne<MessageWithUser>(id, { expand: "user,likes(message)" });
-    return res;
+      .getOne<TMessageWithUser>(id, { expand: "user,likes(message)" });
+    return new FormattedMessage(res);
     // console.log(res);
   }
   async deleteMessage(id: string) {
@@ -120,7 +116,7 @@ class MessageService {
   async editMessage(id: string, data: MessagesRecord) {
     await pb
       .collection(Collections.Messages)
-      .update<MessageWithUser>(id, data, {
+      .update(id, data, {
         expand: "user,likes(message)",
       });
   }

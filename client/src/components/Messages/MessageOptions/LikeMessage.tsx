@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import CreateServer from "@/components/SideBar/CreateServer";
 import { likesService } from "@/services/LikesService";
-import { messageService } from "@/services/MessagesService";
 import { observer } from "mobx-react";
 import { FaThumbsUp } from "react-icons/fa";
 import Pop from "utils/Pop";
@@ -13,11 +11,12 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
       if (!yes) {
         return;
       }
-      await likesService.create(messageId)
+      await likesService.create(messageId);
     } catch (error) {
       Pop.error(error);
     }
   };
+
   return (
     <div
       className="group/item relative p-2 transition-all ease-linear hover:bg-zinc-600 "
@@ -31,7 +30,7 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
     text-white shadow-md transition-all duration-100
     group-hover/item:scale-100 "
       >
-       Like
+        Like
       </span>
     </div>
   );

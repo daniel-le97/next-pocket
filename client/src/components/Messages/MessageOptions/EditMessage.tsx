@@ -37,7 +37,7 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
   } = useForm({
     defaultValues: {
       content: message.content?.replace(" *(edited)*", ""),
-      user: message.user,
+      user: message.user.id,
       channel: AppState.activeChannel?.id,
     },
   });
@@ -108,7 +108,7 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
                           <img
                             className="mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md shadow-zinc-500 dark:shadow-zinc-800"
                             src={
-                              message.expand?.user.avatarUrl ||
+                              message.user.avatarUrl ||
                               `https://api.dicebear.com/5.x/bottts-neutral/svg`
                             }
                             alt="avatar"
@@ -118,7 +118,7 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
                         </div>
                         <div className="ml-auto flex w-4/5 flex-col items-start">
                           <p className=" font-bold  text-red-500">
-                            {message.expand?.user?.username}
+                            {message.user?.username}
                             <small className="ml-3 font-normal text-black dark:text-gray-300">
                               {
                                 <TimeAgo

@@ -38,6 +38,6 @@
     "middleware/AuthorizedUser.ts",
     "src/middleware/WithAuth.js",
     "src/middleware/WithAuth.js"
-, "utils/CodeBlock.js"  ],
+, "utils/CodeBlock.tsxx"  ],
   "exclude": ["node_modules", "util/*.*"]
 }

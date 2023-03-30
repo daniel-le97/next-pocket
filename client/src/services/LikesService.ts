@@ -21,7 +21,7 @@ class LikesService
     throw new Error("Method not implemented.");
   }
   async getById(messageId: string) {
-    const userId = this.user!.id;
+    const userId = AppState.user!.id;
     const res = await this.pb.getList(1, 1, {
       filter: `message = "${messageId}" && user = "${userId}"`,
     });
@@ -62,7 +62,7 @@ class LikesService
   }
   async create(id: string): Promise<LikesWithUser | undefined> {
     // console.log("creating");
-    const alreadyReacted = await this.getOne(id);
+    const alreadyReacted = await this.getById(id);
     if (alreadyReacted) {
       // console.log(alreadyReacted);
 

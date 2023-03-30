@@ -48,13 +48,13 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
         <UserAvatar
           width="w-12"
           height="h-12"
-          avatarUrl={message.expand?.user.avatarUrl}
+          avatarUrl={message.user.avatarUrl}
         />
         {/* <UserStatus user={message?.expand?.user} /> */}
       </div>
       <div className=" message-content      ">
         <p className=" font-bold  text-red-500">
-          {message.expand?.user?.username}
+          {message.user?.username}
           <small className="message-timestamp">
             {
               <TimeAgo
@@ -88,7 +88,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
                   </div>
                   <CodeBlock
                     language={className && className.replace(/language-/, "")}
-                    value={children}
+                    value={children as string}
                     {...props}
                   />
                 </div>
@@ -102,7 +102,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
       {index === 0 && <IsNewestMessage/>}
       <div className="message-options">
         <div className="message-options-container">
-          {AppState.user?.id == message.user ? (
+          {AppState.user?.id == message.user.id ? (
             <>
               <EditMessage message={message} />
               <DeleteMessage messageId={message.id}/>

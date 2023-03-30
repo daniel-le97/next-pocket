@@ -1,3 +1,4 @@
+import { FormattedMessage } from "utils/NewMessage";
 import type {
   FileUploadsResponse,
   FriendsResponse,
@@ -35,7 +36,8 @@ type UserRes = {
 };
 
 
-export type MessageWithUser = MessagesResponse & {
+export type MessageWithUser = FormattedMessage
+export type TMessageWithUser = MessagesResponse & {
   expand: { 'likes(message)': LikesWithUser[]; user: UsersResponse };
 };
 export type LikesWithUser = LikesResponse & {
