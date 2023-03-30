@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 // /* eslint-disable @typescript-eslint/no-misused-promises */
 import { AppState } from "AppState";
+import { action } from "mobx";
 import type {
   DirectMessagesRecord,
   DirectMessagesResponse,
@@ -75,13 +76,16 @@ class MessageService {
     });
 
     const unFormattedMessages = res.items as unknown as TMessageWithUser[];
-    const messages = unFormattedMessages.map((message, index) => {
-      const _Message: MessageWithUser = new FormattedMessage(message);
-      AppState.messageLikes[index] = message.expand["likes(message)"] || [];
-      return _Message;
-    });
-    AppState.messages = [...AppState.messages, ...messages];
-    AppState.totalPages = res.totalPages;
+
+    action(() => {
+      const messages = unFormattedMessages.map((message, index) => {
+        const _Message: MessageWithUser = new FormattedMessage(message);
+        AppState.messageLikes[index] = message.expand["likes(message)"] || [];
+        return _Message;
+      });
+      AppState.messages = [...AppState.messages, ...messages];
+      AppState.totalPages = res.totalPages;
+    })()
   }
 
   async subscribe() {
@@ -91,8 +95,6 @@ class MessageService {
       .subscribe("*", async ({ action, record }) => {
         logger.assert(action, "action");
         if (action !== "delete") {
-          // console.log(action);
-
           const message = await this.getById(record.id);
           addItemOrReplaceV2("messages", message, "id");
         }

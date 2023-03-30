@@ -1,4 +1,4 @@
-import type { LikesWithUser, MessageWithUser, TMessageWithUser, UsersResponse } from "PocketBaseTypes";
+import type { TMessageWithUser, UsersResponse } from "PocketBaseTypes";
 
 export class FormattedMessage {
   id: string;

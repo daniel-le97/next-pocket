@@ -5,6 +5,7 @@
 import { AppState } from "AppState";
 import { action } from "mobx";
 import type { LikesRecord } from "PocketBaseTypes";
+import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
 import { logger } from "utils/Logger";
 import type {
   LikesWithUser,
@@ -102,20 +103,21 @@ class LikesService
     return;
   }
   async subscribe() {
-    logger.log("likeService.subscribe()");
+    //  create a subscription to the likes table
     const subscribe = await this.pb.subscribe(
-      "*",
-      async ({ action, record }) => {
+      "*", async ({ action, record }) => {
+        // an action happened on the likes table sp we need to update state
         const index = AppState.messages.findIndex((message) => message.id == record.message);
         if (index == -1) {
           logger.log("likeService.subscribe() message not found", record.message)
           return
         }
         const _record = record as unknown as LikesWithUser;
+        //  action can be create, update, delete
         if (action !== "delete") {
+
           const like = await this.getOne(record.id);
           this.addLikeOrReplaceToMessage(like, index);
-          console.log("likeService.subscribe(create)", like);
         }
         if (action === "delete") {
           this.filterLikeFromMessage(_record, index)
