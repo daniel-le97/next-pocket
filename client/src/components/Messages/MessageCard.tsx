@@ -20,7 +20,7 @@ import CodeBlock from "utils/CodeBlock";
 
 const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}) => {
   const messageQuery = AppState.messageQuery;
-  const likes = message.expand["likes(message)"];
+  const likes = AppState.messageLikes[index] ?? null
   const handleCopyClick = () => {
     function removeBackticks(str: string): string {
       const pattern = /```([\s\S]*)```/;

@@ -8,7 +8,7 @@ import type {
   MessageWithUser,
 } from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
-import { addItemOrReplaceV2, filterStateArray} from "utils/Functions";
+import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
 import { logger } from "utils/Logger";
 import { pb } from "utils/pocketBase";
 
@@ -72,36 +72,36 @@ class MessageService {
       expand: "user,likes(message).user",
     });
 
-   
-
     const messages = res.items as unknown as MessageWithUser[];
-    messages.map(message =>{
-      if(!message.expand["likes(message)"]){
-        message.expand["likes(message)"] = []
+    messages.map((message, index) => {
+      if (!message.expand["likes(message)"]) {
+        message.expand["likes(message)"] = [];
       }
-    })
-    console.log(messages.map(message=> message.expand["likes(message)"]));
+      AppState.messageLikes[index] = message.expand["likes(message)"];
+      message.expand["likes(message)"] = [];
+    });
+    console.log(AppState.messageLikes);
+    console.log(messages.map((message) => message.expand["likes(message)"]));
 
     // console.log(messages.map(message => message.expand["likes(message)"]));
     AppState.messages = [...AppState.messages, ...messages];
     AppState.totalPages = res.totalPages;
-  
   }
 
   async subscribe() {
-    logger.log("messagesService.subscribe()")
+    logger.log("messagesService.subscribe()");
     const subscribe = await pb
       .collection(Collections.Messages)
       .subscribe("*", async ({ action, record }) => {
-        logger.assert(action, "action")
+        logger.assert(action, "action");
         if (action !== "delete") {
           // console.log(action);
-          
+
           const message = await this.getById(record.id);
-          addItemOrReplaceV2('messages', message, "id");
+          addItemOrReplaceV2("messages", message, "id");
         }
         if (action === "delete") {
-          filterStateArray('messages', record, 'id')
+          filterStateArray("messages", record, "id");
         }
       });
     return subscribe;

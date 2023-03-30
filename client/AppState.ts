@@ -11,6 +11,7 @@ import type {
   UsersResponse,
 } from "./PocketBaseTypes/pocketbase-types";
 import type {
+  LikesWithUser,
   MemberUser,
   MessageWithUser,
   Server,
@@ -40,6 +41,7 @@ class ObservableAppState {
   messages: MessageWithUser[] = [];
   directMessages: DirectMessagesResponse[] = [];
   activeDirectMessage:UsersResponse | null = null
+  messageLikes : [LikesWithUser[]] = [[]]
 
   totalPages = 0;
   page = 1;
