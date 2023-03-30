@@ -27,11 +27,18 @@ const TopNavigation = () => {
   return (
     <div className="top-navigation">
       <FaHashtag size="20" className="title-hashtag" />
-      <h5 className="channel-room-title">{channel ? channel : query}</h5>
+      <h5 className="channel-room-title">
+        {channel ? channel : query}
+        {AppState.messageQuery !== "" && (
+          <span className="text-gray-500 text-opacity-80">
+            {" "}
+            - Search Results
+          </span>
+        )}
+      </h5>
       <Search />
       <FaRegBell size="24" className="top-navigation-icon" />
       <FaUserCircle size="24" className="top-navigation-icon" />
-      
     </div>
   );
 };
@@ -40,6 +47,7 @@ const Search = () => {
   const [query, setQuery] = useState("");
   const [expanded, setExpanded] = useState(true);
   const findMessage = async (query: string) => {
+    AppState.messages = [];
     AppState.page = 1;
     setQuery(query);
     AppState.messageQuery = query;
@@ -74,7 +82,7 @@ const Search = () => {
         }`}
         type="text"
         placeholder="Search"
-        value={query}
+        value={AppState.messageQuery}
         onChange={async (event) => {
           await findMessage(event.target.value);
         }}

@@ -39,12 +39,12 @@ const MessageScroll = () => {
   return (
     <div
       id="scrollableDiv"
-      className="flex h-full  flex-col-reverse overflow-auto pb-32 pt-6"
+      className={`flex h-full  flex-col-reverse overflow-auto pb-32 pt-6  ${ AppState.messageQuery != "" ?"border-2 border-indigo-500 shadow-inner rounded-sm  ":" " }`}
     >
       <InfiniteScroll
         dataLength={AppState.messages.length}
         next={fetchMore}
-        className="flex flex-col-reverse pt-6   "
+        className="flex flex-col-reverse pt-6    "
         inverse={true} //
         hasMore={AppState.totalPages != AppState.page}
         loader={<Loader show={AppState.totalPages != AppState.page} />}

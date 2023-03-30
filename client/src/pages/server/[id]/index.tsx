@@ -4,7 +4,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import ChannelsBar from "@/components/ChannelsBar/ChannelsBar";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { useRouter } from "next/router";
 import { observer } from "mobx-react";
 
@@ -18,6 +18,7 @@ import { withAuth, withMember } from "@/middleware";
 import TopNavigation from "@/components/Messages/TopNavigation";
 import MessageScroll from "@/components/Messages/MessageScroll";
 import CreateMessage from "@/components/Messages/CreateMessage";
+import { Transition } from "@headlessui/react";
 
 const Server: NextPage = () => {
   const router = useRouter();
@@ -58,16 +59,26 @@ const Server: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
-        <div className="flex  h-screen w-full  ">
-          <ChannelsBar />
-          <div className=" message-container ">
-            <TopNavigation />
+        <Transition
+          as={Fragment}
+          enter="ease-out duration-700"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="flex  h-screen w-full  ">
+            <ChannelsBar />
+            <div className=" message-container ">
+              <TopNavigation />
 
-            <MessageScroll />
-            <CreateMessage />
+              <MessageScroll />
+              <CreateMessage />
+            </div>
+            <ServerMembersBar />
           </div>
-          <ServerMembersBar />
-        </div>
+        </Transition>
       </main>
     </>
   );

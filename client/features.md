@@ -1,10 +1,10 @@
 Here are some features to  include in your Discord clone to demonstrate understanding of Next.js and real-time applications:
 
-User authentication: Implement user authentication and authorization to ensure that users can securely log in and access the appropriate features and data.
+<!-- User authentication: Implement user authentication and authorization to ensure that users can securely log in and access the appropriate features and data. -->
 
 <!-- Real-time messaging: Implement real-time messaging functionality using technologies like Socket.IO or WebSockets. This will allow users to send and receive messages in real-time, similar to Discord. -->
 
-Channels and servers: Allow users to create and join channels and servers to organize their conversations and interact with others with similar interests.
+<!-- Channels and servers: Allow users to create and join channels and servers to organize their conversations and interact with others with similar interests. -->
 
 
 
@@ -22,3 +22,11 @@ User profiles: Allow users to create and customize their profiles, including the
 Search functionality: Implement search functionality to allow users to easily find messages, channels, and servers.
 
 By implementing these features, you'll be able to demonstrate your understanding of Next.js and real-time applications, and create a Discord clone that users will enjoy using.
+
+
+
+TODO --
+Flush out the Server Members Bar and User Status, 
+-when a User is created, create a user Status record with it
+-when user is created, create a default friend to one of the Admins?
+-populate with fake data
