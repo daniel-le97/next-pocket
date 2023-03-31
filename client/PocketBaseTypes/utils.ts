@@ -1,5 +1,6 @@
 import type { FormattedMessage } from "utils/NewMessage";
 import type {
+  ChannelsResponse,
   FileUploadsResponse,
   FriendsResponse,
   LikesResponse,
@@ -46,6 +47,10 @@ export type UsersStatusWithUser = UsersStatusResponse & {
 
 export type friendsWithUser = FriendsResponse & {
   // expand: {}
+}
+
+export type FullUser = UsersResponse & {
+  expand: {currentChannel: ChannelsResponse}
 }
 
 

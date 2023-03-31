@@ -5,7 +5,7 @@
 import { observer } from "mobx-react";
 import { type AppType } from "next/dist/shared/lib/utils";
 import React, { useEffect } from "react";
-import { AppState } from "../../AppState";
+import { AppState, State } from "../../AppState";
 import { useUser } from "../../hooks/User";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
@@ -15,8 +15,9 @@ import Layout from "../components/Layout";
 
 import "../styles/tailwind.css"
 import "../styles/scss/globals.scss";
-import { membersService } from "../services";
+import { membersService, usersService } from "../services";
 import { usersStatusService } from "@/services/UsersStatusService";
+import { useRouter } from "next/router";
 
 
 
@@ -28,6 +29,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   
   
   const user = AppState.user || pb.authStore.model
+  // console.log(AppState, State);
+  const router = useRouter()
+  
   useEffect(() => {
     // if you want it to be fetch before anything else put your call here
     (async () => {
@@ -35,6 +39,12 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         if(!user)return
         await membersService.getUserServers(user.id);
         usersStatusService.setStatusOnline(user.id)
+        // const channel = usersService.getLastChannel()
+        const Channel = AppState.user?.expand.currentChannel
+        if(Channel) {
+          // AppState.activeChannel = Channel
+          router.push(`server/${Channel.server}`)
+        }
       } catch (error) {
         Pop.error(error);
       }
@@ -42,53 +52,12 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
 
     return () => {
-      if(user) usersStatusService.setStatusOnline(user.id)
-    }
-    
-  }, [user]);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     const subscribe = async () => {
-  //       // const userStatus = await pb
-  //       //   .collection("usersStatus")
-  //       //   .getFirstListItem(`user.id = "${user?.id}"`);
-  //       // // console.log(userStatus);
-  //       // if (!userStatus) {
-  //       //   throw new Error("userStatus Not Found");
-  //       // }
-
-  //       //     // Update isOnline status to true on component mount
-  //       // const data = {
-  //       //   userId: user?.id,
-  //       //   isOnline: true,
-  //       // };
-  //       // const updatedRecord = await pb
-  //       //   .collection("usersStatus")
-  //       //   .update(userStatus.id, data);
-  //       // console.log(updatedRecord);
-
-  //       // Update isOnline status to false on beforeunload event
-  //       const handleBeforeUnload = async () => {
-  //         const data = {
-  //           userId: user?.id,
-  //           isOnline: false,
-  //         };
-  //         const updatedRecord = await pb
-  //           .collection("usersStatus")
-  //           .update(userStatus.id, data);
-  //         // console.log(updatedRecord);
-  //       };
-  //       window.addEventListener("beforeunload", handleBeforeUnload);
-
-  //       // Remove the event listener on unmount
-  //       return () => {
-  //         window.removeEventListener("beforeunload", handleBeforeUnload);
-  //       };
-  //     };
-  //     subscribe();
-  //   }
-  // }, [user]);
+      if(user) {
+        usersStatusService.setStatusOnline(user.id)
+        usersService.setLastChannel()
+      }
+    } 
+  }, [])
 
   return (
     <Layout>

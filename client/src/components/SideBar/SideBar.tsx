@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -15,6 +16,7 @@ import ServerSelection from "./ServerSelection";
 import CreateServer from "./CreateServer";
 import Pop from "../../../utils/Pop";
 import useDarkMode from "../../../hooks/useDarkMode";
+import { authsService } from "@/services";
 const SideBar = () => {
   const [user, setUser] = useState(null);
 
@@ -112,7 +114,7 @@ const LogOutIcon = () => {
     if (!confirmed) {
       return;
     }
-    pb.authStore.clear();
+    authsService.signOut()
     router.push("/login");
   };
 
