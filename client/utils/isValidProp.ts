@@ -14,3 +14,9 @@ export function isValidProp<T>(target: T, prop: keyof T) {
     );
   }
 }
+
+
+
+// explains what a javasvrpt proxy is
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy

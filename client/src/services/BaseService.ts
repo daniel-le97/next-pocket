@@ -1,6 +1,6 @@
 import { AppState } from "AppState";
-import type { Admin, Record, RecordService } from "pocketbase";
-import { Collections } from "PocketBaseTypes/pocketbase-types";
+import type { Admin, Record, RecordFullListQueryParams, RecordListQueryParams, RecordQueryParams, RecordService } from "pocketbase";
+import { CollectionRecords, Collections } from "PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 
 export interface IBaseService<T, P> {
@@ -22,27 +22,33 @@ export class BaseService {
 
 export class BaseT<T> {
   pb: RecordService;
-  user: Record | Admin | null;
+
   collection: keyof typeof Collections;
-  state: T;
+
   constructor(
     collection: keyof typeof Collections,
-    state: keyof typeof AppState
   ) {
     this.collection = collection;
     this.pb = pb.collection(Collections[collection]);
-    this.user = pb.authStore.model;
-    this.state = AppState[state] as unknown as T;
+
+
   }
- protected async _getAll(): Promise<T[]> {
-    const res = await this.pb.getFullList();
+  async _getAll(query: RecordFullListQueryParams): Promise<T[]> {
+    const res = await this.pb.getFullList(query);
     const items = res as unknown as T[];
     return items;
   }
-  protected async _getById(id: string): Promise<T | void> {
-    const res = await this.pb.getList(1, 1, { filter: `id = "${id}"` });
+   async _getById(id: string, query?: RecordListQueryParams): Promise<T | void> {
+    const res = await this.pb.getList(1, 1, { filter: `id = "${id}"`, ...query});
     const item = res.items[0] as unknown as T;
     return item;
   }
+   async _delete(id: string): Promise<T | void> {
+    await this.pb.delete(id);
+  }
+  async _getOne(id:string, query?: RecordQueryParams){
+    return await this.pb.getOne(id, query)
+  }
+
 }
 

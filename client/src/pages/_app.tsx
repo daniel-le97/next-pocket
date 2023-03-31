@@ -16,32 +16,36 @@ import Layout from "../components/Layout";
 import "../styles/tailwind.css"
 import "../styles/scss/globals.scss";
 import { membersService } from "../services";
+import { usersStatusService } from "@/services/UsersStatusService";
 
 
 
 
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  const user = AppState.user;
-
-
   
   
+  
+  
+  const user = AppState.user || pb.authStore.model
   useEffect(() => {
     // if you want it to be fetch before anything else put your call here
-      async function initialFetch() {
-        try {
-          //  only call these if we have a user logged in
-          if (user?.id) {
-            await membersService.getUserServers(user.id);
-          }
-        } catch (error) {
-          Pop.error(error);
-        }
+    (async () => {
+      try {
+        if(!user)return
+        await membersService.getUserServers(user.id);
+        usersStatusService.setStatusOnline(user.id)
+      } catch (error) {
+        Pop.error(error);
       }
+    })();
 
-    initialFetch()
-  }, []);
+
+    return () => {
+      if(user) usersStatusService.setStatusOnline(user.id)
+    }
+    
+  }, [user]);
 
   // useEffect(() => {
   //   if (user) {
