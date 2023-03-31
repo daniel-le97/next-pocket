@@ -55,8 +55,8 @@ const Search = () => {
     const res = await pb
       .collection(Collections.Messages)
       .getList<MessageWithUser>(1, 10, {
-        filter: `content ~ "${query}"`,
-        expand: "user,reactions(messageId)",
+        filter: `content ~ "${query}"  `,
+        expand: "user,likes(message).user",
       });
     AppState.totalPages = res.totalPages;
     let updatedMessages = AppState.messages;

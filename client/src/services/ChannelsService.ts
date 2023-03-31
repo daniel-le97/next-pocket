@@ -7,7 +7,7 @@ type Data = { memberId: string; channelId: string };
 
 class ChannelsService {
   async joinChannel(data: Data) {
-    console.log(data);
+    // console.log(data);
     
     const channelToLeave = await pb
       .collection(Collections.Channels)
@@ -17,7 +17,7 @@ class ChannelsService {
         memberId: data.memberId,
         channelId: channelToLeave.id,
       });
-    }
+    } 
 
     // Get the channel record to join
     const channelToJoin = await pb
@@ -95,6 +95,16 @@ class ChannelsService {
     if (newChannel) {
       AppState.channels = [...AppState.channels, newChannel];
       AppState.activeChannel = newChannel;
+    }
+  }
+
+  async deleteChannel(channelId: string) {
+    const channel = await pb
+      .collection(Collections.Channels)
+      .delete(channelId);
+
+    if (channel) {
+      AppState.channels = AppState.channels.filter((c) => c.id !== channelId);
     }
   }
 }

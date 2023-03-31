@@ -17,6 +17,7 @@ import { FaCog } from "react-icons/fa";
 import MyModal from "../GlobalComponents/Modal";
 import { Tooltip } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
+import Pop from "utils/Pop";
 const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user;
   const channelTitle: string | undefined = AppState.activeChannel?.title;
@@ -101,7 +102,7 @@ const EditChannel = () => {
 
 
 
-  const onSubmit = async (data: ChannelsRecord) => {
+  const updateChannel = async (data: ChannelsRecord) => {
     try {
       // await channelsService.updateChannel(data)
     } catch (error) {
@@ -111,14 +112,18 @@ const EditChannel = () => {
 
   const deleteChannel = async () => {
     try {
-      
+      const yes = await Pop.confirm()
+            if (!yes) {
+              return
+            }
+      await channelsService.deleteChannel(AppState.activeChannel?.id)
     } catch (error) {
-      console.error(errorvnb  )
+      console.error(error )
     }
   }
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(updateChannel)}>
         <label className=" block text-sm font-bold text-zinc-300">
           Channel Title:
         </label>

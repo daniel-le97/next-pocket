@@ -101,6 +101,8 @@
   .sidebar {
     @apply fixed   top-0 left-0 z-50 flex max-h-screen min-h-screen w-16 flex-col  bg-gray-200 shadow-lg dark:bg-zinc-900;
   }
+ 
+
   .sidebar::-webkit-scrollbar {
     width: 2px;
     height: 2px;

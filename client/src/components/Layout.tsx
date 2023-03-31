@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { AppState } from "../../AppState";
 import { Admin, Record } from "pocketbase";
 
-const Layout = ({ children }: { children: any }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const [showing, setShowing] = useState(false);
   const [user, setUser] = useState<Record | Admin | null>(null);
   const router = useRouter();
