@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { observer } from "mobx-react";
 import Link from "next/link.js";
+import {Tooltip } from '@nextui-org/react'
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
 import logo from "../../assets/LLCLOGO.png";
@@ -88,8 +89,10 @@ const SideBarIcon = ({ icon, text, router }) => {
   return (
     <Link href={router}>
       <div className=" sidebar-icon group ">
-        {icon}
-        <span className=" sidebar-tooltip group-hover:scale-100">{text} </span>
+        <Tooltip content={text} placement="right" color="invert">
+          {icon}
+        </Tooltip>
+        {/* <span className=" sidebar-tooltip group-hover:scale-100">{text} </span> */}
       </div>
     </Link>
   );
@@ -143,15 +146,14 @@ const ThemeIcon = () => {
       ) : (
         <BsMoon size="24" className="top-navigation-icon" />
       )} */}
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/3751/3751403.png"
-        alt=""
-        width={40}
-        className="mx-3 cursor-pointer"
-      />
-      <span className="sidebar-tooltip group-hover:scale-100">
-        Toggle Theme
-      </span>
+      <Tooltip content="Toggle Theme" color="invert" placement="right">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/3751/3751403.png"
+          alt=""
+          width={40}
+          className="mx-3 cursor-pointer"
+        />
+      </Tooltip>
     </span>
   );
 };

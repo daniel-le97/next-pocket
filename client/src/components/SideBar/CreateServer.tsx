@@ -15,6 +15,7 @@ import Loader from "../GlobalComponents/Loader";
 import { useRouter } from "next/router";
 import type { ServersRecord } from "../../../PocketBaseTypes/pocketbase-types";
 import MyModal from "../GlobalComponents/Modal";
+import{Tooltip} from '@nextui-org/react'
 const user = pb.authStore.model;
 
 const initialFormData = {
@@ -86,59 +87,64 @@ const CreateServer = () => {
   return (
     <div className=" sidebar-icon group justify-center ">
       {/* <BsPlusCircleFill size={28} onClick={openModal} /> */}
-      <MyModal
-        title="Create Server"
-        buttonIcon={
-          <div className="flex items-center justify-center">
-            <BsPlusCircleFill size={28} onClick={openModal} />
-          </div>
-        }
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-3">
-          <label className=" block text-sm font-bold text-zinc-300">
-            Server Name
-          </label>
-          <input
-            {...register("name", {
-              required: true,
-              maxLength: 30,
-              minLength: 5,
-            })}
-            type="text"
-            className=" create-server-input"
-          />
-          {errors.name && <span>Retry</span>}
+     
+        <MyModal
+          title="Create Server"
+          buttonIcon={
+            <div className="flex items-center justify-center">
+               <Tooltip content="Create Server" placement="right" color="invert">
 
-          <label className=" block text-sm font-bold text-zinc-300">
-            Image:
-          </label>
-          <input
-            type="file"
-            name="imageFile"
-            onChange={handleFileChange}
-            className="file-upload-input"
-          />
-          {!uploading && imageUrl && (
-            <img src={imageUrl} alt="" className="upload-preview-image" />
-          )}
-          <Loader show={uploading} />
+              <BsPlusCircleFill size={28} onClick={openModal} />
+               </Tooltip>
+            </div>
+          }
+        >
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-y-3"
+          >
+            <label className=" block text-sm font-bold text-zinc-300">
+              Server Name
+            </label>
+            <input
+              {...register("name", {
+                required: true,
+                maxLength: 30,
+                minLength: 5,
+              })}
+              type="text"
+              className=" create-server-input"
+            />
+            {errors.name && <span>Retry</span>}
 
-          <label className=" block text-sm font-bold text-zinc-300">
-            Description :
-          </label>
-          <textarea
-            {...register("description", { required: true })}
-            name="description"
-          />
+            <label className=" block text-sm font-bold text-zinc-300">
+              Image:
+            </label>
+            <input
+              type="file"
+              name="imageFile"
+              onChange={handleFileChange}
+              className="file-upload-input"
+            />
+            {!uploading && imageUrl && (
+              <img src={imageUrl} alt="" className="upload-preview-image" />
+            )}
+            <Loader show={uploading} />
 
-          <button type="submit" className="btn-primary w-fit">
-            Submit
-          </button>
-        </form>
-      </MyModal>
-      <span className=" sidebar-tooltip group-hover:scale-100">
-        Create Server
-      </span>
+            <label className=" block text-sm font-bold text-zinc-300">
+              Description :
+            </label>
+            <textarea
+              {...register("description", { required: true })}
+              name="description"
+            />
+
+            <button type="submit" className="btn-primary w-fit">
+              Submit
+            </button>
+          </form>
+        </MyModal>
+    
     </div>
   );
 };

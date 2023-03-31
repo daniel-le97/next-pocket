@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
 import { Transition } from "@headlessui/react";
+import { Tooltip } from "@nextui-org/react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -65,27 +66,26 @@ const ServerIcon = ({
       leaveTo="opacity-0 -translate-x-10"
     >
       <div className=" sidebar-icon group  relative  snap-start ">
-        <img
-          src={server?.expand?.image?.url}
-          alt="UserIcon"
-          className={activeServer?.id !== server.id? (
-            "server-icon-image"
-          ): ("active-server-icon-image")}
-          onClick={handleClick}
-        />
+        <Tooltip color="invert" content={server.name} placement="right">
+          <img
+            src={server?.expand?.image?.url}
+            alt="UserIcon"
+            className={
+              activeServer?.id !== server.id
+                ? "server-icon-image"
+                : "active-server-icon-image"
+            }
+            onClick={handleClick}
+          />
+        </Tooltip>
 
-        <span className=" sidebar-tooltip group-hover:scale-100 ">
-          {server.name}
-          {/* {JSON.stringify(server)} */}
-        </span>
+      
         {activeServer?.id !== server.id ? (
           <span className="server-icon-bubble group-hover:h-7"></span>
         ) : (
           <span className="active-server-icon-bubble"></span>
         )}
       </div>
-
-  
     </Transition>
   );
 };

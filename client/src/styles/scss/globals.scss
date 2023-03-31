@@ -121,16 +121,14 @@
     hover:text-white dark:bg-gray-800;
   }
 
-  .sidebar-tooltip {
-    z-index: 999999 !important;
-    @apply absolute left-14 m-2 w-auto min-w-max origin-left scale-0 rounded-md
-    bg-zinc-900 p-2 
-    text-xs font-bold 
-    text-white shadow-md transition-all duration-100;
-  }
-  // .sidebar-user-tooltip {
-  //   @apply
+  // .sidebar-tooltip {
+  //   z-index: 999999 !important;
+  //   @apply absolute left-14 m-2 w-auto min-w-max origin-left scale-0 rounded-md
+  //   bg-zinc-900 p-2 
+  //   text-xs font-bold 
+  //   text-white shadow-md transition-all duration-100;
   // }
+ 
 
   .server-selection {
     z-index: -99999 !important;
@@ -250,18 +248,17 @@
   }
 
   .dropdown-selection {
-    @apply mt-1 mr-auto ml-2 flex 
+    @apply my-0.5 p-1 mr-auto ml-2 flex relative
     cursor-pointer flex-row items-center
-    justify-evenly transition duration-300
-    ease-in-out;
+    justify-between transition duration-300
+    ease-in-out hover:bg-zinc-700 rounded;
   }
 
   .dropdown-selection-text {
     @apply mr-auto cursor-pointer font-semibold
     tracking-wide 
      transition duration-300 
-    ease-in-out hover:text-pink-500
-    dark:hover:text-green-500;
+    ease-in-out;
   }
   .user-bar {
     @apply relative w-full  bg-zinc-900 p-1;
@@ -271,7 +268,7 @@
   }
 
   .user-modal {
-    @apply  absolute bottom-16 z-50 m-2 w-96  min-w-max h-96  origin-bottom-left rounded-md   bg-zinc-900
+    @apply  absolute bottom-12  z-50 m-2 w-96  min-w-max h-96  origin-bottom-left rounded-md   bg-zinc-900
     text-xs  
     font-bold text-white 
     shadow-lg shadow-zinc-900 transition-all duration-100;
@@ -296,6 +293,9 @@
   .server-options-selection {
     @apply my-1  flex  w-full  items-center justify-between rounded-sm   p-2 text-zinc-300 transition-all ease-linear hover:bg-indigo-600 hover:text-white;
   }
+
+
+
 }
 
 /* Message Content */
