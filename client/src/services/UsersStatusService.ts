@@ -38,14 +38,10 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
 
   async setStatusOnline(user = AppState.user?.id, isOnline = true) {
     if (!user) return console.log("no user was supplied");
-    const data = {
-      user,
-      isOnline
-    }
     const status = await this.getUserStatus(user);
-    if (status) {
-      await this.pb.update(status.id, data );
-    } 
+    if (status && status.isOnline !== isOnline ) {
+      await this.pb.update(status.id, {user, isOnline}); 
+    }
   }
 
  

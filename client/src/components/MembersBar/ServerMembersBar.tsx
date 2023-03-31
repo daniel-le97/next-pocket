@@ -8,9 +8,9 @@ import UserStatus from "../Messages/UsersStatus";
 import { BsArrowLeftCircle, BsArrowRightCircle } from "react-icons/bs";
 import { AppState } from "AppState";
 import type { MemberUser } from "PocketBaseTypes/utils";
-import { usersStatusService } from "@/services/UsersStatusService";
+import { usersStatusService } from "@/services";
 import Pop from "utils/Pop";
-import { UnsubscribeFunc } from "pocketbase";
+import type { UnsubscribeFunc } from "pocketbase";
 import UserAvatar from "../GlobalComponents/UserAvatar";
 // const topics = ["general", "tailwind-css", "react"];
 
