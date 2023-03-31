@@ -25,44 +25,5 @@ class UsersService {
     // AppState.users = res;
     return AppState.users;
   }
-
-  async subscribeToStatus() {
-    const subscribe = await pb
-      .collection(Collections.UsersStatus)
-      .subscribe<UsersStatusResponse>("*", async ({ action, record }) => {
-        if (action != "Delete") {
-          const status = await this.getUserStatus(record.user);
-          if (status) addItemOrReplace(AppState.users, status, 'id')
-          return;
-        }
-
-        await this.deleteStatus(record.id, true);
-      });
-    return subscribe;
-    
-  }
-
-  async getUserStatus(userId = AppState.user?.id) {
-    // gets a single Users status
-    if (!userId) {
-      console.log('no user was supplied')
-      return
-    }
-    const status = await pb
-      .collection(Collections.UsersStatus)
-      .getFirstListItem<UsersStatusWithUser>(`user.id = "${userId}"`, {
-        expand: "user",
-      });
-    // console.log(status);
-
-    return status;
-  }
-  async deleteStatus(id: string, skipCall = false) {
-    filterArray(AppState.users, id, 'id')
-    // only invoke this when needed otherwise just filter AppState and proceed
-    if (!skipCall) {
-      await pb.collection(Collections.UsersStatus).delete(id);
-    }
-  }
 }
 export const usersService = new UsersService();

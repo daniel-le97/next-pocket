@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import type { NextRouter} from "next/router";
 import { pb } from "../../utils/pocketBase";
-import type { UserLogin } from "../models/PBUser";
+
+type UserLogin = {
+  email: string;
+  password: string;
+  passwordConfirm?: string;
+}
 
 class AuthsService {
   async resetPassword(email: string) {
@@ -41,9 +46,7 @@ class AuthsService {
     await pb.collection("users").authWithPassword(email, password);
   }
    signOut(){
-    
-     pb.authStore.clear()
-     
+    pb.authStore.clear()
   }
 }
 

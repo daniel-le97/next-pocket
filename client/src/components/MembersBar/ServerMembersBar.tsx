@@ -1,33 +1,35 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
-import { FaChevronDown, FaChevronRight, FaPlus } from "react-icons/fa";
+import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 import { observer } from "mobx-react";
 import UserStatus from "../Messages/UsersStatus";
 import { BsArrowLeftCircle, BsArrowRightCircle } from "react-icons/bs";
 import { AppState } from "AppState";
-import type { UsersResponse } from "PocketBaseTypes/pocketbase-types";
-import ChannelSelection from "../ChannelsBar/ChannelSelection";
-import { MemberUser } from "PocketBaseTypes/utils";
-import { usersService } from "@/services/UsersService";
-import { log } from "console";
+import type { MemberUser } from "PocketBaseTypes/utils";
+import { usersStatusService } from "@/services";
+import Pop from "utils/Pop";
+import type { UnsubscribeFunc } from "pocketbase";
 import UserAvatar from "../GlobalComponents/UserAvatar";
 // const topics = ["general", "tailwind-css", "react"];
 
 const MembersBar = () => {
   const users = AppState.members;
   const [collapsed, setCollapsed] = useState(false);
-
-// useEffect(() => {
-//   const subscribeToMembers = async() => {
-//   try {
-//     await  usersService.subscribeToStatus()
-//   } catch (error) {
-//     console.log(error);
-    
-//   }
-//   }
-// }, [])
+  useEffect(() => {
+  let userStatusSubscribe: UnsubscribeFunc | null
+  (async () => {
+    try {
+       userStatusSubscribe = await usersStatusService.subscribe()
+      } catch (error) {
+        Pop.error(error)
+      }
+  })();
+  return () => {
+    userStatusSubscribe?.()
+  }
+}, [])
   return (
     <>
       <div
@@ -129,6 +131,7 @@ const ChevronIcon = ({expanded = false}) => {
 
 const User = ({ user }: { user: MemberUser}) => {
 
+  //  console.log(user.expand.user.username , user.expand.user.expand.onlineStatus.isOnline);
   //  console.log(user.expand.user.username , user.expand.user.expand.onlineStatus.isOnline);
    
 
