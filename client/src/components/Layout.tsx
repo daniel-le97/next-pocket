@@ -27,7 +27,7 @@ const Layout = ({ children }: { children: any }) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="pl-16">{children}</div>
+        <div className={`${user ? "pl-16" : ""} `}>{children}</div>
       </Transition>
     </>
   );

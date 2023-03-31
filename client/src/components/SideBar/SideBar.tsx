@@ -8,7 +8,7 @@ import {Tooltip } from '@nextui-org/react'
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
 import logo from "../../assets/LLCLOGO.png";
-import { BsPerson, BsMessenger } from "react-icons/bs";
+import { BsPerson, BsMessenger, BsPersonFill } from "react-icons/bs";
 import { FaArrowCircleRight, FaCompass } from "react-icons/fa";
 import { pb } from "../../../utils/pocketBase";
 import ServerSelection from "./ServerSelection";
@@ -35,14 +35,14 @@ const SideBar = () => {
         />
         <hr className="sidebar-hr" />
         <SideBarIcon
-          icon={<BsMessenger size={22} />}
+          icon={<BsMessenger size="28" />}
           text={"Direct Messages"}
           router={"/DirectMessages"}
         />
 
         <hr className="sidebar-hr" />
         <SideBarIcon
-          icon={<BsPerson size="32" />}
+          icon={<BsPersonFill size="28" />}
           text={"Account"}
           router={"/AccountPage"}
         />
@@ -126,8 +126,9 @@ const LogOutIcon = () => {
   };
   return (
     <div className=" sidebar-icon group  " onClick={logOut}>
-      <FaArrowCircleRight size="28" />
-      <span className=" sidebar-tooltip group-hover:scale-100">Logout</span>
+      <Tooltip content="Logout" color="invert" placement="right">
+        <FaArrowCircleRight size="28" />
+      </Tooltip>
     </div>
   );
 };

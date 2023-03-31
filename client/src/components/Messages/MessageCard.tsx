@@ -14,6 +14,7 @@ import type { LikesWithUser, MessageWithUser } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import UserAvatar from "../GlobalComponents/UserAvatar";
 import CodeBlock from "utils/CodeBlock";
+import { Tooltip } from "@nextui-org/react";
 
 
 
@@ -142,36 +143,40 @@ const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
   const hasLikes = getLikes(likes) !== 0
 
   return (
-    
-      <div className="message-like-container group/like"> 
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
-        alt="Thumbs Up Icon"
-        className="h-6 w-6 rounded-full"
-        />
-      {likes?.length}
-      <div className=" message-like-tooltip   ">
-        <div className="message-like-tooltip-container">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
-            alt="Thumbs Up Icon"
-            className="h-10 w-10 rounded-full"
-          />
-          <div className="flex flex-col">
-            Thumbs Up By
-            <div className="flex flex-col overflow-y-scroll">
-              { likes && likes.map((l, index) => (
-                <div className="" key={index}>
-                  {l.expand.user.username}
-                </div>
-              ))}
+    <Tooltip
+      content={
+      
+          <div className="message-like-tooltip-container">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
+              alt="Thumbs Up Icon"
+              className="h-10 w-10 rounded-full"
+            />
+            <div className="flex flex-col">
+              Thumbs Up By
+              <div className="flex flex-col overflow-y-scroll">
+                {likes &&
+                  likes.map((l, index) => (
+                    <div className="" key={index}>
+                      {l.expand.user.username}
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
-        </div>
+     
+      }
+      color="invert"
+    >
+      <div className="message-like-container group/like">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
+          alt="Thumbs Up Icon"
+          className="h-6 w-6 rounded-full"
+        />
+        {likes?.length}
       </div>
-    </div>
-    
-
+    </Tooltip>
   );
 };
 

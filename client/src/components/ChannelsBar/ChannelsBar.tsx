@@ -83,7 +83,7 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
         // onClick={handleClick}
       >
         <div className=" user-bar-container">
-          <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
+          <UserAvatar avatarUrl={user?.avatarUrl} height="w-9" width="h-9" />
 
           <div className=" truncate font-semibold  text-white">
             {user?.username}

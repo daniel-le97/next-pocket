@@ -10,36 +10,46 @@ import ServerGuidelines from "./ServerOptions/ServerGuidelines";
 import { Transition } from "@headlessui/react";
 import { withMember } from "@/middleware";
 import { FaArrowDown, FaArrowUp, FaDropbox } from "react-icons/fa";
+import { Tooltip } from "@nextui-org/react";
 
 const ServerOptionsMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef(null);
-const isServerOwner = AppState.activeServer?.owner === AppState.user?.id;
 
 
   return (
     <div className="relative ">
-      <button
-        className="server-options-btn py-[17px]"
-        onClick={() => setIsOpen(!isOpen)}
+      <Tooltip
+        trigger="click"
+        content={<ServerOptions />}
+        placement="bottom"
+        css={{
+          backgroundColor: "#18181b",
+         shadow: "0 0 0 0px #2f3136, 0 8px 20px rgba(0, 0, 0, 0.3)",
+        }}
+        hideArrow={true}
       >
-        {AppState.activeServer?.name}
-     {isOpen ? <FaArrowUp  /> : <FaArrowDown />}
-      
-      </button>
-
-      {isOpen && (
-        <Transition
-          show={isOpen}
-          as={Fragment}
-          enter="transition-opacity duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-150"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
+        <button
+          className="server-options-btn py-[17px]"
+          onClick={() => setIsOpen(!isOpen)}
         >
-          <div ref={dropdownRef} className="  server-options ">
+          {AppState.activeServer?.name}
+          {isOpen ? <FaArrowUp /> : <FaArrowDown />}
+        </button>
+      </Tooltip>
+
+      {/* {isOpen && (
+      
+      )} */}
+    </div>
+  );
+};
+
+const  ServerOptions = () =>{
+  
+  const isServerOwner = AppState.activeServer?.owner === AppState.user?.id;
+
+  return (
+  <div  className="  server-options ">
             <div className="server-options-container">
            
                 
@@ -56,15 +66,8 @@ const isServerOwner = AppState.activeServer?.owner === AppState.user?.id;
            
             </div>
           </div>
-        </Transition>
-      )}
-
-    
-    </div>
-  );
-};
-
-
+  )
+}
 
 //  ANCHOR this is where we need to do our autth checks
 //check if they are a member of the server and if they are the owner

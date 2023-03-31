@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { likesService } from "@/services/LikesService";
+import { Tooltip } from "@nextui-org/react";
 import { observer } from "mobx-react";
 import { FaThumbsUp } from "react-icons/fa";
 import Pop from "utils/Pop";
@@ -19,11 +20,13 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
 
   return (
     <div
-      className="group/item relative p-2 transition-all ease-linear hover:bg-zinc-600 "
+      className="group/item message-options-icon"
       onClick={likeMessage}
     >
-      <FaThumbsUp size={22} />
-      <span
+      <Tooltip content="Like" color="invert" placement="Top">
+        <FaThumbsUp size={22} />
+      </Tooltip>
+      {/* <span
         className="absolute  bottom-8 right-0 z-50  w-auto min-w-max origin-left scale-0 rounded-md
     bg-zinc-900 p-2 
     text-xs font-bold 
@@ -31,7 +34,7 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
     group-hover/item:scale-100 "
       >
         Like
-      </span>
+      </span> */}
     </div>
   );
 };

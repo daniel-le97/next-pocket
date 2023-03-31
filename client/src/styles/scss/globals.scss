@@ -281,14 +281,14 @@
   }
 
   .server-options {
-    @apply absolute  z-10  flex w-full flex-col items-start justify-center rounded-lg  p-2 text-white transition-all ease-linear;
+    @apply  z-10  flex w-56 flex-col items-start justify-center rounded-lg  p-2 text-white transition-all ease-linear;
   }
   .server-options-container {
-    @apply w-full rounded bg-zinc-900 p-2;
+    @apply w-full rounded ;
   }
   .server-options-btn {
     
-    @apply flex w-full px-2  items-center justify-between truncate    shadow-md  font-bold text-white focus:bg-zinc-600 focus:outline-none transition-colors;
+    @apply flex  w-60 px-2  items-center justify-between truncate    shadow-md  font-bold text-white focus:bg-zinc-600 focus:outline-none transition-colors;
   }
   .server-options-selection {
     @apply my-1  flex  w-full  items-center justify-between rounded-sm   p-2 text-zinc-300 transition-all ease-linear hover:bg-indigo-600 hover:text-white;
@@ -312,9 +312,9 @@
     @apply relative h-full pb-16 flex-1 items-stretch    overflow-hidden bg-gray-300   dark:bg-zinc-700;
   }
   .message-filtered {
-    @apply relative  m-0  flex w-full  flex-row items-center justify-evenly rounded-sm  py-4 px-8 
+    @apply relative bg-indigo-500/20  m-0  flex w-full  flex-row items-center justify-evenly rounded-sm  py-4 px-8 
  transition-all
-    hover:bg-opacity-50
+    hover:bg-opacity-80
     hover:shadow-md
     hover:transition-all;
   }
@@ -324,13 +324,13 @@
   }
 
   .message-options {
-    @apply absolute top-2 right-2    opacity-0 group-hover:opacity-100;
+    @apply absolute -top-2 right-2.5 shadow border border-zinc-800 rounded    opacity-0 group-hover:opacity-100;
   }
   .message-options-container {
-    @apply flex gap-x-2 rounded   bg-zinc-700 p-1 shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900;
+    @apply flex  rounded   bg-zinc-700  shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900;
   }
   .message-options-icon {
-    @apply relative p-2 transition-all ease-linear hover:bg-zinc-600;
+    @apply relative p-1 rounded transition-all ease-linear hover:bg-zinc-600;
   }
   .message-timestamp {
     @apply ml-3 font-normal text-black dark:text-gray-300;
@@ -497,4 +497,59 @@
     @include tooltip-arrow("right", rgb(24 24 27 / var(--tw-bg-opacity)));
     @apply absolute right-8 -top-1/3 origin-right scale-0 rounded-md bg-zinc-900 p-2  px-2  transition-all ease-in group-hover/join:scale-100;
   }
+}
+.shape-blob {
+	background:rgb(99 102 241);
+	height: 200px;
+	width: 200px;
+	border-radius: 30% 50% 20% 40%;
+  	animation: 
+		transform 20s ease-in-out infinite both alternate,
+		movement_one 40s ease-in-out infinite both;
+	opacity:.7;
+	position: absolute;
+	left: 70%;
+	top: 50%;
+}
+.shape-blob.one{
+	height: 500px;
+	width: 500px;
+	left: -200px;
+	top: -150px;
+	transform: rotate(-180deg);
+	animation: transform 30s ease-in-out infinite both alternate, movement_two 60s ease-in-out infinite both;
+}
+
+.shape-blob.two{
+	height: 350px;
+	width: 350px;
+	left: 500px;
+	top: -150px;
+	transform: rotate(-180deg);
+	animation: transform 30s ease-in-out infinite both alternate, movement_two 60s ease-in-out infinite both;
+}
+
+@keyframes transform
+{
+    0%,
+  100% { border-radius: 33% 67% 70% 30% / 30% 30% 70% 70%; } 
+   20% { border-radius: 37% 63% 51% 49% / 37% 65% 35% 63%; } 
+   40% { border-radius: 36% 64% 64% 36% / 64% 48% 52% 36%; } 
+   60% { border-radius: 37% 63% 51% 49% / 30% 30% 70% 70%; } 
+   80% { border-radius: 40% 60% 42% 58% / 41% 51% 49% 59%; } 
+}
+
+
+@keyframes movement_one
+{
+    0%,
+  100% { transform: none; }
+   50% { transform: translate(50%, 20%) rotateY(10deg) scale(1.2); }
+}
+
+@keyframes movement_two
+{
+    0%,
+  500% { transform: none; }
+   50% { transform: translate(50%, 20%) rotate(-200deg) scale(1.2);}
 }

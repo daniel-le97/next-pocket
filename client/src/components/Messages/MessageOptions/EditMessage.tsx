@@ -11,12 +11,14 @@ import TimeAgo from "timeago-react";
 import { messageService } from "@/services";
 import type { MessagesRecord, MessageWithUser } from "PocketBaseTypes";
 import { AppState } from "AppState";
+import { Tooltip } from "@nextui-org/react";
 
 const EditMessage = ({ message }: { message: MessageWithUser }) => {
   return (
     <div className="message-options-icon  group/item">
-      <EditMessageModal message={message} />
-      <span className="message-options-tooltip ">Edit</span>
+      <Tooltip content="Edit" placement="top" color="invert">
+        <EditMessageModal message={message} />
+      </Tooltip>
     </div>
   );
 };

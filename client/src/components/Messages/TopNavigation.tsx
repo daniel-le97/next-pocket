@@ -37,8 +37,8 @@ const TopNavigation = () => {
         )}
       </h5>
       <Search />
-      <FaRegBell size="24" className="top-navigation-icon" />
-      <FaUserCircle size="24" className="top-navigation-icon" />
+      {/* <FaRegBell size="24" className="top-navigation-icon" />
+      <FaUserCircle size="24" className="top-navigation-icon" /> */}
     </div>
   );
 };
