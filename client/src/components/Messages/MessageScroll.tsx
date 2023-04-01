@@ -15,16 +15,17 @@ import MessageCard from "./MessageCard";
 const MessageScroll = () => {
   async function fetchMore() {
     const channelId = AppState.activeChannel?.id;
-    await messageService.getMessagesByChannelId(channelId!);
     AppState.page++
+    await messageService.getMessagesByChannelId(channelId!);
       console.log("page", AppState.page, "totalPage", AppState.totalPages);
-  }
-  let subscribeMessage: UnsubscribeFunc | null;
-  let subscribeLike: UnsubscribeFunc | null;
+    }
+    let subscribeMessage: UnsubscribeFunc | null;
+    let subscribeLike: UnsubscribeFunc | null;
   useEffect(() => {
     (async () => {
       try {
         // if(subscribeLike && subscribeMessage) return console.log("already subscribed")
+    // console.log("page", AppState.page, "totalPage", AppState.totalPages);
         subscribeMessage =  await messageService.subscribe();
         subscribeLike = await likesService.subscribe();
       } catch (error) {

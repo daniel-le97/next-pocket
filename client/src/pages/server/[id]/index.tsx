@@ -30,12 +30,12 @@ const Server: NextPage = () => {
   const fetchServerData = async (id: string) => {
     try {
       //
-      AppState.page = 1;
-      AppState.messages = [];
+      // AppState.page = 1;
       //  console.log("page", AppState.page, "totalPage", AppState.totalPages);
       await channelsService.getChannelsByServerId(id);
       // const channelId = AppState.activeChannel!.id;
       // console.log(channelId);
+     
       await messageService.getMessagesByChannelId(AppState.activeChannel!.id);
       await serversService.getMembers(id);
       // console.log('page',AppState.page,"totalPage",AppState.totalPages);
