@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,14 +13,13 @@ import { usersService } from "../../services";
 const AddFriend = () => {
   const [users, setUsers] = useState<UsersResponse[]>([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [activeUser, setActiveUser] = useState(null);
+  const [activeUser, setActiveUser] = useState<UsersResponse | null>(null);
   const user = AppState.user!;
   const [query, setQuery] = useState("");
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await usersService.getUsersList();
-
+        const res = await usersService.getAll();
         setUsers(res);
       } catch (error) {
         Pop.error(error);
@@ -59,14 +60,14 @@ const AddFriend = () => {
       setFilteredUsers([]);
     }
   };
-  const handleClick = (user: any) => {
-    return (event) => {
+  const handleClick = (user: UsersResponse) => {
+    
       setActiveUser(user);
 
       setValue("receiverId", user?.id);
       setValue("receiverName", user?.username);
-      console.log(getValues());
-    };
+      
+    
   };
   const onSubmit = async (data: any) => {
     try {

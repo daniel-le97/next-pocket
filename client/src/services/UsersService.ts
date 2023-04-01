@@ -22,15 +22,16 @@ class UsersService {
       .getOne(user.id, { expand: "currentChannel" });
   }
 
-  getLastChannel(user = AppState.user) {
-    if (!user) return;
-    return user.expand.currentChannel;
+  async getAll(){
+    return await pb.collection(Collections.Users).getFullList<UsersResponse>()
   }
 
-  async setLastChannel(channel = AppState.activeChannel, user = AppState.user) {
-    const lastChannel = this.getLastChannel();
-    if (!user || !channel || lastChannel?.id == channel.id) return;
-    return await this.updateUser({ currentChannel: channel.id }, user);
-  }
+ 
+
+  // async setLastChannel(channel = AppState.activeChannel, user = AppState.user) {
+  //   const lastChannel = this.getLastChannel();
+  //   if (!user || !channel || lastChannel?.id == channel.id) return;
+  //   return await this.updateUser({ currentChannel: channel.id }, user);
+  // }
 }
 export const usersService = new UsersService();

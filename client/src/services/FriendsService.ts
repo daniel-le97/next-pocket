@@ -1,5 +1,5 @@
 import { AppState } from "../../AppState";
-import { Collections, FriendRequestResponse, Friends, FriendsWithUser } from "../../PocketBaseTypes";
+import { Collections, FriendRequestResponse, Friends, FriendsRequest, FriendsWithUser } from "../../PocketBaseTypes";
 import { pb } from "../../utils/pocketBase";
 
 interface FriendRequest {
@@ -93,11 +93,11 @@ class FriendService {
   async getUserFriendRequests(userId: string) {
     const res = await pb
       .collection(Collections.FriendRequest)
-      .getFullList<FriendRequestResponse>(200, {
+      .getFullList<FriendsRequest>(200, {
         filter: `receiverId = "${userId}" ||  senderId = "${userId}"`,
         expand:'senderId,receiverId'
       });
-    console.log(res)
+    console.log('friend request',res)
       return res
   }
 
