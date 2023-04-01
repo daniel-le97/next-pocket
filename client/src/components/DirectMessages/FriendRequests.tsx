@@ -1,18 +1,19 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
-import { FriendRequestResponse } from "../../../PocketBaseTypes/pocketbase-types";
-import { pb } from "../../../utils/pocketBase";
+import { FriendRequestResponse, FriendsRequest } from "../../../PocketBaseTypes";
 import Pop from "../../../utils/Pop";
-import { friendService } from "../../services/FriendsService";
+import { friendService } from "../../services";
+
 import UserBadge from "../GlobalComponents/UserBadge";
 
 const FriendRequests = () => {
   const [receivedRequests, setReceivedRequests] = useState<
-    FriendRequestResponse[]
+    FriendsRequest[]
   >([]);
-  const [sentRequests, setSendRequests] = useState<FriendRequestResponse[]>([]);
+  const [sentRequests, setSendRequests] = useState<FriendsRequest[]>([]);
   const user = AppState.user;
   useEffect(() => {
     const fetchFriendRequests = async () => {

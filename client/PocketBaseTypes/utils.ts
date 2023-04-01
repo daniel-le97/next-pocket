@@ -4,6 +4,7 @@ import type {
   ChannelsResponse,
   Collections,
   FileUploadsResponse,
+  FriendRequestResponse,
   FriendsResponse,
   LikesResponse,
   MembersResponse,
@@ -49,8 +50,10 @@ export type UsersStatusWithUser = UsersStatusResponse & {
 export type FriendsWithUser = FriendsResponse & {
   expand: {friends: UsersResponse[]}
 };
-
-export type User = Record | Admin | null
+export type FriendsRequest = FriendRequestResponse & {
+  expand: { senderId: UsersResponse, receiverId: UsersResponse };
+}
+export type User = Record | Admin | null | UsersResponse;
 
 export class Message {
   id: string;

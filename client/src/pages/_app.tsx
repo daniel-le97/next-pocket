@@ -34,7 +34,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     return () => {
       if(user) {
         usersStatusService.setStatusOnline(user.id)
-        usersService.setLastChannel()
+        // usersService.setLastChannel()
       }
     } 
   }, [])
