@@ -21,6 +21,7 @@ if (pocketbase.authStore.model) {
 //   AppState.user = pBase.authStore.model;
 // });
 export const pb = pocketbase
+
 pb.authStore.onChange(async(auth) => {
   const userId = pb.authStore.model?.id
   if (userId) {
