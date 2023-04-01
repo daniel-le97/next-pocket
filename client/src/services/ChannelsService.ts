@@ -9,9 +9,11 @@ class ChannelsService {
   async joinChannel(data: Data) {
     // console.log(data);
     
-    const channelToLeave = await pb
+    const channelsToLeave = await pb
       .collection(Collections.Channels)
-      .getFirstListItem(`members.id ?= "${data.memberId}"`);
+      .getFullList({ filter:`members.id ?= "${data.memberId}"`});
+      console.log('joining channel');
+      const channelToLeave = channelsToLeave[0]
     if (channelToLeave) {
       await this.leaveChannel({
         memberId: data.memberId,
@@ -63,22 +65,24 @@ class ChannelsService {
     try {
       const res = await pb
         .collection(Collections.Channels)
-        .getList<ChannelsResponse>(1, 50, {
+        .getFullList<ChannelsResponse>(100, {
           filter: `server = "${serverId}"`,
         });
+// console.log('channels', res);
 
-      AppState.channels = res.items;
-      AppState.activeChannel = res.items[0] || res.items.find((i => i.title?.includes("general")))
+      AppState.channels = res
+      AppState.activeChannel = res[0]
       
       
       const activeChannel = AppState.activeChannel;
       if (activeChannel && AppState.user) {
+    console.log(activeChannel);
     
         await this.joinChannel({memberId: AppState.user.id, channelId: activeChannel.id})
       }
       
 
-      const channelTitles = res.items.map((i) => i.title);
+      const channelTitles = res.map((i) => i.title);
       AppState.channelTitles = channelTitles;
 
       // return channelTitles;
