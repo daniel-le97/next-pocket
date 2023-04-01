@@ -113,7 +113,7 @@ class FriendService {
     
 
 
-    return new Friends(res)
+    AppState.friends = new Friends(res)
     
   }
 }
