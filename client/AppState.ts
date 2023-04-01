@@ -10,6 +10,7 @@ import type {
   UsersResponse,
 } from "./PocketBaseTypes/pocketbase-types";
 import type {
+  FullUser,
   LikesWithUser,
   MemberUser,
   MessageWithUser,
@@ -20,8 +21,8 @@ import { isValidProp } from "./utils/isValidProp";
 
 // /** @type {import('./src/models/Account.js').Account | null} */
 class ObservableAppState {
-  user: Record | Admin | null = null;
-  UsersStatus: UsersStatusWithUser[] = [];
+  user: FullUser | null = null;
+  UsersStatus: UsersStatusWithUser[] = []
 
   members: MemberUser[] = [];
 
@@ -50,35 +51,64 @@ class ObservableAppState {
   lastPath: string | null = null;
   lastQueryId: string | null = null;
 
-  test = "hello";
+
   AppState: undefined;
 
   friendRequests: FriendRequestResponse[] = [];
+  reset: () => void;
+
 
   constructor() {
     makeAutoObservable(this);
     this.AppState = undefined;
     this.AppState = undefined;
+    this.reset = action(()=>{
+      this.user = null;
+      this.UsersStatus = []
+      this.members = [];
+      this.userServers = [];
+      this.messageQuery = "";
+      this.activeChannel = null;
+      this.activeServer = null;
+      this.activeMembership = null;
+      this.channelTitles = [];
+      this.channels = [];
+      this.servers = [];
+      this.users = [];
+      this.messages = [];
+      this.directMessages = [];
+      this.activeDirectMessage = null
+      this.messageLikes = [[]]
+      this.totalPages = 0;
+      this.page = 1;
+      this.loading = 0;
+      this.lastPath = null;
+      this.lastQueryId = null;
+      this.friendRequests = [];
+    })
   }
 }
 
-export const AppState = new Proxy<ObservableAppState>(
-  new ObservableAppState(),
-  {
-    get<T extends ObservableAppState>(target: T, prop: keyof T): T[keyof T] {
-      isValidProp(target, prop);
-      return target[prop];
-    },
-    set<T extends ObservableAppState>(
-      target: T,
-      prop: keyof T,
-      value: T[keyof T]
-    ) {
-      isValidProp(target, prop);
-      action(() => {
-        target[prop] = value;
-      })();
-      return true;
-    },
-  }
-);
+
+
+
+export const AppState = new Proxy<ObservableAppState>(new ObservableAppState(), {
+  get<T extends ObservableAppState>(target: T, prop: keyof T): T[keyof T] {
+    isValidProp(target, prop);
+    return target[prop];
+  },
+  set<T extends ObservableAppState>(
+    target: T,
+    prop: keyof T,
+    value: T[keyof T]
+  ) {
+    isValidProp(target, prop);
+    action(() => {
+      target[prop] = value;
+    })();
+    return true;
+  },
+});
+
+
+

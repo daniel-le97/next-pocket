@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { AppState } from "../../AppState";
 import { Admin, Record } from "pocketbase";
+import { FullUser } from "PocketBaseTypes";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [showing, setShowing] = useState(false);
-  const [user, setUser] = useState<Record | Admin | null>(null);
+  const [user, setUser] = useState<FullUser>(null);
   const router = useRouter();
 
   useEffect(() => {

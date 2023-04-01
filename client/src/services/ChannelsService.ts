@@ -27,8 +27,8 @@ class ChannelsService {
       });
 
    
-    AppState.activeChannel = channelToJoin;
-    console.log(AppState.activeChannel);
+    // AppState.activeChannel = channelToJoin;
+    // console.log(AppState.activeChannel);
     
     // console.log(AppState.activeChannel);
 
@@ -68,11 +68,14 @@ class ChannelsService {
         });
 
       AppState.channels = res.items;
+      const activeChannel = AppState.activeChannel || res.items[0];
       
       
-      AppState.activeChannel = res.items[0];
-
-   await this.joinChannel({memberId: AppState.user.id, channelId: res.items[0].id})
+      
+      if (activeChannel && AppState.user) {
+        AppState.activeChannel = activeChannel
+        await this.joinChannel({memberId: AppState.user.id, channelId: activeChannel.id})
+      }
       
 
       const channelTitles = res.items.map((i) => i.title);

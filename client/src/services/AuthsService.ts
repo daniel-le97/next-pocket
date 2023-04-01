@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { AppState } from "AppState";
 import type { NextRouter} from "next/router";
+import Pop from "utils/Pop";
 import { pb } from "../../utils/pocketBase";
+import { usersStatusService } from "./UsersStatusService";
 
 type UserLogin = {
   email: string;
@@ -36,9 +39,12 @@ class AuthsService {
     if (password != passwordConfirm) return "passwords must match";
 
     try {
-      await pb.collection("users").create({ email, password, passwordConfirm });
+      const newUser = await pb.collection("users").create({ email, password, passwordConfirm });
+      await usersStatusService.create(newUser.id)
       await this.loginUser(data);
-    } catch (error) {}
+    } catch (error) {
+      Pop.error('unable to process signup and login request')
+    }
   }
   async loginUser(data: UserLogin) {
     const email = data.email;
@@ -47,6 +53,8 @@ class AuthsService {
   }
    signOut(){
     pb.authStore.clear()
+    AppState.reset()
+    
   }
 }
 

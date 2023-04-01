@@ -8,26 +8,30 @@ import { BaseT } from "./BaseService";
 
 class UsersStatusService extends BaseT<UsersStatusWithUser> {
   async subscribe() {
-    logger.log("subscribing to UsersStatusService")
-    const subscribe = await this.pb
-      .subscribe("*", async ({ action, record }) => {
+    logger.log("subscribing to UsersStatusService");
+    const subscribe = await this.pb.subscribe(
+      "*",
+      async ({ action, record }) => {
         if (action !== "delete") {
           const status = await this.getOne(record.id);
-          if (status) addItemOrReplaceV2('users', status, "id");
-        }else{
-          filterStateArray('users', record, 'id')
+          if (status) addItemOrReplaceV2("users", status, "id");
+        } else {
+          filterStateArray("users", record, "id");
         }
-      })
+      }
+    );
     return subscribe;
   }
 
   async getUserStatus(userId = AppState.user?.id as string) {
     // gets a single Users status
     if (!userId) return console.log("no user was supplied");
-    const status = await this.pb
-      .getFirstListItem<UsersStatusWithUser>(`user.id = "${userId}"`, {
+    const status = await this.pb.getFirstListItem<UsersStatusWithUser>(
+      `user.id = "${userId}"`,
+      {
         expand: "user",
-      });
+      }
+    );
     return status;
   }
   async getOne(id: string) {
@@ -39,11 +43,12 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
   async setStatusOnline(user = AppState.user?.id, isOnline = true) {
     if (!user) return console.log("no user was supplied");
     const status = await this.getUserStatus(user);
-    if (status && status.isOnline !== isOnline ) {
-      await this.pb.update(status.id, {user, isOnline}); 
+    if (status && status.isOnline !== isOnline) {
+      await this.pb.update(status.id, { user, isOnline });
     }
   }
-
- 
+  async create(userId: string) {
+    return await this.pb.create({ user: userId, isOnline: true });
+  }
 }
-export const usersStatusService = new UsersStatusService('UsersStatus')
+export const usersStatusService = new UsersStatusService("UsersStatus");
