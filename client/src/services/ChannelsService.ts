@@ -68,12 +68,12 @@ class ChannelsService {
         });
 
       AppState.channels = res.items;
-      const activeChannel = AppState.activeChannel || res.items[0];
+      AppState.activeChannel = res.items[0] || res.items.find((i => i.title?.includes("general")))
       
       
-      
+      const activeChannel = AppState.activeChannel;
       if (activeChannel && AppState.user) {
-        AppState.activeChannel = activeChannel
+    
         await this.joinChannel({memberId: AppState.user.id, channelId: activeChannel.id})
       }
       
