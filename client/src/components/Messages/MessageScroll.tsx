@@ -18,14 +18,13 @@ const MessageScroll = () => {
     AppState.page++
     await messageService.getMessagesByChannelId(channelId!);
       console.log("page", AppState.page, "totalPage", AppState.totalPages);
-    }
-    let subscribeMessage: UnsubscribeFunc | null;
-    let subscribeLike: UnsubscribeFunc | null;
+  }
+  let subscribeMessage: UnsubscribeFunc | null;
+  let subscribeLike: UnsubscribeFunc | null;
   useEffect(() => {
     (async () => {
       try {
         // if(subscribeLike && subscribeMessage) return console.log("already subscribed")
-    // console.log("page", AppState.page, "totalPage", AppState.totalPages);
         subscribeMessage =  await messageService.subscribe();
         subscribeLike = await likesService.subscribe();
       } catch (error) {
@@ -46,18 +45,14 @@ const MessageScroll = () => {
           : " "
       }`}
     >
-      {AppState.messages.length >= 1 && (
+      {AppState.messages.length >=1 ? (
         <InfiniteScroll
           dataLength={AppState.messages.length}
           next={fetchMore}
           className="flex flex-col-reverse pt-6    "
           inverse={true} //
           hasMore={AppState.totalPages != AppState.page}
-          loader={
-            <div className="flex justify-center w-full">
-              <Loader show={AppState.totalPages != AppState.page} />
-            </div>
-          }
+          loader={<LoaderProgress/>}
           scrollableTarget="scrollableDiv"
         >
           {AppState.messages.map((message, index) => {
@@ -91,9 +86,18 @@ const MessageScroll = () => {
             );
           })}
         </InfiniteScroll>
-      )}
+      ):(<LoaderProgress/>)}
     </div>
   );
 };
 
+const LoaderProgress = () => {
+  return (
+    <div className="fixed inset-0">
+      <div className="relative h-1 w-full overflow-hidden rounded-lg shadow  ">
+        <div className="animate-loader   absolute inset-0 bg-gradient-to-r from-indigo-400 to-indigo-500 shadow-md shadow-indigo-500  "></div>
+      </div>
+    </div>
+  );
+};
 export default observer(MessageScroll);

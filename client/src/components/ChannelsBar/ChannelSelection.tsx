@@ -34,8 +34,9 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
         channelId: selection?.id,
       };
 
+      // AppState.page = 1
+      AppState.messages = [];
       await channelsService.joinChannel(data);
-       AppState.messages = [];
       await messageService.getMessagesByChannelId(selection.id);
       // await messageService.getMessages();
     } catch (error) {
