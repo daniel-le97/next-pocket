@@ -68,6 +68,10 @@ function Login() {
     pb.authStore.clear();
   }
 
+  // useEffect(() => {
+
+  // }, []);
+
   return (
     <>
       <main className="  dark flex flex  min-h-screen w-full flex-col  items-center justify-center bg-gray-300 dark:bg-zinc-900">

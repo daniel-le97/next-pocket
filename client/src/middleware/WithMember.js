@@ -2,11 +2,11 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { serversService } from "../services/ServersService";
-import { membersService } from "../services/MembersService";
-import { pb } from "../../utils/pocketBase";
+
 import React from "react";
 import { AppState } from "../../AppState";
+import { membersService } from "../services";
+
 
 export const withMember = (PageComponent) =>
   /** @type {JSX.IntrinsicAttributes | (import("react").FunctionComponent<{}> & { getInitialProps?(context: import("next").NextPageContext): {} | Promise<{}>; })} */

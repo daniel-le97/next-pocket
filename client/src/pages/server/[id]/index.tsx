@@ -31,13 +31,13 @@ const Server: NextPage = () => {
     try {
       //
       AppState.page = 1;
-       console.log("page", AppState.page, "totalPage", AppState.totalPages);
+      //  console.log("page", AppState.page, "totalPage", AppState.totalPages);
       await channelsService.getChannelsByServerId(id);
-      const channelId = AppState.activeChannel!.id;
+      // const channelId = AppState.activeChannel!.id;
       // console.log(channelId);
-      await messageService.getMessagesByChannelId(channelId);
+      await messageService.getMessagesByChannelId(AppState.activeChannel!.id);
       await serversService.getMembers(id);
-      console.log('page',AppState.page,"totalPage",AppState.totalPages);
+      // console.log('page',AppState.page,"totalPage",AppState.totalPages);
       
     } catch (error) {
       Pop.error(error);
@@ -47,6 +47,7 @@ const Server: NextPage = () => {
     if (!user) {
       setRedirect(`/server/${id}`);
       router.push("/login");
+      return
     }
     if (router.query.id) fetchServerData(id);
   }, [router.query.id]);
