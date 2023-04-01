@@ -91,23 +91,7 @@ class ObservableAppState {
 
 
 
-export const State = new Proxy<ObservableAppState>(new ObservableAppState(), {
-  get<T extends ObservableAppState>(target: T, prop: keyof T): T[keyof T] {
-    isValidProp(target, prop);
-    return target[prop];
-  },
-  set<T extends ObservableAppState>(
-    target: T,
-    prop: keyof T,
-    value: T[keyof T]
-  ) {
-    isValidProp(target, prop);
-    action(() => {
-      target[prop] = value;
-    })();
-    return true;
-  },
-});
+
 export const AppState = new Proxy<ObservableAppState>(new ObservableAppState(), {
   get<T extends ObservableAppState>(target: T, prop: keyof T): T[keyof T] {
     isValidProp(target, prop);
