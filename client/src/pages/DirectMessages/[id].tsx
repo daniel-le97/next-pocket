@@ -1,19 +1,15 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { type NextPage } from "next";
 import Head from "next/head";
-
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { AppState } from "../../../AppState";
-
-import { pb } from "../../../utils/pocketBase";
-import { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import { AppState } from "AppState";
 import { observer } from "mobx-react";
-import FriendsBar from "../../components/DirectMessages/FriendsBar";
-import Pop from "../../../utils/Pop";
-import { directMessageService } from "../../services/DirectMessagesService";
+import Pop from "utils/Pop";
+import FriendsBar from "@/components/DirectMessages/FriendsBar";
+import DirectMessageContainer from "@/components/DirectMessages/DirectMessageContainer";
+import { withAuth } from "../../middleware";
 
-import DirectMessageContainer from "../../components/DirectMessages/DirectMessageContainer";
 const DirectMessagesId: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
@@ -25,14 +21,9 @@ const DirectMessagesId: NextPage = () => {
     }
 
     if (router.query.id) {
-      const fetchMessages = async () => {
+      const fetchMessages = () => {
         try {
-          const res = await directMessageService.getDirectMessages(
-            user!.id,
-            id
-          );
-
-          // AppState.activeDirectMessage = res.find(a => a.expand.from && a.expand.)
+ 
         } catch (error) {
           Pop.error(error);
         }
@@ -59,4 +50,4 @@ const DirectMessagesId: NextPage = () => {
   );
 };
 
-export default observer(DirectMessagesId);
+export default observer(withAuth(DirectMessagesId));

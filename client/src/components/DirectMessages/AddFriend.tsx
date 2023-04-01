@@ -2,11 +2,11 @@ import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AppState } from "../../../AppState";
-import { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
-import { pb } from "../../../utils/pocketBase";
+import { UsersResponse } from "../../../PocketBaseTypes";
 import Pop from "../../../utils/Pop";
-import { friendService } from "../../services/FriendsService";
-import { userService } from "../../services/UsersService";
+import { usersService } from "../../services";
+
+
 
 const AddFriend = () => {
   const [users, setUsers] = useState<UsersResponse[]>([]);
@@ -17,7 +17,7 @@ const AddFriend = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await userService.getUsersList();
+        const res = await usersService.getUsersList();
 
         setUsers(res);
       } catch (error) {
