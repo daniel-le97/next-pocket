@@ -10,13 +10,13 @@ module.exports = async() => {
     const url = process.env.NEXT_PUBLIC_POCKET_URL
     if(!email || !password) return console.log('no email or password')
     const pb = new PocketBase(url)
-    // console.log(pb);
     const user = await pb.admins.authWithPassword(email, password)
     const schemaUpload = await pb.collections.import(schema,false)
     await pb.authStore.clear()
-    console.log('schema uploaded: ' + `${schemaUpload}` )
-    } catch (error) {
-     console.log(error, 'there was a problem uploading the schema')
+  } catch (error) {
+    console.log(error, 'there was a problem uploading the schema')
+  } finally{
+      console.log('schema uploaded: ' + `${schemaUpload}` )
     }
 }
 module.exports()

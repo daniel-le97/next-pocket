@@ -1,4 +1,5 @@
-import type { FormattedMessage } from "utils/NewMessage";
+
+import { Admin, Record } from "pocketbase";
 import type {
   ChannelsResponse,
   FileUploadsResponse,
@@ -21,38 +22,53 @@ export type Response = {
   image: FileUploadsResponse;
 };
 
-export type MemberUser = MembersResponse<UserExpand>
+export type MemberUser = MembersResponse<UserExpand>;
 
 type UserExpand<T = unknown> = {
-  user: UsersResponse<T>
-}
+  user: UsersResponse<T>;
+};
 
 export type Server = ServersResponse<Upload>;
 export type Upload = {
   image: FileUploadsResponse;
 };
 
-
-export type MessageWithUser = FormattedMessage
+export type MessageWithUser = Message;
 export type TMessageWithUser = MessagesResponse & {
-  expand: { 'likes(message)': LikesWithUser[]; user: UsersResponse };
+  expand: { "likes(message)": LikesWithUser[]; user: UsersResponse };
 };
 export type LikesWithUser = LikesResponse & {
-  expand: {user: UsersResponse}
-}
+  expand: { user: UsersResponse };
+};
 
 export type UsersStatusWithUser = UsersStatusResponse & {
-  expand: {user: UsersResponse}
-}
+  expand: { user: UsersResponse };
+};
 
 export type friendsWithUser = FriendsResponse & {
   // expand: {}
+};
+
+export type User = Record | Admin | null
+
+export class Message {
+  id: string;
+  content?: string;
+  created: string;
+  updated: string;
+  channel?: string;
+  user: UsersResponse;
+  likes: number;
+
+  constructor(data: TMessageWithUser) {
+    this.id = data.id;
+    this.content = data.content;
+    this.created = data.created;
+    this.updated = data.updated;
+    this.channel = data.channel;
+    this.user = data.expand.user;
+    this.likes = data.expand["likes(message)"]
+      ? data.expand["likes(message)"].length
+      : 0;
+  }
 }
-
-export type FullUser = UsersResponse & {
-  expand: {currentChannel: ChannelsResponse}
-}
-
-
-
-

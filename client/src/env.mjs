@@ -16,7 +16,9 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
-  NEXT_PUBLIC_POCKET_URL: z.string()
+  NEXT_PUBLIC_POCKET_URL: z.string(),
+  POCKET_EMAIL: z.string(),
+  POCKET_PASS: z.string(),
 });
 
 /**
@@ -26,7 +28,9 @@ const client = z.object({
  */
 const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
-  NEXT_PUBLIC_POCKET_URL: process.env.NEXT_PUBLIC_POCKET_URL || 'http://localhost:8080'
+  NEXT_PUBLIC_POCKET_URL: process.env.NEXT_PUBLIC_POCKET_URL || 'http://localhost:8080',
+  POCKET_EMAIL: process.env.POCKET_EMAIL,
+  POCKET_PASS: process.env.POCKET_PASS,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 

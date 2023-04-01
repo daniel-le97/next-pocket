@@ -12,7 +12,7 @@ import type {
 import { Collections } from "PocketBaseTypes";
 import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
 import { logger } from "utils/Logger";
-import { FormattedMessage } from "utils/NewMessage";
+import { Message } from "utils/NewMessage";
 import { pb } from "utils/pocketBase";
 
 class MessageService {
@@ -75,11 +75,11 @@ class MessageService {
       expand: "user,likes(message).user",
     });
 
-    const unFormattedMessages = res.items as unknown as TMessageWithUser[];
+    const unMessages = res.items as unknown as TMessageWithUser[];
 
     action(() => {
-      const messages = unFormattedMessages.map((message, index) => {
-        const _Message: MessageWithUser = new FormattedMessage(message);
+      const messages = unMessages.map((message, index) => {
+        const _Message: MessageWithUser = new Message(message);
         AppState.messageLikes[index] = message.expand["likes(message)"] || [];
         return _Message;
       });
@@ -109,7 +109,7 @@ class MessageService {
     const res = await pb
       .collection(Collections.Messages)
       .getOne<TMessageWithUser>(id, { expand: "user,likes(message)" });
-    return new FormattedMessage(res);
+    return new Message(res);
     // console.log(res);
   }
   async deleteMessage(id: string) {
