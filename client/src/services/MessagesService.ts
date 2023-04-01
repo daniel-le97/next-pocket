@@ -2,9 +2,10 @@
 // /* eslint-disable @typescript-eslint/no-misused-promises */
 import { AppState } from "AppState";
 import { action } from "mobx";
-import type {
+import {
   DirectMessagesRecord,
   DirectMessagesResponse,
+  Message,
   MessagesRecord,
   MessageWithUser,
   TMessageWithUser,
@@ -12,7 +13,7 @@ import type {
 import { Collections } from "PocketBaseTypes";
 import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
 import { logger } from "utils/Logger";
-import { Message } from "utils/NewMessage";
+
 import { pb } from "utils/pocketBase";
 
 class MessageService {
