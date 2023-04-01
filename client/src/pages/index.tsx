@@ -14,6 +14,7 @@ import React from "react";
 import SearchBar from "@/components/Explore/SearchBar";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import { debounce } from "lodash";
+import ServerPagination from "@/components/Explore/ServerPagination";
 
 
 const Explore: NextPage = () => {
@@ -36,16 +37,10 @@ const Explore: NextPage = () => {
     };
     getServers();
 
-    // servers.sort((a,b) => a.members?.includes(user?.id))
+   
   }, []);
 
- const handlePagination = useCallback(
-   debounce((isIncrement) => {
-     AppState.page = isIncrement ? AppState.page + 1 : AppState.page - 1;
-     serversService.getServersList(AppState.page);
-   }, 500),
-   []
- );
+
   return (
     <>
       <Head>
@@ -70,43 +65,13 @@ const Explore: NextPage = () => {
         <div className="  mt-10 mb-2  flex  flex-wrap    justify-center ">
           {servers && servers.map((s) => <ServerCard server={s} key={s.id} />)}
         </div>
-        <div className="my-3 flex items-center justify-center">
-          <button
-            className="btn-primary disabled:cursor-not-allowed"
-            disabled={AppState.page === 1}
-            onClick={() => handlePagination(false)}
-          >
-            <FaArrowCircleLeft size={32} />
-          </button>
-          <div className="mx-3 flex gap-x-3">
-            {Array.from(
-              { length: AppState.totalPages },
-              (_, index) => index + 1
-            ).map((pageNum) => (
-              <div
-                className={`text-gray-300${
-                  pageNum === AppState.page
-                    ? " rounded-full bg-indigo-400 px-2  "
-                    : ""
-                }`}
-                key={pageNum}
-                onClick={() => {
-                  AppState.page = pageNum;
-                  serversService.getServersList(AppState.page);
-                }}
-              >
-                {pageNum}
-              </div>
-            ))}
-          </div>
-          <button
-            className="btn-primary disabled:cursor-not-allowed"
-            disabled={AppState.page === AppState.totalPages}
-            onClick={() => handlePagination(true)}
-          >
-            <FaArrowCircleRight size={32} />
-          </button>
-        </div>
+        <ServerPagination
+          onPageChange={(page) => {
+            AppState.page = page;
+            serversService.getServersList(page);
+          }}
+          totalPages={AppState.totalPages}
+        />
       </main>
     </>
   );

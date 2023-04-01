@@ -25,7 +25,7 @@ class ServersService {
     // get all servers available
     const res = await pb
       .collection(Collections.Servers)
-      .getList<Server>(page, 3, {
+      .getList<Server>(page, 9, {
         expand: "image,members",
         sort: `created`,
       });

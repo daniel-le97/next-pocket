@@ -94,7 +94,7 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
       <div className={`user-modal  ${isHovered ? "scale-100" : "scale-0"} `}>
         <div className="user-modal-banner"></div>
         <div className="user-modal-user-image">
-          <UserAvatar avatarUrl={user.avatarUrl} height="w-20" width="h-20" />
+          <UserAvatar avatarUrl={user?.avatarUrl} height="w-20" width="h-20" />
         </div>
         {/* <img
           src={user?.avatarUrl}
@@ -113,7 +113,7 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
           <div>
             <p className="text-md font-bold ">MEMBER SINCE</p>
             <p className="  font-mono text-gray-400  ">
-              {new Date(user.created).toLocaleDateString()}
+              {new Date(user?.created).toLocaleDateString()}
             </p>
           </div>
           <hr className="my-2  border-gray-600" />
