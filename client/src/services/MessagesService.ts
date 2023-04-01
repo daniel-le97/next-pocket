@@ -85,7 +85,7 @@ class MessageService {
       });
       AppState.messages = [...AppState.messages, ...messages];
       AppState.totalPages = res.totalPages;
-    })()
+    })();
   }
 
   async subscribe() {
@@ -116,11 +116,9 @@ class MessageService {
     await pb.collection(Collections.Messages).delete(id);
   }
   async editMessage(id: string, data: MessagesRecord) {
-    await pb
-      .collection(Collections.Messages)
-      .update(id, data, {
-        expand: "user,likes(message)",
-      });
+    await pb.collection(Collections.Messages).update(id, data, {
+      expand: "user,likes(message)",
+    });
   }
 }
 

@@ -5,17 +5,24 @@ import { observer } from "mobx-react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useCallback } from "react";
 import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
 import ServerCard from "../components/Explore/ServerCard";
 import { serversService } from "../services/ServersService";
 import React from "react";
+import SearchBar from "@/components/Explore/SearchBar";
+import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
+import { debounce } from "lodash";
+
 
 const Explore: NextPage = () => {
   const router = useRouter();
   const servers = AppState.servers;
-  const user = pb.authStore.model
+  const user = pb.authStore.model;
+ const [currentPage, setCurrentPage] = useState(AppState.page);
+ const [totalPages, setTotalPages] = useState(AppState.totalPages);
+ 
   useEffect(() => {
     const user = pb.authStore.model;
     if (!user) {
@@ -25,13 +32,20 @@ const Explore: NextPage = () => {
 
   useEffect(() => {
     const getServers = async () => {
-      await serversService.getServersList();
+      await serversService.getServersList(AppState.page);
     };
     getServers();
 
     // servers.sort((a,b) => a.members?.includes(user?.id))
   }, []);
 
+ const handlePagination = useCallback(
+   debounce((isIncrement) => {
+     AppState.page = isIncrement ? AppState.page + 1 : AppState.page - 1;
+     serversService.getServersList(AppState.page);
+   }, 500),
+   []
+ );
   return (
     <>
       <Head>
@@ -52,14 +66,46 @@ const Explore: NextPage = () => {
             </div>
           </div>
         </div>
-
-        <div className="  my-10  flex  flex-wrap    justify-center ">
-          {servers &&
-            servers.map((s) => (
-
-              <ServerCard server={s} key={s.id} />
-
+        <SearchBar />
+        <div className="  mt-10 mb-2  flex  flex-wrap    justify-center ">
+          {servers && servers.map((s) => <ServerCard server={s} key={s.id} />)}
+        </div>
+        <div className="my-3 flex items-center justify-center">
+          <button
+            className="btn-primary disabled:cursor-not-allowed"
+            disabled={AppState.page === 1}
+            onClick={() => handlePagination(false)}
+          >
+            <FaArrowCircleLeft size={32} />
+          </button>
+          <div className="mx-3 flex gap-x-3">
+            {Array.from(
+              { length: AppState.totalPages },
+              (_, index) => index + 1
+            ).map((pageNum) => (
+              <div
+                className={`text-gray-300${
+                  pageNum === AppState.page
+                    ? " rounded-full bg-indigo-400 px-2  "
+                    : ""
+                }`}
+                key={pageNum}
+                onClick={() => {
+                  AppState.page = pageNum;
+                  serversService.getServersList(AppState.page);
+                }}
+              >
+                {pageNum}
+              </div>
             ))}
+          </div>
+          <button
+            className="btn-primary disabled:cursor-not-allowed"
+            disabled={AppState.page === AppState.totalPages}
+            onClick={() => handlePagination(true)}
+          >
+            <FaArrowCircleRight size={32} />
+          </button>
         </div>
       </main>
     </>

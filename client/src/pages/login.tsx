@@ -8,6 +8,8 @@ import { useRouter } from "next/router.js";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { getRedirectOrPath } from "../../utils/Redirect";
 
+import { membersService } from "@/services/MembersService";
+
 function Login() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -22,15 +24,20 @@ function Login() {
   //  })
 
   async function login() {
-    const user = await pb
-      .collection("users")
-      .authWithPassword(username, password);
-    console.log(user);
-    AppState.user = user.record;
-    AppState.user.token = user.token;
-    console.log(AppState.user);
-    const path = getRedirectOrPath();
-    router.push(path);
+  try {
+      const user = await pb
+        .collection("users")
+        .authWithPassword(username, password);
+      console.log(user);
+      AppState.user = user.record;
+      AppState.user.token = user.token;
+      console.log(AppState.user);
+      await membersService.getUserServers(user.record.id);
+      const path = getRedirectOrPath();
+      router.push(path);
+  } catch (error) {
+    console.error(error)
+  }
   }
 
   async function signUp() {

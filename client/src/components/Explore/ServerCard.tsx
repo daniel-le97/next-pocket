@@ -8,12 +8,13 @@ import { FaUserCheck, FaUserPlus } from "react-icons/fa";
 import type { UsersStatusResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../../utils/pocketBase";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import Pop from "../../../utils/Pop";
 import { membersService } from "../../services/MembersService";
 import { BsCheck, BsCircleFill } from "react-icons/bs";
 import React from "react";
 import type { Server } from "../../../PocketBaseTypes/utils";
+import { Transition } from "@headlessui/react";
 const ServerCard = ({ server }: { server: Server }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
@@ -59,43 +60,50 @@ const ServerCard = ({ server }: { server: Server }) => {
   }, []);
 
   return (
-    <div
-      className={`server-card group  ${
-        isMember
-          ? "bg-gray-300 from-zinc-900 to-green-400 hover:from-zinc-900 hover:to-green-500"
-          : "bg-gray-300 from-zinc-900 to-gray-600"
-      }`}
+    <Transition
+      as={Fragment}
+      enter="ease-out duration-300"
+      enterFrom="opacity-0"
+      enterTo="opacity-100"
+      leave="ease-in duration-200"
+      leaveFrom="opacity-100"
+      leaveTo="opacity-0"
     >
-      <img src={server.expand?.image.url} alt="" className="server-image" />
+      <div
+        className={`server-card group  ${
+          isMember
+            ? "bg-gray-300 from-zinc-900 to-green-400 hover:from-zinc-900 hover:to-green-500"
+            : "bg-gray-300 from-zinc-900 to-gray-600"
+        }`}
+      >
+        <img src={server.expand?.image.url} alt="" className="server-image" />
 
-      <div className="mt-2 p-3">
-        <div className=" flex w-full justify-between ">
-          <div className=" server-name ">{server.name}</div>
-          {!isMember ? (
-            <button
-              className="group/join relative  "
-              onClick={joinServer}
-            >
-              <FaUserPlus size={20} />
-              <span className=" join-button-tooltip">Join</span>
-            </button>
-          ) : (
-            <FaUserCheck size={20} className="text-green-400" />
-          )}
+        <div className="mt-2 p-3">
+          <div className=" flex w-full justify-between ">
+            <div className=" server-name ">{server.name}</div>
+            {!isMember ? (
+              <button className="group/join relative  " onClick={joinServer}>
+                <FaUserPlus size={20} />
+                <span className=" join-button-tooltip">Join</span>
+              </button>
+            ) : (
+              <FaUserCheck size={20} className="text-green-400" />
+            )}
+          </div>
+          <p className="mt-2 pb-10">{server.description}</p>
         </div>
-        <p className="mt-2 pb-10">{server.description}</p>
-      </div>
-      <div className="server-members-count  ">
-        <BsCircleFill size={10} className="text-gray-300" />
-        {server.members?.length}
+        <div className="server-members-count  ">
+          <BsCircleFill size={10} className="text-gray-300" />
+          {server.members?.length}
 
-        {/* {server.members.map((m) => (
+          {/* {server.members.map((m) => (
           <div className=" ">{JSON.stringify(m)}</div>
         ))} */}
-        <small>Members</small>
+          <small>Members</small>
+        </div>
+        {/* {userStatus.length} */}
       </div>
-      {/* {userStatus.length} */}
-    </div>
+    </Transition>
   );
 };
 export default observer(ServerCard);

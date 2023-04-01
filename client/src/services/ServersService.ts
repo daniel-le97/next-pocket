@@ -21,19 +21,20 @@ class ServersService {
     AppState.activeServer = server;
     return server;
   }
-  async getServersList() {
+  async getServersList(page: number, ) {
     // get all servers available
     const res = await pb
       .collection(Collections.Servers)
-      .getList<Server>(1, 50, {
+      .getList<Server>(page, 3, {
         expand: "image,members",
         sort: `created`,
       });
 
     // add the servers to the global state
     AppState.servers = res.items;
-    console.log("servers", res.items);
-
+    // console.log("servers", res.items);
+    AppState.page = res.page;
+    AppState.totalPages = res.totalPages;
     // console.log(AppState.servers);
   }
 

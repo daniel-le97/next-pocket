@@ -15,6 +15,7 @@ import {
   MessagesResponse,
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { MessageWithUser } from "PocketBaseTypes/utils";
+import { debounce } from "lodash";
 const TopNavigation = () => {
   const [channel, setRoom] = useState<string>("");
   const [message, setMessage] = useState("");
@@ -46,7 +47,7 @@ const TopNavigation = () => {
 const Search = () => {
   const [query, setQuery] = useState("");
   const [expanded, setExpanded] = useState(true);
-  const findMessage = async (query: string) => {
+  const debouncedFindMessage =debounce (async (query: string) => {
     AppState.messages = [];
     AppState.page = 1;
     setQuery(query);
@@ -62,6 +63,13 @@ const Search = () => {
     let updatedMessages = AppState.messages;
     updatedMessages = res.items as unknown as MessageWithUser[];
     AppState.messages = updatedMessages;
+  },1000)
+
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setQuery(value);
+    debouncedFindMessage(value);
   };
   const toggleInput = () => {
     setExpanded(!expanded);
@@ -83,9 +91,7 @@ const Search = () => {
         type="text"
         placeholder="Search"
         value={AppState.messageQuery}
-        onChange={async (event) => {
-          await findMessage(event.target.value);
-        }}
+        onChange={handleInputChange}
       />
       <FaSearch
         size={22}
