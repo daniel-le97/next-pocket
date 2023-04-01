@@ -479,7 +479,7 @@
 /* Explore Servers */
 @layer components {
   .explore-banner {
-    @apply relative mt-8 flex items-center justify-center;
+    @apply relative mt-8 flex items-center justify-center ;
   }
 
   .server-card {

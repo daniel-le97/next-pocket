@@ -102,6 +102,7 @@ class ChannelsService {
   }
 
   async deleteChannel(channelId: string) {
+      
     const channel = await pb
       .collection(Collections.Channels)
       .delete(channelId);

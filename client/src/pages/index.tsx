@@ -20,9 +20,7 @@ import ServerPagination from "@/components/Explore/ServerPagination";
 const Explore: NextPage = () => {
   const router = useRouter();
   const servers = AppState.servers;
-  const user = pb.authStore.model;
- const [currentPage, setCurrentPage] = useState(AppState.page);
- const [totalPages, setTotalPages] = useState(AppState.totalPages);
+
  
   useEffect(() => {
     const user = pb.authStore.model;
@@ -49,22 +47,8 @@ const Explore: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="  dark flex min-h-screen  w-full flex-col bg-gray-300  dark:bg-zinc-800 ">
-        <div className="explore-banner ">
-          <div className="relative ">
-            <img
-              src="https://img.freepik.com/free-vector/telescope-science-discovery-watching-stars-planets-outer-space_107791-4920.jpg?w=900&t=st=1677706310~exp=1677706910~hmac=1f7b435bec55558f1de8b5bc54632ee088625c1772d5eb3c102107da67f9327a"
-              alt=""
-              className="rounded-xl shadow-md shadow-zinc-900 "
-            />
-            <div className=" absolute top-24 left-80 text-2xl  font-bold text-white">
-              Find your community
-            </div>
-          </div>
-        </div>
+        <ExploreBanner />
         <SearchBar />
-        <div className="  mt-10 mb-2  flex  flex-wrap    justify-center ">
-          {servers && servers.map((s) => <ServerCard server={s} key={s.id} />)}
-        </div>
         <ServerPagination
           onPageChange={(page) => {
             AppState.page = page;
@@ -72,8 +56,28 @@ const Explore: NextPage = () => {
           }}
           totalPages={AppState.totalPages}
         />
+        <div className="mb-4  flex  flex-wrap    justify-center ">
+          {servers && servers.map((s) => <ServerCard server={s} key={s.id} />)}
+        </div>
       </main>
     </>
+  );
+};
+
+const ExploreBanner = () => {
+  return (
+       <div className="explore-banner  ">
+          <div className="relative  ">
+            <img
+              src="https://img.freepik.com/free-vector/telescope-science-discovery-watching-stars-planets-outer-space_107791-4920.jpg?w=900&t=st=1677706310~exp=1677706910~hmac=1f7b435bec55558f1de8b5bc54632ee088625c1772d5eb3c102107da67f9327a"
+              alt=""
+              className="rounded-xl shadow-md shadow-zinc-900  "
+            />
+            <div className=" absolute top-24 left-80 text-2xl  font-bold text-white">
+              Find your community
+            </div>
+          </div>
+        </div>
   );
 };
 
