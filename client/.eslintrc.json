@@ -19,5 +19,5 @@
   "rules": {
     "@typescript-eslint/consistent-type-imports": "warn"
   },
-  "ignorePatterns" : ["gen.js"]
+  "ignorePatterns" : ["scripts/*"]
 }

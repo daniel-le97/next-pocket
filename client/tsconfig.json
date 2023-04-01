@@ -38,6 +38,6 @@
     "middleware/AuthorizedUser.ts",
     "src/middleware/WithAuth.js",
     "src/middleware/WithAuth.js"
-, "utils/CodeBlock.tsxx"  ],
+, "utils/CodeBlock.tsxx", "scripts/pb_schema.js"  ],
   "exclude": ["node_modules", "util/*.*"]
 }
