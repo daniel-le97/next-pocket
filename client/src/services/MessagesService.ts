@@ -69,7 +69,7 @@ class MessageService {
    * @returns The list of messages for the specified channel
    */
   async getMessagesByChannelId(id: string, page = AppState.page) {
-    // AppState.messages = [];
+    AppState.messages = [];
     console.log("getMessagesByChannelId", id);
     
     const res = await pb.collection(Collections.Messages).getList(page, 50, {

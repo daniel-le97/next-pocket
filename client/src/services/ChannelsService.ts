@@ -12,7 +12,7 @@ class ChannelsService {
     const channelsToLeave = await pb
       .collection(Collections.Channels)
       .getFullList({ filter:`members.id ?= "${data.memberId}"`});
-      console.log('joining channel');
+      // console.log('joining channel');
       const channelToLeave = channelsToLeave[0]
     if (channelToLeave) {
       await this.leaveChannel({
@@ -29,10 +29,8 @@ class ChannelsService {
       });
 
    
-    // AppState.activeChannel = channelToJoin;
-    // console.log(AppState.activeChannel);
-    
-    // console.log(AppState.activeChannel);
+    AppState.activeChannel = channelToJoin;
+ 
 
     // Add the user to the channel's member list
     const newMemberList = [...(channelToJoin.members as []), data.memberId];
@@ -76,7 +74,7 @@ class ChannelsService {
       
       const activeChannel = AppState.activeChannel;
       if (activeChannel && AppState.user) {
-    console.log(activeChannel);
+    // console.log(activeChannel);
     
         await this.joinChannel({memberId: AppState.user.id, channelId: activeChannel.id})
       }

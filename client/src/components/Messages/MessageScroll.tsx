@@ -45,14 +45,18 @@ const MessageScroll = () => {
           : " "
       }`}
     >
-      {AppState.messages.length >=1 && (
+      {AppState.messages.length >= 1 && (
         <InfiniteScroll
           dataLength={AppState.messages.length}
           next={fetchMore}
           className="flex flex-col-reverse pt-6    "
           inverse={true} //
           hasMore={AppState.totalPages != AppState.page}
-          loader={<Loader show={AppState.totalPages != AppState.page} />}
+          loader={
+            <div className="flex justify-center w-full">
+              <Loader show={AppState.totalPages != AppState.page} />
+            </div>
+          }
           scrollableTarget="scrollableDiv"
         >
           {AppState.messages.map((message, index) => {
