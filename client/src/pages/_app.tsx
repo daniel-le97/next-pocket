@@ -37,7 +37,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         usersService.setLastChannel()
       }
     } 
-  }, [user])
+  }, [])
 
   return (
     <Layout>

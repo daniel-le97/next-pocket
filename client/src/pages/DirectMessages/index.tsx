@@ -2,31 +2,24 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { observer } from "mobx-react";
-import { NextPage } from "next";
-import type { Admin, Record } from "pocketbase";
-import React, { useEffect, useState, Fragment } from "react";
-import { useForm } from "react-hook-form";
-import { useUser } from "../../../hooks/User";
-import type { ServersResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import { useState } from "react";
 import { Tab } from "@headlessui/react";
-import ContentContainer from "../../components/Messages/MessageContainer";
 
 import Head from "next/head";
 import FriendsBar from "../../components/DirectMessages/FriendsBar";
-import { userService } from "../../services/UsersService";
-import Pop from "../../../utils/Pop";
-import { AppState } from "../../../AppState";
-import AddFriend from "../../components/DirectMessages/AddFriend";
 import FriendRequests from "../../components/DirectMessages/FriendRequests";
+import AddFriend from "../../components/DirectMessages/AddFriend";
+import { withAuth } from "../../middleware";
+
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 function DirectMessagesPage() {
-  let [categories] = useState(["Requests", "AddFriend"]);
+  const [categories] = useState(["Requests", "AddFriend"]);
   const [activeCategory, setActiveCategory] = useState("Requests");
 
-  const handleClick = (data: any) => {
-    return (event: any) => {
+  const handleClick = (data: string) => {
+    return () => {
       setActiveCategory(data);
       console.log(activeCategory);
       
@@ -80,4 +73,4 @@ function DirectMessagesPage() {
   );
 }
 
-export default observer(DirectMessagesPage);
+export default observer(withAuth(DirectMessagesPage));

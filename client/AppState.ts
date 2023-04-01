@@ -28,7 +28,7 @@ class ObservableAppState {
 
   messageQuery = "";
 
-  activeChannel: ChannelsResponse | null = null;
+  activeChannel: ChannelsResponse | null | undefined = null;
   activeServer: ServersResponse | Server | null = null;
   activeMembership: MembersResponse | null = null;
 

@@ -10,7 +10,5 @@
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-  
-  exclude: ['./scripts/*']
 };
 export default config;

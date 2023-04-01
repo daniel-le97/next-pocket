@@ -42,7 +42,7 @@ class FriendService {
         await this.createFriendRecord(request.senderId, request.receiverId);
         
       }
-        const deletedRecord = await pb
+      await pb
           .collection(Collections.FriendRequest)
           .delete(id);
       return response;

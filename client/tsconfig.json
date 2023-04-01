@@ -18,7 +18,8 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "~/*": ["./*"]
     }
   },
   "include": [
@@ -35,9 +36,9 @@
     "AppState.ts",
     "src/components/SideBar/SideBar.tsxeBarsrc/components/SideBar/SideBar.tsxeBar/SideBar.tsx",
     "src/models/Message.ts",
-    "middleware/AuthorizedUser.ts",
-    "src/middleware/WithAuth.js",
-    "src/middleware/WithAuth.js"
+    "src/middleware/WithAuth.tsts",
+    "src/middleware/WithAuth.ts",
+    "src/middleware/WithAuth.ts"
 , "utils/CodeBlock.tsxx", "scripts/pb_schema.mjss"  ],
   "exclude": ["node_modules", "util/*.*"]
 }
