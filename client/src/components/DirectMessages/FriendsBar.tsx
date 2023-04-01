@@ -22,14 +22,14 @@ import { friendService } from "@/services";
 const topics = ["general", "tailwind-css", "react"];
 
 const FriendsBar = () => {
-  const [friends, setFriends] = useState([]);
+  const friends = AppState.friends
   const user = AppState.user
   useEffect(() => {
     const fetchFriends = async () => {
       try {
         const res = await friendService.getUserFriendsList(user!.id);
 
-        setFriends(res?.expand?.friends);
+        // setFriends(res?.expand?.friends);
       } catch (error) {
         Pop.error(error);
       }
@@ -39,15 +39,16 @@ const FriendsBar = () => {
   return (
     <div className="friends-bar">
       <div>
+          <h5 className="channel-block-text">Friends</h5>
         <div className="channel-block">
-          <h5 className="channel-block-text">Direct Messages</h5>
+          <h5 className="channel-block-text">Direct Messagesssss</h5>
         </div>
         <div className="px-3 ">
           {friends &&
-            friends.map((friend, index) => <User user={friend} key={index} />)}
+            friends?.friends?.map((friend, index) => <User user={friend} key={index} />)}
         </div>
       </div>
-      <UserIcon user={user} />
+      {/* <UserIcon user={user} /> */}
     </div>
   );
 };

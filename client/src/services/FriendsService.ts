@@ -1,4 +1,5 @@
 import { AppState } from "../../AppState";
+import { Friends, FriendsWithUser } from "../../PocketBaseTypes";
 import {
   Collections,
   FriendRequestResponse,
@@ -105,14 +106,14 @@ class FriendService {
   }
 
   async getUserFriendsList(userId:string){
-    const res=  await pb.collection( Collections.Friends).getFirstListItem(`user="${userId}"`,{
-
+    const res =  await pb.collection( Collections.Friends).getFirstListItem<FriendsWithUser>(`user="${userId}"`,{
       expand:'friends'
     })
+    
+    
 
 
-
-    return res
+    return new Friends(res)
     
   }
 }

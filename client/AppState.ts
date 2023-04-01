@@ -3,6 +3,7 @@ import type {
   ChannelsResponse,
   DirectMessagesResponse,
   FriendRequestResponse,
+  FriendsResponse,
   MembersResponse,
   ServersResponse,
   UsersResponse,
@@ -14,6 +15,7 @@ import type {
   MessageWithUser,
   Server,
   UsersStatusWithUser,
+  Friends,
 } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
@@ -44,6 +46,8 @@ class ObservableAppState {
   totalPages = 0;
   page = 1;
   loading = 0;
+
+  friends : Friends | null = null;
 
   lastPath: string | null = null;
   lastQueryId: string | null = null;

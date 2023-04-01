@@ -2,6 +2,7 @@
 import { Admin, Record } from "pocketbase";
 import type {
   ChannelsResponse,
+  Collections,
   FileUploadsResponse,
   FriendsResponse,
   LikesResponse,
@@ -45,8 +46,8 @@ export type UsersStatusWithUser = UsersStatusResponse & {
   expand: { user: UsersResponse };
 };
 
-export type friendsWithUser = FriendsResponse & {
-  // expand: {}
+export type FriendsWithUser = FriendsResponse & {
+  expand: {friends: UsersResponse[]}
 };
 
 export type User = Record | Admin | null
@@ -71,4 +72,23 @@ export class Message {
       ? data.expand["likes(message)"].length
       : 0;
   }
+}
+
+export class Friends {
+  user: string;
+  friends?: UsersResponse[] | undefined;
+  id: string;
+  created: string;
+  updated: string;
+
+  constructor(data: FriendsWithUser) {
+    this.user = data.user;
+    this.friends = data.expand.friends 
+    this.id = data.id;
+    this.created = data.created;
+    this.updated = data.updated;
+  }
+
+ 
+ 
 }
