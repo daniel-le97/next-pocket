@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ const FriendRequests = () => {
   useEffect(() => {
     const fetchFriendRequests = async () => {
       try {
+        if (!user) return
         const res = await friendService.getUserFriendRequests(user?.id);
         const receivedRequests = res.filter((r) => r.receiverId === user?.id);
         const sentRequests = res.filter((r) => r.senderId === user?.id);
@@ -28,31 +30,26 @@ const FriendRequests = () => {
     fetchFriendRequests();
   }, []);
 
-  const handleAccept = async (friendRequestId: string) => {
+   async function handleAccept (friendRequestId: string)  {
     try {
       console.log(friendRequestId, "accept");
 
       await friendService.acceptFriendRequest(friendRequestId);
-      setFriendRequests((prevRequests) =>
-        prevRequests.filter((req) => req.id !== friendRequestId)
-      );
+  
     } catch (error) {
       Pop.error(error);
     }
-  };
+  }
 
-  const handleDecline = async (friendRequestId: string) => {
+   async function handleDecline (friendRequestId: string)  {
     try {
       console.log(friendRequestId, "decline");
       await friendService.declineFriendRequest(friendRequestId);
 
-      setFriendRequests((prevRequests) =>
-        prevRequests.filter((req) => req.id !== friendRequestId)
-      );
     } catch (error) {
       Pop.error(error);
     }
-  };
+  }
 
   return (
     <>

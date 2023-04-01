@@ -7,7 +7,7 @@ import { logger } from "utils/Logger";
 import { BaseT } from "./BaseService";
 
 class UsersStatusService extends BaseT<UsersStatusWithUser> {
-  async subscribe() {
+  async subscribe(directMessages = false) {
     logger.log("subscribing to UsersStatusService");
     const subscribe = await this.pb.subscribe(
       "*",

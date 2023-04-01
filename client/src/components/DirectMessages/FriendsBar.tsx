@@ -79,7 +79,7 @@ const User = ({ user }: { user: UsersResponse }) => {
           className="rounded-full shadow-md shadow-zinc-900"
         />
         <div className="absolute left-8 top-9">
-          {user && <UserStatus user={user} />}
+          {/* {user && <UserStatus user={user} />} */}
         </div>
       </div>
       <Menu isOpen={isOpen} />
@@ -110,12 +110,12 @@ const Menu = (props: { isOpen: boolean }) => {
       description: "",
     },
   });
-  const onSubmit = async (data: any) => {
+  const onSubmit = (data: any) => {
     try {
       reset();
       setImageUrl("");
 
-      await router.push(`http://localhost:3000/server/${newServer.id}`);
+      // await router.push(`http://localhost:3000/server/${newServer.id}`);
     } catch (error) {
       console.error("createServer", error);
     }
