@@ -11,20 +11,13 @@ import FriendRequests from "../../components/DirectMessages/FriendRequests";
 import AddFriend from "../../components/DirectMessages/AddFriend";
 import { withAuth } from "../../middleware";
 
-function classNames(...classes: any[]) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 function DirectMessagesPage() {
   const [categories] = useState(["Requests", "AddFriend"]);
   const [activeCategory, setActiveCategory] = useState("Requests");
 
-  // const handleClick = (data: string) => {
-  //   return () => {
-  //     setActiveCategory(data);
-  //     console.log(activeCategory);
-      
-  //   };
-  // };
   return (
     <>
       <Head>
@@ -36,7 +29,37 @@ function DirectMessagesPage() {
         <div className="flex  h-screen  w-full ">
           <FriendsBar />
 
-       
+          <div className=" relative h-full flex-1 items-stretch    overflow-hidden bg-gray-300   dark:bg-zinc-700  ">
+            <div className="">
+              <div className="px-2  sm:px-0">
+                <Tab.Group>
+                  <Tab.List className="flex space-x-1 ">
+                    {categories.map((category) => (
+                      <Tab
+                        key={category}
+                        className={({ selected }) =>
+                          classNames(selected ? "active-tab-list" : "tab-list")
+                        }
+                        onClick={() => setActiveCategory(category)}
+                      >
+                        {category}
+                      </Tab>
+                    ))}
+                  </Tab.List>
+                  <Tab.Panels className="mt-2">
+                    <Tab.Panel className={classNames("rounded-xl  p-3", " ")}>
+                      {/* Content for "Requests" category */}
+                      {activeCategory === "Requests" && <FriendRequests />}
+                    </Tab.Panel>
+                    <Tab.Panel className={classNames(" rounded-xl p-3", "")}>
+                      {/* Content for "AddFriend" category */}
+                      {activeCategory === "AddFriend" && <AddFriend />}
+                    </Tab.Panel>
+                  </Tab.Panels>
+                </Tab.Group>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </>
