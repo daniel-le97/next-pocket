@@ -1,9 +1,5 @@
 import { AppState } from "../../AppState";
-import { Friends, FriendsWithUser } from "../../PocketBaseTypes";
-import {
-  Collections,
-  FriendRequestResponse,
-} from "../../PocketBaseTypes/pocketbase-types";
+import { Collections, FriendRequestResponse, Friends, FriendsWithUser } from "../../PocketBaseTypes";
 import { pb } from "../../utils/pocketBase";
 
 interface FriendRequest {
@@ -35,7 +31,7 @@ class FriendService {
       .collection(Collections.FriendRequest)
       .getOne<FriendRequestResponse>(id);
     if (request.status === "pending") {
-      request.status = "accepted";
+      request.status = 'accepted';
       const response = await pb
         .collection(Collections.FriendRequest)
         .update<FriendRequestResponse>(id, request);
@@ -101,7 +97,7 @@ class FriendService {
         filter: `receiverId = "${userId}" ||  senderId = "${userId}"`,
         expand:'senderId,receiverId'
       });
-      // AppState.friendRequests = res
+    console.log(res)
       return res
   }
 
@@ -109,12 +105,7 @@ class FriendService {
     const res =  await pb.collection( Collections.Friends).getFirstListItem<FriendsWithUser>(`user="${userId}"`,{
       expand:'friends'
     })
-    
-    
-
-
     AppState.friends = new Friends(res)
-    
   }
 }
 

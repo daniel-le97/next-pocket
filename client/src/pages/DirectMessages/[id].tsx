@@ -10,7 +10,7 @@ import FriendsBar from "@/components/DirectMessages/FriendsBar";
 import DirectMessageContainer from "@/components/DirectMessages/DirectMessageContainer";
 import { withAuth } from "../../middleware";
 
-const DirectMessagesId: NextPage = () => {
+const DirectMessages: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const user = AppState.user;
@@ -23,7 +23,7 @@ const DirectMessagesId: NextPage = () => {
     if (router.query.id) {
       const fetchMessages = () => {
         try {
- 
+          
         } catch (error) {
           Pop.error(error);
         }
@@ -50,4 +50,4 @@ const DirectMessagesId: NextPage = () => {
   );
 };
 
-export default observer(withAuth(DirectMessagesId));
+export default observer(withAuth(DirectMessages));
