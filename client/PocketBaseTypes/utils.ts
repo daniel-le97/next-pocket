@@ -3,6 +3,7 @@ import { Admin, Record } from "pocketbase";
 import type {
   ChannelsResponse,
   Collections,
+  DirectMessagesResponse,
   FileUploadsResponse,
   FriendRequestResponse,
   FriendsResponse,
@@ -46,7 +47,9 @@ export type LikesWithUser = LikesResponse & {
 export type UsersStatusWithUser = UsersStatusResponse & {
   expand: { user: UsersResponse };
 };
-
+export type DirectMessageWithUser = DirectMessagesResponse & {
+  expand: {from: UsersResponse}
+}
 export type FriendsWithUser = FriendsResponse & {
   expand: {friends: UsersResponse[]}
 };
@@ -97,3 +100,40 @@ export class Friends {
  
  
 }
+
+export class ConvertDMToMessage{
+  user: UsersResponse | undefined;
+  channel?: string | undefined;
+  content?: string | undefined;
+  id: string;
+  created: string;
+  updated: string;
+  collectionId: string;
+  collectionName: Collections;
+  expand?: unknown;
+  constructor(data: DirectMessageWithUser) {
+    this.user = data.expand.from
+    this.channel = data.to
+    this.content = data.text
+    this.id = data.id;
+    this.created = data.created;
+    this.updated = data.updated;
+    this.collectionId = data.collectionId;
+    this.collectionName = data.collectionName;
+    this.expand = null
+  }
+
+  
+  
+  
+  
+}
+
+
+  
+  
+  
+  
+
+
+

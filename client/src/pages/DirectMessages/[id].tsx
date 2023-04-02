@@ -11,6 +11,7 @@ import DirectMessageContainer from "@/components/DirectMessages/DirectMessageCon
 import { withAuth } from "../../middleware";
 import { directMessageService } from "../../services";
 
+
 const DirectMessages: NextPage = () => {
   const router = useRouter();
   const id = router.query.id ;
@@ -28,20 +29,24 @@ const DirectMessages: NextPage = () => {
     if (id) {
       const fetchMessages = async () => {
         try {
+          // these
           const nID = id as unknown as number
-          if (AppState.dmTracker[nID] != 0) return
-          AppState.directMessages.filter(dm => dm.id != id)
-          AppState.dmTracker[nID] = 1
+          if (AppState.dmTracker[nID] == true) return
+          AppState.directMessages = AppState.directMessages.filter(dm => dm.id != id)
+          AppState.dmTracker[nID] = true
           AppState.page = 1
           await directMessageService.getDirectMessages(id as string)
           console.log(AppState.directMessages[nID]);
-          console.log(AppState.directMessages);
+          console.log('all',AppState.directMessages);
           
         } catch (error) {
           Pop.error(error);
         }
       };
       fetchMessages();
+    }
+    return () => {
+      AppState.dmTracker[id as unknown as number] = false
     }
   }, [router.query.id]);
 
@@ -56,7 +61,7 @@ const DirectMessages: NextPage = () => {
         <div className="flex  h-screen   w-full ">
           <FriendsBar />
     
-          {/* <DirectMessageContainer /> */}
+          <DirectMessageContainer />
         </div>
       </main>
     </>

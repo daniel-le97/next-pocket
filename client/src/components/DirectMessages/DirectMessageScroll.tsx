@@ -1,14 +1,23 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { observer } from "mobx-react";
+import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { AppState } from "../../../AppState";
-import { directMessageService } from "../../services/DirectMessagesService";
+import { ConvertDMToMessage, Message } from "../../../PocketBaseTypes";
+import { directMessageService } from "../../services";
 
-import { messageService } from "../../services/MessagesService";
 import Loader from "../GlobalComponents/Loader";
-import { DirectMessageCard } from "./DirectMessageContainer";
+import MessageCard from "../Messages/MessageCard";
+// import { DirectMessageCard } from "./DirectMessageContainer";
 
 const DirectMessageScroll = () => {
+  const router = useRouter();
+  const id = router.query.id;
+  const directMessages = AppState.directMessages
+  .filter(dm => dm.id != id)
+  .map(dm => new ConvertDMToMessage(dm) as unknown as Message);
+  console.log("directMessages", directMessages);
+  
   const fetchMore = async () => {
     const channelId = AppState.activeChannel?.id;
     console.log(
@@ -18,10 +27,7 @@ const DirectMessageScroll = () => {
       AppState.totalPages
     );
 
-    await directMessageService.getDirectMessagesById(
-      AppState.user.id,
-      AppState.activeDirectMessage?.id
-    );
+    await directMessageService.getDirectMessages(id as string);
   };
   return (
     <div
@@ -30,7 +36,7 @@ const DirectMessageScroll = () => {
     >
       {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll
-        dataLength={AppState.directMessages.length}
+        dataLength={directMessages.length}
         next={fetchMore}
         className="  flex  pt-6 mb-24 flex-col-reverse "
         inverse={true} //
@@ -38,13 +44,13 @@ const DirectMessageScroll = () => {
         loader={<Loader show={AppState.totalPages != AppState.page} />}
         scrollableTarget="scrollableDiv2"
       >
-        {AppState.directMessages.map((message, index) => {
+        {directMessages.map((message, index) => {
           const currentDate = new Date(message.created).toLocaleDateString();
           const todaysDate = new Date(Date.now()).toLocaleDateString();
           const previousDate =
             index > 0
               ? new Date(
-                  AppState.directMessages[index - 1]!.created
+                  directMessages[index - 1]!.created
                 ).toLocaleDateString()
               : null;
 
@@ -54,11 +60,7 @@ const DirectMessageScroll = () => {
           return (
             <div key={index}>
               {
-                <DirectMessageCard
-                  messages={AppState.directMessages}
-                  message={message}
-                  index={index}
-                />
+               <MessageCard message={message} index={index}/>
               }
               <div>
                 {isNewDay && notTodaysDate && (

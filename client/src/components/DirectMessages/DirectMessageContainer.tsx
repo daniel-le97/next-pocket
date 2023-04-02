@@ -18,10 +18,10 @@ import DirectMessageScroll from "./DirectMessageScroll";
 
 const DirectMessageContainer = () => {
   const router = useRouter();
-  const id = router.query.id as unknown as number;
+  const id = router.query.id 
 
   const user = pb.authStore.model;
-  const messages = AppState.directMessages[id];
+  const messages = AppState.directMessages.filter((dm) => dm.id == id);
   const friend = AppState.activeDirectMessage;
   // let unsubscribe: (() => void) | null = null;
 

@@ -2,6 +2,7 @@ import { AppState } from "AppState";
 import type {
   DirectMessagesRecord,
   DirectMessagesResponse,
+  DirectMessageWithUser,
 } from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
 import { logger } from "utils/Logger";
@@ -66,8 +67,9 @@ class DirectMessageService {
       .getList(page, 50, {
         filter: `from = "${userId}"  && to = "${friendId}" ||  from = "${friendId}"  && to = "${userId}" `,
         sort: "-created",
+        expand: "from"
       });
-      const messages = res.items as unknown as DirectMessagesResponse[];
+      const messages = res.items as unknown as DirectMessageWithUser[];
       // console.log('messages', messages);
       const nID = friendId as unknown as number;
       const numbers = AppState.directMessages.map((m) => m) || [];

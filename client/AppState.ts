@@ -17,6 +17,7 @@ import type {
   UsersStatusWithUser,
   Friends,
   FriendsRequest,
+  DirectMessageWithUser,
 } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
@@ -41,8 +42,8 @@ class ObservableAppState {
   channels: ChannelsResponse[] = [];
   servers: ServersResponse[] = [];
   messages: MessageWithUser[] = [];
-  directMessages: DirectMessagesResponse[] = [];
-  dmTracker = [0]
+  directMessages: DirectMessageWithUser[] = [];
+  dmTracker: boolean[] = [];
   activeDirectMessage: UsersResponse | null = null;
   messageLikes: [LikesWithUser[]] = [[]];
 
