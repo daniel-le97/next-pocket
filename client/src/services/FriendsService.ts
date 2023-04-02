@@ -99,7 +99,6 @@ class FriendService {
     const res = await pb
       .collection(Collections.FriendRequest)
       .getFullList<FriendsRequest>(200, {
-      .getFullList<FriendsRequest>(200, {
         filter: `receiverId = "${userId}" ||  senderId = "${userId}"`,
         expand: "senderId,receiverId",
       });
