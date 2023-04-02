@@ -18,16 +18,7 @@ const ServerOptionsMenu = () => {
 
   return (
     <div className="relative ">
-      <Tooltip
-        trigger="click"
-        content={<ServerOptions />}
-        placement="bottom"
-        css={{
-          backgroundColor: "#18181b",
-         shadow: "0 0 0 0px #2f3136, 0 8px 20px rgba(0, 0, 0, 0.3)",
-        }}
-        hideArrow={true}
-      >
+     
         <button
           className="server-options-btn py-[17px]"
           onClick={() => setIsOpen(!isOpen)}
@@ -35,11 +26,11 @@ const ServerOptionsMenu = () => {
           {AppState.activeServer?.name}
           {isOpen ? <FaArrowUp /> : <FaArrowDown />}
         </button>
-      </Tooltip>
+    
 
-      {/* {isOpen && (
-      
-      )} */}
+      {isOpen && (
+      <ServerOptions/>
+      )}
     </div>
   );
 };

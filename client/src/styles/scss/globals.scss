@@ -283,10 +283,10 @@
   }
 
   .server-options {
-    @apply  z-10  flex w-56 flex-col items-start justify-center rounded-lg  p-2 text-white transition-all ease-linear;
+    @apply  z-10 absolute flex w-full flex-col items-start justify-center rounded-lg  p-2 text-white transition-all ease-linear;
   }
   .server-options-container {
-    @apply w-full rounded ;
+    @apply w-full rounded bg-zinc-900 p-2 ;
   }
   .server-options-btn {
     
@@ -326,7 +326,7 @@
   }
 
   .message-options {
-    @apply absolute -top-2 right-2.5 shadow border border-zinc-800 rounded    opacity-0 group-hover:opacity-100;
+    @apply absolute -top-2 right-6 shadow border border-zinc-800 rounded    opacity-0 group-hover:opacity-100;
   }
   .message-options-container {
     @apply flex  rounded   bg-zinc-700  shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900;
@@ -367,7 +367,7 @@
   }
 
   .newest-message {
-    @apply absolute bottom-16 right-0 mr-5  transition-all group-hover:opacity-0;
+    @apply absolute top-0 right-0 mr-5  transition-all group-hover:opacity-0;
   }
   .newest-message-container {
     @apply relative w-full rounded-lg bg-red-400 px-3 pb-0.5 text-sm font-bold text-white;
@@ -418,7 +418,7 @@
   }
 
   .markdown {
-    @apply scrollbar-h-sm overflow-x-scroll font-sans text-lg text-zinc-300 ;
+    @apply scrollbar-h-sm overflow-x-scroll  font-sans text-lg text-zinc-300 ;
   }
   pre {
     @apply rounded-b-xl  scrollbar-h-sm;

@@ -1,41 +1,31 @@
 import { observer } from "mobx-react";
-import React, { useEffect, useState } from "react";
-import {
-  FaSearch,
-  FaHashtag,
-  FaRegBell,
-  FaUserCircle,
-  FaSun,
-  FaMoon,
-} from "react-icons/fa";
+import React, { useEffect, useMemo, useState } from "react";
+import { FaSearch, FaHashtag } from "react-icons/fa";
 import { AppState } from "../../../AppState";
 import { pb } from "../../../utils/pocketBase";
+import { Collections } from "../../../PocketBaseTypes/pocketbase-types";
 import {
-  Collections,
-  MessagesResponse,
-} from "../../../PocketBaseTypes/pocketbase-types";
-import { MessageWithUser } from "PocketBaseTypes/utils";
+  Message,
+  MessageWithUser,
+  TMessageWithUser,
+} from "PocketBaseTypes/utils";
 import { debounce } from "lodash";
+import { action } from "mobx";
+import { Tooltip } from "@nextui-org/react";
 const TopNavigation = () => {
-  const [channel, setRoom] = useState<string>("");
-  const [message, setMessage] = useState("");
-  const [query, setQuery] = useState<string>("");
-  useEffect(() => {
-    // @ts-ignore
-    setRoom(AppState?.activeChannel?.title);
-  }, [AppState?.activeChannel?.title]);
-
   return (
     <div className="top-navigation">
       <FaHashtag size="20" className="title-hashtag" />
       <h5 className="channel-room-title">
-        {channel ? channel : query}
-        {AppState.messageQuery !== "" && (
+        {AppState.messageQuery === ""
+          ? AppState.activeChannel?.title
+          : "Searching Messages Within Server"}
+        {/* {AppState.messageQuery !== "" && (
           <span className="text-gray-500 text-opacity-80">
             {" "}
             - Search Results
           </span>
-        )}
+        )} */}
       </h5>
       <Search />
       {/* <FaRegBell size="24" className="top-navigation-icon" />
@@ -47,36 +37,50 @@ const TopNavigation = () => {
 const Search = () => {
   const [query, setQuery] = useState("");
   const [expanded, setExpanded] = useState(true);
-  const debouncedFindMessage =debounce (async (query: string) => {
+  const debouncedFindMessage = useMemo(
+    () => async (query: string) => {
+      const res = await pb
+        .collection(Collections.Messages)
+        .getList<MessageWithUser>(1, 10, {
+          filter: `content ~ "${query}"`,
+          expand: "user,likes(message).user",
+        });
+
+      const unMessages = res.items as unknown as TMessageWithUser[];
+      action(() => {
+        const messages = unMessages.map((message, index) => {
+          const _Message: MessageWithUser = new Message(message);
+          AppState.messageLikes[index] = message.expand["likes(message)"] || [];
+          return _Message;
+        });
+        AppState.messages = [...AppState.messages, ...messages];
+        AppState.totalPages = res.totalPages;
+      })();
+    },
+    []
+  );
+
+  // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = event.target.value;
+  //   AppState.messageQuery = value;
+  //   setQuery(value);
+  //   debouncedFindMessage(value);
+  // };
+  // const toggleInput = () => {
+  //   setExpanded(!expanded);
+  // };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    AppState.messageQuery = query;
+    // setQuery(value);
     AppState.messages = [];
     AppState.page = 1;
-    setQuery(query);
-    AppState.messageQuery = query;
-
-    const res = await pb
-      .collection(Collections.Messages)
-      .getList<MessageWithUser>(1, 10, {
-        filter: `content ~ "${query}"  `,
-        expand: "user,likes(message).user",
-      });
-    AppState.totalPages = res.totalPages;
-    let updatedMessages = AppState.messages;
-    updatedMessages = res.items as unknown as MessageWithUser[];
-    AppState.messages = updatedMessages;
-  },1000)
-
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setQuery(value);
-    debouncedFindMessage(value);
+    debouncedFindMessage(query);
   };
-  const toggleInput = () => {
-    setExpanded(!expanded);
-  };
-
   return (
-    <div
+    <form
+      onSubmit={handleSubmit}
       className=" relative  flex
     
     items-center
@@ -85,20 +89,25 @@ const Search = () => {
     "
     >
       <input
-        className={` text-gray-300  transition-all  duration-700 focus:w-72  ${
+        className={` pr-10 text-gray-300 transition-all   duration-700 focus:w-72  ${
           expanded ? "w-full" : ""
         }`}
         type="text"
         placeholder="Search"
-        value={AppState.messageQuery}
-        onChange={handleInputChange}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
       />
-      <FaSearch
-        size={22}
-        className="   text-secondary absolute right-2 z-10 my-auto text-gray-500 hover:text-green-500"
-        onClick={toggleInput}
-      />
-    </div>
+      <div className="absolute right-2 z-10 ">
+        <Tooltip content="Search Message" color="invert" placement="bottom">
+          <button className="m-0 pt-1 ">
+            <FaSearch
+              size={22}
+              className={`     my-auto text-gray-500 hover:text-green-500 ${query !=="" ? "text-green-500" : ""}`}
+            />
+          </button>
+        </Tooltip>
+      </div>
+    </form>
   );
 };
 

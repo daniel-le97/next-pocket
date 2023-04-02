@@ -45,7 +45,7 @@ const MessageScroll = () => {
           : " "
       }`}
     >
-      {AppState.messages.length >= 1 ? (
+      {AppState.messages.length >= 1 && (
         <InfiniteScroll
           dataLength={AppState.messages.length}
           next={fetchMore}
@@ -86,8 +86,20 @@ const MessageScroll = () => {
             );
           })}
         </InfiniteScroll>
-      ) : (
+      )}
+      {AppState.messageQuery == "" && AppState.messages.length == 0 && (
         <LoaderProgress />
+      )}
+      {AppState.messageQuery != "" && AppState.messages.length == 0 && (
+        <div className="container w-1/2 rounded  p-3 text-center text-xl text-gray-400">
+          No messages contain
+          <br />
+          <div className="font-bold text-gray-200 my-2">
+            "{AppState.messageQuery}"
+          </div>
+         
+          Refine Your search
+        </div>
       )}
     </div>
   );
@@ -95,7 +107,7 @@ const MessageScroll = () => {
 
 const LoaderProgress = () => {
   return (
-    <div className="fixed inset-0">
+    <div className="fixed inset-0 h-1">
       <div className="relative h-1 w-full overflow-hidden rounded-lg shadow  ">
         <div className="animate-loader   absolute inset-0 bg-gradient-to-r from-indigo-400 to-indigo-500 shadow-md shadow-indigo-500  "></div>
       </div>

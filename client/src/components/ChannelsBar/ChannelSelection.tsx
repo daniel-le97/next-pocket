@@ -36,6 +36,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
 
       // AppState.page = 1
       AppState.messages = [];
+      AppState.messageQuery = ""
       await channelsService.joinChannel(data);
       await messageService.getMessagesByChannelId(selection.id);
       // await messageService.getMessages();
@@ -94,8 +95,8 @@ const EditChannel = () => {
    formState: { errors },
  } = useForm({
    defaultValues: {
-     members: [],
-     messages: [],
+     members: AppState.activeChannel?.members,
+     messages: AppState.activeChannel?.messages,
 
      title: AppState.activeChannel?.title,
      server: AppState.activeServer?.id,
@@ -106,7 +107,8 @@ const EditChannel = () => {
 
   const updateChannel = async (data: ChannelsRecord) => {
     try {
-      // await channelsService.updateChannel(data)
+      const id = AppState.activeChannel?.id
+      await channelsService.updateChannel(id,data)
     } catch (error) {
       console.error(error);
     }

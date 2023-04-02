@@ -16,12 +16,15 @@ import UserAvatar from "../GlobalComponents/UserAvatar";
 import CodeBlock from "utils/CodeBlock";
 import { Tooltip } from "@nextui-org/react";
 
-
-
-
-const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}) => {
+const MessageCard = ({
+  message,
+  index,
+}: {
+  message: MessageWithUser;
+  index: number;
+}) => {
   const messageQuery = AppState.messageQuery;
-  const likes = AppState.messageLikes[index] ?? null
+  const likes = AppState.messageLikes[index] ?? null;
   const handleCopyClick = () => {
     function removeBackticks(str: string): string {
       const pattern = /```([\s\S]*)```/;
@@ -35,9 +38,6 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
     navigator.clipboard.writeText(removeBackticks(message.content!));
     Pop.success("Copied To Clipboard");
   };
-
- 
-  
 
   return (
     <div
@@ -74,7 +74,11 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
           components={{
             code: ({ inline, className, children, ...props }) => {
               if (inline) {
-                return <code className="text-zinc-300">{children}</code>;
+                return (
+                  <code className="whitespace-normal text-zinc-300">
+                    {children}
+                  </code>
+                );
               }
               return (
                 <div className="markdown-container ">
@@ -89,7 +93,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
                   </div>
                   <CodeBlock
                     language={className && className.replace(/language-/, "")}
-                    value={children }
+                    value={children}
                     {...props}
                   />
                 </div>
@@ -103,13 +107,15 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
       {index === 0 && <IsNewestMessage />}
       <div className="message-options">
         <div className="message-options-container">
+
+        
           {AppState.user?.id == message.user.id ? (
             <>
               <EditMessage message={message} />
               <DeleteMessage messageId={message.id} />
             </>
           ) : (
-            <LikeMessage messageId={message.id}  />
+            <LikeMessage messageId={message.id} />
           )}
         </div>
       </div>
@@ -118,53 +124,58 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
 };
 
 const IsNewestMessage = () => {
-return (
-  <>
-    <div className=" newest-message">
-      <div className="newest-message-container">
-        Newest Message
-        <hr className="  newest-message-line" />
+  return (
+    <>
+      <div className=" newest-message">
+        <div className="newest-message-container">
+          Newest Message
+          <hr className="  newest-message-line" />
+        </div>
       </div>
-    </div>
-  </>
-);
-}
+    </>
+  );
+};
 
 const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
-
-  function getLikes(likes: LikesWithUser[]){
-    const length = likes.length
-    if(length > 0){
-      return length
+  function getLikes(likes: LikesWithUser[]) {
+    const length = likes.length;
+    if (length > 0) {
+      return length;
     }
-    return 0
+    return 0;
   }
-
-  const hasLikes = getLikes(likes) !== 0
 
   return (
     <Tooltip
       content={
-      
-          <div className="message-like-tooltip-container">
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
-              alt="Thumbs Up Icon"
-              className="h-10 w-10 rounded-full"
-            />
-            <div className="flex flex-col">
+        <div className="message-like-tooltip-container">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
+            alt="Thumbs Up Icon"
+            className="h-10 w-10 rounded-full"
+          />
+          <div className="flex flex-col">
+            <div className=" w-full text-lg font-bold  text-indigo-400">
               Thumbs Up By
-              <div className="flex flex-col overflow-y-scroll">
-                {likes &&
-                  likes.map((l, index) => (
-                    <div className="" key={index}>
-                      {l.expand.user.username}
-                    </div>
-                  ))}
-              </div>
+            </div>
+            <div className="flex flex-col overflow-y-scroll  ">
+              {likes &&
+                likes.map((l, index) => (
+                  <div
+                    className=" my-0.5 cursor-pointer rounded p-0.5 transition-all hover:bg-indigo-900 hover:text-gray-100 hover:shadow-sm hover:shadow-indigo-300 "
+                    key={index}
+                    onClick={() => {
+                      //copy username to clipboard
+                      navigator.clipboard.writeText(l.expand.user.username);
+                      Pop.success("Copied To Clipboard");
+                    }}
+                  >
+                    {l.expand.user.username}
+                  </div>
+                ))}
             </div>
           </div>
-     
+        </div>
       }
       color="invert"
     >

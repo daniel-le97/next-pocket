@@ -71,7 +71,7 @@ class MessageService {
   async getMessagesByChannelId(id: string, page = AppState.page) {
     // AppState.messages = [];
     // console.log("getMessagesByChannelId", id);
-      console.log(AppState.page,AppState.totalPages)
+      // console.log(AppState.page,AppState.totalPages)
     const res = await pb.collection(Collections.Messages).getList(page, 50, {
       filter: `channel.id = "${id}"`,
       sort: "-created",

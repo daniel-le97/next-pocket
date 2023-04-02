@@ -9,6 +9,7 @@ import { pb } from "../../utils/pocketBase";
 type Data = { memberId: string; channelId: string };
 
 class ChannelsService {
+ 
   async joinChannel(data: Data) {
     // console.log(data);
 
@@ -117,6 +118,19 @@ class ChannelsService {
 
     if (channel) {
       AppState.channels = AppState.channels.filter((c) => c.id !== channelId);
+    }
+  }
+
+
+  async  updateChannel(id:string,data: ChannelsRecord) {
+    const channel = await pb
+      .collection(Collections.Channels)
+      .update<ChannelsResponse>(id, data);
+
+    if (channel) {
+      AppState.channels = AppState.channels.map((c) =>
+        c.id === channel.id ? channel : c
+      );
     }
   }
 }
