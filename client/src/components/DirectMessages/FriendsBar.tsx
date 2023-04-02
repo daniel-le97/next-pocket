@@ -7,7 +7,8 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { Transition, Dialog } from "@headlessui/react";
 import Pop from "utils/Pop";
-import type { Friend, User, UsersResponse, UsersStatusResponse } from "PocketBaseTypes";
+import { User} from "PocketBaseTypes";
+import type { Friend, UsersResponse, UsersStatusResponse } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import { friendService } from "@/services";
 import { UserIcon } from "../ChannelsBar/ChannelsBar";
@@ -49,7 +50,7 @@ const FriendsBar = () => {
         <div className="px-3 ">
           {friends &&
             friends?.friends?.map((friend, index) => (
-              <User user={friend.user} status={friend.onlineStatus} key={index} />
+              <UserCard user={friend.user} status={friend.onlineStatus} key={index} />
             ))}
         </div>
       </div>
@@ -58,7 +59,7 @@ const FriendsBar = () => {
   );
 };
 
-const User = ({ user, status }: { user: Partial<UsersResponse>, status : UsersStatusResponse}) => {
+const UserCard = ({ user, status }: { user: Partial<UsersResponse>, status : UsersStatusResponse}) => {
   // console.log('user', user);
   
   const [isOpen, setIsOpen] = useState(false);

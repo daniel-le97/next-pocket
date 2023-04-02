@@ -21,4 +21,4 @@ RUN go build -o pb-build
 
 EXPOSE 8080
 
-CMD ["/app/pb-build", "serve", "--http=0.0.0.0:8080"]
+CMD ["/app/pb-build", "serve", "--https=0.0.0.0:8080"]

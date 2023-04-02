@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { type NextPage } from "next";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
@@ -17,7 +18,7 @@ const DirectMessages: NextPage = () => {
   const id = router.query.id ;
   const user = AppState.user;
 
-  const messages = AppState.directMessages.filter(dm => dm.id == id)
+  // const messages = AppState.directMessages.filter(dm => dm.id == id)
 
 
   useEffect(() => {

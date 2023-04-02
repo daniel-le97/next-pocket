@@ -1,21 +1,18 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  FaArrowDown,
   FaChevronDown,
   FaChevronRight,
-  FaPlus,
 } from "react-icons/fa";
 import { observer } from "mobx-react";
 import ChannelSelection from "./ChannelSelection";
 import { AppState } from "../../../AppState";
-import { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
+import type { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import ServerSettingsMenu from "./ServerOptionsMenu";
 import UserAvatar from "../GlobalComponents/UserAvatar";
-import { User } from "../../../PocketBaseTypes";
 
-const topics = ["general", "tailwind-css", "react"];
+// const topics = ["general", "tailwind-css", "react"];
 
 const ChannelsBar = () => {
   const channels = AppState.channels;
@@ -56,7 +53,7 @@ const ChannelsBar = () => {
           </div>
         </div>
       </div>
-      <UserIcon user={user} />
+      <UserIcon user={user as UsersResponse} />
     </div>
   );
 };
@@ -70,12 +67,12 @@ const ChevronIcon = ({ expanded }) => {
   );
 };
 
-export const UserIcon = ({ user }: { user: User}) => {
+export const UserIcon = ({ user }: { user: UsersResponse}) => {
   const [isHovered, setHovered] = useState(false);
   const handleClick = () => {
     setHovered(!isHovered);
   };
-  return (
+  return (user &&(
     <div className="group">
       <button
         onBlur={handleClick}
@@ -84,7 +81,7 @@ export const UserIcon = ({ user }: { user: User}) => {
         // onClick={handleClick}
       >
         <div className=" user-bar-container">
-          <UserAvatar avatarUrl={user?.avatarUrl} height="w-9" width="h-9" />
+          <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
 
           <div className=" truncate font-semibold  text-white">
             {user?.username}
@@ -95,7 +92,7 @@ export const UserIcon = ({ user }: { user: User}) => {
       <div className={`user-modal  ${isHovered ? "scale-100" : "scale-0"} `}>
         <div className="user-modal-banner"></div>
         <div className="user-modal-user-image">
-          <UserAvatar avatarUrl={user?.avatarUrl} height="w-20" width="h-20" />
+          <UserAvatar avatarUrl={user.avatarUrl} height="w-20" width="h-20" />
         </div>
         {/* <img
           src={user?.avatarUrl}
@@ -114,7 +111,7 @@ export const UserIcon = ({ user }: { user: User}) => {
           <div>
             <p className="text-md font-bold ">MEMBER SINCE</p>
             <p className="  font-mono text-gray-400  ">
-              {new Date(user?.created).toLocaleDateString()}
+              {new Date(user.created).toLocaleDateString()}
             </p>
           </div>
           <hr className="my-2  border-gray-600" />
@@ -122,7 +119,7 @@ export const UserIcon = ({ user }: { user: User}) => {
         </div>
       </div>
     </div>
-  );
+  )) 
 };
 
 export default observer(ChannelsBar);
