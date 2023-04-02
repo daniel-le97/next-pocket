@@ -114,10 +114,12 @@ class FriendService {
     if (!userId) return 
     const res = await pb
       .collection(Collections.Friends)
-      .getFullList<FriendsWithUser>({filter: `user = "${userId}"`, expand: "friends"});
+      .getFullList<FriendsWithUser>({filter: `user = "${userId}"`, expand: "friends.onlineStatus"});
       const friends = res[0];
+      
       if (friends && friends.user === userId) {
         AppState.friends = new Friends(friends);
+        console.log('friends', AppState.friends);
         return new Friends(friends);
       }
   }

@@ -13,6 +13,7 @@ import { AppState } from "../../../AppState";
 import { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import ServerSettingsMenu from "./ServerOptionsMenu";
 import UserAvatar from "../GlobalComponents/UserAvatar";
+import { User } from "../../../PocketBaseTypes";
 
 const topics = ["general", "tailwind-css", "react"];
 
@@ -69,7 +70,7 @@ const ChevronIcon = ({ expanded }) => {
   );
 };
 
-export const UserIcon = ({ user }: { user: UsersResponse }) => {
+export const UserIcon = ({ user }: { user: User}) => {
   const [isHovered, setHovered] = useState(false);
   const handleClick = () => {
     setHovered(!isHovered);

@@ -7,13 +7,18 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { Transition, Dialog } from "@headlessui/react";
 import Pop from "utils/Pop";
-import type { UsersResponse } from "PocketBaseTypes";
+import type { Friend, User, UsersResponse, UsersStatusResponse } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import { friendService } from "@/services";
+import { UserIcon } from "../ChannelsBar/ChannelsBar";
+import UserStatus from "../Messages/UsersStatus";
+
 const topics = ["general", "tailwind-css", "react"];
 
 const FriendsBar = () => {
   const friends = AppState.friends;
+  // console.log('friends', friends);
+  
   const user = AppState.user;
   const router = useRouter();
   const goToFriends = () => {
@@ -44,7 +49,7 @@ const FriendsBar = () => {
         <div className="px-3 ">
           {friends &&
             friends?.friends?.map((friend, index) => (
-              <User user={friend} key={index} />
+              <User user={friend.user} status={friend.onlineStatus} key={index} />
             ))}
         </div>
       </div>
@@ -53,19 +58,24 @@ const FriendsBar = () => {
   );
 };
 
-const User = ({ user }: { user: UsersResponse }) => {
+const User = ({ user, status }: { user: Partial<UsersResponse>, status : UsersStatusResponse}) => {
+  console.log('user', user);
+  
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   function closeModal() {
     setIsOpen(false);
   }
-
+  
   function openModal() {
     setIsOpen(true);
   }
+  if (!user) return (<div>NO USER</div>)
+  
   const handleClick = () => {
-    router.push(`http://localhost:3000/DirectMessages/${user?.id}`);
+    router.push(`/DirectMessages/${user.id!}`);
   };
+  
   return (
     <div
       onClick={handleClick}
@@ -79,7 +89,7 @@ const User = ({ user }: { user: UsersResponse }) => {
           className="rounded-full shadow-md shadow-zinc-900"
         />
         <div className="absolute left-8 top-9">
-          {/* {user && <UserStatus user={user} />} */}
+          {user && <UserStatus isOnline={status.isOnline!} />}
         </div>
       </div>
       <Menu isOpen={isOpen} />
@@ -124,10 +134,6 @@ const Menu = (props: { isOpen: boolean }) => {
   function closeModal() {
     isOpen = false;
   }
-
-  // function openModal() {
-  //   setIsOpen(true);
-  // }
 
   return (
     <>
