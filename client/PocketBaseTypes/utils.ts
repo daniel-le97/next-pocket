@@ -80,6 +80,7 @@ export class Message {
 export class Friends {
   user: string;
   friends?: UsersResponse[] | undefined;
+  friendIds: string[] | undefined
   id: string;
   created: string;
   updated: string;
@@ -90,6 +91,7 @@ export class Friends {
     this.id = data.id;
     this.created = data.created;
     this.updated = data.updated;
+    this.friendIds = data.friends
   }
 
  

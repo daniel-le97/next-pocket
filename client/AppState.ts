@@ -16,17 +16,20 @@ import type {
   Server,
   UsersStatusWithUser,
   Friends,
+  FriendsRequest,
 } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
 // /** @type {import('./src/models/Account.js').Account | null} */
 class ObservableAppState {
+  // users & user
   user: User = null;
   UsersStatus: UsersStatusWithUser[] = [];
-
+  userServers: (ServersResponse<unknown> | undefined)[] = [];
+  users: UsersStatusWithUser[] = [];
   members: MemberUser[] = [];
 
-  userServers: (ServersResponse<unknown> | undefined)[] = [];
+
 
   messageQuery = "";
 
@@ -37,9 +40,9 @@ class ObservableAppState {
   channelTitles: (string | undefined)[] = [];
   channels: ChannelsResponse[] = [];
   servers: ServersResponse[] = [];
-  users: UsersStatusWithUser[] = [];
   messages: MessageWithUser[] = [];
   directMessages: DirectMessagesResponse[] = [];
+  dmTracker = [0]
   activeDirectMessage: UsersResponse | null = null;
   messageLikes: [LikesWithUser[]] = [[]];
 
@@ -54,7 +57,9 @@ class ObservableAppState {
 
   AppState: undefined;
 
-  friendRequests: FriendRequestResponse[] = [];
+  friendsRequests: FriendRequestResponse[] = [];
+  sentRequest: FriendsRequest[] = [];
+  receivedRequest: FriendsRequest[] = [];
   reset: () => void;
 
   constructor() {
@@ -83,7 +88,7 @@ class ObservableAppState {
       this.loading = 0;
       this.lastPath = null;
       this.lastQueryId = null;
-      this.friendRequests = [];
+      this.friendsRequests = [];
     });
   }
 }

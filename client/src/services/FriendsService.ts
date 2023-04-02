@@ -1,5 +1,12 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { AppState } from "../../AppState";
-import { Collections, FriendRequestResponse, Friends, FriendsRequest, FriendsWithUser } from "../../PocketBaseTypes";
+import type {
+  FriendRequestResponse,
+  FriendsRecord,
+  FriendsRequest,
+  FriendsWithUser,
+} from "../../PocketBaseTypes";
+import { Collections, Friends } from "../../PocketBaseTypes";
 import { pb } from "../../utils/pocketBase";
 
 interface FriendRequest {
@@ -31,17 +38,15 @@ class FriendService {
       .collection(Collections.FriendRequest)
       .getOne<FriendRequestResponse>(id);
     if (request.status === "pending") {
-      request.status = 'accepted';
+      request.status = "accepted";
       const response = await pb
         .collection(Collections.FriendRequest)
         .update<FriendRequestResponse>(id, request);
       if (response.status === "accepted") {
-        await this.createFriendRecord(request.senderId, request.receiverId);
-        
+        const newFriendId = response.senderId === AppState.user?.id ? response.receiverId : response.senderId
+        await this.createFriendRecord(newFriendId);
       }
-      await pb
-          .collection(Collections.FriendRequest)
-          .delete(id);
+      await pb.collection(Collections.FriendRequest).delete(id);
       return response;
     } else {
       throw new Error("Friend request has already been processed.");
@@ -61,28 +66,27 @@ class FriendService {
       request.status = "declined";
       const response = await pb
         .collection(Collections.FriendRequest)
-        .delete(id)
+        .delete(id);
       return response;
     } else {
       throw new Error("Friend request has already been processed.");
     }
   }
 
-  /**
-   * Creates a new friend record between the sender and receiver.
-   * @param senderId - The ID of the sender.
-   * @param receiverId - The ID of the receiver.
-   */
-  async createFriendRecord(
-    senderId: string,
-    receiverId: string
-  ) {
-    const data = {
-      user:receiverId,
-      friends:senderId
+
+  async createFriendRecord(friendId: string) {
+    const friendsRecord = await this.getUserFriendsList()
+    const user = AppState.user?.id
+    let data: FriendsRecord 
+    if (!user) return
+    if (!friendsRecord) {
+      data = {user, friends: [friendId]}
+      return await pb.collection(Collections.Friends).create(data);
     }
-  const res = await pb.collection(Collections.Friends).create(data)
-  return res
+    const friends = friendsRecord.friendIds?.map(f => f)
+    friends?.push(friendId)
+    data = {user, friends: friends}
+    return await pb.collection(Collections.Friends).update(friendsRecord.id, data);
   }
 
   /**
@@ -90,23 +94,36 @@ class FriendService {
    * @param senderId - The ID of the sender.
    * @param receiverId - The ID of the receiver.
    */
-  async getUserFriendRequests(userId: string) {
+  async getUserFriendRequests(userId = AppState.user?.id) {
+    if (!userId) return [];
     const res = await pb
       .collection(Collections.FriendRequest)
       .getFullList<FriendsRequest>(200, {
+      .getFullList<FriendsRequest>(200, {
         filter: `receiverId = "${userId}" ||  senderId = "${userId}"`,
-        expand:'senderId,receiverId'
+        expand: "senderId,receiverId",
       });
-    console.log('friend request',res)
-      return res
+    console.log("friend request", res);
+    AppState.sentRequest = res.filter((r) => r.senderId === userId);
+    AppState.receivedRequest = res.filter((r) => r.receiverId === userId);
+
+    AppState.friendsRequests = res;
+    return res;
   }
 
-  async getUserFriendsList(userId:string){
-    const res =  await pb.collection( Collections.Friends).getFirstListItem<FriendsWithUser>(`user="${userId}"`,{
-      expand:'friends'
-    })
-    AppState.friends = new Friends(res)
+  async getUserFriendsList(userId = AppState.user?.id) {
+    if (!userId) return 
+    const res = await pb
+      .collection(Collections.Friends)
+      .getFullList<FriendsWithUser>({filter: `user = "${userId}"`, expand: "friends"});
+      const friends = res[0];
+      if (friends && friends.user === userId) {
+        AppState.friends = new Friends(friends);
+        return new Friends(friends);
+      }
   }
+
+
 }
 
 export const friendService = new FriendService();

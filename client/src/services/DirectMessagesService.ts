@@ -67,9 +67,11 @@ class DirectMessageService {
         filter: `from = "${userId}"  && to = "${friendId}" ||  from = "${friendId}"  && to = "${userId}" `,
         sort: "-created",
       });
-    console.log(res);
-    const messages = res.items as unknown as DirectMessagesResponse[];
-    AppState.directMessages = [...AppState.directMessages, ...messages];
+      const messages = res.items as unknown as DirectMessagesResponse[];
+      // console.log('messages', messages);
+      const nID = friendId as unknown as number;
+      const numbers = AppState.directMessages.map((m) => m) || [];
+    AppState.directMessages = [...numbers, ...messages];
 
     AppState.totalPages = res.totalPages;
     AppState.page++;

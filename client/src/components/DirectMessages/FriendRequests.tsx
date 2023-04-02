@@ -1,52 +1,52 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
-import { useEffect, useState } from "react";
-import { FriendRequestResponse, FriendsRequest } from "../../../PocketBaseTypes";
+import { useEffect } from "react";
 import Pop from "../../../utils/Pop";
 import { friendService } from "../../services";
-
 import UserBadge from "../GlobalComponents/UserBadge";
 
 const FriendRequests = () => {
-  const [receivedRequests, setReceivedRequests] = useState<
-    FriendsRequest[]
-  >([]);
-  const [sentRequests, setSendRequests] = useState<FriendsRequest[]>([]);
+  // const [receivedRequests, setReceivedRequests] = useState<
+  //   FriendsRequest[]
+  // >([]);
+  // const [sentRequests, setSentRequests] = useState<FriendsRequest[]>([]);
   const user = AppState.user;
+  const sentRequests = AppState.sentRequest;
+  const receivedRequests = AppState.receivedRequest;
+  // console.log(receivedRequests, "receivedRequests");/
+  // console.log(sentRequests, "sentRequests");
   useEffect(() => {
-    const fetchFriendRequests = async () => {
+    (async () => {
       try {
-        if (!user) return
-        const res = await friendService.getUserFriendRequests(user?.id);
-        const receivedRequests = res.filter((r) => r.receiverId === user?.id);
-        const sentRequests = res.filter((r) => r.senderId === user?.id);
-        setReceivedRequests(receivedRequests);
-        setSendRequests(sentRequests);
+        if (!user) return;
+        await friendService.getUserFriendRequests();
+        // const receivedRequests = res.filter((r) => r.receiverId === user?.id);
+        // const sentRequests = res.filter((r) => r.senderId === user?.id);
+        // setReceivedRequests(receivedRequests);
+        // setSentRequests(sentRequests);
       } catch (error) {
         Pop.error(error);
       }
-    };
-    fetchFriendRequests();
+    })();
   }, []);
 
-   async function handleAccept (friendRequestId: string)  {
+  async function handleAccept(friendRequestId: string) {
     try {
       console.log(friendRequestId, "accept");
 
       await friendService.acceptFriendRequest(friendRequestId);
-  
     } catch (error) {
       Pop.error(error);
     }
   }
 
-   async function handleDecline (friendRequestId: string)  {
+  async function handleDecline(friendRequestId: string) {
     try {
       console.log(friendRequestId, "decline");
       await friendService.declineFriendRequest(friendRequestId);
-
     } catch (error) {
       Pop.error(error);
     }
@@ -100,12 +100,6 @@ const FriendRequests = () => {
                   <div className="text-sm">Status: {f.status}</div>
                 </div>
                 <div className="flex gap-x-2">
-                  <button
-                    className="btn-primary"
-                    onClick={() => handleAccept(f.id)}
-                  >
-                    Accept
-                  </button>
                   <button
                     className="rounded-md bg-purple-500 p-2 font-bold text-zinc-300 hover:bg-opacity-80"
                     onClick={() => handleDecline(f.id)}

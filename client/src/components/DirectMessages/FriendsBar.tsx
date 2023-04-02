@@ -2,32 +2,28 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState, Fragment } from "react";
-
-
 import { observer } from "mobx-react";
-
-
-
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { Transition, Dialog } from "@headlessui/react";
-
-import { UserIcon } from "../ChannelsBar/ChannelsBar";
-
 import Pop from "utils/Pop";
 import type { UsersResponse } from "PocketBaseTypes";
-import UserStatus from "../Messages/UsersStatus";
 import { AppState } from "AppState";
 import { friendService } from "@/services";
 const topics = ["general", "tailwind-css", "react"];
 
 const FriendsBar = () => {
-  const friends = AppState.friends
-  const user = AppState.user
+  const friends = AppState.friends;
+  const user = AppState.user;
+  const router = useRouter();
+  const goToFriends = () => {
+    router.push("/DirectMessages");
+  };
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        const res = await friendService.getUserFriendsList(user!.id);
+        if (!user) return;
+        await friendService.getUserFriendsList();
 
         // setFriends(res?.expand?.friends);
       } catch (error) {
@@ -39,13 +35,17 @@ const FriendsBar = () => {
   return (
     <div className="friends-bar">
       <div>
-          <h5 className="channel-block-text">Friends</h5>
+        <h5 className="channel-block-text" onClick={() => goToFriends()}>
+          Friends
+        </h5>
         <div className="channel-block">
           <h5 className="channel-block-text">Direct Messagesssss</h5>
         </div>
         <div className="px-3 ">
           {friends &&
-            friends?.friends?.map((friend, index) => <User user={friend} key={index} />)}
+            friends?.friends?.map((friend, index) => (
+              <User user={friend} key={index} />
+            ))}
         </div>
       </div>
       {/* <UserIcon user={user} /> */}

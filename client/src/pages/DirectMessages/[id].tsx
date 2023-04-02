@@ -9,20 +9,33 @@ import Pop from "utils/Pop";
 import FriendsBar from "@/components/DirectMessages/FriendsBar";
 import DirectMessageContainer from "@/components/DirectMessages/DirectMessageContainer";
 import { withAuth } from "../../middleware";
+import { directMessageService } from "../../services";
 
 const DirectMessages: NextPage = () => {
   const router = useRouter();
-  const id = router.query.id as string;
+  const id = router.query.id ;
   const user = AppState.user;
+
+  const messages = AppState.directMessages.filter(dm => dm.id == id)
+
 
   useEffect(() => {
     if (!user) {
       router.push("/login");
+      return
     }
 
-    if (router.query.id) {
-      const fetchMessages = () => {
+    if (id) {
+      const fetchMessages = async () => {
         try {
+          const nID = id as unknown as number
+          if (AppState.dmTracker[nID] != 0) return
+          AppState.directMessages.filter(dm => dm.id != id)
+          AppState.dmTracker[nID] = 1
+          AppState.page = 1
+          await directMessageService.getDirectMessages(id as string)
+          console.log(AppState.directMessages[nID]);
+          console.log(AppState.directMessages);
           
         } catch (error) {
           Pop.error(error);
@@ -42,8 +55,8 @@ const DirectMessages: NextPage = () => {
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  h-screen   w-full ">
           <FriendsBar />
-
-          <DirectMessageContainer />
+    
+          {/* <DirectMessageContainer /> */}
         </div>
       </main>
     </>
