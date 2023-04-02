@@ -59,7 +59,7 @@ const FriendsBar = () => {
 };
 
 const User = ({ user, status }: { user: Partial<UsersResponse>, status : UsersStatusResponse}) => {
-  console.log('user', user);
+  // console.log('user', user);
   
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
