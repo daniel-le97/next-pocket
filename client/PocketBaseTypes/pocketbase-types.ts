@@ -57,8 +57,8 @@ export type ChannelsRecord = {
 export type DirectMessagesRecord = {
 	from: RecordIdString
 	to: RecordIdString
-	text: string
 	files?: string[]
+	content: HTMLString
 }
 
 export enum FileUploadsStatusOptions {
@@ -104,6 +104,7 @@ export type MessagesRecord = {
 	user: RecordIdString
 	channel?: RecordIdString
 	content?: HTMLString
+	files?: string[]
 }
 
 export type ServersRecord = {
@@ -118,6 +119,7 @@ export type UsersRecord = {
 	currentChannel?: RecordIdString
 	avatar?: string
 	avatarUrl?: string
+	onlineStatus?: RecordIdString
 }
 
 export type UsersStatusRecord = {
