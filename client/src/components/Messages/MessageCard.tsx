@@ -89,7 +89,7 @@ const MessageCard = ({message,index,}: {message: MessageWithUser;index: number;}
                   </div>
                   <CodeBlock
                     language={className && className.replace(/language-/, "")}
-                    value={children as string}
+                    value={children }
                     {...props}
                   />
                 </div>

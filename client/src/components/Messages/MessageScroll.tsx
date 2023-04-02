@@ -15,9 +15,9 @@ import MessageCard from "./MessageCard";
 const MessageScroll = () => {
   async function fetchMore() {
     const channelId = AppState.activeChannel?.id;
-    AppState.page++
+    AppState.page++;
     await messageService.getMessagesByChannelId(channelId!);
-      console.log("page", AppState.page, "totalPage", AppState.totalPages);
+    console.log("page", AppState.page, "totalPage", AppState.totalPages);
   }
   let subscribeMessage: UnsubscribeFunc | null;
   let subscribeLike: UnsubscribeFunc | null;
@@ -25,7 +25,7 @@ const MessageScroll = () => {
     (async () => {
       try {
         // if(subscribeLike && subscribeMessage) return console.log("already subscribed")
-        subscribeMessage =  await messageService.subscribe();
+        subscribeMessage = await messageService.subscribe();
         subscribeLike = await likesService.subscribe();
       } catch (error) {
         Pop.error(error, "like or message subscription failed");
@@ -45,14 +45,14 @@ const MessageScroll = () => {
           : " "
       }`}
     >
-      {AppState.messages.length >=1 ? (
+      {AppState.messages.length >= 1 ? (
         <InfiniteScroll
           dataLength={AppState.messages.length}
           next={fetchMore}
           className="flex flex-col-reverse pt-6    "
           inverse={true} //
           hasMore={AppState.totalPages != AppState.page}
-          loader={<LoaderProgress/>}
+          loader={<LoaderProgress />}
           scrollableTarget="scrollableDiv"
         >
           {AppState.messages.map((message, index) => {
@@ -86,7 +86,9 @@ const MessageScroll = () => {
             );
           })}
         </InfiniteScroll>
-      ):(<LoaderProgress/>)}
+      ) : (
+        <LoaderProgress />
+      )}
     </div>
   );
 };

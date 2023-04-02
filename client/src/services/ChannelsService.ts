@@ -1,5 +1,8 @@
 import { AppState } from "../../AppState";
-import type { ChannelsRecord, ChannelsResponse } from "../../PocketBaseTypes/pocketbase-types";
+import type {
+  ChannelsRecord,
+  ChannelsResponse,
+} from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 
@@ -8,18 +11,18 @@ type Data = { memberId: string; channelId: string };
 class ChannelsService {
   async joinChannel(data: Data) {
     // console.log(data);
-    
+
     const channelsToLeave = await pb
       .collection(Collections.Channels)
-      .getFullList({ filter:`members.id ?= "${data.memberId}"`});
-      // console.log('joining channel');
-      const channelToLeave = channelsToLeave[0]
+      .getFullList({ filter: `members.id ?= "${data.memberId}"` });
+    // console.log('joining channel');
+    const channelToLeave = channelsToLeave[0];
     if (channelToLeave) {
       await this.leaveChannel({
         memberId: data.memberId,
         channelId: channelToLeave.id,
       });
-    } 
+    }
 
     // Get the channel record to join
     const channelToJoin = await pb
@@ -28,9 +31,7 @@ class ChannelsService {
         expand: "members",
       });
 
-   
     AppState.activeChannel = channelToJoin;
- 
 
     // Add the user to the channel's member list
     const newMemberList = [...(channelToJoin.members as []), data.memberId];
@@ -66,19 +67,20 @@ class ChannelsService {
         .getFullList<ChannelsResponse>(100, {
           filter: `server = "${serverId}"`,
         });
-// console.log('channels', res);
+      // console.log('channels', res);
 
-      AppState.channels = res
-      AppState.activeChannel = res[0]
-      
-      
+      AppState.channels = res;
+      AppState.activeChannel = res[0];
+
       const activeChannel = AppState.activeChannel;
       if (activeChannel && AppState.user) {
-    // console.log(activeChannel);
-    
-        await this.joinChannel({memberId: AppState.user.id, channelId: activeChannel.id})
+        // console.log(activeChannel);
+
+        await this.joinChannel({
+          memberId: AppState.user.id,
+          channelId: activeChannel.id,
+        });
       }
-      
 
       const channelTitles = res.map((i) => i.title);
       AppState.channelTitles = channelTitles;
@@ -91,7 +93,6 @@ class ChannelsService {
   }
 
   async createChannel(data: ChannelsRecord) {
-  
     const newChannel = await pb
       .collection(Collections.Channels)
       .create<ChannelsResponse>(data);
@@ -104,10 +105,15 @@ class ChannelsService {
   }
 
   async deleteChannel(channelId: string) {
-      
-    const channel = await pb
-      .collection(Collections.Channels)
-      .delete(channelId);
+    const channelToJoin = AppState.channels.find(
+      (c) => c.server === AppState.activeServer?.id
+    );
+    const data = {
+      serverId: AppState.activeServer?.id,
+      channelId: channelToJoin?.id,
+    };
+    await this.joinChannel(data);
+    const channel = await pb.collection(Collections.Channels).delete(channelId);
 
     if (channel) {
       AppState.channels = AppState.channels.filter((c) => c.id !== channelId);

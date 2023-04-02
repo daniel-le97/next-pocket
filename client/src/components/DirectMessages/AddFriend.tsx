@@ -26,7 +26,7 @@ const AddFriend = () => {
       }
     };
     fetchUsers();
-  }, []);
+  }, []);  
 
   const {
     register,
