@@ -65,7 +65,7 @@ const ServerIcon = ({
       leaveFrom="opacity-100 translate-x-0"
       leaveTo="opacity-0 -translate-x-10"
     >
-      <div className=" sidebar-icon group  relative  snap-start ">
+      <div className=" sidebar-icon group   ">
         <Tooltip color="invert" content={server.name} placement="right">
           <img
             src={server?.expand?.image?.url}

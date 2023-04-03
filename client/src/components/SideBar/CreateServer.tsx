@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import type { ServersRecord } from "../../../PocketBaseTypes/pocketbase-types";
 import MyModal from "../GlobalComponents/Modal";
 import{Tooltip} from '@nextui-org/react'
+import { FaLock, FaLockOpen } from "react-icons/fa";
 const user = pb.authStore.model;
 
 const initialFormData = {
@@ -37,6 +38,7 @@ const CreateServer = () => {
     handleSubmit,
     watch,
     setValue,
+    getValues,
     reset,
     formState: { errors },
   } = useForm({
@@ -47,6 +49,7 @@ const CreateServer = () => {
       // imageUrl: "",
       owner: user?.id,
       description: "",
+      private:false
     },
   });
   const onSubmit = async (data: ServersRecord) => {
@@ -83,68 +86,75 @@ const CreateServer = () => {
   function openModal() {
     setIsOpen(true);
   }
+ 
 
   return (
     <div className=" sidebar-icon group justify-center ">
       {/* <BsPlusCircleFill size={28} onClick={openModal} /> */}
-     
-        <MyModal
-          title="Create Server"
-          buttonIcon={
-            <div className="flex items-center justify-center">
-               <Tooltip content="Create Server" placement="right" color="invert">
 
+      <MyModal
+        title="Create Server"
+        buttonIcon={
+          <div className="flex items-center justify-center">
+            <Tooltip content="Create Server" placement="right" color="invert">
               <BsPlusCircleFill size={28} onClick={openModal} />
-               </Tooltip>
-            </div>
-          }
+            </Tooltip>
+          </div>
+        }
+      >
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col gap-y-3"
         >
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-3"
-          >
-            <label className=" block text-sm font-bold text-zinc-300">
-              Server Name
-            </label>
-            <input
-              {...register("name", {
-                required: true,
-                maxLength: 30,
-                minLength: 5,
-              })}
-              type="text"
-              className=" create-server-input"
-            />
-            {errors.name && <span>Retry</span>}
+          <label className=" block text-sm font-bold text-zinc-300">
+            Server Name
+          </label>
+          <input
+            {...register("name", {
+              required: true,
+              maxLength: 30,
+              minLength: 5,
+            })}
+            type="text"
+            className=" create-server-input"
+          />
+          {errors.name && <span>Retry</span>}
 
-            <label className=" block text-sm font-bold text-zinc-300">
-              Image:
-            </label>
-            <input
-              type="file"
-              name="imageFile"
-              onChange={handleFileChange}
-              className="file-upload-input"
-            />
-            {!uploading && imageUrl && (
-              <img src={imageUrl} alt="" className="upload-preview-image" />
-            )}
-            <Loader show={uploading} />
+          <label className=" block text-sm font-bold text-zinc-300">
+            Image:
+          </label>
+          <input
+            type="file"
+            name="imageFile"
+            onChange={handleFileChange}
+            className="file-upload-input"
+          />
+          {!uploading && imageUrl && (
+            <img src={imageUrl} alt="" className="upload-preview-image" />
+          )}
+          <Loader show={uploading} />
 
-            <label className=" block text-sm font-bold text-zinc-300">
-              Description :
-            </label>
-            <textarea
-              {...register("description", { required: true })}
-              name="description"
-            />
-
-            <button type="submit" className="btn-primary w-fit">
-              Submit
-            </button>
-          </form>
-        </MyModal>
-    
+          <label className=" block text-sm font-bold text-zinc-300">
+            Description :
+          </label>
+          <textarea
+            {...register("description", { required: true })}
+            name="description"
+          />
+          <label className=" block text-sm font-bold text-zinc-300">
+            Private Server:
+          </label>
+          <div className="flex  ">
+            <input className="" type="checkbox" {...register("private",{
+              required:true
+            })} />
+            
+          </div>
+          <button type="submit" className="btn-primary w-fit">
+            Submit
+          </button>
+        </form>
+      </MyModal>
     </div>
   );
 };

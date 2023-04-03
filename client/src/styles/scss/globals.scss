@@ -110,7 +110,7 @@
     @apply mx-2 rounded-full border border-gray-700 bg-gray-800;
   }
   .sidebar-icon {
-    @apply relative mx-auto mt-2 mb-2 
+    @apply relative   snap-start mx-auto mt-2 mb-2 
     flex h-12 w-12   cursor-pointer items-center  
     justify-center rounded-3xl bg-gray-400 
   text-green-500 shadow-lg
@@ -129,9 +129,9 @@
   // }
 
   .server-selection {
-    z-index: -99999 !important;
+   
     @apply my-2 flex  
-         snap-y  flex-col  items-start   justify-start  scroll-smooth pl-1.5;
+         snap-y  flex-col  items-start   justify-start   pl-1.5;
   }
   .server-selection::-webkit-scrollbar {
     display: none;
