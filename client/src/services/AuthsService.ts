@@ -3,7 +3,9 @@ import { AppState } from "AppState";
 import type { NextRouter} from "next/router";
 import Pop from "utils/Pop";
 import { pb } from "../../utils/pocketBase";
-import { usersStatusService } from "./UsersStatusService";
+import { usersStatusService} from "./UsersStatusService";
+import { friendsService } from "./FriendsService";
+import { UsersResponse } from "~/PocketBaseTypes";
 
 type UserLogin = {
   email: string;
@@ -41,6 +43,8 @@ class AuthsService {
     try {
       const newUser = await pb.collection("users").create({ email, password, passwordConfirm });
       await usersStatusService.create(newUser.id)
+      const user = newUser as unknown as UsersResponse
+      await friendsService.create(user)
       await this.loginUser(data);
     } catch (error) {
       Pop.error('unable to process signup and login request')

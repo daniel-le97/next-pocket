@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-floating-promises */
+import { friendRequestService } from "@/services/FriendRequestsService";
 import { observer } from "mobx-react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -82,7 +83,9 @@ const AddFriend = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      // await friendService.sendFriendRequest(data);
+      console.log(data);
+
+      await friendRequestService.sendFriendRequest(data);
     } catch (error) {
       Pop.error(error);
     }
