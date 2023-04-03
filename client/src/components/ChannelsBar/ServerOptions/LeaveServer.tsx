@@ -5,6 +5,7 @@ import { membersService } from "@/services/MembersService";
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
+import { FaUserMinus } from "react-icons/fa";
 import Pop from "utils/Pop";
 
 const LeaveServer = () => {
@@ -37,7 +38,8 @@ const LeaveServer = () => {
 
   return (
     <button className="server-options-selection" onClick={leaveServer}>
-      Leave <small>{server && server.name}</small>
+      Leave Server
+       <FaUserMinus size={20}/>
     </button>
   );
 };

@@ -48,7 +48,7 @@ const SearchBar = () => {
   return (
     <div className="container mx-5 mt-5 flex items-center justify-center">
       <input
-        className={`text-gray-300 transition-all duration-700 ${
+        className={` dark:text-gray-300 transition-all duration-700 ${
           expanded ? "w-full" : "origin-right scale-0"
         }`}
         type="text"

@@ -49,7 +49,7 @@ const ServerGuidelines = () => {
         }
         title="Server Guidelines"
       >
-        <div className=" p-2 text-white">
+        <div className=" p-2 dark:text-gray-300 text-gray-900 ">
           <ul className=" list-decimal">
             <li>
               Respect others: Treat other users with respect and refrain from

@@ -75,7 +75,7 @@ const MessageCard = ({
             code: ({ inline, className, children, ...props }) => {
               if (inline) {
                 return (
-                  <code className="whitespace-normal text-zinc-300">
+                  <code className="whitespace-normal text-gray-600 dark:text-zinc-300">
                     {children}
                   </code>
                 );

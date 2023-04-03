@@ -1,7 +1,7 @@
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import { Bs0CircleFill, BsPlusCircleFill } from "react-icons/bs";
-import { FaPlusCircle, FaUserMinus } from "react-icons/fa";
+import { FaChevronDown, FaHashtag, FaPlusCircle, FaPoundSign, FaUserMinus } from "react-icons/fa";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,24 +45,29 @@ const CreateChannel = () => {
         buttonIcon={
           <div className="flex w-full  justify-between">
             Create Channel
-            <FaPlusCircle size={18} />
+            <FaPlusCircle size={20} />
           </div>
         }
         title="Create Channel"
       >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <input
-            className=" ml-0 mr-auto w-full cursor-text rounded-md bg-zinc-800  bg-transparent p-2 font-semibold text-gray-500 placeholder-gray-500 outline-none focus:w-full"
-            type="text"
-            placeholder="Enter Title"
-            {...register("title", {
-              required: true,
-              minLength: 5,
-              maxLength: 30,
-            })}
-          />
+        <form onSubmit={handleSubmit(onSubmit)} className="">
+          <div className="relative">
+            <input
+              className=" my-2 pl-8  "
+              type="text"
+              placeholder="new-channel"
+              {...register("title", {
+                required: true,
+                minLength: 1,
+                maxLength: 50,
+              })}
+            />
+            <FaHashtag size="20" className="title-hashtag absolute top-[1.2rem]" />
+          </div>
 
-          <button type="submit">Submit</button>
+          <button className="btn-primary" type="submit">
+            Submit
+          </button>
         </form>
       </MyModal>
     </button>

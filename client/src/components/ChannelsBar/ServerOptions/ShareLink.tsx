@@ -25,7 +25,7 @@ const ShareLink = () => {
   return (
     <button className=" server-options-selection" onClick={handleClick}>
       getLink
-      <FaClipboard size={15} />
+      <FaClipboard size={20} />
     </button>
   );
 };

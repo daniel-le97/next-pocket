@@ -7,7 +7,7 @@ import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import React from "react";
-import { FaUserMinus } from "react-icons/fa";
+import { FaDatabase, FaUserMinus } from "react-icons/fa";
 import Pop from "utils/Pop";
 
 // import type { Server } from "../../../PocketBaseTypes/utils"
@@ -37,7 +37,7 @@ const DeleteServer = () => {
       {user?.id == server?.owner ? (
         <button className=" server-options-selection" onClick={handleClick}>
           Delete Server
-          <FaUserMinus size={15} />
+          <FaDatabase size={20} />
         </button>
       ) : (
         <div className=""></div>

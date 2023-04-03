@@ -74,8 +74,8 @@ function Login() {
 
   return (
     <>
-      <main className="  dark flex flex  min-h-screen w-full flex-col  items-center justify-center bg-gray-300 dark:bg-zinc-900">
-        <div className="shadow-grey-900  container  flex w-1/2   flex-col items-center justify-center  rounded-lg bg-gray-200 p-5 shadow-2xl">
+      <main className="  dark flex  min-h-screen w-full flex-col  items-center justify-center bg-gray-300 dark:bg-zinc-900">
+        <div className="shadow-grey-900 z-10 container  flex w-1/2   flex-col items-center justify-center  rounded-lg bg-gray-200 p-5 shadow-2xl">
           <h1 className="my-10 text-4xl font-bold ">Login</h1>
           <form
             className="flex flex-col gap-y-5"
