@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Record } from "pocketbase";
+import { logger } from "~/utils/Logger";
 import { AppState } from "../../AppState";
 import type {
   FriendRequestResponse,
@@ -34,31 +35,6 @@ class FriendsService {
     return FriendRecord[0];
   }
 
-  // /**
-  //  * Accepts a friend request with the specified ID.
-  //  * @param id - The ID of the friend request to accept.
-  //  * @returns The updated friend request object with a status of "accepted".
-  //  */
-  // async acceptFriendRequest(id: string) {
-  //   const request = await pb
-  //     .collection(Collections.FriendRequest)
-  //     .getOne<FriendRequestResponse>(id);
-  //   if (request.status === "pending") {
-  //     request.status = FriendRequestStatusOptions.accepted
-  //     const response = await pb
-  //       .collection(Collections.FriendRequest)
-  //       .update<FriendRequestResponse>(id, request);
-  //     if (response.status === "accepted") {
-  //       const newFriendId = response.senderId === AppState.user?.id ? response.receiverId : response.senderId
-  //       await this.createFriendRecord(newFriendId);
-  //     }
-  //     await pb.collection(Collections.FriendRequest).delete(id);
-  //     return response;
-  //   } else {
-  //     throw new Error("Friend request has already been processed.");
-  //   }
-  // }
-
   async createFriendRecord(friendId: string) {
     const friendsRecord = await this.getUserFriendsList();
     const user = AppState.user?.id;
@@ -84,13 +60,31 @@ class FriendsService {
         filter: `user = "${userId}"`,
         expand: "friends.onlineStatus",
       });
-    const friends = res[0];
+    const unformattedFriendsRecord = res[0];
 
-    if (friends && friends.user === userId) {
-      AppState.friends = new Friends(friends);
-      console.log("friends", AppState.friends);
-      return new Friends(friends);
+    if (unformattedFriendsRecord && unformattedFriendsRecord.user === userId) {
+      const friends = new Friends(unformattedFriendsRecord);
+      AppState.friends = friends;
+      // console.log("friends", AppState.friends);
+      return friends;
     }
+  }
+
+  async subscribe() {
+    logger.log("friendsService.subscribe()");
+    const subscribe = await pb
+      .collection(Collections.Friends)
+      .subscribe("*", async ({ action, record }) => {
+        const Record = record as unknown as FriendsResponse
+        if (Record.user != AppState.user?.id) return
+        if (action !== "delete") {
+          await this.getUserFriendsList();
+        }
+        if (action === "delete") {
+          logger.error('you probably deleted all your friends by accident')
+        }
+      });
+    return subscribe;
   }
 }
 

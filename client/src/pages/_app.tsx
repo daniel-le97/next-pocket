@@ -12,6 +12,7 @@ import "../styles/tailwind.css"
 import "../styles/scss/globals.scss";
 import { friendService, membersService, usersService, usersStatusService } from "../services";
 import { useRouter } from "next/router";
+import { logger } from "~/utils/Logger";
 
 
 
@@ -25,7 +26,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       try {
         if(!user)return
         await membersService.getUserServers(user.id); 
-        usersStatusService.setStatusOnline(user.id)
+        usersStatusService.setStatusOnline()
       } catch (error) {
         Pop.error(error);
       }
@@ -33,11 +34,13 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
     return () => {
       if(user) {
-        usersStatusService.setStatusOnline(user.id)
+        // usersStatusService.setStatusOnline(user.id, false)
+        logger.assert('user logged out')
         // usersService.setLastChannel()
       }
     } 
   }, [])
+
 
   return (
     <Layout>
