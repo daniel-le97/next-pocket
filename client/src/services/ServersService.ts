@@ -28,6 +28,7 @@ class ServersService {
       .getList<Server>(page, 9, {
         expand: "image,members",
         sort: `created`,
+        filter: 'private="false"'
       });
 
     // add the servers to the global state
