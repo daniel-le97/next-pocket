@@ -82,7 +82,6 @@ export type FriendRequestRecord = {
 	senderId: RecordIdString
 	receiverId: RecordIdString
 	status?: FriendRequestStatusOptions
-	field?: string
 }
 
 export type FriendsRecord = {
@@ -113,6 +112,7 @@ export type ServersRecord = {
 	description?: string
 	members?: RecordIdString[]
 	owner?: RecordIdString
+	private?: boolean
 }
 
 export type UsersRecord = {
