@@ -44,7 +44,7 @@ this project uses npx pocketbase-typegen from (https://github.com/patmood/pocket
 // before running this please make sure the envs defined in
 // client/scripts/gen.js are set or hardcode them there and add the file to .gitignore
 
-npm run gen
+npm run pb:gen
 ```
 # Deployment
 To deploy this project run
