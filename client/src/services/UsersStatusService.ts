@@ -5,9 +5,10 @@ import type { UsersStatusResponse, UsersStatusWithUser } from "PocketBaseTypes";
 import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
 import { logger } from "utils/Logger";
 import { BaseT } from "./BaseService";
+import { friendsService } from "./FriendsService";
 
 class UsersStatusService extends BaseT<UsersStatusWithUser> {
-  async subscribe(directMessages = false) {
+  async subscribe(){
     logger.log("subscribing to UsersStatusService");
     const subscribe = await this.pb.subscribe(
       "*",
@@ -15,6 +16,26 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
         if (action !== "delete") {
           const status = await this.getOne(record.id);
           if (status) addItemOrReplaceV2("users", status, "id");
+        } else {
+          filterStateArray("users", record, "id");
+        }
+      }
+    );
+    return subscribe;
+  }
+  async subscribeDM(){
+    logger.log("subscribing to UsersStatusService for DM view");
+    const subscribe = await this.pb.subscribe(
+      "*",
+      async ({ action, record }) => {
+        const status = record as unknown as UsersStatusResponse
+        // const friends = AppState.friends?.friends
+        logger.log({action, record})
+        const isFriend = AppState.friends?.friends?.find(f => f.id === status.user)
+        if(!isFriend) return
+        logger.log("status", status.isOnline)
+        if (action !== "delete") {
+          await friendsService.getUserFriendsList()
         } else {
           filterStateArray("users", record, "id");
         }
@@ -43,7 +64,7 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
   async setStatusOnline(user = AppState.user?.id, isOnline = true) {
     if (!user) return console.log("no user was supplied");
     const status = await this.getUserStatus(user);
-    if (status && status.isOnline !== isOnline) {
+    if (status && status.isOnline != isOnline) {
       await this.pb.update(status.id, { user, isOnline });
     }
   }

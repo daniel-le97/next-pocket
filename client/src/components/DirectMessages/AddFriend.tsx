@@ -120,7 +120,7 @@ const AddFriend = () => {
                   ? " add-friend-input  border-green-400  "
                   : " add-friend-input  "
               }
-              placeholder="...Username "
+              placeholder="username#friendId"
               onChange={handleChange}
             />
             <button
