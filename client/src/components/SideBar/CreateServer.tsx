@@ -55,7 +55,7 @@ const CreateServer = () => {
       reset();
       setImageUrl("");
       closeModal();
-      router.push(`http://localhost:3000/server/${newServer.id}`);
+      router.push(`server/${newServer.id}`);
     } catch (error) {
       console.error("createServer", error);
 

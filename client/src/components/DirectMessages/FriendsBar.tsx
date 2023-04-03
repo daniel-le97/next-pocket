@@ -126,7 +126,7 @@ const Menu = (props: { isOpen: boolean }) => {
       reset();
       setImageUrl("");
 
-      // await router.push(`http://localhost:3000/server/${newServer.id}`);
+
     } catch (error) {
       console.error("createServer", error);
     }
