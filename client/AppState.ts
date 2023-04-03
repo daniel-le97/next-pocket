@@ -29,7 +29,7 @@ class ObservableAppState {
   userServers: (ServersResponse<unknown> | undefined)[] = [];
   users: UsersStatusWithUser[] = [];
   members: MemberUser[] = [];
-
+userFriendId: string = ""
 
 
   messageQuery = "";

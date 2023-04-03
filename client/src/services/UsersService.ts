@@ -17,16 +17,21 @@ class UsersService {
 
   async getUser(user = AppState.user) {
     if (!user) return;
+   
     return await pb
       .collection(Collections.Users)
       .getOne(user.id, { expand: "currentChannel" });
   }
 
-  async getAll(){
-    return await pb.collection(Collections.Users).getFullList<UsersResponse>()
+  async getAll() {
+    return await pb.collection(Collections.Users).getFullList<UsersResponse>();
   }
-
- 
+  async getUserFriendRecord(user=AppState.user){
+     const userFriendRecord = await pb
+       .collection(Collections.Friends)
+       .getFirstListItem(`user =  " ${user?.id}"  `);
+     AppState.userFriendId = userFriendRecord.id;
+  }
 
   // async setLastChannel(channel = AppState.activeChannel, user = AppState.user) {
   //   const lastChannel = this.getLastChannel();

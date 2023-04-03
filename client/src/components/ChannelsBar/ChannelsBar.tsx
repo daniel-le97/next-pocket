@@ -72,58 +72,61 @@ export const UserIcon = ({ user }: { user: UsersResponse}) => {
   const handleClick = () => {
     setHovered(!isHovered);
   };
-  return (user &&(
-    <div className="group">
-      <button
-        onBlur={handleClick}
-        onFocus={handleClick}
-        className="user-bar group "
-        // onClick={handleClick}
-      >
-        <div className=" user-bar-container">
-          <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
+  return (
+    user && (
+      <div className="group">
+        <button
+          onBlur={handleClick}
+          onFocus={handleClick}
+          className="user-bar group "
+          // onClick={handleClick}
+        >
+          <div className=" user-bar-container">
+            <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
 
-          <div className=" truncate font-semibold  text-white">
-            {user?.username}
+            <div className=" truncate font-semibold  text-white">
+              {user?.username}
+            </div>
           </div>
-        </div>
-      </button>
+        </button>
 
-      <div className={`user-modal  ${isHovered ? "scale-100" : "scale-0"} `}>
-        <div className="user-modal-banner"></div>
-        <div className="user-modal-user-image">
-          <UserAvatar avatarUrl={user.avatarUrl} height="w-20" width="h-20" />
-        </div>
-        {/* <img
+        <div className={`user-modal  ${isHovered ? "scale-100" : "scale-0"} `}>
+          <div className="user-modal-banner"></div>
+          <div className="user-modal-user-image">
+            <UserAvatar avatarUrl={user.avatarUrl} height="w-20" width="h-20" />
+          </div>
+          {/* <img
           src={user?.avatarUrl}
           alt="UserIcon"
           className="user-modal-user-image"
         /> */}
 
-        <div
-          className="mx-2 mt-16  rounded-md p-2 "
-          style={{
-            backgroundColor: "#111214",
-          }}
-        >
-          <p className="text-xl">{user?.username}</p>
-          <hr className="my-2  border-gray-600" />
-          <div>
-            <p className="text-md font-bold ">MEMBER SINCE</p>
-            <p className="  font-mono text-gray-400  ">
-              {new Date(user.created).toLocaleDateString()}
-            </p>
+          <div
+            className="mx-2 mt-16  rounded-md p-2 "
+            style={{
+              backgroundColor: "#111214",
+            }}
+          >
+            <p className="text-xl">{user?.username}</p>
+            <hr className="my-2  border-gray-600" />
+            <div>
+              <p className="text-md font-bold ">MEMBER SINCE</p>
+              <p className="  font-mono text-gray-400  ">
+                {new Date(user.created).toLocaleDateString()}
+              </p>
+            </div>
+            <hr className="my-2  border-gray-600" />
+
+            <div className="">
+              {user.username}
+              { AppState.userFriendId}
+            </div>
+            <div className="">LogOut</div>
           </div>
-          <hr className="my-2  border-gray-600" />
-        
-          <div className="">
-            {user.username}
-          </div>
-          <div className="">LogOut</div>
         </div>
       </div>
-    </div>
-  )) 
+    )
+  ); 
 };
 
 export default observer(ChannelsBar);

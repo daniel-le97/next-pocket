@@ -4,43 +4,44 @@
 import { observer } from "mobx-react";
 import { type AppType } from "next/dist/shared/lib/utils";
 import React, { useEffect } from "react";
-import { AppState} from "../../AppState";
+import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import Layout from "../components/Layout";
-import "../styles/tailwind.css"
+import "../styles/tailwind.css";
 import "../styles/scss/globals.scss";
-import { friendService, membersService, usersService, usersStatusService } from "../services";
+import {
+  friendService,
+  membersService,
+  usersService,
+  usersStatusService,
+} from "../services";
 import { useRouter } from "next/router";
 import { logger } from "~/utils/Logger";
 
-
-
-
-
 const MyApp: AppType = ({ Component, pageProps }) => {
-  const user = AppState.user || pb.authStore.model
+  const user = AppState.user || pb.authStore.model;
   useEffect(() => {
     // if you want it to be fetch before anything else put your call here
     (async () => {
       try {
-        if(!user)return
-        await membersService.getUserServers(user.id); 
-        usersStatusService.setStatusOnline()
+        if (!user) return;
+        await membersService.getUserServers(user.id);
+        
+        usersStatusService.setStatusOnline();
       } catch (error) {
         Pop.error(error);
       }
     })();
 
     return () => {
-      if(user) {
+      if (user) {
         // usersStatusService.setStatusOnline(user.id, false)
-        logger.assert('user logged out')
+        logger.assert("user logged out");
         // usersService.setLastChannel()
       }
-    } 
-  }, [])
-
+    };
+  }, []);
 
   return (
     <Layout>
