@@ -30,16 +30,19 @@ pocketbase and its client UI are now available at http://localhost:8080
 you will notice after starting the server and going to the pocketbase client ui
 at http://localhost:8080/_/ you wont have any collections
 ```
-cd pocketbase
-cp pb_schema.json
+// if you are in the client directory and the envs defined in scripts/pb_schema.js are set
+// this will sync your local and remote schemas
+
+npm run pb:schema
 ```
+### Or copy the contents of pocketbase/pb_schema.json
 now you'll need to go to your pocketbase client and navigate to settings => import collections and paste the pb_schema.json there
 
 ### Getting your pocketbase types updated
 this project uses npx pocketbase-typegen from (https://github.com/patmood/pocketbase-typegen)
 ```
 // before running this please make sure the envs defined in
-// client/gen.js are set or hardcode them there and add the file to .gitignore
+// client/scripts/gen.js are set or hardcode them there and add the file to .gitignore
 
 npm run gen
 ```
@@ -49,7 +52,10 @@ To deploy this project run
 ```node
   npm run build-serve
 ```
-this will build your next.js frontend into pocketbase to allow pocketbase to serve your app for easier deployment
+- this will build your next.js frontend into pocketbase to allow pocketbase to serve your app for easier deployment
+- now you can point any deployment provider that supports docker to the dockerfile in the pocketbase directory!
+- or check [@pocketbase](https://pocketbase.io/docs/going-to-production)
+
 
 #### Alternatively
 
@@ -68,13 +74,5 @@ an example docker compose can be found at pocketbase/docker-compose.yml
 
 - [@Daniel Le](https://www.github.com/daniel-le97)
 - [@Tung Le](https://www.github.com/TungLe0319)
-- [@Tri Le](https://www.github.com/trile1122
+- [@Tri Le](https://www.github.com/trile1122)
 
-
-## Contributing
-
-Contributions are always welcome!
-
-See `contributing.md` for ways to get started.
-
-Please adhere to this project's `code of conduct`.
