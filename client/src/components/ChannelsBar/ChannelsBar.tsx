@@ -115,6 +115,10 @@ export const UserIcon = ({ user }: { user: UsersResponse}) => {
             </p>
           </div>
           <hr className="my-2  border-gray-600" />
+        
+          <div className="">
+            {user.username}
+          </div>
           <div className="">LogOut</div>
         </div>
       </div>

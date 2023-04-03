@@ -10,7 +10,7 @@ import Pop from "../../utils/Pop";
 import Layout from "../components/Layout";
 import "../styles/tailwind.css"
 import "../styles/scss/globals.scss";
-import { membersService, usersService, usersStatusService } from "../services";
+import { friendService, membersService, usersService, usersStatusService } from "../services";
 import { useRouter } from "next/router";
 
 
@@ -24,7 +24,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     (async () => {
       try {
         if(!user)return
-        await membersService.getUserServers(user.id);
+        await membersService.getUserServers(user.id); 
         usersStatusService.setStatusOnline(user.id)
       } catch (error) {
         Pop.error(error);

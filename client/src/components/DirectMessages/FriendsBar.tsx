@@ -13,6 +13,7 @@ import { AppState } from "AppState";
 import { friendService } from "@/services";
 import { UserIcon } from "../ChannelsBar/ChannelsBar";
 import UserStatus from "../Messages/UsersStatus";
+import UserBadge from "../GlobalComponents/UserBadge";
 
 const topics = ["general", "tailwind-css", "react"];
 
@@ -55,6 +56,7 @@ const FriendsBar = () => {
         </div>
       </div>
       {/* <UserIcon user={user} /> */}
+      <UserIcon user={user}/>
     </div>
   );
 };

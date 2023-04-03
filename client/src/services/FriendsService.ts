@@ -121,6 +121,7 @@ class FriendService {
       
       if (friends && friends.user === userId) {
         AppState.friends = new Friends(friends);
+      
         console.log('friends', AppState.friends);
         return new Friends(friends);
       }
