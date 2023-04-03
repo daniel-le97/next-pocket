@@ -4,7 +4,9 @@ import type {
   FriendRequestResponse,
   FriendsRecord,
   FriendsRequest,
-  FriendsWithUser,
+  FriendsWithUser} from "../../PocketBaseTypes";
+import {
+  FriendRequestStatusOptions
 } from "../../PocketBaseTypes";
 import { Collections, Friends } from "../../PocketBaseTypes";
 import { pb } from "../../utils/pocketBase";
@@ -38,7 +40,7 @@ class FriendService {
       .collection(Collections.FriendRequest)
       .getOne<FriendRequestResponse>(id);
     if (request.status === "pending") {
-      request.status = "accepted";
+      request.status = FriendRequestStatusOptions.accepted
       const response = await pb
         .collection(Collections.FriendRequest)
         .update<FriendRequestResponse>(id, request);
@@ -63,7 +65,7 @@ class FriendService {
       .collection(Collections.FriendRequest)
       .getOne<FriendRequestResponse>(id);
     if (request.status === "pending") {
-      request.status = "declined";
+      request.status = FriendRequestStatusOptions.declined
       const response = await pb
         .collection(Collections.FriendRequest)
         .delete(id);

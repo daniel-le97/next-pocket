@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-// /* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { AppState } from "AppState";
 import { action } from "mobx";
-import {
+import type {
   DirectMessagesRecord,
   DirectMessagesResponse,
-  Message,
   MessagesRecord,
   MessageWithUser,
-  TMessageWithUser,
+  TMessageWithUser} from "PocketBaseTypes";
+import {
+  Message
 } from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
 import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";

@@ -58,7 +58,7 @@ const Server: NextPage = () => {
 
    
   }, [router.query.id]);
- const transitionKey = router.query.id ? `transition-${router.query.id}` : "";
+//  const transitionKey = id ? `transition-${id}` : "";
   return (
     <>
       <Head>

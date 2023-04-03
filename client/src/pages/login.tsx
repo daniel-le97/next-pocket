@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { pb } from "../../utils/pocketBase";
 import { AppState } from "../../AppState";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
+import type { UsersResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { getRedirectOrPath } from "../../utils/Redirect";
-
 import { membersService } from "@/services/MembersService";
 
 function Login() {
@@ -40,7 +42,7 @@ function Login() {
   }
   }
 
-  async function signUp() {
+  async function signUp(): Promise<void> {
     try {
       const data = {
         username,
@@ -54,7 +56,7 @@ function Login() {
         user: createdUser.id,
         isOnline: true,
       };
-      const createdUserStats = await pb
+      await pb
         .collection(Collections.UsersStatus)
         .create(statusData);
       await login();
@@ -64,9 +66,9 @@ function Login() {
     }
   }
 
-  function signOut() {
-    pb.authStore.clear();
-  }
+  // function signOut() {
+  //   pb.authStore.clear();
+  // }
 
   // useEffect(() => {
 
@@ -110,27 +112,27 @@ function Login() {
           </form>
         </div>
         <div className="container flex items-center justify-center">
-          <User user={AppState.user} />
+          <User user={AppState.user as UsersResponse} />
         </div>
 
-        <div class="shape-blob"></div>
-        <div class="shape-blob one"></div>
-        <div class="shape-blob two"></div>
+        <div className="shape-blob"></div>
+        <div className="shape-blob one"></div>
+        <div className="shape-blob two"></div>
       </main>
     </>
   );
 }
 
-const User = ({ user }) => {
+const User = ({ user } : {user: UsersResponse}) => {
   if (AppState.user != null) {
     return (
       <div className="container mt-5  flex w-1/2 flex-col items-center justify-center rounded-lg bg-slate-300 p-3">
         <h1 className="my-3 font-bold">Welcome!</h1>
-        <h2>{user.name}</h2>
+        <h2>{user.username}</h2>
         <img
           className="w-1/4 rounded-full"
           src={user.avatarUrl}
-          alt={user.name}
+          alt={user.username}
         />
         <p>Email: {user.email}</p>
         <p>UserName: {user.username}</p>

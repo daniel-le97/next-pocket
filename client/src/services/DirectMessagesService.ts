@@ -71,7 +71,7 @@ class DirectMessageService {
       });
       const messages = res.items as unknown as DirectMessageWithUser[];
       // console.log('messages', messages);
-      const nID = friendId as unknown as number;
+      // const nID = friendId as unknown as number;
       const numbers = AppState.directMessages.filter(dm => dm.to != friendId && dm.from != friendId) || [];
     AppState.directMessages = [...numbers, ...messages];
 

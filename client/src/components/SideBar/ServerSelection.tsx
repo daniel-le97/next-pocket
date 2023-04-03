@@ -50,7 +50,7 @@ const ServerIcon = ({
   const handleClick = () => {
     AppState.activeServer = server;
 
-    router.push(`http://localhost:3000/server/${server.id}`);
+    router.push(`/server/${server.id}`);
   };
   useEffect(() => {
     setShowing(!isShowing);
