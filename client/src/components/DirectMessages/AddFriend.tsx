@@ -4,11 +4,11 @@ import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AppState } from "../../../AppState";
-import { UsersResponse } from "../../../PocketBaseTypes";
+import { Collections, UsersResponse } from "../../../PocketBaseTypes";
 import Pop from "../../../utils/Pop";
 import { usersService } from "../../services";
-
-
+import { pb } from "~/utils/pocketBase";
+import { log } from "console";
 
 const AddFriend = () => {
   const [users, setUsers] = useState<UsersResponse[]>([]);
@@ -26,7 +26,7 @@ const AddFriend = () => {
       }
     };
     fetchUsers();
-  }, []);  
+  }, []);
 
   const {
     register,
@@ -41,50 +41,73 @@ const AddFriend = () => {
       senderId: user?.id,
       receiverId: activeUser?.id,
       status: "pending",
-      receiverName: "",
+
+      receiverData: "",
     },
   });
   const handleChange = (event) => {
     const query = event.target.value;
     setQuery(query);
 
-    const filtered = users.filter(
-      (u) =>
-        u.username.toUpperCase().includes(query.toUpperCase()) &&
-        u.username !== user.username
-    );
+    // const filtered = users.filter(
+    //   (u) =>
+    //     u.username.toUpperCase().includes(query.toUpperCase()) &&
+    //     u.username !== user.username
+    // );
 
-    setFilteredUsers(filtered);
+    // setFilteredUsers(filtered);
     if (query === "") {
       setActiveUser(null);
       setFilteredUsers([]);
     }
   };
-  const handleClick = (user: UsersResponse) => {
-    
-      setActiveUser(user);
+  // const handleClick = (user: UsersResponse) => {
+  //   setActiveUser(user);
 
-      setValue("receiverId", user?.id);
-      setValue("receiverName", user?.username);
-      
-    
-  };
+  //   setValue("receiverId", user?.id);
+  //   // setValue("receiverName", user?.username);
+  // };
   const onSubmit = async (data: any) => {
     try {
-      delete data.receiverName;
       console.log(data);
 
-      await friendService.sendFriendRequest(data);
+      const test =await  CheckValidity(data);
+console.log(test);
+
+      // await friendService.sendFriendRequest(data);
     } catch (error) {
       Pop.error(error);
     }
+  };
+
+  const CheckValidity = async (data: any) => {
+   try {
+      const receiverName = data.receiverData.split("#")[0];
+      const receiverFriendId = data.receiverData.split("#")[1];
+
+      const friendId = await pb
+        .collection(Collections.Friends)
+        .getFirstListItem(`id = "${receiverFriendId}" `);
+      const username = await pb
+        .collection(Collections.Users)
+        .getFirstListItem(`username = "${receiverName}" `);
+      if (friendId && username) {
+        return true;
+      }
+   } catch (error) {
+    Pop.error("Username or Id is invalid")
+    
+   }
   };
   return (
     <>
       <div className="rounded-md  p-5">
         <div className=" text-lg font-bold text-zinc-200">Add Friend</div>
         <div className=" text-zinc-400">
-          You can add a friend with their username. It's cAsE sEnSiTiVe
+          You can add a friend with their username and friendId. It's cAsE
+          sEnSiTiVe
+          <br />
+          Example: TungusTheFungus#d1xf11e03i3mio2
         </div>
         <div className="relative  flex py-4">
           <form
@@ -93,7 +116,7 @@ const AddFriend = () => {
           >
             <input
               type="text"
-              {...register("receiverName", { required: true, maxLength: 30 })}
+              {...register("receiverData", { required: true })}
               className={
                 activeUser
                   ? " add-friend-input  border-green-400  "
@@ -103,11 +126,7 @@ const AddFriend = () => {
               onChange={handleChange}
             />
             <button
-              className={
-                activeUser
-                  ? "send-friend-request-button"
-                  : " send-friend-request-button-disabled  "
-              }
+              className="send-friend-request-button"
               // disabled={Boolean(activeUser)}
               type="submit"
             >
@@ -115,7 +134,7 @@ const AddFriend = () => {
             </button>
           </form>
 
-          {filteredUsers.length >= 1 && (
+          {/* {filteredUsers.length >= 1 && (
             <div className=" after:  absolute top-16 w-full   rounded-b-md bg-zinc-900   p-3 pt-8 transition-all   duration-150 ease-linear">
               <ul className="  max-h-72 overflow-y-auto  rounded-sm  p-1 ">
                 {filteredUsers.length >= 1 &&
@@ -141,7 +160,7 @@ const AddFriend = () => {
                   ))}
               </ul>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>
