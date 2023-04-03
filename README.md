@@ -1,6 +1,8 @@
 # Next-Pocket
 This project is a Discord clone that uses next.js and pocketbase. It builds next.js into pocketbase to be deployed as a single executeable.
 
+## Notes
+Originally this project started off as a simple chat app to test out pocketbase, as such adding voice and video channels were never on the scope.
 
 ## Getting Started
 
