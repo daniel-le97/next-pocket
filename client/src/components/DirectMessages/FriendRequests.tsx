@@ -2,11 +2,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
+import { friendRequestService } from "@/services/FriendRequestsService";
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import { useEffect } from "react";
 import Pop from "../../../utils/Pop";
-import { friendService } from "../../services";
+
 import UserBadge from "../GlobalComponents/UserBadge";
 
 const FriendRequests = () => {
@@ -23,7 +24,7 @@ const FriendRequests = () => {
     (async () => {
       try {
         if (!user) return;
-        await friendService.getUserFriendRequests();
+        await friendRequestService.getUserFriendRequests();
         // const receivedRequests = res.filter((r) => r.receiverId === user?.id);
         // const sentRequests = res.filter((r) => r.senderId === user?.id);
         // setReceivedRequests(receivedRequests);
@@ -38,7 +39,7 @@ const FriendRequests = () => {
     try {
       console.log(friendRequestId, "accept");
 
-      await friendService.acceptFriendRequest(friendRequestId);
+      await friendRequestService.acceptFriendRequest(friendRequestId);
     } catch (error) {
       Pop.error(error);
     }
@@ -47,7 +48,7 @@ const FriendRequests = () => {
   async function handleDecline(friendRequestId: string) {
     try {
       console.log(friendRequestId, "decline");
-      await friendService.declineFriendRequest(friendRequestId);
+      await friendRequestService.declineFriendRequest(friendRequestId);
     } catch (error) {
       Pop.error(error);
     }
