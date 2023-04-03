@@ -10,7 +10,7 @@ import Pop from "utils/Pop";
 import { User} from "PocketBaseTypes";
 import type { Friend, UsersResponse, UsersStatusResponse } from "PocketBaseTypes";
 import { AppState } from "AppState";
-import { friendService } from "@/services";
+import { friendsService } from "@/services";
 import { UserIcon } from "../ChannelsBar/ChannelsBar";
 import UserStatus from "../Messages/UsersStatus";
 
@@ -29,7 +29,7 @@ const FriendsBar = () => {
     const fetchFriends = async () => {
       try {
         if (!user) return;
-        await friendService.getUserFriendsList();
+        await friendsService.getUserFriendsList();
 
         // setFriends(res?.expand?.friends);
       } catch (error) {
