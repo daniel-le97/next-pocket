@@ -12,6 +12,9 @@ import { pb } from "~/utils/pocketBase";
 import { log } from "console";
 import { debounce } from "lodash";
 import Loader from "../GlobalComponents/Loader";
+import { Tooltip } from "@nextui-org/react";
+import { FaChevronRight, FaCompass, FaQuestionCircle } from "react-icons/fa";
+import Link from "next/link";
 
 const AddFriend = () => {
   const [users, setUsers] = useState<UsersResponse[]>([]);
@@ -37,7 +40,7 @@ const AddFriend = () => {
 
   useEffect(() => {
     if (formValue) {
-      checkUserExists(formValue);
+      validateReceiverData(formValue);
     }
   }, [formValue]);
 
@@ -60,25 +63,19 @@ const AddFriend = () => {
     },
   });
   const handleChange = async (e: any) => {
-    // const query = e.target.value;
-    // setQuery(query);
     const val = e.target.value;
-    // const re = /^(?=[a-zA-Z0-9._]{7,50}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+    const re = /^[a-zA-Z0-9]+#[a-zA-Z0-9]{15}$/;
 
-    const tes = await checkUserExists(val);
-    // console.log(tes);
+    if (val !== "" && !re.test(val)) {
+      await validateReceiverData(val);
+    }
 
-    // if (val.length < 3) {
-    //   setFormValue(val);
-    //   setLoading(false);
-    //   setIsValid(false);
-    // }
+    if (re.test(val)) {
+      setFormValue(val);
 
-    // if (re.test(val)) {
-    //   setFormValue(val);
-    //   setLoading(true);
-    //   setIsValid(false);
-    // }
+      setLoading(true);
+      setIsValid(false);
+    }
   };
 
   const onSubmit = async (data: any) => {
@@ -90,21 +87,20 @@ const AddFriend = () => {
       Pop.error(error);
     }
   };
-  const validateReceiverData = (value) => {
-    if (value.length <= 15) {
-      return "Username must be more than 15 characters in length.";
-    }
-    if (!value.includes("#")) {
-      return "Username must contain #.";
-    }
-    return true;
-  };
-  const checkUserExists = useCallback(
+
+  const validateReceiverData = useCallback(
     debounce(async (data: string) => {
       try {
         setLoading(true);
-        const receiverName = data.split("#")[0];
-        const receiverFriendId = data.split("#")[1];
+        const separatorIndex = data.indexOf("#");
+        if (separatorIndex === -1) {
+          setIsValid(false);
+          setLoading(false);
+          console.error("Invalid input format: no '#' separator found");
+          return false;
+        }
+        const receiverName = data.substring(0, separatorIndex);
+        const receiverFriendId = data.substring(separatorIndex + 1);
 
         const friendId = await pb
           .collection(Collections.Friends)
@@ -118,11 +114,11 @@ const AddFriend = () => {
           return true;
         }
       } catch (error) {
-        // setLoading(false);
         setIsValid(false);
         setLoading(false);
         console.error("Invalid Username or FriendId");
       }
+      return false;
     }, 1000),
     []
   );
@@ -135,9 +131,15 @@ const AddFriend = () => {
           You can add a friend with their username and friendId. It's cAsE
           sEnSiTiVe
           <br />
-          Example: TungusTheFungus#d1xf11e03i3mio2
         </div>
         <div className="relative flex flex-col py-4">
+          <Tooltip
+            placement="bottom"
+            color="invert"
+            content={<strong> Example: TungusTheFungus#d1xf11e03i3mio2</strong>}
+          >
+            <FaQuestionCircle size={25} className="text-gray-300" />
+          </Tooltip>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="relative flex w-full  py-4"
@@ -146,12 +148,11 @@ const AddFriend = () => {
               type="text"
               {...register("receiverData", {
                 required: true,
-                validate: validateReceiverData,
               })}
               className={`add-friend-input ${
                 isValid ? "border-green-400" : ""
               }`}
-              placeholder="...Username "
+              placeholder="Enter a Username#FriendId "
               onChange={handleChange}
             />
 
@@ -167,17 +168,13 @@ const AddFriend = () => {
             <Loader show={loading} />
           </div>
 
-          {isValid ? (
+          {isValid && (
             <div className="  flex items-center gap-x-2  p-2">
               <div className="text-green-400">✓</div>
               <div className="text-green-400">Valid</div>
             </div>
-          ) : (
-            <div className="  flex items-center gap-x-2  p-2">
-              <div className="text-red-400">X</div>
-              <div className="text-red-400">Invalid</div>
-            </div>
           )}
+
           {/* {filteredUsers.length >= 1 && (
             <div className=" after:  absolute top-16 w-full   rounded-b-md bg-zinc-900   p-3 pt-8 transition-all   duration-150 ease-linear">
               <ul className="  max-h-72 overflow-y-auto  rounded-sm  p-1 ">
@@ -205,6 +202,24 @@ const AddFriend = () => {
               </ul>
             </div>
           )} */}
+        </div>
+        <hr className="border-gray-500" />
+        <div className="">
+          <div className="my-3 text-lg font-bold text-gray-200">
+            {" "}
+            MAKE FRIENDS BY JOINING SERVERS AND CONNECTING{" "}
+          </div>
+          <Link href={"/"}>
+            <div className="flex w-1/2  items-center justify-between rounded border border-gray-500 bg-zinc-800/40 py-2 px-4 hover:bg-zinc-500">
+              <div className="flex items-center gap-x-2 text-gray-300">
+                <div className="rounded-lg bg-gray-800 p-2">
+                  <FaCompass size={30} />
+                </div>
+                Explore Public Servers
+              </div>
+              <FaChevronRight size={30} className="text-gray-300" />
+            </div>
+          </Link>
         </div>
       </div>
     </>

@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useState } from "react";
-import {
-  FaChevronDown,
-  FaChevronRight,
-} from "react-icons/fa";
+import { FaChevronDown, FaChevronRight, FaClipboard, FaCopy } from "react-icons/fa";
 import { observer } from "mobx-react";
 import ChannelSelection from "./ChannelSelection";
 import { AppState } from "../../../AppState";
 import type { UsersResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import ServerSettingsMenu from "./ServerOptionsMenu";
 import UserAvatar from "../GlobalComponents/UserAvatar";
+import { Tooltip } from "@nextui-org/react";
 
 // const topics = ["general", "tailwind-css", "react"];
 
@@ -67,8 +65,9 @@ const ChevronIcon = ({ expanded }) => {
   );
 };
 
-export const UserIcon = ({ user }: { user: UsersResponse}) => {
+export const UserIcon = ({ user }: { user: UsersResponse }) => {
   const [isHovered, setHovered] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const handleClick = () => {
     setHovered(!isHovered);
   };
@@ -76,7 +75,6 @@ export const UserIcon = ({ user }: { user: UsersResponse}) => {
     user && (
       <div className="group">
         <button
-          onBlur={handleClick}
           onFocus={handleClick}
           className="user-bar group "
           // onClick={handleClick}
@@ -107,9 +105,9 @@ export const UserIcon = ({ user }: { user: UsersResponse}) => {
               backgroundColor: "#111214",
             }}
           >
-            <p className="text-xl">{user?.username}</p>
+            <p className="p-2 text-xl">{user?.username}</p>
             <hr className="my-2  border-gray-600" />
-            <div>
+            <div className="p-2">
               <p className="text-md font-bold ">MEMBER SINCE</p>
               <p className="  font-mono text-gray-400  ">
                 {new Date(user.created).toLocaleDateString()}
@@ -118,15 +116,35 @@ export const UserIcon = ({ user }: { user: UsersResponse}) => {
             <hr className="my-2  border-gray-600" />
 
             <div className="">
-              {user.username}
-              { AppState.userFriendId}
+              <Tooltip
+                trigger={showTooltip ? "click" : "hover"}
+                content={showTooltip ? "Copied!" : "Copy to Clipboard"}
+                color={showTooltip ? "success" : "invert"}
+                visible={showTooltip}
+              >
+                <div
+                  className="  text-md group/item flex w-96 cursor-pointer justify-between rounded  p-2  "
+                  onClick={(e) => {
+                    setShowTooltip(true);
+                    setTimeout(() => setShowTooltip(false), 1500);
+                    navigator.clipboard.writeText(
+                      user.username + "#" + AppState.userFriendId
+                    );
+                  }}
+                >
+                  {user.username + "#" + AppState.userFriendId}
+                  <div className="opacity-0 group-hover/item:opacity-100">
+                    <FaCopy size={20} className={showTooltip ? "text-green-5  00":""} />
+                  </div>
+                </div>
+              </Tooltip>
             </div>
             <div className="">LogOut</div>
           </div>
         </div>
       </div>
     )
-  ); 
+  );
 };
 
 export default observer(ChannelsBar);

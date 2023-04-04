@@ -29,7 +29,7 @@ class UsersService {
   async getUserFriendRecord(user=AppState.user){
      const userFriendRecord = await pb
        .collection(Collections.Friends)
-       .getFirstListItem(`user =  " ${user?.id}"  `);
+       .getFirstListItem(`user =  "${user?.id}"  `);
      AppState.userFriendId = userFriendRecord.id;
   }
 

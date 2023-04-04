@@ -11,7 +11,7 @@ import Layout from "../components/Layout";
 import "../styles/tailwind.css";
 import "../styles/scss/globals.scss";
 import {
-  friendService,
+
   membersService,
   usersService,
   usersStatusService,
@@ -27,7 +27,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       try {
         if (!user) return;
         await membersService.getUserServers(user.id);
-        
+        await usersService.getUserFriendRecord()
         usersStatusService.setStatusOnline();
       } catch (error) {
         Pop.error(error);
