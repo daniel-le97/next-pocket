@@ -36,7 +36,7 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
           (f) => f.id === status.user
         );
         if (!isFriend) return;
-        logger.log("status", status.isOnline);
+        logger.log("status", status.status);
         if (action !== "delete") {
           await friendsService.getUserFriendsList();
         } else {

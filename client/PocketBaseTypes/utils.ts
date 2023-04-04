@@ -27,8 +27,8 @@ export type Response = {
 
 export type MemberUser = MembersResponse<UserExpand>;
 
-type UserExpand<T = unknown> = {
-  user: UsersResponse<T>;
+type UserExpand = {
+  user: UsersResponse & { expand: { onlineStatus: UsersStatusResponse } };
 };
 
 export type Server = ServersResponse<Upload>;

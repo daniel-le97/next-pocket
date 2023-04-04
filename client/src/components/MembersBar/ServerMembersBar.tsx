@@ -151,7 +151,7 @@ const User = ({ user }: { user: MemberUser}) => {
 
         <div className="absolute left-8 top-9">
           {user && (
-            <UserStatus status={user?.expand?.user?.expand?.onlineStatus} />
+            <UserStatus status={user.expand!.user.expand.onlineStatus.status!} />
           )}
         </div>
       </div>
