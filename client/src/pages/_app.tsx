@@ -23,6 +23,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   const user = AppState.user || pb.authStore.model;
   useEffect(() => {
     // if you want it to be fetch before anything else put your call here
+    if (!user) return;
     (async () => {
       try {
         if (!user) return;
