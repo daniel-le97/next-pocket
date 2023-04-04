@@ -30,7 +30,7 @@ const FriendRequests = () => {
         // setReceivedRequests(receivedRequests);
         // setSentRequests(sentRequests);
       } catch (error) {
-        Pop.error(error);
+        Pop.error(error, 'FriendRequest.tsx');
       }
     })();
   }, []);

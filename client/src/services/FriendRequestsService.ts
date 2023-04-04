@@ -1,5 +1,10 @@
 import { AppState } from "~/AppState";
-import { Collections, FriendRequestRecord, FriendRequestResponse, FriendRequestStatusOptions, FriendsRequest } from "~/PocketBaseTypes"
+import type { FriendRequestResponse, FriendsRequest } from "~/PocketBaseTypes";
+import {
+  Collections,
+  FriendRequestRecord,
+  FriendRequestStatusOptions,
+} from "~/PocketBaseTypes";
 import { pb } from "~/utils/pocketBase";
 import { friendsService } from "./FriendsService";
 interface FriendsData {
@@ -24,10 +29,10 @@ class FriendRequestService {
         .update<FriendRequestResponse>(id, request);
       if (response.status === "accepted") {
         const newFriendId =
-          response.senderId === AppState.user?.id
-            ? response.receiverId
-            : response.senderId;
-        await friendsService.createFriendRecord(newFriendId);
+          response.sender === AppState.user?.id
+            ? response.receiver
+            : response.sender;
+        await friendsService.createFriendRecord(newFriendId!);
       }
       await pb.collection(Collections.FriendRequest).delete(id);
       return response;
@@ -73,20 +78,22 @@ class FriendRequestService {
    * @param senderId - The ID of the sender.
    * @param receiverId - The ID of the receiver.
    */
-  async getUserFriendRequests(userId = AppState.user?.id) {
-    if (!userId) return [];
+  async getUserFriendRequests(usersFriendId = AppState.friends?.id) {
+    if (!usersFriendId) return [];
+    // console.log("fr", usersFriendId)
+
     const res = await pb
       .collection(Collections.FriendRequest)
       .getFullList<FriendsRequest>(200, {
-        filter: `receiverId = "${userId}" ||  senderId = "${userId}"`,
+        filter: `receiverId = "${usersFriendId}" ||  senderId = "${usersFriendId}"`,
         expand: "senderId,receiverId",
       });
     console.log("friend request", res);
-    AppState.sentRequest = res.filter((r) => r.senderId === userId);
-    AppState.receivedRequest = res.filter((r) => r.receiverId === userId);
+    AppState.sentRequest = res.filter((r) => r.sender === usersFriendId);
+    AppState.receivedRequest = res.filter((r) => r.receiver === usersFriendId);
 
     AppState.friendsRequests = res;
     return res;
   }
 }
-export const friendRequestService = new FriendRequestService()
+export const friendRequestService = new FriendRequestService();
