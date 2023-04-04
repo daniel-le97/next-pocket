@@ -5,7 +5,11 @@ import { observer } from "mobx-react";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AppState } from "../../../AppState";
-import { Collections, UsersResponse } from "../../../PocketBaseTypes";
+import {
+  Collections,
+  FriendRequestRecord,
+  UsersResponse,
+} from "../../../PocketBaseTypes";
 import Pop from "../../../utils/Pop";
 import { usersService } from "../../services";
 import { pb } from "~/utils/pocketBase";
@@ -55,8 +59,8 @@ const AddFriend = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      senderId: user?.id,
-      receiverId: activeUser?.id,
+      senderFriendId: AppState.userFriendId,
+      receiverFriendId: "",
       status: "pending",
 
       receiverData: "",
@@ -64,6 +68,7 @@ const AddFriend = () => {
   });
   const handleChange = async (e: any) => {
     const val = e.target.value;
+    setFormValue(val);
     const re = /^[a-zA-Z0-9]+#[a-zA-Z0-9]{15}$/;
 
     if (val !== "" && !re.test(val)) {
@@ -80,9 +85,16 @@ const AddFriend = () => {
 
   const onSubmit = async (data: any) => {
     try {
-      console.log(data);
+      if (isValid) {
+        delete data.receiverData;
 
-      await friendRequestService.sendFriendRequest(data);
+        console.log(isValid, data);
+
+        const res = await friendRequestService.sendFriendRequest(data);
+        if (res) {
+          Pop.success("Sent Friend Request!");
+        }
+      }
     } catch (error) {
       Pop.error(error);
     }
@@ -109,6 +121,7 @@ const AddFriend = () => {
           .collection(Collections.Users)
           .getFirstListItem(`username = "${receiverName}" `);
         if (friendId && username) {
+          setValue("receiverFriendId", friendId.id);
           setIsValid(true);
           setLoading(false);
           return true;
@@ -131,6 +144,7 @@ const AddFriend = () => {
           You can add a friend with their username and friendId. It's cAsE
           sEnSiTiVe
           <br />
+          beepo#7pav16sqx77dapf
         </div>
         <div className="relative flex flex-col py-4">
           <Tooltip
@@ -157,14 +171,18 @@ const AddFriend = () => {
             />
 
             <button
-              className="send-friend-request-button"
-              // disabled={Boolean(activeUser)}
+              className={`${
+                !isValid
+                  ? "send-friend-request-button-disabled"
+                  : "send-friend-request-button "
+              }`}
+              disabled={!isValid}
               type="submit"
             >
               Send Friend Request
             </button>
           </form>
-          <div className="absolute right-1/2 top-10 z-30">
+          <div className=" z-30">
             <Loader show={loading} />
           </div>
 

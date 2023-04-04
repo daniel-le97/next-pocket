@@ -79,6 +79,7 @@ export enum FriendRequestStatusOptions {
 	"accepted" = "accepted",
 }
 export type FriendRequestRecord = {
+  delete(arg0: string): unknown
 	senderId: RecordIdString
 	receiverId: RecordIdString
 	status?: FriendRequestStatusOptions
