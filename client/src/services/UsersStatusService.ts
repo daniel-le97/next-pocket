@@ -4,6 +4,7 @@ import { AppState } from "AppState";
 import type { UsersStatusResponse, UsersStatusWithUser } from "PocketBaseTypes";
 import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
 import { logger } from "utils/Logger";
+import { pb } from "~/utils/pocketBase";
 import { BaseT } from "./BaseService";
 import { friendsService } from "./FriendsService";
 
@@ -70,6 +71,30 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
   }
   async create(userId: string) {
     return await this.pb.create({ user: userId, isOnline: true });
+  }
+
+  handle(unload = false){
+    const handleUnload = async() => {
+      await pb.collection('tests').create({test: 'unload'})
+      // const userId = AppState.user?.id
+      // await this.setStatusOnline(userId, false)
+    }
+    const handleClose = async() => {
+      await pb.collection('tests').create({test: 'close'})
+    }
+
+    const handleBeforeUnload = async() => {
+      await pb.collection('tests').create({test: 'beforeunload'})
+    }
+    if(unload){
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener('close', handleClose)
+      window.removeEventListener('unload', handleUnload)
+      return
+    }
+    window.addEventListener("beforeunload", handleBeforeUnload)
+    window.addEventListener('close', handleClose)
+    window.addEventListener('unload', handleUnload)
   }
 }
 export const usersStatusService = new UsersStatusService("UsersStatus");
