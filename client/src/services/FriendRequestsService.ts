@@ -1,5 +1,11 @@
 import { AppState } from "~/AppState";
-import { Collections, FriendRequestRecord, FriendRequestResponse, FriendRequestStatusOptions, FriendsRequest } from "~/PocketBaseTypes"
+import {
+  Collections,
+  FriendRequestRecord,
+  FriendRequestResponse,
+  FriendRequestStatusOptions,
+  FriendsRequest,
+} from "~/PocketBaseTypes";
 import { pb } from "~/utils/pocketBase";
 import { friendsService } from "./FriendsService";
 interface FriendsData {
@@ -62,6 +68,9 @@ class FriendRequestService {
       const response = await pb
         .collection(Collections.FriendRequest)
         .delete(id);
+      AppState.friendsRequests = AppState.friendsRequests.filter(
+        (r) => r.id !== id
+      );
       return response;
     } else {
       throw new Error("Friend request has already been processed.");
@@ -73,20 +82,19 @@ class FriendRequestService {
    * @param senderId - The ID of the sender.
    * @param receiverId - The ID of the receiver.
    */
-  async getUserFriendRequests(userId = AppState.user?.id) {
-    if (!userId) return [];
+  async getUserFriendRequests(userFriendId = AppState.userFriendId) {
     const res = await pb
       .collection(Collections.FriendRequest)
       .getFullList<FriendsRequest>(200, {
-        filter: `receiverId = "${userId}" ||  senderId = "${userId}"`,
-        expand: "senderId,receiverId",
+        filter: `receiver.id = "${userFriendId}" ||  sender.id = "${userFriendId}"`,
+        expand: "sender.user,receiver.user",
       });
-    console.log("friend request", res);
-    AppState.sentRequest = res.filter((r) => r.senderId === userId);
-    AppState.receivedRequest = res.filter((r) => r.receiverId === userId);
+
+    AppState.sentRequest = res.filter((r) => r.sender === userFriendId);
+    AppState.receivedRequest = res.filter((r) => r.receiver === userFriendId);
 
     AppState.friendsRequests = res;
     return res;
   }
 }
-export const friendRequestService = new FriendRequestService()
+export const friendRequestService = new FriendRequestService();

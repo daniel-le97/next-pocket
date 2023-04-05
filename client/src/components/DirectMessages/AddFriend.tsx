@@ -21,31 +21,16 @@ import { FaChevronRight, FaCompass, FaQuestionCircle } from "react-icons/fa";
 import Link from "next/link";
 
 const AddFriend = () => {
-  const [users, setUsers] = useState<UsersResponse[]>([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [activeUser, setActiveUser] = useState<UsersResponse | null>(null);
-  const user = AppState.user!;
-  const [query, setQuery] = useState("");
   const [formValue, setFormValue] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await usersService.getAll();
-        setUsers(res);
-      } catch (error) {
-        Pop.error(error);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    if (formValue) {
+    if (formValue !== "") {
       validateReceiverData(formValue);
     }
+    setFormError("");
   }, [formValue]);
 
   const {
@@ -59,39 +44,42 @@ const AddFriend = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      senderFriendId: AppState.userFriendId,
-      receiverFriendId: "",
+      sender: AppState.userFriendId,
+      receiver: "",
       status: "pending",
-
       receiverData: "",
     },
   });
+
   const handleChange = async (e: any) => {
     const val = e.target.value;
     setFormValue(val);
     const re = /^[a-zA-Z0-9]+#[a-zA-Z0-9]{15}$/;
+    if (val === "") {
+      console.log("13");
 
-    if (val !== "" && !re.test(val)) {
+      return;
+    }
+    if (!re.test(val)) {
       await validateReceiverData(val);
+      return;
     }
 
-    if (re.test(val)) {
-      setFormValue(val);
-
-      setLoading(true);
-      setIsValid(false);
-    }
+    setFormValue(val);
+    setIsValid(false);
   };
 
   const onSubmit = async (data: any) => {
     try {
       if (isValid) {
         delete data.receiverData;
-
-        console.log(isValid, data);
-
+        // console.log(isValid, data);
         const res = await friendRequestService.sendFriendRequest(data);
         if (res) {
+          reset();
+          setFormValue("");
+          setIsValid(false);
+          setFormError("");
           Pop.success("Sent Friend Request!");
         }
       }
@@ -102,40 +90,66 @@ const AddFriend = () => {
 
   const validateReceiverData = useCallback(
     debounce(async (data: string) => {
-      try {
-        setLoading(true);
-        const separatorIndex = data.indexOf("#");
-        if (separatorIndex === -1) {
-          setIsValid(false);
-          setLoading(false);
-          console.error("Invalid input format: no '#' separator found");
-          return false;
-        }
-        const receiverName = data.substring(0, separatorIndex);
-        const receiverFriendId = data.substring(separatorIndex + 1);
+      setLoading(true);
 
-        const friendId = await pb
-          .collection(Collections.Friends)
-          .getFirstListItem(`id = "${receiverFriendId}" `);
-        const username = await pb
-          .collection(Collections.Users)
-          .getFirstListItem(`username = "${receiverName}" `);
-        if (friendId && username) {
-          setValue("receiverFriendId", friendId.id);
-          setIsValid(true);
-          setLoading(false);
-          return true;
-        }
-      } catch (error) {
-        setIsValid(false);
-        setLoading(false);
-        console.error("Invalid Username or FriendId");
+      const separatorIndex = data.indexOf("#");
+      const receiverName = data.substring(0, separatorIndex);
+      const receiverFriendId = data.substring(separatorIndex + 1);
+
+      if (separatorIndex === -1) {
+        handleInvalidInput("Invalid input format: no '#' separator found");
+        return;
       }
-      return false;
+
+      if (receiverName === AppState.user?.username) {
+        handleInvalidInput("Cannot Add Yourself");
+        return;
+      }
+
+      try {
+        const receiverFriendRecord = await pb
+          .collection(Collections.Friends)
+          .getFirstListItem(`id = "${receiverFriendId}" `, { expand: "user" });
+        const senderFriendRecord = await pb
+          .collection(Collections.Friends)
+          .getFirstListItem(`id = "${AppState.userFriendId}" `, {
+            expand: "user",
+          });
+        const alreadyFriends = senderFriendRecord?.friends?.includes(
+          receiverFriendRecord.expand.user.id
+        );
+
+        // console.log(senderFriendRecord.friends);
+
+        const usernameMatchesFriendUserRecord =
+          receiverFriendRecord?.expand?.user?.username === receiverName;
+
+        if (receiverFriendRecord && usernameMatchesFriendUserRecord) {
+          setValue("receiver", receiverFriendRecord.id);
+          setIsValid(true);
+          setFormError("");
+          if (alreadyFriends) {
+            handleInvalidInput("Already Friends");
+          }
+        } else {
+          handleInvalidInput("Invalid Username or FriendId");
+        }
+
+        setLoading(false);
+      } catch (error) {
+        handleInvalidInput("An error occurred while validating receiver data");
+        console.warn("An error occurred while validating receiver data", error);
+      }
     }, 1000),
     []
   );
 
+  const handleInvalidInput = (errorMessage: string) => {
+    console.warn(errorMessage);
+    setFormError(errorMessage);
+    setLoading(false);
+    setIsValid(false);
+  };
   return (
     <>
       <div className="rounded-md  p-5">
@@ -185,47 +199,18 @@ const AddFriend = () => {
           <div className=" z-30">
             <Loader show={loading} />
           </div>
-
+          {formError !== "" && <div className="text-red-400">{formError}</div>}
           {isValid && (
             <div className="  flex items-center gap-x-2  p-2">
               <div className="text-green-400">✓</div>
               <div className="text-green-400">Valid</div>
             </div>
           )}
-
-          {/* {filteredUsers.length >= 1 && (
-            <div className=" after:  absolute top-16 w-full   rounded-b-md bg-zinc-900   p-3 pt-8 transition-all   duration-150 ease-linear">
-              <ul className="  max-h-72 overflow-y-auto  rounded-sm  p-1 ">
-                {filteredUsers.length >= 1 &&
-                  filteredUsers.map((u, index) => (
-                    <li
-                      key={index}
-                      onClick={handleClick(u)}
-                      className={
-                        activeUser == u
-                          ? "active-user-list-item"
-                          : " user-list-item"
-                      }
-                    >
-                      <div className="flex gap-x-2">
-                        <img
-                          src={u.avatarUrl}
-                          alt="userImage"
-                          className="h-10 w-10 rounded-full"
-                        />
-                        <div className=" flex items-center">{u?.username}</div>
-                      </div>
-                    </li>
-                  ))}
-              </ul>
-            </div>
-          )} */}
         </div>
         <hr className="border-gray-500" />
         <div className="">
           <div className="my-3 text-lg font-bold text-gray-200">
-            {" "}
-            MAKE FRIENDS BY JOINING SERVERS AND CONNECTING{" "}
+            MAKE FRIENDS BY JOINING SERVERS AND CONNECTING
           </div>
           <Link href={"/"}>
             <div className="flex w-1/2  items-center justify-between rounded border border-gray-500 bg-zinc-800/40 py-2 px-4 hover:bg-zinc-500">
