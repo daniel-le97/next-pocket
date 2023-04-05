@@ -12,6 +12,7 @@ export enum Collections {
 	Members = "members",
 	Messages = "messages",
 	Servers = "servers",
+	Tests = "tests",
 	Users = "users",
 	UsersStatus = "usersStatus",
 }
@@ -79,10 +80,9 @@ export enum FriendRequestStatusOptions {
 	"accepted" = "accepted",
 }
 export type FriendRequestRecord = {
-  delete(arg0: string): unknown
-	senderId: RecordIdString
-	receiverId: RecordIdString
 	status?: FriendRequestStatusOptions
+	sender?: RecordIdString
+	receiver?: RecordIdString
 }
 
 export type FriendsRecord = {
@@ -116,6 +116,11 @@ export type ServersRecord = {
 	private?: boolean
 }
 
+export type TestsRecord = {
+	test?: string
+	user?: RecordIdString
+}
+
 export type UsersRecord = {
 	currentChannel?: RecordIdString
 	avatar?: string
@@ -123,9 +128,14 @@ export type UsersRecord = {
 	onlineStatus?: RecordIdString
 }
 
+export enum UsersStatusStatusOptions {
+	"online" = "online",
+	"away" = "away",
+	"offline" = "offline",
+}
 export type UsersStatusRecord = {
-	isOnline?: boolean
 	user: RecordIdString
+	status?: UsersStatusStatusOptions
 }
 
 // Response types include system fields and match responses from the PocketBase API
@@ -138,6 +148,7 @@ export type LikesResponse<Texpand = unknown> = LikesRecord & BaseSystemFields<Te
 export type MembersResponse<Texpand = unknown> = MembersRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
 export type ServersResponse<Texpand = unknown> = ServersRecord & BaseSystemFields<Texpand>
+export type TestsResponse<Texpand = unknown> = TestsRecord & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = UsersRecord & AuthSystemFields<Texpand>
 export type UsersStatusResponse<Texpand = unknown> = UsersStatusRecord & BaseSystemFields<Texpand>
 
@@ -151,6 +162,7 @@ export type CollectionRecords = {
 	members: MembersRecord
 	messages: MessagesRecord
 	servers: ServersRecord
+	tests: TestsRecord
 	users: UsersRecord
 	usersStatus: UsersStatusRecord
 }

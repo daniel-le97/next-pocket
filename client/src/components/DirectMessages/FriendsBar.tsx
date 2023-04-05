@@ -72,7 +72,7 @@ const FriendsBar = () => {
         </div>
       </div>
       {/* <UserIcon user={user} /> */}
-      <UserIcon user={user}/>
+      <UserIcon user={user as UsersResponse}/>
     </div>
   );
 };
@@ -108,7 +108,7 @@ const UserCard = ({ user, status }: { user: Partial<UsersResponse>, status : Use
           className="rounded-full shadow-md shadow-zinc-900"
         />
         <div className="absolute left-8 top-9">
-          {user && <UserStatus isOnline={status.isOnline!} />}
+          {user && <UserStatus status={status.status!} />}
         </div>
       </div>
       {/* <Menu isOpen={isOpen} /> */}

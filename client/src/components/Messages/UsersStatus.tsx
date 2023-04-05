@@ -3,25 +3,30 @@
 import { useState, useEffect } from "react";
 import { FaCircle } from "react-icons/fa";
 
-
 import { usersService } from "@/services/UsersService";
 import { pb } from "utils/pocketBase";
-import type { UsersResponse, UsersStatusResponse } from "PocketBaseTypes/pocketbase-types";
+import type {
+  UsersResponse,
+  UsersStatusResponse,
+  UsersStatusStatusOptions,
+} from "PocketBaseTypes/pocketbase-types";
 // import * as consola  from "consola";
-import consola from 'consola'
+import consola from "consola";
 // import { userService, usersService } from "../../services/UserService";
-export default function UserStatus({ isOnline }: { isOnline:boolean}) {
-  // const [isOnline, setIsOnline] = useState(false);
-  const [userStatusRecord, setUserStatusRecord] = useState<UsersStatusResponse | null>(null);
-
-  useEffect(() => {
-    // consola.error(new Error('UserStatus'))
-  }, []);
-
+export default function UserStatus({
+  status,
+}: {
+  status: UsersStatusStatusOptions;
+}) {
+  const isOnline = status === "online";
+  const isAway = status === "away";
+  // const isOffline = status === "offline";
   return (
     <div className="absolute right-0 bottom-0 rounded-full border-4 border-zinc-700 shadow-md shadow-zinc-700 ">
       {isOnline ? (
         <FaCircle color="#22c55e" size={10} />
+      ) : isAway ? (
+        <FaCircle color="#a0a832" size={10} />
       ) : (
         <FaCircle color="#ef4444" size={10} />
       )}
