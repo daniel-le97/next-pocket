@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
 import { useState, useEffect } from "react";
-import { FaCircle } from "react-icons/fa";
+import { FaCircle, FaCloudMoon, FaMoon } from "react-icons/fa";
 
 import { usersService } from "@/services/UsersService";
 import { pb } from "utils/pocketBase";
@@ -22,11 +22,11 @@ export default function UserStatus({
   const isAway = status === "away";
   // const isOffline = status === "offline";
   return (
-    <div className="absolute right-0 bottom-0 rounded-full border-4 border-zinc-700 shadow-md shadow-zinc-700 ">
+    <div className="absolute right-0 bottom-0 rounded-full border-[3px] border-zinc-800 shadow-md ">
       {isOnline ? (
         <FaCircle color="#22c55e" size={10} />
       ) : isAway ? (
-        <FaCircle color="#a0a832" size={10} />
+        <FaCircle color="#f0b232" size={10} />
       ) : (
         <FaCircle color="#ef4444" size={10} />
       )}

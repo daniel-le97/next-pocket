@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import Pop from "../../../utils/Pop";
 
 import UserBadge from "../GlobalComponents/UserBadge";
+import TimeAgo from "timeago-react";
 
 const FriendRequests = () => {
   const user = AppState.user;
@@ -64,22 +65,35 @@ const FriendRequests = () => {
                 >
                   <div className="flex items-center gap-x-3 text-xl font-bold text-zinc-300">
                     <UserBadge user={f.expand?.sender?.expand?.user} />
-                    <div className="text-sm">Status: {f.status}</div>
+                    <div className="flex items-center justify-between text-sm">
+                      Status: {f.status}
+                    </div>
                   </div>
-                  <div className="flex gap-x-2">
-                    <button
-                      className="btn-primary"
-                      onClick={() => handleAccept(f.id)}
-                    >
-                      Accept
-                    </button>
-                    <button
-                      className="rounded-md bg-purple-500 p-2 font-bold text-zinc-300 hover:bg-opacity-80"
-                      onClick={() => handleDecline(f.id)}
-                    >
-                      Decline
-                    </button>
+                  <div className="flex items-center text-sm text-gray-300">
+                    {
+                      <TimeAgo
+                        datetime={f.created}
+                        locale={"en-US"}
+                        style={{ margin: 5 }}
+                      />
+                    }
                   </div>
+                  {f.status === "pending" && (
+                    <div className="flex gap-x-2">
+                      <button
+                        className="btn-primary"
+                        onClick={() => handleAccept(f.id)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        className="rounded-md bg-purple-500 p-2 font-bold text-zinc-300 hover:bg-opacity-80"
+                        onClick={() => handleDecline(f.id)}
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  )}
                 </li>
               ))
             ) : (
