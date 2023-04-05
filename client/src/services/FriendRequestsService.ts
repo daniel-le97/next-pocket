@@ -70,6 +70,10 @@ class FriendRequestService {
       AppState.friendsRequests = AppState.friendsRequests.filter(
         (r) => r.id !== id
       );
+      AppState.sentRequest = AppState.sentRequest.filter((r) => r.id !== id);
+      AppState.receivedRequest = AppState.receivedRequest.filter(
+        (r) => r.id !== id
+      );
       return response;
     } else {
       throw new Error("Friend request has already been processed.");
@@ -88,8 +92,8 @@ class FriendRequestService {
     const res = await pb
       .collection(Collections.FriendRequest)
       .getFullList<FriendsRequest>(200, {
-        filter: `receiverId = "${usersFriendId}" ||  senderId = "${usersFriendId}"`,
-        expand: "senderId,receiverId",
+        filter: `receiver = "${usersFriendId}" ||  sender = "${usersFriendId}"`,
+        expand: "sender.user,receiver.user",
       });
     console.log("friend request", res);
     AppState.sentRequest = res.filter((r) => r.sender === usersFriendId);

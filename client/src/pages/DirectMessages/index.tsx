@@ -17,6 +17,7 @@ function classNames(...classes: string[]) {
 function DirectMessagesPage() {
   const [categories] = useState(["Requests", "AddFriend"]);
   const [activeCategory, setActiveCategory] = useState("Requests");
+  
 
   return (
     <>

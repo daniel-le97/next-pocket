@@ -11,7 +11,6 @@ import Pop from "../../../utils/Pop";
 import UserBadge from "../GlobalComponents/UserBadge";
 
 const FriendRequests = () => {
-
   const user = AppState.user;
   const sentRequests = AppState.sentRequest;
   const receivedRequests = AppState.receivedRequest;
@@ -40,7 +39,6 @@ const FriendRequests = () => {
 
   async function handleDecline(friendRequestId: string) {
     try {
-    
       await friendRequestService.declineFriendRequest(friendRequestId);
     } catch (error) {
       Pop.error(error);
@@ -58,7 +56,7 @@ const FriendRequests = () => {
           <ul className="w-full">
             <div className="my-2 text-xl font-bold text-white">From:</div>
 
-            {receivedRequests ? (
+            {receivedRequests.length ? (
               receivedRequests.map((f) => (
                 <li
                   key={f.id}
@@ -92,7 +90,7 @@ const FriendRequests = () => {
           </ul>
           <ul className="w-full">
             <div className="my-2 text-xl font-bold text-white">To:</div>
-            {sentRequests ? (
+            {sentRequests.length ? (
               sentRequests.map((f) => (
                 <li
                   key={f.id}
