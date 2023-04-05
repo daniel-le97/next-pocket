@@ -64,7 +64,7 @@ const FriendRequests = () => {
         <div className="relative flex flex-col py-4">
           <ul className="w-full">
             <div className="my-2 text-xl font-bold text-white">From:</div>
-            {receivedRequests ? receivedRequests.map((f) => (
+            {receivedRequests.length ? receivedRequests.map((f) => (
               <li
                 key={f.id}
                 className="flex w-full justify-between gap-x-2 rounded-md bg-zinc-800 p-2"
@@ -92,7 +92,7 @@ const FriendRequests = () => {
           </ul>
           <ul className="w-full">
             <div className="my-2 text-xl font-bold text-white">To:</div>
-            {sentRequests ? sentRequests.map((f) => (
+            {sentRequests.length ? sentRequests.map((f) => (
               <li
                 key={f.id}
                 className="flex w-full justify-between gap-x-2 rounded-md bg-zinc-800 p-2"

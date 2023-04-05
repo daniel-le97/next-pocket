@@ -1,7 +1,7 @@
 const { execSync } = require("child_process");
 // const { config } = require("dotenv");
 
-// this function is just used to generate the pocketbase client types by running npm run pb:gen in the command line
+// utility script to clear directories that are about to be rewritten
 module.exports = () => {
 
   const running = `pre-build`;
