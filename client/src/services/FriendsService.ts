@@ -28,10 +28,17 @@ class FriendsService {
     }
     return new Error("unable to create friend record");
   }
-  async getOneByUser(user: UsersResponse) {
+  async delete(friendId:string){
+    const friendRecord = await this.getOneByUser(friendId)
+    if(!friendRecord) return console.error("no friend record found")
+    const friends = friendRecord.friends?.filter(f => f !== friendId)
+    const data: FriendsRecord = { user: friendRecord.user, friends: friends }
+    return await pb.collection(Collections.Friends).update<FriendsResponse>(friendRecord.id, data)
+  }
+  async getOneByUser(user: string) {
     const FriendRecord = await pb
       .collection(Collections.Friends)
-      .getFullList<FriendsResponse>({ filter: `user = "${user.id}"` });
+      .getFullList<FriendsResponse>({ filter: `user = "${user}"` });
     return FriendRecord[0];
   }
 
@@ -42,14 +49,14 @@ class FriendsService {
     if (!user) return;
     if (!friendsRecord) {
       data = { user, friends: [friendId] };
-      return await pb.collection(Collections.Friends).create(data);
+      return await pb.collection(Collections.Friends).create<FriendsResponse>(data);
     }
     const friends = friendsRecord.friendIds?.map((f) => f);
     friends?.push(friendId);
     data = { user, friends: friends };
     return await pb
       .collection(Collections.Friends)
-      .update(friendsRecord.id, data);
+      .update<FriendsResponse>(friendsRecord.id, data);
   }
 
   async getUserFriendsList(userId = AppState.user?.id) {
