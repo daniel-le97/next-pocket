@@ -45,7 +45,13 @@ class FriendRequestService {
         .collection(Collections.Friends)
         .getOne(AppState.userFriendId);
 
-      if (FriendRecord) {
+      const senderFriendRecord = await pb
+        .collection(Collections.Friends)
+        .getOne(response.expand.sender.id);
+       
+        
+
+      if (FriendRecord && senderFriendRecord) {
         // Add the sender to the user's list of friends
         const data = {
           user: FriendRecord.user,
@@ -54,11 +60,24 @@ class FriendRequestService {
             response.expand.sender.expand.user.id,
           ],
         };
+        const senderData = {
+          user: senderFriendRecord.user,
+          friends: [
+            ...senderFriendRecord.friends,
+            response.expand.receiver.expand.user.id,
+          ],
+        };
 
         // Update the user's friend record in the database and expand the user field
         const updatedFriendRecord = await pb
           .collection(Collections.Friends)
           .update(AppState.userFriendId, data, {
+            expand: "user",
+          });
+
+        const updatedSenderFriendRecord = await pb
+          .collection(Collections.Friends)
+          .update(senderFriendRecord.id, senderData, {
             expand: "user",
           });
 
@@ -70,8 +89,6 @@ class FriendRequestService {
         AppState.receivedRequest = AppState.receivedRequest.filter(
           (r) => r.id !== id
         );
-
-      
       }
 
       // Return the updated friend request response
