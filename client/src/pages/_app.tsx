@@ -28,7 +28,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       try {
         if (!user) return;
         await membersService.getUserServers(user.id);
-        await usersService.getUserFriendRecord()
+        // await usersService.getUserFriendRecord()
         usersStatusService.setStatusOnline(user.id, 'online');
         usersStatusService.handleListeners(false, user.id)
         // console.log('user', user);

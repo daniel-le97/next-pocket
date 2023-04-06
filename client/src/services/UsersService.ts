@@ -26,12 +26,12 @@ class UsersService {
   async getAll() {
     return await pb.collection(Collections.Users).getFullList<UsersResponse>();
   }
-  async getUserFriendRecord(user=AppState.user){
-     const userFriendRecord = await pb
-       .collection(Collections.Friends)
-       .getFirstListItem(`user =  "${user!.id}"  `);
-     AppState.userFriendId = userFriendRecord.id;
-  }
+  // async getUserFriendRecord(user=AppState.user){
+  //    const userFriendRecord = await pb
+  //      .collection(Collections.Friends)
+  //      .getFirstListItem(`user =  "${user!.id}"  `);
+  //    AppState.userFriendId = userFriendRecord.id;
+  // }
 
   // async setLastChannel(channel = AppState.activeChannel, user = AppState.user) {
   //   const lastChannel = this.getLastChannel();

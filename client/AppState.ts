@@ -2,7 +2,6 @@ import { action, makeAutoObservable } from "mobx";
 import type {
   ChannelsResponse,
   DirectMessagesResponse,
-  FriendRequestResponse,
   FriendsResponse,
   MembersResponse,
   ServersResponse,
@@ -15,9 +14,9 @@ import type {
   MessageWithUser,
   Server,
   UsersStatusWithUser,
-  Friends,
   FriendsRequest,
   DirectMessageWithUser,
+  Friend,
 } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
 
@@ -29,7 +28,7 @@ class ObservableAppState {
   userServers: (ServersResponse<unknown> | undefined)[] = [];
   users: UsersStatusWithUser[] = [];
   members: MemberUser[] = [];
-userFriendId: string = ""
+userFriendId = ""
 
 
   messageQuery = "";
@@ -51,14 +50,14 @@ userFriendId: string = ""
   page = 1;
   loading = 0;
 
-  friends : Friends | null = null;
+  friends : Friend[] | null = null;
 
   lastPath: string | null = null;
   lastQueryId: string | null = null;
 
   AppState: undefined;
 
-  friendsRequests: FriendRequestResponse[] = [];
+  // friendsRequests: FriendRequestResponse[] = [];
   sentRequest: FriendsRequest[] = [];
   receivedRequest: FriendsRequest[] = [];
   reset: () => void;
@@ -89,7 +88,6 @@ userFriendId: string = ""
       this.loading = 0;
       this.lastPath = null;
       this.lastQueryId = null;
-      this.friendsRequests = [];
     });
   }
 }

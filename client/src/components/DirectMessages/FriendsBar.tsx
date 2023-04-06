@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { Transition, Dialog } from "@headlessui/react";
 import Pop from "utils/Pop";
-import { User} from "PocketBaseTypes";
+import { User, UserWithStatus} from "PocketBaseTypes";
 import type { Friend, UsersResponse, UsersStatusResponse } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import { friendsService, usersStatusService } from "@/services";
@@ -20,7 +20,7 @@ import { FaPersonBooth } from "react-icons/fa";
 const topics = ["general", "tailwind-css", "react"];
 
 const FriendsBar = () => {
-  const friends = AppState.friends;
+  const friends = AppState.friends?.filter((friend) => friend.status === "accepted");
   // console.log('friends', friends);
   
   const user = AppState.user;
@@ -66,8 +66,8 @@ const FriendsBar = () => {
         </div>
         <div className="px-3 ">
           {friends &&
-            friends?.friends?.map((friend, index) => (
-              <UserCard user={friend.user} status={friend.onlineStatus} key={index} />
+            friends?.map((friend, index) => (
+              <UserCard friendShip={friend}  key={index} />
             ))}
         </div>
       </div>
@@ -77,8 +77,8 @@ const FriendsBar = () => {
   );
 };
 
-const UserCard = ({ user, status }: { user: Partial<UsersResponse>, status : UsersStatusResponse}) => {
-  // console.log('user', user);
+const UserCard = ({ friendShip}: { friendShip: Friend}) => {
+  // console.log('friendShip', friendShip);
   
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -89,30 +89,30 @@ const UserCard = ({ user, status }: { user: Partial<UsersResponse>, status : Use
   // function openModal() {
   //   setIsOpen(true);
   // }
-  if (!user) return (<div>NO USER</div>)
+  if (!friendShip) return (<div>NO USER</div>)
   
   const handleClick = () => {
-    router.push(`/DirectMessages/${user.id!}`);
+    router.push(`/DirectMessages/${friendShip.id}`);
   };
   
   return (
     <div
       onClick={handleClick}
-      className="user-container my-3 flex cursor-pointer gap-x-2 rounded-md p-2 transition-all duration-150 ease-in hover:bg-zinc-500 hover:bg-opacity-25  "
+      className="friendShip-container my-3 flex cursor-pointer gap-x-2 rounded-md p-2 transition-all duration-150 ease-in hover:bg-zinc-500 hover:bg-opacity-25  "
     >
       <div className="relative">
         <img
-          src={user.avatarUrl}
+          src={friendShip.friend?.avatarUrl}
           alt="userIcon"
           width={40}
           className="rounded-full shadow-md shadow-zinc-900"
         />
         <div className="absolute left-11 top-10">
-          {user && <UserStatus status={status.status!} />}
+          {friendShip && <UserStatus status={friendShip.activityStatus!} />}
         </div>
       </div>
       {/* <Menu isOpen={isOpen} /> */}
-      <small className=" font-bold text-rose-600">{user.username}</small>
+      <small className=" font-bold text-rose-600">{friendShip.friend?.username}</small>
     </div>
   );
 };

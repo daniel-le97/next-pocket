@@ -6,7 +6,6 @@ export enum Collections {
 	Channels = "channels",
 	DirectMessages = "directMessages",
 	FileUploads = "fileUploads",
-	FriendRequest = "friendRequest",
 	Friends = "friends",
 	Likes = "likes",
 	Members = "members",
@@ -56,10 +55,10 @@ export type ChannelsRecord = {
 }
 
 export type DirectMessagesRecord = {
-	from: RecordIdString
-	to: RecordIdString
+	sender: RecordIdString
 	files?: string[]
 	content: HTMLString
+	friendRecord?: RecordIdString
 }
 
 export enum FileUploadsStatusOptions {
@@ -74,20 +73,15 @@ export type FileUploadsRecord = {
 	status?: FileUploadsStatusOptions
 }
 
-export enum FriendRequestStatusOptions {
-	"pending" = "pending",
-	"declined" = "declined",
+export enum FriendsStatusOptions {
 	"accepted" = "accepted",
+	"pending" = "pending",
+	"blocked" = "blocked",
 }
-export type FriendRequestRecord = {
-	status?: FriendRequestStatusOptions
-	sender?: RecordIdString
-	receiver?: RecordIdString
-}
-
 export type FriendsRecord = {
-	user: RecordIdString
-	friends?: RecordIdString[]
+	friends: RecordIdString[]
+	status?: FriendsStatusOptions
+	blocker?: RecordIdString
 }
 
 export type LikesRecord = {
@@ -142,7 +136,6 @@ export type UsersStatusRecord = {
 export type ChannelsResponse<Texpand = unknown> = ChannelsRecord & BaseSystemFields<Texpand>
 export type DirectMessagesResponse<Texpand = unknown> = DirectMessagesRecord & BaseSystemFields<Texpand>
 export type FileUploadsResponse<Texpand = unknown> = FileUploadsRecord & BaseSystemFields<Texpand>
-export type FriendRequestResponse<Texpand = unknown> = FriendRequestRecord & BaseSystemFields<Texpand>
 export type FriendsResponse<Texpand = unknown> = FriendsRecord & BaseSystemFields<Texpand>
 export type LikesResponse<Texpand = unknown> = LikesRecord & BaseSystemFields<Texpand>
 export type MembersResponse<Texpand = unknown> = MembersRecord & BaseSystemFields<Texpand>
@@ -156,7 +149,6 @@ export type CollectionRecords = {
 	channels: ChannelsRecord
 	directMessages: DirectMessagesRecord
 	fileUploads: FileUploadsRecord
-	friendRequest: FriendRequestRecord
 	friends: FriendsRecord
 	likes: LikesRecord
 	members: MembersRecord

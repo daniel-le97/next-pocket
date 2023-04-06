@@ -10,7 +10,7 @@ import Pop from "utils/Pop";
 import FriendsBar from "@/components/DirectMessages/FriendsBar";
 import DirectMessageContainer from "@/components/DirectMessages/DirectMessageContainer";
 import { withAuth } from "../../middleware";
-import { directMessageService } from "../../services";
+import { directMessageService, friendsService } from "../../services";
 
 
 const DirectMessages: NextPage = () => {
@@ -36,7 +36,8 @@ const DirectMessages: NextPage = () => {
           AppState.directMessages = AppState.directMessages.filter(dm => dm.id != id)
           AppState.dmTracker[nID] = true
           AppState.page = 1
-          await directMessageService.getDirectMessages(id as string)
+          // await directMessageService.getDirectMessages(id as string)
+          await friendsService.getUserFriendsList();
           console.log(AppState.directMessages[nID]);
           console.log('all',AppState.directMessages);
           
@@ -60,7 +61,7 @@ const DirectMessages: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  h-screen   w-full ">
-          <FriendsBar />
+          {/* <FriendsBar /> */}
     
           <DirectMessageContainer />
         </div>

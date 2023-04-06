@@ -65,9 +65,9 @@ class DirectMessageService {
     const res = await pb
       .collection(Collections.DirectMessages)
       .getList(page, 50, {
-        filter: `from = "${userId}"  && to = "${friendId}" ||  from = "${friendId}"  && to = "${userId}" `,
+        filter: `friend.id = "${friendId}"`,
         sort: "-created",
-        expand: "from"
+        expand: "sender"
       });
       const messages = res.items as unknown as DirectMessageWithUser[];
       // console.log('messages', messages);
