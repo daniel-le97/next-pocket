@@ -8,8 +8,8 @@ import {
 import { pb } from "~/utils/pocketBase";
 import { friendsService } from "./FriendsService";
 interface FriendsData {
-  senderId: string;
-  receiverId: string;
+  sender: string;
+  receiver: string;
   status: "pending" | "accepted" | "declined";
 }
 class FriendRequestService {

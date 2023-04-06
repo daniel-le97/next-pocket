@@ -16,7 +16,7 @@ import { pb } from "../../utils/pocketBase";
 
 class FriendsService {
   async create(user: UsersResponse) {
-    const FriendRecord = await this.getOneByUser(user);
+    const FriendRecord = await this.getOneByUser(user.id);
     if (!FriendRecord) {
       const response = await pb
         .collection(Collections.Friends)
