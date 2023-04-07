@@ -77,7 +77,7 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
         <button
           onFocus={handleClick}
           className="user-bar group "
-          // onClick={handleClick}
+       
         >
           <div className=" user-bar-container">
             <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
