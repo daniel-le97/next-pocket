@@ -10,7 +10,8 @@
     "lint": "next lint",
     "start": "next start",
     "pb:gen": "node scripts/gen.js",
-    "pb:schema": "node scripts/pb_schema.js"
+    "pb:schema": "node scripts/pb_schema.js",
+    "pb:open": "node scripts/openApi.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",

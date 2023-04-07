@@ -104,6 +104,7 @@ export class UserClass {
 
 export class Friend {
   friend: UserWithStatus | undefined;
+  requester: UserWithStatus | undefined;
   status?: FriendsStatusOptions;
   activityStatus?: UsersStatusStatusOptions
   blocker?: string | undefined;
@@ -113,6 +114,8 @@ export class Friend {
 
   constructor(data: FriendsWithUser, userId:string) {
     this.blocker = data.blocker as string
+    const requester = data.friends[0]
+    this.requester = data.expand.friends.find((f) => f.id === requester)
     this.friend = data.expand.friends.find((f) => f.id !== userId)
     this.status = data.status
     this.id = data.id;

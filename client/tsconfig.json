@@ -39,6 +39,6 @@
     "src/middleware/WithAuth.tsts",
     "src/middleware/WithAuth.ts",
     "src/middleware/WithAuth.ts"
-, "utils/CodeBlock.tsxx", "scripts/pb_schema.mjss"  ],
+, "utils/CodeBlock.tsxx", "scripts/pb_schema.mjss", "scripts/openAPi.js"  ],
   "exclude": ["node_modules", "util/*.*"]
 }

@@ -32,9 +32,7 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
         const status = record as unknown as UsersStatusResponse;
         // const friends = AppState.friends?.friends
         logger.log({ action, record });
-        const isFriend = AppState.friends?.friends?.find(
-          (f) => f.id === status.user
-        );
+        const isFriend = AppState.friends?.find(f => f.friend?.id == status.user)
         if (!isFriend) return;
         logger.log("status", status.status);
         if (action !== "delete") {
@@ -75,6 +73,14 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
     return await this.pb.create({ user: userId, status: "online" });
   }
 
+  
+  /**
+   * Description placeholder
+   * @date 4/6/2023 - 1:35:30 PM
+   *
+   * @param {boolean} [unload=false] set this to true if you want to remove the listeners
+   * @param {string} user the user to add the listeners to
+   */
   handleListeners(unload = false, user: string) {
     // console.log("handling", user);
 

@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Record } from "pocketbase";
 import { logger } from "~/utils/Logger";
 import { AppState } from "../../AppState";
+import type {
+  FriendsResponse,
+  FriendsWithUser} from "../../PocketBaseTypes";
 import {
   Friend,
-  FriendsRecord,
-  FriendsRequest,
-  FriendsResponse,
-  FriendsWithUser,
-  UsersResponse,
 } from "../../PocketBaseTypes";
 
 import { Collections} from "../../PocketBaseTypes";
@@ -36,6 +33,15 @@ class FriendsService {
       .collection(Collections.Friends)
       .getFullList<FriendsResponse>({ filter: `friends.id ~ "${user}"` });
     return FriendRecord[0];
+  }
+
+  async accept(friendId: string) {
+    return await pb
+      .collection(Collections.Friends)
+      .update<FriendsResponse>(friendId, { status: "accepted" });
+  }
+  async decline(friendId: string) {
+    return await pb.collection(Collections.Friends).delete(friendId);
   }
 
   // async createFriendRecord(friendId: string) {

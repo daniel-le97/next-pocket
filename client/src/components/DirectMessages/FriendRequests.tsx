@@ -9,10 +9,11 @@ import { useEffect } from "react";
 import Pop from "../../../utils/Pop";
 import UserBadge from "../GlobalComponents/UserBadge";
 import TimeAgo from "timeago-react";
+import { UsersResponse } from "PocketBaseTypes";
 
 const FriendRequests = () => {
-  const sentRequests = AppState.sentRequest;
-  const receivedRequests = AppState.receivedRequest;
+  const sentRequests = AppState.friends?.filter(f => f.status === "pending" && f.requester?.id == AppState.user?.id  ) || []
+  const receivedRequests = AppState.friends?.filter(f => f.status === "pending" && f.requester?.id != AppState.user?.id) || []
 
   useEffect(() => {
     if (AppState.userFriendId) {
@@ -50,7 +51,7 @@ const FriendRequests = () => {
 
       <div className="relative flex flex-col py-4 ">
         <ul className="mb-5 w-full">
-          <div className="my-2 text-xl font-bold text-white">From:</div>
+          <div className="my-2 text-xl font-bold text-white">Received:</div>
 
           {receivedRequests.length ? (
             receivedRequests.map((f) => (
@@ -59,7 +60,7 @@ const FriendRequests = () => {
                 className="flex w-full justify-between gap-x-2 rounded-md bg-zinc-800 p-2"
               >
                 <div className="flex items-center gap-x-3 text-xl font-bold text-zinc-300">
-                  <UserBadge user={f.expand?.sender?.expand?.user} />
+                  <UserBadge user={f.friend as UsersResponse} />
                   <div className="flex items-center justify-between text-sm">
                     Status: {f.status}
                   </div>
@@ -73,7 +74,7 @@ const FriendRequests = () => {
                     />
                   }
                 </div>
-                {f.status === "pending" && (
+                
                   <div className="flex gap-x-2">
                     <button
                       className="btn-primary"
@@ -88,7 +89,7 @@ const FriendRequests = () => {
                       Decline
                     </button>
                   </div>
-                )}
+                
               </li>
             ))
           ) : (
@@ -98,7 +99,7 @@ const FriendRequests = () => {
           )}
         </ul>
         <ul className="w-full">
-          <div className="my-2 text-xl font-bold text-white">To:</div>
+          <div className="my-2 text-xl font-bold text-white">Sent:</div>
           {sentRequests.length ? (
             sentRequests.map((f) => (
               <li
@@ -106,9 +107,18 @@ const FriendRequests = () => {
                 className="flex w-full justify-between gap-x-2 rounded-md bg-zinc-800 p-2"
               >
                 <div className="flex items-center gap-x-3 text-xl font-bold text-zinc-300">
-                  <UserBadge user={f.expand?.receiver?.expand?.user} />
+                  <UserBadge user={f.friend as UsersResponse} />
 
                   <div className="text-sm">Status: {f.status}</div>
+                </div>
+                 <div className="flex items-center text-sm text-gray-300">
+                  {
+                    <TimeAgo
+                      datetime={f.created}
+                      locale={"en-US"}
+                      style={{ margin: 5 }}
+                    />
+                  }
                 </div>
                 <div className="flex gap-x-2">
                   <button

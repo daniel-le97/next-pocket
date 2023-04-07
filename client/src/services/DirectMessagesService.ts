@@ -65,14 +65,14 @@ class DirectMessageService {
     const res = await pb
       .collection(Collections.DirectMessages)
       .getList(page, 50, {
-        filter: `friend.id = "${friendId}"`,
+        filter: `friendRecord.id = "${friendId}"`,
         sort: "-created",
         expand: "sender"
       });
       const messages = res.items as unknown as DirectMessageWithUser[];
-      // console.log('messages', messages);
+      console.log('messages', messages);
       // const nID = friendId as unknown as number;
-      const numbers = AppState.directMessages.filter(dm => dm.to != friendId && dm.from != friendId) || [];
+      const numbers = AppState.directMessages.filter(dm => dm.friendRecord != friendId) 
     AppState.directMessages = [...numbers, ...messages];
 
     AppState.totalPages = res.totalPages;

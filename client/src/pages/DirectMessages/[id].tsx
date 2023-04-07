@@ -36,9 +36,9 @@ const DirectMessages: NextPage = () => {
           AppState.directMessages = AppState.directMessages.filter(dm => dm.id != id)
           AppState.dmTracker[nID] = true
           AppState.page = 1
-          // await directMessageService.getDirectMessages(id as string)
+          await directMessageService.getDirectMessages(id as string)
           await friendsService.getUserFriendsList();
-          console.log(AppState.directMessages[nID]);
+          // console.log(AppState.directMessages[nID]);
           console.log('all',AppState.directMessages);
           
         } catch (error) {
@@ -61,7 +61,7 @@ const DirectMessages: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center ">
         <div className="flex  h-screen   w-full ">
-          {/* <FriendsBar /> */}
+          <FriendsBar />
     
           <DirectMessageContainer />
         </div>

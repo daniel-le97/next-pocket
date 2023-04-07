@@ -17,69 +17,24 @@ import { FaAt } from "react-icons/fa";
 import DirectMessageScroll from "./DirectMessageScroll";
 
 const DirectMessageContainer = () => {
-  const router = useRouter();
-  const id = router.query.id 
+  // const router = useRouter();
+  // const id = router.query.id 
 
-  const user = pb.authStore.model;
-  const messages = AppState.directMessages.filter((dm) => dm.id == id);
-  const friend = AppState.activeDirectMessage;
+  // const user = pb.authStore.model;
+  // const messages = AppState.directMessages.filter((dm) => dm.friendRecord == id);
+  // const friend = AppState.activeDirectMessage;
   // let unsubscribe: (() => void) | null = null;
 
-  const listRef = useRef<HTMLDivElement>(null);
+  // const listRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/login");
-      return
-    }
-  }, []);
-
-  //   if (router.query.id) {
-  //     const fetchMessages = async () => {
-  //       try {
-  //         await directMessageService.getDirectMessages(
-  //           user!.id,
-  //           id?.toString()
-  //         );
-  //       } catch (error) {
-  //         Pop.error(error);
-  //       }
-  //     };
-
-  //     fetchMessages();
-
-  //     unsubscribe = async () =>
-  //       await pb
-  //         .collection("directMessages")
-  //         .subscribe("*", async ({ action, record }) => {
-  //           if (action === "create") {
-  //             const user = await pb.collection("users").getOne(record.from);
-
-  //             // Check if record.expand is defined
-  //             if (!record.expand) {
-  //               record.expand = {};
-  //             }
-
-  //             // Set the from property on record.expand
-  //             record.expand.from = user;
-
-  //             let updatedMessages: DirectMessagesResponse[] = [
-  //               ...AppState.directMessages,
-  //             ];
-  //             updatedMessages = [
-  //               ...updatedMessages,
-  //               record as unknown as DirectMessagesResponse,
-  //             ];
-  //             AppState.directMessages = updatedMessages;
-  //           }
-  //         });
-  //     return () => {
-  //       if (unsubscribe) {
-  //         unsubscribe();
-  //       }
-  //     };
+  // useEffect(() => {
+  //   if (!user) {
+  //     router.push("/login");
+  //     return
   //   }
-  // }, [router.query.id]);
+  // }, []);
+
+
 
   return (
     <div className="relative h-full flex-1 items-stretch    overflow-hidden bg-gray-300   dark:bg-zinc-700  ">
