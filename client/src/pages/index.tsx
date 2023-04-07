@@ -32,6 +32,8 @@ const Explore: NextPage = () => {
 
   useEffect(() => {
     const getServers = async () => {
+      AppState.page = 1
+      
       await serversService.getServersList(AppState.page);
     };
     getServers();

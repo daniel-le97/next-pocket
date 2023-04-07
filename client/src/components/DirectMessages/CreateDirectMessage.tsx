@@ -7,62 +7,92 @@ import { FaLaugh, FaSmile } from "react-icons/fa";
 import { Dialog } from "@headlessui/react";
 import InputEmoji from "react-input-emoji";
 import { useRouter } from "next/router";
+import Pop from "~/utils/Pop";
+import { useForm } from "react-hook-form";
+import { DirectMessagesRecord } from "~/PocketBaseTypes";
 const CreateDirectMessage = () => {
   const [newMessage, setNewMessage] = useState("");
+  const user = pb.authStore.model;
 
   const router = useRouter();
   const { id } = router.query;
+  const [characterCount, setCharacterCount] = useState(0);
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      content: "",
+      user: user!.id,
+      channel: "",
+    },
+  });
 
-  const sendMessage = async (event: { preventDefault: () => void }) => {
-    const user = pb.authStore.model;
-    const data = {
-      text: newMessage,
-      from: user?.id,
-      channel: AppState?.activeChannel?.id,
-      to: id?.toString(),
-      // // @ts-ignore
-      // room: AppState?.activeRoom?.id,
-    };
-    const createdMessage = await pb.collection("directMessages").create(data, {
-      expand: "from,to",
-    });
-    setNewMessage("");
+  const sendMessage = async (data:DirectMessagesRecord) => {
+    try {
+      const data = {
+        content: newMessage,
+        from: user?.id,
+        to: id,
+      };
+      const createdMessage = await pb
+        .collection("directMessages")
+        .create(data, {
+          expand: "from,to",
+        });
+      setNewMessage("");
+    } catch (error) {
+      Pop.error(error);
+    }
   };
 
   return (
-    <div className="bottom-bar">
-      <form onSubmit={sendMessage} className="flex w-3/4">
-        <InputEmoji
-          value={newMessage}
-          onChange={setNewMessage}
-          cleanOnEnter
-          onEnter={sendMessage}
-          placeholder="Enter message..."
-          className="bottom-bar-input  "
-        />
-        <PlusIcon />
-      </form>
+    <div className=" absolute  bottom-2  max-h-full w-full  bg-white   pt-10  dark:border-white/20 dark:bg-gray-800 md:border-t-0 md:border-transparent md:!bg-transparent ">
+      <form
+        onSubmit={handleSubmit(sendMessage)}
+        className="relative mx-4  flex"
+      >
+        <textarea
+          id="createMessageInput"
+          rows={1}
+          className="create-message-input max-h-96 w-full resize-none  rounded-xl  bg-gray-100 py-3.5 pl-4 pr-12 text-lg font-semibold text-gray-500  focus:outline-none dark:bg-zinc-600/90 dark:text-zinc-300"
+          {...register("content", {
+            required: true,
+            maxLength: 1200,
+            minLength: 3,
+          })}
+          onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
+            e.currentTarget.style.height = "auto";
+            e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+            setCharacterCount(e.currentTarget.value.length);
+            //  const limitEl = document.getElementById("charLimit");
+            //  limitEl.textContent = `${charCount}/600`;
+            if (characterCount >= 1200) {
+              e.preventDefault();
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit(sendMessage)();
+            }
+          }}
+        ></textarea>
 
-   
+        <p
+          id="charLimit"
+          className={` absolute bottom-14 right-2 text-sm  ${
+            characterCount <= 1200 ? "text-zinc-300" : "text-red-400"
+          }`}
+        >
+          {characterCount}/1200
+        </p>
+        <button
+          type="submit"
+          className="btn-primary absolute bottom-2 right-2 "
+        >
+          Submit
+        </button>
+      </form>
     </div>
   );
 };
-const PlusIcon = () => (
-  <button type="submit">
-    <BsPlusCircleFill
-      size="22"
-      className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
-    />
-  </button>
-);
-
-function containsUrl(text: string) {
-  // Create a regular expression to match URLs
-  const urlRegex =
-    /\b((?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/gi;
-
-  // Use the `test` method to check if a URL exists within the text
-  return urlRegex.test(text);
-}
 
 export default observer(CreateDirectMessage);

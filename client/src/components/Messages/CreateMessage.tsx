@@ -53,15 +53,7 @@ const CreateMessage = () => {
       >
         {AppState.activeChannel ? (
           <>
-            {/* <InputEmoji
-              value={newMessage}
-              // onChange={setNewMessage}
-              cleanOnEnter
-              // onEnter={sendMessage}
-              placeholder="Enter message..."
-            
-            />
-            <PlusIcon /> */}
+           
 
             <textarea
               id="createMessageInput"
@@ -107,29 +99,13 @@ const CreateMessage = () => {
         ) : (
           <div className=""></div>
         )}
-        {/* <button type="submit">submite</button> */}
-        {/* <input
-          value={newMessage}
-          onChange={(event) => setNewMessage(event.target.value)}
-          placeholder="Enter message..."
-          className="bottom-bar-input"
-          
-        /> */}
+     
       </form>
 
-      <div className="flex items-center justify-evenly">
-        {/* <EmojiPicker  text={newMessage} setText={setNewMessage}  /> */}
-      </div>
+    
     </div>
   );
 };
-// const PlusIcon = () => (
-//   <button type="submit">
-//     <BsPlusCircleFill
-//       size="22"
-//       className="dark:text-primary mx-2 text-green-500 dark:shadow-lg"
-//     />
-//   </button>
-// );
+
 
 export default observer(CreateMessage);
