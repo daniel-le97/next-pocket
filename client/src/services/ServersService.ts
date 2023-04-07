@@ -73,7 +73,7 @@ class ServersService {
     console.log(defaultChannel);
 
     const welcomeMessage = await pb.collection(Collections.Messages).create({
-      text: `Welcome to ${newServer.name}! Be Respectful and have fun!`,
+      content: `Welcome to ${newServer.name}! Be Respectful and have fun!`,
       user: newServer.owner,
       channel: defaultChannel.id,
     });

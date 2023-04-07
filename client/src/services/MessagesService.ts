@@ -70,9 +70,6 @@ class MessageService {
    * @returns The list of messages for the specified channel
    */
   async getMessagesByChannelId(id: string, page = AppState.page) {
-    // AppState.messages = [];
-    // console.log("getMessagesByChannelId", id);
-      // console.log(AppState.page,AppState.totalPages)
     const res = await pb.collection(Collections.Messages).getList(page, 20, {
       filter: `channel.id = "${id}"`,
       sort: "-created",
@@ -80,7 +77,8 @@ class MessageService {
     });
 
     const unMessages = res.items as unknown as TMessageWithUser[];
-
+    console.log('unMessages', unMessages);
+    
     action(() => {
       const messages = unMessages.map((message, index) => {
         const _Message: MessageWithUser = new Message(message);

@@ -5,7 +5,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
 import { BsPlusCircleFill } from "react-icons/bs";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { serversService } from "../../services/ServersService";

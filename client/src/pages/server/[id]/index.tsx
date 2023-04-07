@@ -25,40 +25,34 @@ const Server: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
   const [showing, setShowing] = useState(false);
-  // const server = AppState.activeServer;
-
-  // console.log('went')
+  let fetched = false
   const fetchServerData = async (id: string) => {
     try {
-      //
-      // AppState.page = 1;
-      //  console.log("page", AppState.page, "totalPage", AppState.totalPages);
+      AppState.messages = [];
+      AppState.messageLikes = [[]];
       await channelsService.getChannelsByServerId(id);
-      // const channelId = AppState.activeChannel!.id;
-      // console.log(channelId);
-
       await messageService.getMessagesByChannelId(AppState.activeChannel!.id);
       await serversService.getMembers(id);
-      // console.log('page',AppState.page,"totalPage",AppState.totalPages);
     } catch (error) {
       Pop.error(error);
     }
   };
   useEffect(() => {
-    setShowing(true);
     const user = AppState.user;
     if (!user) {
       setRedirect(`/server/${id}`);
       router.push("/login");
       return;
     }
-    if (router.query.id) fetchServerData(id);
-    // Toggle showing to false after a brief delay
-  
+    if (router.query.id){
+      if (!fetched) {
+        fetched = true
+        fetchServerData(id);
+        setShowing(true);
+      }
+    }
+  }, []);
 
-   
-  }, [router.query.id]);
-//  const transitionKey = id ? `transition-${id}` : "";
   return (
     <>
       <Head>

@@ -14,8 +14,7 @@ import { pb } from "../../utils/pocketBase";
 class FriendsService {
   async create(friendUserId: string) {
     const userId = AppState.user?.id;
-    if (!userId || friendUserId) return;
-
+    if (!userId || !friendUserId) return;
     const initialCreateRecord = {
       status: "pending",
       friends: [userId, friendUserId],

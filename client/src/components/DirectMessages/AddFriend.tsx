@@ -1,21 +1,12 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-import { friendRequestService } from "@/services/FriendRequestsService";
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { observer } from "mobx-react";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import type { ChangeEvent, FormEventHandler} from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AppState } from "../../../AppState";
-import {
-  Collections,
-  UsersResponse,
-} from "../../../PocketBaseTypes";
 import Pop from "../../../utils/Pop";
 import { friendsService, usersService } from "../../services";
-import { pb } from "~/utils/pocketBase";
-import { log } from "console";
 import { debounce } from "lodash";
 import Loader from "../GlobalComponents/Loader";
 import { Tooltip } from "@nextui-org/react";
@@ -23,27 +14,15 @@ import { FaChevronRight, FaCompass, FaQuestionCircle } from "react-icons/fa";
 import Link from "next/link";
 
 const AddFriend = () => {
-  // const [formValue, setFormValue] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
 
-  // useEffect(() => {
-  //   if (formValue !== "") {
-  //     validateReceiverData(formValue);
-  //   }
-  //   setFormError("");
-  // }, [formValue]);
-
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
-    getValues,
     reset,
-
-    formState: { errors },
   } = useForm({
     defaultValues: {
       receiver: "",
@@ -59,13 +38,10 @@ const AddFriend = () => {
   const onSubmit = async (data: {receiver: string, receiverData: string}) => {
     try {
       if (isValid) {
-        console.log('data', data);
-    
-        // console.log(isValid, data);
+      //  const res = console.log(data); 
         const res = await friendsService.create(data.receiver)
         if (res) {
           reset();
-          // setFormValue("");
           setIsValid(false);
           setFormError("");
           Pop.success("Sent Friend Request!");
@@ -99,13 +75,13 @@ const AddFriend = () => {
     setLoading(false);
     setIsValid(false);
   };
+  const addFriendMessage = "You can add a friend with their username and friendId. It's cAsE sEnSiTiVe"
   return (
     <>
       <div className="rounded-md  p-5">
         <div className=" text-lg font-bold text-zinc-200">Add Friend</div>
         <div className=" text-zinc-400">
-          You can add a friend with their username and friendId. It's cAsE
-          sEnSiTiVe
+          {addFriendMessage}
           <br />
           beepo#7pav16sqx77dapf
         </div>
@@ -118,7 +94,7 @@ const AddFriend = () => {
             <FaQuestionCircle size={25} className="text-gray-300" />
           </Tooltip>
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(onSubmit) as unknown as FormEventHandler}
             className="relative flex w-full  py-4"
           >
             <input
@@ -130,7 +106,7 @@ const AddFriend = () => {
                 isValid ? "border-green-400" : ""
               }`}
               placeholder="Enter a Username#FriendId "
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => handleChange(e) as unknown as void}
             />
 
             <button
