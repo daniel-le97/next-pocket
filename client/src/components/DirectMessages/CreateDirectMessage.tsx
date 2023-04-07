@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { pb } from "../../../utils/pocketBase";
 import { BsPlusCircleFill } from "react-icons/bs";
@@ -10,34 +10,35 @@ import { useRouter } from "next/router";
 import Pop from "~/utils/Pop";
 import { useForm } from "react-hook-form";
 import { DirectMessagesRecord } from "~/PocketBaseTypes";
+import { directMessageService } from "@/services";
 const CreateDirectMessage = () => {
   const [newMessage, setNewMessage] = useState("");
   const user = pb.authStore.model;
-
   const router = useRouter();
-  const { id } = router.query;
+  const [friendRecordId, setFriendRecordId] = useState("");
+  const  id  = router.query.id?.toString();
   const [characterCount, setCharacterCount] = useState(0);
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       content: "",
-      user: user!.id,
-      channel: "",
+      sender: AppState.user?.id,
+      files: "",
+      friendRecord: "",
     },
   });
 
-  const sendMessage = async (data:DirectMessagesRecord) => {
+
+
+
+
+  const sendMessage = async (data: DirectMessagesRecord) => {
     try {
-      const data = {
-        content: newMessage,
-        from: user?.id,
-        to: id,
-      };
-      const createdMessage = await pb
-        .collection("directMessages")
-        .create(data, {
-          expand: "from,to",
-        });
-      setNewMessage("");
+      setValue("friendRecord", router.query.id?.toString());
+
+
+
+        await directMessageService.createDirectMessage(data)
+      reset();
     } catch (error) {
       Pop.error(error);
     }

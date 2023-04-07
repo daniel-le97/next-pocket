@@ -24,7 +24,10 @@ class DirectMessageService {
   async createDirectMessage(message: DirectMessagesRecord) {
     const res = await pb
       .collection(Collections.DirectMessages)
-      .create<DirectMessagesResponse>(message);
+      .create<DirectMessageWithUser>(message,{
+        expand: "sender"
+      });
+      AppState.directMessages = [ res,...AppState.directMessages];
     return res;
   }
 
