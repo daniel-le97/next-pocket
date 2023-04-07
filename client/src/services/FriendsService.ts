@@ -67,8 +67,10 @@ class FriendsService {
     const res = await pb
       .collection(Collections.Friends)
       .getFullList<FriendsWithUser>({ filter: `friends ?~ "${userId}"`, expand: 'friends.onlineStatus' });
-    console.log("friends", res);
-    AppState.friends = res.map((f) => new Friend(f, userId));
+    // console.log("friends", res);
+    const friends = res.map((f) => new Friend(f, userId));
+    AppState.friends = friends;
+    return friends;
     // const unformattedFriendsRecord = res[0];
 
     // if (unformattedFriendsRecord && unformattedFriendsRecord.friends.includes(userId)) {

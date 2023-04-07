@@ -63,11 +63,14 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
   }
 
   async setStatusOnline(user = AppState.user?.id, status: keyof typeof UsersStatusStatusOptions) {
-    if (!user) return console.log("no user was supplied");
+    let userStatus: UsersStatusWithUser
+    if (!user) return 
     const foundStatus = await this.getUserStatus(user);
-    if (foundStatus && foundStatus.status != status) {
-      await this.pb.update(foundStatus.id, { user, status: status || 'online' });
-    }
+    if (!foundStatus) return
+    if (foundStatus.status != status) {
+      userStatus = await this.pb.update(foundStatus.id, { user, status: status || 'online' }, { expand: "user" });
+    }else userStatus = foundStatus
+    AppState.userStatus = userStatus
   }
   async create(userId: string) {
     return await this.pb.create({ user: userId, status: "online" });

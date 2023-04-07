@@ -91,20 +91,30 @@ const AddFriend = () => {
   const validateReceiverData = useCallback(
     debounce(async (data: string) => {
       setLoading(true);
-
-      const separatorIndex = data.indexOf("#");
-      const receiverName = data.substring(0, separatorIndex);
-      const receiverFriendId = data.substring(separatorIndex + 1);
-
-      if (separatorIndex === -1) {
-        handleInvalidInput("Invalid input format: no '#' separator found");
-        return;
+      const status = await usersService.checkIfUserCanAddFriend(data)
+      if (status.error) return handleInvalidInput(status.error);
+      if (status.canAdd){
+        //  TODO i wanted to get the checks into a service
+        // probably should wrap this in a try catch
+        // send the friend request here
       }
+    
 
-      if (receiverName === AppState.user?.username) {
-        handleInvalidInput("Cannot Add Yourself");
-        return;
-      }
+  
+
+      // const separatorIndex = data.indexOf("#");
+      // const receiverName = data.substring(0, separatorIndex);
+      // const receiverFriendId = data.substring(separatorIndex + 1);
+
+      // if (separatorIndex === -1) {
+      //   handleInvalidInput("Invalid input format: no '#' separator found");
+      //   return;
+      // }
+
+      // if (receiverName === AppState.user?.username) {
+      //   handleInvalidInput("Cannot Add Yourself");
+      //   return;
+      // }
 
       try {
         const receiverFriendRecord = await pb

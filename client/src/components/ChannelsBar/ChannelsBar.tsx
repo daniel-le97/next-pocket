@@ -128,11 +128,11 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
                     setShowTooltip(true);
                     setTimeout(() => setShowTooltip(false), 1500);
                     navigator.clipboard.writeText(
-                      user.username + "#" + AppState.userFriendId
+                      user.username + "#" + AppState.userStatus?.id
                     );
                   }}
                 >
-                  {user.username + "#" + AppState.userFriendId}
+                  {user.username + "#" + AppState.userStatus?.id}
                   <div className="opacity-0 group-hover/item:opacity-100">
                     <FaCopy size={20} className={showTooltip ? "text-green-5  00":""} />
                   </div>

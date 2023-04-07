@@ -14,7 +14,6 @@ import type {
   MessageWithUser,
   Server,
   UsersStatusWithUser,
-  FriendsRequest,
   DirectMessageWithUser,
   Friend,
 } from "./PocketBaseTypes/utils";
@@ -24,11 +23,12 @@ import { isValidProp } from "./utils/isValidProp";
 class ObservableAppState {
   // users & user
   user: User = null;
-  UsersStatus: UsersStatusWithUser[] = [];
+
+  userStatus: UsersStatusWithUser | null = null;
   userServers: (ServersResponse<unknown> | undefined)[] = [];
   users: UsersStatusWithUser[] = [];
   members: MemberUser[] = [];
-userFriendId = ""
+  userFriendId = ""
 
 
   messageQuery = "";
@@ -55,20 +55,18 @@ userFriendId = ""
   lastPath: string | null = null;
   lastQueryId: string | null = null;
 
-  AppState: undefined;
+  // AppState: undefined;
 
-  // friendsRequests: FriendRequestResponse[] = [];
-  sentRequest: FriendsRequest[] = [];
-  receivedRequest: FriendsRequest[] = [];
+
   reset: () => void;
 
   constructor() {
     makeAutoObservable(this);
-    this.AppState = undefined;
-    this.AppState = undefined;
+    // this.AppState = undefined;
+    // this.AppState = undefined;
     this.reset = action(() => {
       this.user = null;
-      this.UsersStatus = [];
+      this.userStatus =  null;
       this.members = [];
       this.userServers = [];
       this.messageQuery = "";
