@@ -43,6 +43,7 @@ class ObservableAppState {
   messages: MessageWithUser[] = [];
   directMessages: DirectMessageWithUser[] = [];
   dmTracker: boolean[] = [];
+  dmRouterQuery: string = "";
   activeDirectMessage: UsersResponse | null = null;
   messageLikes: [LikesWithUser[]] = [[]];
 

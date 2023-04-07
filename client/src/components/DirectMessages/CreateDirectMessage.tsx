@@ -12,33 +12,35 @@ import { useForm } from "react-hook-form";
 import { DirectMessagesRecord } from "~/PocketBaseTypes";
 import { directMessageService } from "@/services";
 const CreateDirectMessage = () => {
-  const [newMessage, setNewMessage] = useState("");
-  const user = pb.authStore.model;
   const router = useRouter();
-  const [friendRecordId, setFriendRecordId] = useState("");
-  const  id  = router.query.id?.toString();
+  const id = router.query.id?.toString();
   const [characterCount, setCharacterCount] = useState(0);
+  const [friendRecordId, setFriendRecordId] = useState("");
   const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       content: "",
       sender: AppState.user?.id,
       files: "",
-      friendRecord: "",
+      friendRecord: AppState.dmRouterQuery,
     },
   });
 
-
-
-
+  // useEffect(() => {
+  //   if (AppState.dmRouterQuery) {
+  //     setFriendRecordId(AppState.dmRouterQuery);
+  //   }
+  // }, [AppState.dmRouterQuery]);
 
   const sendMessage = async (data: DirectMessagesRecord) => {
     try {
-      setValue("friendRecord", router.query.id?.toString());
+      // setValue("friendRecord", AppState.dmRouterQuery);
+   
+      console.log(data);
 
-
-
-        await directMessageService.createDirectMessage(data)
-      reset();
+      //   await directMessageService.createDirectMessage(data);
+      //  setValue("content", "");
+      // setValue("friendRecord", router.query.id!.toString());
+    
     } catch (error) {
       Pop.error(error);
     }
@@ -57,7 +59,7 @@ const CreateDirectMessage = () => {
           {...register("content", {
             required: true,
             maxLength: 1200,
-            minLength: 3,
+            minLength: 1,
           })}
           onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
             e.currentTarget.style.height = "auto";

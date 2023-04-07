@@ -28,6 +28,7 @@ const DirectMessages: NextPage = () => {
     }
 
     if (id) {
+      AppState.dmRouterQuery = id as string;
       const fetchMessages = async () => {
         try {
           // these
@@ -41,7 +42,7 @@ const DirectMessages: NextPage = () => {
           await directMessageService.getDirectMessages(id as string);
           await friendsService.getUserFriendsList();
           // console.log(AppState.directMessages[nID]);
-          console.log("all", AppState.directMessages);
+          // console.log("all", AppState.directMessages);
         } catch (error) {
           Pop.error(error);
         }
@@ -65,7 +66,7 @@ const DirectMessages: NextPage = () => {
           <FriendsBar />
           <div className="message-container">
             <DirectMessageScroll />
-            <CreateDirectMessage />
+            <CreateDirectMessage  />
           </div>
         </div>
       </main>

@@ -109,7 +109,7 @@ const MessageScroll = () => {
   );
 };
 
-const LoaderProgress = () => {
+ export const LoaderProgress = () => {
   return (
     <div className="fixed inset-0 h-1">
       <div className="relative h-1 w-full overflow-hidden rounded-lg shadow  ">

@@ -8,6 +8,7 @@ import { directMessageService } from "../../services";
 
 import Loader from "../GlobalComponents/Loader";
 import MessageCard from "../Messages/MessageCard";
+import { LoaderProgress } from "../Messages/MessageScroll";
 // import { DirectMessageCard } from "./DirectMessageContainer";
 
 const DirectMessageScroll = () => {
@@ -16,32 +17,39 @@ const DirectMessageScroll = () => {
   const directMessages = AppState.directMessages
   .filter(dm => dm.id != id)
   .map(dm => new ConvertDMToMessage(dm) as unknown as Message);
-  console.log("directMessages", directMessages);
+  // console.log("directMessages", directMessages);
   
   const fetchMore = async () => {
-    const channelId = AppState.activeChannel?.id;
+
     console.log(
       "CurrentPage:",
       AppState.page,
       "TotalPages:",
       AppState.totalPages
     );
+AppState.page++
+
+console.log(id);
 
     await directMessageService.getDirectMessages(id as string);
   };
   return (
     <div
       id="scrollableDiv2"
-      className=" flex h-full flex-col-reverse overflow-auto pb-16 "
+      className={`flex h-full  flex-col-reverse overflow-auto pb-32 pt-6  ${
+        AppState.messageQuery != ""
+          ? "rounded-sm border-2 border-indigo-500 shadow-inner  "
+          : " "
+      }`}
     >
       {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll
         dataLength={directMessages.length}
         next={fetchMore}
-        className="  flex  pt-6 mb-24 flex-col-reverse "
+        className="    flex flex-col-reverse pt-6 "
         inverse={true} //
         hasMore={AppState.totalPages != AppState.page}
-        loader={<Loader show={AppState.totalPages != AppState.page} />}
+        loader={<LoaderProgress />}
         scrollableTarget="scrollableDiv2"
       >
         {directMessages.map((message, index) => {
@@ -59,9 +67,7 @@ const DirectMessageScroll = () => {
           const notTodaysDate = currentDate !== todaysDate;
           return (
             <div key={index}>
-              {
-               <MessageCard message={message} index={index}/>
-              }
+              {<MessageCard message={message} index={index} />}
               <div>
                 {isNewDay && notTodaysDate && (
                   <div className="new-date">
@@ -76,8 +82,9 @@ const DirectMessageScroll = () => {
           );
         })}
       </InfiniteScroll>
+
+ 
     </div>
-   
   );
 };
 

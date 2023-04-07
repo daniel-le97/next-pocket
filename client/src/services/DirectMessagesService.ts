@@ -24,10 +24,10 @@ class DirectMessageService {
   async createDirectMessage(message: DirectMessagesRecord) {
     const res = await pb
       .collection(Collections.DirectMessages)
-      .create<DirectMessageWithUser>(message,{
-        expand: "sender"
+      .create<DirectMessageWithUser>(message, {
+        expand: "sender",
       });
-      AppState.directMessages = [ res,...AppState.directMessages];
+    AppState.directMessages = [res, ...AppState.directMessages];
     return res;
   }
 
@@ -60,26 +60,28 @@ class DirectMessageService {
    * @returns The list of messages for the specified channel
    */
   async getDirectMessages(friendId: string, page = AppState.page) {
-    const userId = AppState.user?.id;
-    if (!userId) {
-      logger.error('please log in or refresh the page')
-      return
-    }
+    // const userId = AppState.user?.id;
+    // if (!userId) {
+    //   logger.error("please log in or refresh the page");
+    //   return;
+    // }
     const res = await pb
       .collection(Collections.DirectMessages)
       .getList(page, 50, {
         filter: `friendRecord.id = "${friendId}"`,
         sort: "-created",
-        expand: "sender"
+        expand: "sender",
       });
-      const messages = res.items as unknown as DirectMessageWithUser[];
-      console.log('messages', messages);
-      // const nID = friendId as unknown as number;
-      const numbers = AppState.directMessages.filter(dm => dm.friendRecord != friendId) 
+    const messages = res.items as unknown as DirectMessageWithUser[];
+    // console.log('messages', messages);
+    // const nID = friendId as unknown as number;
+    const numbers = AppState.directMessages.filter(
+      (dm) => dm.friendRecord != friendId
+    );
     AppState.directMessages = [...numbers, ...messages];
 
     AppState.totalPages = res.totalPages;
-    AppState.page++;
+   
   }
 }
 
