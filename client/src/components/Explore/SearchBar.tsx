@@ -41,27 +41,24 @@ const SearchBar = () => {
     }
   };
 
-  const toggleInput = () => {
-    setExpanded(!expanded);
-  };
+ 
 
   return (
-    <div className="container mx-5 mt-5 flex items-center justify-center">
-      <input
-        className={` dark:text-gray-300 transition-all duration-700 ${
-          expanded ? "w-full" : "origin-right scale-0"
-        }`}
-        type="text"
-        placeholder="Search Server By Name"
-        value={query}
-        onChange={handleInputChange}
-      />
+    <div className=" container  relative mt-5 flex items-center justify-center">
+      <div className="relative w-full flex justify-center">
+        <input
+          className={` w-1/2 transition-all duration-700 dark:text-gray-300 `}
+          type="text"
+          placeholder="Search Server By Name"
+          value={query}
+          onChange={handleInputChange}
+        />
 
-      <FaSearch
-        size={32}
-        className={`text-secondary z-10 my-auto ml-2 text-gray-500 hover:text-green-500 `}
-        onClick={toggleInput}
-      />
+        <FaSearch
+          size={32}
+          className={`text-secondary absolute  right-64 top-1.5 z-10 my-auto ml-2 text-gray-500 `}
+        />
+      </div>
 
       {/* <div className="">
         <label >Filter Servers Im apart of</label>
