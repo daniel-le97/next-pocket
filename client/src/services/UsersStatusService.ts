@@ -57,9 +57,8 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
     return status;
   }
   async getOne(id: string) {
-    return await this.pb.getOne<UsersStatusWithUser>(id, {
-      expand: "user",
-    });
+    const status = await this.pb.getFullList<UsersStatusWithUser>({ filter: `id = "${id}"`, expand: "user" })
+    return status[0]
   }
 
   async setStatusOnline(user = AppState.user?.id, status: keyof typeof UsersStatusStatusOptions) {

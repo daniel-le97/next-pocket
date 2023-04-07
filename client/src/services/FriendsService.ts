@@ -16,13 +16,13 @@ class FriendsService {
     const userId = AppState.user?.id;
     if (!userId || friendUserId) return;
 
-    const initalCreateRecord = {
+    const initialCreateRecord = {
       status: "pending",
       friends: [userId, friendUserId],
     };
     const response = await pb
       .collection(Collections.Friends)
-      .create<FriendsResponse>(initalCreateRecord);
+      .create<FriendsResponse>(initialCreateRecord);
     return response;
   }
   async delete(friendId: string) {

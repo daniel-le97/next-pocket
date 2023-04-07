@@ -13,6 +13,7 @@ type UserValidator = {
   userStatusId: string;
   canAdd: boolean;
   error?: string;
+  userId?: string;
 }
 
 class UsersService {
@@ -50,18 +51,30 @@ class UsersService {
   async checkIfUserCanAddFriend(data: string) : Promise<UserValidator>{
     const thisUser = AppState.user
     const response : UserValidator = {username: '', userStatusId: '', canAdd: false}
+    const regex = /^[a-zA-Z0-9]+#[a-zA-Z0-9]{15}$/;
+    //  first check if there is a user logged in
     if (!thisUser) return {...response, error: "user not logged in"}
+    //  check if the data has valid character separator
     if (!data.includes('#')) return {...response, error: "couldn't find # in data"}
+    if(!regex.test(data)) return {...response, error: "there seems to be an error in your formatting"}
     const [username, userStatusId] = data.split('#')
+    //  check if the data has valid username and id
     if (!username || !userStatusId) return {...response, error: "couldn't find username or id in data"}
+    //  check if the username and id are the same as the current user
     if (username == thisUser.username || userStatusId == thisUser.onlineStatus) return {...response, error: "you can't add yourself"}
+    //  check if the user is already friends with this user
     const isFriend = AppState.friends?.find(f => f.friend?.username == username || f.friend?.onlineStatus == userStatusId)
     if (isFriend) return {...response, error: "you are already friends with this user"}
-    const foundStatus = (await usersStatusService.getOne(userStatusId)).expand.user
-    // const thisUserFriends = await friendsService.getUserFriendsList()
-
-    if (foundStatus.username == username && foundStatus.onlineStatus == userStatusId) return { canAdd: true, username, userStatusId}
-
+    //  check if there is a user with this username and id
+    const foundUserFromStatus = await usersStatusService.getOne(userStatusId)
+    const user = foundUserFromStatus?.expand.user
+    // check if the supplied username and id are valid , this is the only one that doesn't return an error
+    if (user && user.username == username && user.onlineStatus == userStatusId){
+      console.log(user);
+      
+      return { canAdd: true, username, userStatusId, userId: user.id}
+    }
+    //  if all else fails return an error
     return {...response, error: "there was an unexpected error, please try again later"}
   }
   // async getUserFriendRecord(user=AppState.user){

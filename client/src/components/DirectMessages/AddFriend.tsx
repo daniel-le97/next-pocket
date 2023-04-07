@@ -1,17 +1,19 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { friendRequestService } from "@/services/FriendRequestsService";
 import { observer } from "mobx-react";
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AppState } from "../../../AppState";
 import {
   Collections,
-  FriendRequestRecord,
   UsersResponse,
 } from "../../../PocketBaseTypes";
 import Pop from "../../../utils/Pop";
-import { usersService } from "../../services";
+import { friendsService, usersService } from "../../services";
 import { pb } from "~/utils/pocketBase";
 import { log } from "console";
 import { debounce } from "lodash";
@@ -21,17 +23,17 @@ import { FaChevronRight, FaCompass, FaQuestionCircle } from "react-icons/fa";
 import Link from "next/link";
 
 const AddFriend = () => {
-  const [formValue, setFormValue] = useState("");
+  // const [formValue, setFormValue] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
 
-  useEffect(() => {
-    if (formValue !== "") {
-      validateReceiverData(formValue);
-    }
-    setFormError("");
-  }, [formValue]);
+  // useEffect(() => {
+  //   if (formValue !== "") {
+  //     validateReceiverData(formValue);
+  //   }
+  //   setFormError("");
+  // }, [formValue]);
 
   const {
     register,
@@ -44,40 +46,26 @@ const AddFriend = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      sender: AppState.userFriendId,
       receiver: "",
-      status: "pending",
-      receiverData: "",
+      receiverData: ""
     },
   });
 
-  const handleChange = async (e: any) => {
-    const val = e.target.value;
-    setFormValue(val);
-    const re = /^[a-zA-Z0-9]+#[a-zA-Z0-9]{15}$/;
-    if (val === "") {
-      console.log("13");
-
-      return;
-    }
-    if (!re.test(val)) {
-      await validateReceiverData(val);
-      return;
-    }
-
-    setFormValue(val);
-    setIsValid(false);
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+    await validateReceiverData(value);
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: {receiver: string, receiverData: string}) => {
     try {
       if (isValid) {
-        delete data.receiverData;
+        console.log('data', data);
+    
         // console.log(isValid, data);
-        const res = await friendRequestService.sendFriendRequest(data);
+        const res = await friendsService.create(data.receiver)
         if (res) {
           reset();
-          setFormValue("");
+          // setFormValue("");
           setIsValid(false);
           setFormError("");
           Pop.success("Sent Friend Request!");
@@ -90,66 +78,17 @@ const AddFriend = () => {
 
   const validateReceiverData = useCallback(
     debounce(async (data: string) => {
-      setLoading(true);
-      const status = await usersService.checkIfUserCanAddFriend(data)
-      if (status.error) return handleInvalidInput(status.error);
-      if (status.canAdd){
-        //  TODO i wanted to get the checks into a service
-        // probably should wrap this in a try catch
-        // send the friend request here
-      }
-    
-
-  
-
-      // const separatorIndex = data.indexOf("#");
-      // const receiverName = data.substring(0, separatorIndex);
-      // const receiverFriendId = data.substring(separatorIndex + 1);
-
-      // if (separatorIndex === -1) {
-      //   handleInvalidInput("Invalid input format: no '#' separator found");
-      //   return;
-      // }
-
-      // if (receiverName === AppState.user?.username) {
-      //   handleInvalidInput("Cannot Add Yourself");
-      //   return;
-      // }
-
       try {
-        const receiverFriendRecord = await pb
-          .collection(Collections.Friends)
-          .getFirstListItem(`id = "${receiverFriendId}" `, { expand: "user" });
-        const senderFriendRecord = await pb
-          .collection(Collections.Friends)
-          .getFirstListItem(`id = "${AppState.userFriendId}" `, {
-            expand: "user",
-          });
-        const alreadyFriends = senderFriendRecord?.friends?.includes(
-          receiverFriendRecord.expand.user.id
-        );
-
-        // console.log(senderFriendRecord.friends);
-
-        const usernameMatchesFriendUserRecord =
-          receiverFriendRecord?.expand?.user?.username === receiverName;
-
-        if (receiverFriendRecord && usernameMatchesFriendUserRecord) {
-          setValue("receiver", receiverFriendRecord.id);
-          setIsValid(true);
-          setFormError("");
-          if (alreadyFriends) {
-            handleInvalidInput("Already Friends");
-          }
-        } else {
-          handleInvalidInput("Invalid Username or FriendId");
-        }
-
+        setLoading(true);
+        const status = await usersService.checkIfUserCanAddFriend(data)
+        // if there was an error, handle it
+        if (status.error) return handleInvalidInput(status.error);
+        setValue("receiver", status.userId!)
+        setIsValid(true);
         setLoading(false);
-      } catch (error) {
-        handleInvalidInput("An error occurred while validating receiver data");
-        console.warn("An error occurred while validating receiver data", error);
-      }
+        } catch (error) {
+          Pop.error(error)
+        }
     }, 1000),
     []
   );
@@ -191,7 +130,7 @@ const AddFriend = () => {
                 isValid ? "border-green-400" : ""
               }`}
               placeholder="Enter a Username#FriendId "
-              onChange={handleChange}
+              onChange={(e) => handleChange(e)}
             />
 
             <button
