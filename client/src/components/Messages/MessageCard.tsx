@@ -162,13 +162,9 @@ const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
               {likes &&
                 likes.map((l, index) => (
                   <div
-                    className=" my-0.5 cursor-pointer rounded p-0.5 transition-all hover:bg-indigo-900 hover:text-gray-100 hover:shadow-sm hover:shadow-indigo-300 "
+                    className=" my-0.5  rounded p-0.5 transition-all  hover:text-gray-100 hover:text-shadow  "
                     key={index}
-                    onClick={() => {
-                      //copy username to clipboard
-                      navigator.clipboard.writeText(l.expand.user.username);
-                      Pop.success("Copied To Clipboard");
-                    }}
+                   
                   >
                     {l.expand.user.username}
                   </div>

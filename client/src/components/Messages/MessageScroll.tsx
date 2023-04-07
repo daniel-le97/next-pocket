@@ -14,6 +14,8 @@ import Loader from "../GlobalComponents/Loader";
 import MessageCard from "./MessageCard";
 const MessageScroll = () => {
   async function fetchMore() {
+    console.log(AppState.page, AppState.totalPages);
+    
     const channelId = AppState.activeChannel?.id;
     AppState.page++;
     await messageService.getMessagesByChannelId(channelId!);
@@ -24,6 +26,8 @@ const MessageScroll = () => {
   useEffect(() => {
     (async () => {
       try {
+        console.log(AppState.page, AppState.totalPages);
+        
         // if(subscribeLike && subscribeMessage) return console.log("already subscribed")
         subscribeMessage = await messageService.subscribe();
         subscribeLike = await likesService.subscribe();

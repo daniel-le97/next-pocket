@@ -73,7 +73,7 @@ class MessageService {
     // AppState.messages = [];
     // console.log("getMessagesByChannelId", id);
       // console.log(AppState.page,AppState.totalPages)
-    const res = await pb.collection(Collections.Messages).getList(page, 50, {
+    const res = await pb.collection(Collections.Messages).getList(page, 20, {
       filter: `channel.id = "${id}"`,
       sort: "-created",
       expand: "user,likes(message).user",
