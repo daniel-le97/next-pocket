@@ -57,7 +57,7 @@ const FriendRequests = () => {
             receivedRequests.map((f) => (
               <li
                 key={f.id}
-                className="flex w-full justify-between gap-x-2 rounded-md bg-zinc-800 p-2"
+                className="flex w-full justify-between gap-x-2 rounded-md bg-zinc-800 p-2 m-3"
               >
                 <div className="flex items-center gap-x-3 text-xl font-bold text-zinc-300">
                   <UserBadge user={f.friend as UsersResponse} />
@@ -104,7 +104,7 @@ const FriendRequests = () => {
             sentRequests.map((f) => (
               <li
                 key={f.id}
-                className="flex w-full justify-between gap-x-2 rounded-md bg-zinc-800 p-2"
+                className="flex w-full justify-between gap-x-2 rounded-md bg-zinc-800 p-2 m-3"
               >
                 <div className="flex items-center gap-x-3 text-xl font-bold text-zinc-300">
                   <UserBadge user={f.friend as UsersResponse} />
