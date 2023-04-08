@@ -3,22 +3,17 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState } from "react";
 import { observer } from "mobx-react";
-// import { BsPlusCircleFill } from "react-icons/bs";
 import { AppState } from "../../../AppState";
 import { messageService } from "../../services/MessagesService";
 import type { MessagesRecord } from "../../../PocketBaseTypes/pocketbase-types";
 import { useForm } from "react-hook-form";
 import Pop from "../../../utils/Pop";
+import MessagingGuidelines from "./MessagingGuidelines";
 const CreateMessage = () => {
-  // const [newMessage, setNewMessage] = useState("");
-  // const messages = AppState.messages;
+
   const user = AppState.user;
   const [characterCount, setCharacterCount] = useState(0);
-  const {
-    register,
-    handleSubmit,
-    reset,
-  } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       content: "",
       user: user!.id,
@@ -41,8 +36,7 @@ const CreateMessage = () => {
       Pop.error(error);
     }
 
-    // const createdMessage = await pb.collection("messages").create(data);
-    // setNewMessage("");
+
   };
 
   return (
@@ -53,12 +47,10 @@ const CreateMessage = () => {
       >
         {AppState.activeChannel ? (
           <>
-           
-
             <textarea
               id="createMessageInput"
               rows={1}
-              className="create-message-input max-h-96 w-full resize-none  rounded-xl  bg-gray-100 text-gray-500 dark:bg-zinc-600/90 py-3.5 pl-4 pr-12 text-lg  font-semibold dark:text-zinc-300 focus:outline-none"
+              className="create-message-input max-h-96 w-full resize-none  rounded-xl  bg-gray-100 py-3.5 pl-4 pr-12 text-lg font-semibold text-gray-500  focus:outline-none dark:bg-zinc-600/90 dark:text-zinc-300"
               {...register("content", {
                 required: true,
                 maxLength: 1200,
@@ -77,10 +69,13 @@ const CreateMessage = () => {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                handleSubmit(sendMessage)()
+                  handleSubmit(sendMessage)();
                 }
               }}
             ></textarea>
+            <p className="absolute bottom-14 right-12 text-sm">
+              <MessagingGuidelines/>
+            </p>
             <p
               id="charLimit"
               className={` absolute bottom-14 right-2 text-sm  ${
@@ -99,13 +94,9 @@ const CreateMessage = () => {
         ) : (
           <div className=""></div>
         )}
-     
       </form>
-
-    
     </div>
   );
 };
-
 
 export default observer(CreateMessage);

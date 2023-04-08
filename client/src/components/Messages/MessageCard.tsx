@@ -39,6 +39,8 @@ const MessageCard = ({
     Pop.success("Copied To Clipboard");
   };
 
+
+  
   return (
     <div
       className={
@@ -71,6 +73,9 @@ const MessageCard = ({
           children={message.content as string}
           className="markdown"
           rehypePlugins={[rehypeRaw]}
+          linkTarget="_blank"
+       
+
           components={{
             code: ({ inline, className, children, ...props }) => {
               if (inline) {
