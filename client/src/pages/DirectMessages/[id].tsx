@@ -8,11 +8,12 @@ import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import Pop from "utils/Pop";
 import FriendsBar from "@/components/DirectMessages/FriendsBar";
-import DirectMessageContainer from "@/components/DirectMessages/DirectMessageContainer";
+
 import { withAuth } from "../../middleware";
 import { directMessageService, friendsService } from "../../services";
 import DirectMessageScroll from "@/components/DirectMessages/DirectMessageScroll";
 import CreateDirectMessage from "@/components/DirectMessages/CreateDirectMessage";
+
 
 const DirectMessages: NextPage = () => {
   const router = useRouter();
@@ -28,7 +29,7 @@ const DirectMessages: NextPage = () => {
     }
 
     if (id) {
-      AppState.dmRouterQuery = id as string;
+      AppState.dmRouterQuery = router.query.id as string
       const fetchMessages = async () => {
         try {
           // these
@@ -65,8 +66,8 @@ const DirectMessages: NextPage = () => {
         <div className="flex  h-screen   w-full ">
           <FriendsBar />
           <div className="message-container">
-            <DirectMessageScroll />
-            <CreateDirectMessage  />
+            {router.query.id && <DirectMessageScroll />}
+            <CreateDirectMessage />
           </div>
         </div>
       </main>

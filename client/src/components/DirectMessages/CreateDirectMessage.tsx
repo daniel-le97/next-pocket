@@ -33,14 +33,13 @@ const CreateDirectMessage = () => {
 
   const sendMessage = async (data: DirectMessagesRecord) => {
     try {
-      // setValue("friendRecord", AppState.dmRouterQuery);
-   
+      setValue("friendRecord", AppState.dmRouterQuery);
+
       console.log(data);
 
-      //   await directMessageService.createDirectMessage(data);
-      //  setValue("content", "");
+      await directMessageService.createDirectMessage(data);
+      setValue("content", "");
       // setValue("friendRecord", router.query.id!.toString());
-    
     } catch (error) {
       Pop.error(error);
     }
