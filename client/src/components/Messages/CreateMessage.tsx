@@ -14,7 +14,10 @@ import {
   FaFileImage,
   FaImage,
   FaItalic,
+  FaMinusCircle,
   FaStrikethrough,
+  FaXbox,
+  FaXingSquare,
 } from "react-icons/fa";
 import { Tooltip } from "@nextui-org/react";
 import MyModal from "../GlobalComponents/Modal";
@@ -27,6 +30,10 @@ const CreateMessage = () => {
   const [characterCount, setCharacterCount] = useState(0);
   const [messageAttachmentUrl, setMessageAttachmentUrl] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [messageAttachmentRecord, setMessageAttachmentRecord] = useState(null);
+  const inputEl = document.getElementById(
+    "createMessageInput"
+  ) as HTMLInputElement;
   const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       content: "",
@@ -39,22 +46,23 @@ const CreateMessage = () => {
 
   const sendMessage = async (data: MessagesRecord) => {
     try {
-      const el = document.getElementById("createMessageInput");
-      
+      //  const inputEl = document.getElementById(
+      //    "createMessageInput"
+      //  ) as HTMLInputElement;
 
-     if (data.content) {
-       const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))(?=[^\s]*\s)/g;
-       data.content = data.content.replace(regex, "![$1]($1)");
-     }
+      if (data.content) {
+        const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))(?=[^\s]*\s)/g;
+        data.content = data.content.replace(regex, "![$1]($1)");
+      }
 
       data.channel = AppState.activeChannel?.id;
-  
+
       console.log(data.content);
 
-      // await messageService.sendMessage(data);
-      // reset();
+      await messageService.sendMessage(data, messageAttachmentRecord);
+      reset();
 
-      el.style.height = "initial";
+      inputEl.style.height = "initial";
 
       setCharacterCount(0);
       setMessageAttachmentUrl("");
@@ -77,9 +85,9 @@ const CreateMessage = () => {
       let newValue = prefix + selected + suffix;
       setSelectionStart(-1);
       setSelectionEnd(-1);
-      const inputEl = document.getElementById(
-        "createMessageInput"
-      ) as HTMLInputElement;
+      // const inputEl = document.getElementById(
+      //   "createMessageInput"
+      // ) as HTMLInputElement;
 
       if (value.includes(before) && value.includes(after)) {
         newValue = prefix + selectedText + suffix;
@@ -94,39 +102,52 @@ const CreateMessage = () => {
     }
   };
 
-  const handleInsertImage = () => {
-    const url = prompt("Enter image URL:");
-    if (url) {
-      const newValue =
-        value.substring(0, selectionStart) +
-        `![${selectedText}](${url})` +
-        value.substring(selectionEnd);
-      setSelectionStart(-1);
-      setSelectionEnd(-1);
+  // const handleInsertImage = () => {
+  //   const url = prompt("Enter image URL:");
+  //   if (url) {
+  //     const newValue =
+  //       value.substring(0, selectionStart) +
+  //       `![${selectedText}](${url})` +
+  //       value.substring(selectionEnd);
+  //     setSelectionStart(-1);
+  //     setSelectionEnd(-1);
 
-      const inputEl = document.getElementById(
-        "createMessageInput"
-      ) as HTMLInputElement;
-      inputEl.value = newValue;
-      return newValue;
+  //     const inputEl = document.getElementById(
+  //       "createMessageInput"
+  //     ) as HTMLInputElement;
+  //     inputEl.value = newValue;
+  //     return newValue;
+  //   }
+  // };
+  const deleteMessageAttachment = async () => {
+    try {
+      await uploadService.deleteMessageAttachment(messageAttachmentRecord.id);
+      setMessageAttachmentUrl("");
+      setMessageAttachmentRecord(null);
+      inputEl.value = inputEl.value.replace(
+        `![${messageAttachmentRecord.name}](${messageAttachmentRecord.url})`,
+        ""
+      );
+    } catch (error) {
+      Pop.error(error);
     }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const uploadFile = async () => {
       // const file = Array.from(event.target.files)[0];
-      const inputEl = document.getElementById(
-        "createMessageInput"
-      ) as HTMLInputElement;
+      // const inputEl = document.getElementById(
+      //   "createMessageInput"
+      // ) as HTMLInputElement;
       const record = await uploadService.uploadMessageAttachment(
-        event.target.files
+        e.target.files
       );
       setImageUrl(record!.url);
       // setValue("imageUrl", record?.url);
       const id = record?.id;
       setValue("attachments", id!);
       setMessageAttachmentUrl(record?.url!);
-
+      setMessageAttachmentRecord(record);
       inputEl.value = inputEl.value + `![${record?.name}](${record?.url})`;
     };
     uploadFile();
@@ -173,18 +194,8 @@ const CreateMessage = () => {
                 setSelectionEnd(e.target.selectionEnd);
               }}
             ></textarea>
-            <div className="absolute bottom-[3.75rem]  right-24 pb-1 pr-2 text-sm">
-              <Tooltip content="Upload image" color="invert" placement="top">
-                <FaFileImage size={18} className="text-gray-300" />
-                <input
-                  type="file"
-                  accept="image/*"
-                  style={{ opacity: 0, position: "absolute", top: 0, left: 0 }}
-                  onChange={handleFileChange}
-                />
-              </Tooltip>
-            </div>
-            {selectedText && (
+
+            {/* {selectedText && (
               <div className="absolute bottom-14  my-2 flex justify-center space-x-4 rounded bg-zinc-900 p-2 text-gray-300">
                 <button
                   type="button"
@@ -220,16 +231,49 @@ const CreateMessage = () => {
                   </Tooltip>
                 </button>
               </div>
-            )}
-            {messageAttachmentUrl && (
-              <div className="absolute bottom-14  my-2 flex justify-center space-x-4 rounded bg-zinc-900 p-2 text-gray-300">
-                <img
-                  src={messageAttachmentUrl}
-                  alt=""
-                  className=" h-44 w-44 rounded border-2 border-zinc-900 object-cover"
-                />
+            )} */}
+            <TextFormattingToolbar
+              selectedText={selectedText}
+              insertMarkdown={insertMarkdown}
+            />
+
+            <MessageAttachment
+              messageAttachmentUrl={messageAttachmentUrl}
+              deleteMessageAttachment={deleteMessageAttachment}
+            />
+
+            <div className="absolute bottom-[3.75rem] right-2 ">
+              <div className="flex space-x-3">
+                <div className="  ">
+                  <Tooltip
+                    content="Upload image"
+                    color="invert"
+                    placement="top"
+                  >
+                    <FaFileImage size={18} className="text-gray-300" />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="absolute left-0 top-0 h-full  w-1 cursor-pointer opacity-0"
+                      onChange={handleFileChange}
+                    />
+                  </Tooltip>
+                </div>
+
+                <MessagingGuidelines />
+                <CharacterLimit characterCount={characterCount} />
+                {/* <div
+                  id="charLimit"
+                  className={`    ${
+                    characterCount <= 2400 ? "text-zinc-300" : "text-red-400"
+                  }`}
+                >
+                  {characterCount}/2400
+                </div> */}
               </div>
-            )}
+            </div>
+
+            {/* 
             <div className="absolute bottom-[3.75rem] right-[4.5rem] pb-1 pr-2  text-sm">
               <MessagingGuidelines />
             </div>
@@ -241,6 +285,8 @@ const CreateMessage = () => {
             >
               {characterCount}/2400
             </div>
+ */}
+
             <button
               type="submit"
               className="btn-primary absolute bottom-2 right-2 "
@@ -253,6 +299,82 @@ const CreateMessage = () => {
         )}
       </form>
     </div>
+  );
+};
+
+const CharacterLimit = ({ characterCount }) => {
+  const isWithinLimit = characterCount <= 2400;
+
+  return (
+    <div
+      id="charLimit"
+      className={isWithinLimit ? "text-zinc-300" : "text-red-400"}
+    >
+      {characterCount}/2400
+    </div>
+  );
+};
+
+const MessageAttachment = ({
+  messageAttachmentUrl,
+  deleteMessageAttachment,
+}) => {
+  return messageAttachmentUrl ? (
+    <div className="absolute bottom-14  my-2 flex justify-center space-x-4 rounded bg-zinc-900 p-2 text-gray-300">
+      <div className="relative">
+        <img
+          src={messageAttachmentUrl}
+          alt=""
+          className=" h-44 w-44 rounded border-2 border-zinc-900 object-cover"
+        />
+        <div className="absolute -top-10">
+          <button className="btn-primary">
+           <Tooltip content="Delete image" color="invert" placement="top">
+             <FaMinusCircle onClick={deleteMessageAttachment} className="cursor-pointer " /></Tooltip>
+          </button>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className=""></div>
+  );
+};
+
+const TextFormattingToolbar = ({ selectedText, insertMarkdown }) => {
+  return (
+    selectedText && (
+      <div className="absolute bottom-14  my-2 flex justify-center space-x-4 rounded bg-zinc-900 p-2 text-gray-300">
+        <button
+          type="button"
+          onClick={() => insertMarkdown("**", "**", selectedText)}
+        >
+          <Tooltip content="Bold" color="invert" placement="top">
+            <FaBold />
+          </Tooltip>
+        </button>
+        <button
+          type="button"
+          onClick={() => insertMarkdown("*", "*", selectedText)}
+        >
+          <Tooltip content="Italic" color="invert" placement="top">
+            <FaItalic />
+          </Tooltip>
+        </button>
+        <button
+          type="button"
+          onClick={() => insertMarkdown("~~", "~~", selectedText)}
+        >
+          <Tooltip content="StrikeThrough" color="invert" placement="top">
+            <FaStrikethrough />
+          </Tooltip>
+        </button>
+        {/* <button type="button" onClick={handleInsertImage}>
+          <Tooltip content="Image" color="invert" placement="top">
+            <FaImage />
+          </Tooltip>
+        </button> */}
+      </div>
+    )
   );
 };
 

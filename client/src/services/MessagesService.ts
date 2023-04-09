@@ -7,10 +7,9 @@ import type {
   DirectMessagesResponse,
   MessagesRecord,
   MessageWithUser,
-  TMessageWithUser} from "PocketBaseTypes";
-import {
-  Message
+  TMessageWithUser,
 } from "PocketBaseTypes";
+import { Message } from "PocketBaseTypes";
 import { Collections } from "PocketBaseTypes";
 import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
 import { logger } from "utils/Logger";
@@ -23,12 +22,22 @@ class MessageService {
    * @param data - The message data to send
    * @returns The newly created message
    */
-  async sendMessage(data: MessagesRecord) {
+  async sendMessage(data: MessagesRecord, messageAttachmentRecord) {
     // console.log(data);
 
-    await pb
+    const messageRecord = await pb
       .collection(Collections.Messages)
       .create<MessageWithUser>(data, { expand: "user" });
+
+    if (messageAttachmentRecord) {
+      messageAttachmentRecord.status = "uploaded";
+      messageAttachmentRecord.message = messageRecord.id;
+      await pb
+        .collection("messageAttachments")
+        .update(messageAttachmentRecord.id, messageAttachmentRecord, {
+          expand: "message",
+        });
+    }
     // if (res.id) {
     //   addItemOrReplaceV2('messages', res, "id");
     // }
@@ -77,8 +86,8 @@ class MessageService {
     });
 
     const unMessages = res.items as unknown as TMessageWithUser[];
-    console.log('unMessages', unMessages);
-    
+    console.log("unMessages", unMessages);
+
     action(() => {
       const messages = unMessages.map((message, index) => {
         const _Message: MessageWithUser = new Message(message);
