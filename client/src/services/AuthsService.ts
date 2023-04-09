@@ -35,7 +35,7 @@ class AuthsService {
     if (data.password != data.passwordConfirm) return "passwords must match";
     const newUser = await pb.collection("users").create<UsersResponse>(data);
     await usersStatusService.create(newUser.id)
-    await this.login(data);
+    return await this.login(data);
   }
  
    signOut(){
