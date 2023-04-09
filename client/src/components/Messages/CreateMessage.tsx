@@ -28,9 +28,9 @@ const CreateMessage = () => {
   const [selectionEnd, setSelectionEnd] = useState(-1);
   const user = AppState.user;
   const [characterCount, setCharacterCount] = useState(0);
-  const [messageAttachmentUrl, setMessageAttachmentUrl] = useState("");
+  const [messageAttachmentUrls, setMessageAttachmentUrls] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
-  const [messageAttachmentRecord, setMessageAttachmentRecord] = useState(null);
+  const [messageAttachmentRecords, setMessageAttachmentRecords] = useState([]);
   const inputEl = document.getElementById(
     "createMessageInput"
   ) as HTMLInputElement;
@@ -59,13 +59,14 @@ const CreateMessage = () => {
 
       console.log(data.content);
 
-      await messageService.sendMessage(data, messageAttachmentRecord);
+      await messageService.sendMessage(data, messageAttachmentRecords);
       reset();
 
       inputEl.style.height = "initial";
 
       setCharacterCount(0);
-      setMessageAttachmentUrl("");
+      setMessageAttachmentUrls([]);
+      setMessageAttachmentRecords([]);
     } catch (error) {
       Pop.error(error);
     }
@@ -122,8 +123,9 @@ const CreateMessage = () => {
   const deleteMessageAttachment = async () => {
     try {
       await uploadService.deleteMessageAttachment(messageAttachmentRecord.id);
-      setMessageAttachmentUrl("");
-      setMessageAttachmentRecord(null);
+      setMessageAttachmentUrls([]);
+      setMessageAttachmentRecords([]);
+      setValue("attachments", "");
       inputEl.value = inputEl.value.replace(
         `![${messageAttachmentRecord.name}](${messageAttachmentRecord.url})`,
         ""
@@ -146,8 +148,8 @@ const CreateMessage = () => {
       // setValue("imageUrl", record?.url);
       const id = record?.id;
       setValue("attachments", id!);
-      setMessageAttachmentUrl(record?.url!);
-      setMessageAttachmentRecord(record);
+      setMessageAttachmentUrls([...messageAttachmentUrls, record?.url!]);
+      setMessageAttachmentRecords([...messageAttachmentRecords, record]);
       inputEl.value = inputEl.value + `![${record?.name}](${record?.url})`;
     };
     uploadFile();
@@ -238,7 +240,7 @@ const CreateMessage = () => {
             />
 
             <MessageAttachment
-              messageAttachmentUrl={messageAttachmentUrl}
+              messageAttachmentRecords={messageAttachmentRecords}
               deleteMessageAttachment={deleteMessageAttachment}
             />
 
@@ -316,23 +318,33 @@ const CharacterLimit = ({ characterCount }) => {
 };
 
 const MessageAttachment = ({
-  messageAttachmentUrl,
+  messageAttachmentRecords,
   deleteMessageAttachment,
 }) => {
-  return messageAttachmentUrl ? (
+  return messageAttachmentRecords.length ? (
     <div className="absolute bottom-14  my-2 flex justify-center space-x-4 rounded bg-zinc-900 p-2 text-gray-300">
-      <div className="relative">
-        <img
-          src={messageAttachmentUrl}
-          alt=""
-          className=" h-44 w-44 rounded border-2 border-zinc-900 object-cover"
-        />
-        <div className="absolute -top-10">
-          <button className="btn-primary">
-           <Tooltip content="Delete image" color="invert" placement="top">
-             <FaMinusCircle onClick={deleteMessageAttachment} className="cursor-pointer " /></Tooltip>
-          </button>
-        </div>
+      <div className="relative flex space-x-2">
+        {messageAttachmentRecords.map((record) => (
+          <div className="">
+            <img
+              key={record.url}
+              src={record.url}
+              alt="Uploaded File Image"
+              className=" h-44 w-44 rounded border-2 border-zinc-900 object-cover"
+            />
+
+            <div className="absolute -top-10">
+              <button className="btn-primary">
+                <Tooltip content="Delete image" color="invert" placement="top">
+                  <FaMinusCircle
+                    onClick={deleteMessageAttachment}
+                    className="cursor-pointer "
+                  />
+                </Tooltip>
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   ) : (

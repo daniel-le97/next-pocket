@@ -22,15 +22,16 @@ class MessageService {
    * @param data - The message data to send
    * @returns The newly created message
    */
-  async sendMessage(data: MessagesRecord, messageAttachmentRecord) {
+  async sendMessage(data: MessagesRecord, messageAttachmentRecords) {
     // console.log(data);
 
     const messageRecord = await pb
       .collection(Collections.Messages)
       .create<MessageWithUser>(data, { expand: "user" });
 
-    if (messageAttachmentRecord) {
-      messageAttachmentRecord.status = "uploaded";
+    if (messageAttachmentRecords) {
+    for await (const messageAttachmentRecord of messageAttachmentRecords) {
+       messageAttachmentRecord.status = "uploaded";
       messageAttachmentRecord.message = messageRecord.id;
       await pb
         .collection("messageAttachments")
@@ -42,6 +43,7 @@ class MessageService {
     //   addItemOrReplaceV2('messages', res, "id");
     // }
   }
+}
 
   async sendDirectMessage(data: DirectMessagesRecord) {
     // const isUser = pb.authStore.model?.id == data.from;
