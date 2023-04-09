@@ -5,13 +5,10 @@ import Pop from "utils/Pop";
 import { pb } from "../../utils/pocketBase";
 import { usersStatusService} from "./UsersStatusService";
 import { friendsService } from "./FriendsService";
-import { UsersResponse } from "~/PocketBaseTypes";
+import type { UserLogin, UsersResponse } from "~/PocketBaseTypes";
+import { getRedirectOrPath } from "../../utils/Redirect";
 
-type UserLogin = {
-  email: string;
-  password: string;
-  passwordConfirm?: string;
-}
+
 
 class AuthsService {
   async resetPassword(email: string) {
@@ -32,29 +29,15 @@ class AuthsService {
     const email = data.email;
     const password = data.password;
     await pb.collection("users").authWithPassword(email, password);
-    console.log(pb.authStore.model);
+    return getRedirectOrPath()
   }
   async signUp(data: UserLogin) {
-    const email = data.email;
-    const password = data.password;
-    const passwordConfirm = data.passwordConfirm;
-    if (password != passwordConfirm) return "passwords must match";
-
-    try {
-      const newUser = await pb.collection("users").create({ email, password, passwordConfirm });
-      await usersStatusService.create(newUser.id)
-      const user = newUser as unknown as UsersResponse
-      await friendsService.create(user)
-      await this.loginUser(data);
-    } catch (error) {
-      Pop.error('unable to process signup and login request')
-    }
+    if (data.password != data.passwordConfirm) return "passwords must match";
+    const newUser = await pb.collection("users").create<UsersResponse>(data);
+    await usersStatusService.create(newUser.id)
+    await this.login(data);
   }
-  async loginUser(data: UserLogin) {
-    const email = data.email;
-    const password = data.password;
-    await pb.collection("users").authWithPassword(email, password);
-  }
+ 
    signOut(){
     pb.authStore.clear()
     AppState.reset()

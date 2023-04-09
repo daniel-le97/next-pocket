@@ -109,5 +109,6 @@ export const AppState = new Proxy<ObservableAppState>(
       })();
       return true;
     },
+    
   }
 );

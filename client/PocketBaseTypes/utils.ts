@@ -15,6 +15,14 @@ import type {
   UsersStatusStatusOptions,
 } from "./pocketbase-types";
 
+export type UserLogin = {
+  username: string
+  email: string;
+  password: string;
+  passwordConfirm?: string;
+  avatarUrl: string;
+};
+
 export type TServerExpand<T> = {
   server: ServersResponse<T>;
 };
