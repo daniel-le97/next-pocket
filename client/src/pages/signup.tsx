@@ -17,6 +17,7 @@ import { authsService } from "../services";
 import { UserLogin } from "../../PocketBaseTypes";
 import { useForm } from "react-hook-form";
 import Pop from "../../utils/Pop";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
 function SignUp() {
   const {
@@ -90,9 +91,14 @@ function SignUp() {
             />
             {errors.passwordConfirm && <span>This field is required</span>}
 
-            <input type="submit" />
+            <button type="submit" className=" btn-primary">
+              Sign Up
+            </button>
           </form>
-          <Link href={'/login'}>go to login</Link>
+          <Link href="/login" className="mt-2 flex gap-2">
+            <FaArrowAltCircleRight className="text-2xl" />
+            <div>go to signup</div>
+          </Link>
         </div>
         {/* <div className="container flex items-center justify-center">
           <User user={AppState.user as UsersResponse} />
