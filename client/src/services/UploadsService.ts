@@ -37,11 +37,17 @@ class UploadService {
       formData.append("user", user!.id);
       formData.append("status", "pending");
 
-      // If there is a previous document, delete the associated file and update the status
-      const previousFile = await this.getFileUploadStatusByUserId(user!.id);
-      if (previousFile) {
-        await this.deleteFile(user!.id, previousFile.id);
-      }
+    //   // If there is a previous document, delete the associated file and update the status
+    // try {
+    //   const previousFile = await this.getFileUploadStatusByUserId(user!.id);
+    //   if (previousFile) {
+    //     await this.deleteFile(user!.id, previousFile.id);
+    //   }
+    // } catch (error) {
+    //   if (error.response.status !== 404) {
+    //     throw error; // re-throw if it's not a 404 error
+    //   }
+    // }
 
       const createdFile = await this.createFile(formData);
 
@@ -132,10 +138,8 @@ class UploadService {
       const compressed: string | Blob = await this.compress(file);
 
       formData.append("file", compressed);
-
-      formData.append("user", user!.id);
       formData.append("status", "pending");
-      formData.append("channel", AppState?.activeChannel?.id);
+
       // // If there is a previous document, delete the associated file and update the status
       // const previousFile = await this.getFileUploadStatusByUserId(user!.id);
       // if (previousFile) {

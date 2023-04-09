@@ -5,19 +5,19 @@ import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { AppState } from "../../../AppState";
 import { messageService } from "../../services/MessagesService";
-import type { MessagesRecord } from "../../../PocketBaseTypes/pocketbase-types";
+import type {
+  MessageAttachmentsRecord,
+  MessagesRecord,
+} from "../../../PocketBaseTypes/pocketbase-types";
 import { useForm } from "react-hook-form";
 import Pop from "../../../utils/Pop";
 import MessagingGuidelines from "./MessagingGuidelines";
 import {
   FaBold,
   FaFileImage,
-  FaImage,
   FaItalic,
   FaMinusCircle,
   FaStrikethrough,
-  FaXbox,
-  FaXingSquare,
 } from "react-icons/fa";
 import { Tooltip } from "@nextui-org/react";
 import MyModal from "../GlobalComponents/Modal";
@@ -30,7 +30,9 @@ const CreateMessage = () => {
   const [characterCount, setCharacterCount] = useState(0);
   const [messageAttachmentUrls, setMessageAttachmentUrls] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
-  const [messageAttachmentRecords, setMessageAttachmentRecords] = useState([]);
+  const [messageAttachmentRecords, setMessageAttachmentRecords] = useState<
+    MessageAttachmentsRecord[]
+  >([]);
   const inputEl = document.getElementById(
     "createMessageInput"
   ) as HTMLInputElement;
@@ -120,16 +122,17 @@ const CreateMessage = () => {
   //     return newValue;
   //   }
   // };
-  const deleteMessageAttachment = async () => {
+  const deleteMessageAttachment = async (id: string) => {
     try {
-      await uploadService.deleteMessageAttachment(messageAttachmentRecord.id);
+      await uploadService.deleteFile(AppState?.user?.id!, id);
+      // await uploadService.deleteMessageAttachment(messageAttachmentRecord.id);
       setMessageAttachmentUrls([]);
       setMessageAttachmentRecords([]);
       setValue("attachments", "");
-      inputEl.value = inputEl.value.replace(
-        `![${messageAttachmentRecord.name}](${messageAttachmentRecord.url})`,
-        ""
-      );
+      // inputEl.value = inputEl.value.replace(
+      //   `![${messageAttachmentRecord.name}](${messageAttachmentRecord.url})`,
+      //   ""
+      // );
     } catch (error) {
       Pop.error(error);
     }
@@ -141,13 +144,15 @@ const CreateMessage = () => {
       // const inputEl = document.getElementById(
       //   "createMessageInput"
       // ) as HTMLInputElement;
-      const record = await uploadService.uploadMessageAttachment(
-        e.target.files
-      );
-      setImageUrl(record!.url);
+      // const record = await uploadService.uploadMessageAttachment(
+      //   e.target.files
+      // );
+
+      const record = await uploadService.uploadFile(e.target.files);
+      // setImageUrl(record!.url);
       // setValue("imageUrl", record?.url);
       const id = record?.id;
-      setValue("attachments", id!);
+      setValue("files", id!);
       setMessageAttachmentUrls([...messageAttachmentUrls, record?.url!]);
       setMessageAttachmentRecords([...messageAttachmentRecords, record]);
       inputEl.value = inputEl.value + `![${record?.name}](${record?.url})`;
@@ -325,24 +330,23 @@ const MessageAttachment = ({
     <div className="absolute bottom-14  my-2 flex justify-center space-x-4 rounded bg-zinc-900 p-2 text-gray-300">
       <div className="relative flex space-x-2">
         {messageAttachmentRecords.map((record) => (
-          <div className="">
+          <div className="" key={record.url}>
             <img
-              key={record.url}
               src={record.url}
               alt="Uploaded File Image"
               className=" h-44 w-44 rounded border-2 border-zinc-900 object-cover"
             />
 
-            <div className="absolute -top-10">
+            {/* <div className="absolute -top-10">
               <button className="btn-primary">
                 <Tooltip content="Delete image" color="invert" placement="top">
                   <FaMinusCircle
-                    onClick={deleteMessageAttachment}
+                    onClick={deleteMessageAttachment(record.id)}
                     className="cursor-pointer "
                   />
                 </Tooltip>
               </button>
-            </div>
+            </div> */}
           </div>
         ))}
       </div>

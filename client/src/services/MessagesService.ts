@@ -5,6 +5,7 @@ import { action } from "mobx";
 import type {
   DirectMessagesRecord,
   DirectMessagesResponse,
+  MessageAttachmentsRecord,
   MessagesRecord,
   MessageWithUser,
   TMessageWithUser,
@@ -22,7 +23,7 @@ class MessageService {
    * @param data - The message data to send
    * @returns The newly created message
    */
-  async sendMessage(data: MessagesRecord, messageAttachmentRecords) {
+  async sendMessage(data: MessagesRecord, messageAttachmentRecords:MessageAttachmentsRecord) {
     // console.log(data);
 
     const messageRecord = await pb
@@ -34,7 +35,7 @@ class MessageService {
        messageAttachmentRecord.status = "uploaded";
       messageAttachmentRecord.message = messageRecord.id;
       await pb
-        .collection("messageAttachments")
+        .collection(Collections.FileUploads)
         .update(messageAttachmentRecord.id, messageAttachmentRecord, {
           expand: "message",
         });
