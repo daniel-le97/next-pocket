@@ -39,8 +39,6 @@ const MessageCard = ({
     Pop.success("Copied To Clipboard");
   };
 
-
-  
   return (
     <div
       className={
@@ -74,8 +72,7 @@ const MessageCard = ({
           className="markdown"
           rehypePlugins={[rehypeRaw]}
           linkTarget="_blank"
-       
-
+          skipHtml={true}
           components={{
             code: ({ inline, className, children, ...props }) => {
               if (inline) {
@@ -112,8 +109,6 @@ const MessageCard = ({
       {index === 0 && <IsNewestMessage />}
       <div className="message-options">
         <div className="message-options-container">
-
-        
           {AppState.user?.id == message.user.id ? (
             <>
               <EditMessage message={message} />
@@ -167,9 +162,8 @@ const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
               {likes &&
                 likes.map((l, index) => (
                   <div
-                    className=" my-0.5  rounded p-0.5 transition-all  hover:text-gray-100 hover:text-shadow  "
+                    className=" hover:text-shadow  my-0.5 rounded p-0.5  transition-all hover:text-gray-100  "
                     key={index}
-                   
                   >
                     {l.expand.user.username}
                   </div>

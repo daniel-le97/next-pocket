@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react";
 import { AppState } from "../../../AppState";
 import { messageService } from "../../services/MessagesService";
+import DOMPurify from "dompurify";
 import type {
   MessageAttachmentsRecord,
   MessagesRecord,
@@ -33,28 +34,36 @@ const CreateMessage = () => {
   const [messageAttachmentRecords, setMessageAttachmentRecords] = useState<
     MessageAttachmentsRecord[]
   >([]);
-  const inputEl = document.getElementById(
-    "createMessageInput"
-  ) as HTMLInputElement;
+  // const inputRef = useRef<HTMLTextAreaElement>(null);
+  // const inputEl = document.getElementById(
+  //   "createMessageInput"
+  // ) as HTMLInputElement;
   const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       content: "",
       user: user!.id,
       channel: "",
-      files: "",
+
       attachments: "",
     },
   });
 
   const sendMessage = async (data: MessagesRecord) => {
     try {
-      //  const inputEl = document.getElementById(
-      //    "createMessageInput"
-      //  ) as HTMLInputElement;
+     
+      const inputEl = document.getElementById(
+        "createMessageInput"
+      ) as HTMLInputElement;
+
+      function sanitizeUserInput(input) {
+        const sanitized = DOMPurify.sanitize(input);
+        return sanitized;
+      }
 
       if (data.content) {
         const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))(?=[^\s]*\s)/g;
         data.content = data.content.replace(regex, "![$1]($1)");
+        data.content = sanitizeUserInput(data.content);
       }
 
       data.channel = AppState.activeChannel?.id;
@@ -80,6 +89,47 @@ const CreateMessage = () => {
     }
   }, [selectedText]);
 
+  // useEffect(() => {
+  //   const inputEl = document.getElementById(
+  //     "createMessageInput"
+  //   ) as HTMLInputElement;
+
+  //   if (!inputEl) {
+  //     return;
+  //   }
+
+  //   const handleInputChange = (e: Event) => {
+  //     const input = e.target as HTMLInputElement;
+  //     console.log("Input value changed: ", input.value);
+  //     // Do something with the input value...
+
+  //     e.currentTarget.style.height = "auto";
+  //     e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+  //     const currentCharacterCount = e.currentTarget.value.length;
+  //     setCharacterCount(currentCharacterCount);
+
+  //     if (currentCharacterCount >= 2400) {
+  //       e.preventDefault();
+  //     }
+  //     const containsScriptTag = /<script\b[^>]*>([\s\S]*?)<\/script>/gm.test(
+  //       input.value
+  //     );
+
+  //     if (containsScriptTag) {
+  //       input.value = input.value.replace(
+  //         /<script\b[^>]*>([\s\S]*?)<\/script>/gm,
+  //         ""
+  //       );
+  //     }
+  //   };
+
+  //   inputEl.addEventListener("input", handleInputChange);
+
+  //   return () => {
+  //     inputEl.removeEventListener("input", handleInputChange);
+  //   };
+  // }, []);
+
   const insertMarkdown = (before: string, after: string, value: string) => {
     if (selectionStart !== -1 && selectionEnd !== -1) {
       const prefix = value.substring(0, selectionStart);
@@ -88,10 +138,10 @@ const CreateMessage = () => {
       let newValue = prefix + selected + suffix;
       setSelectionStart(-1);
       setSelectionEnd(-1);
-      // const inputEl = document.getElementById(
-      //   "createMessageInput"
-      // ) as HTMLInputElement;
-
+    
+   const inputEl = document.getElementById(
+     "createMessageInput"
+   ) as HTMLInputElement;
       if (value.includes(before) && value.includes(after)) {
         newValue = prefix + selectedText + suffix;
       }
@@ -140,10 +190,9 @@ const CreateMessage = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const uploadFile = async () => {
-      // const file = Array.from(event.target.files)[0];
-      // const inputEl = document.getElementById(
-      //   "createMessageInput"
-      // ) as HTMLInputElement;
+      const inputEl = document.getElementById(
+        "createMessageInput"
+      ) as HTMLInputElement;
       // const record = await uploadService.uploadMessageAttachment(
       //   e.target.files
       // );
@@ -152,7 +201,7 @@ const CreateMessage = () => {
       // setImageUrl(record!.url);
       // setValue("imageUrl", record?.url);
       const id = record?.id;
-      setValue("files", id!);
+      setValue("attachments", id!);
       setMessageAttachmentUrls([...messageAttachmentUrls, record?.url!]);
       setMessageAttachmentRecords([...messageAttachmentRecords, record]);
       inputEl.value = inputEl.value + `![${record?.name}](${record?.url})`;
@@ -160,7 +209,7 @@ const CreateMessage = () => {
     uploadFile();
   };
   return (
-    <div className=" absolute  bottom-2  max-h-full w-full  bg-white   pt-10  dark:border-white/20 dark:bg-gray-800 md:border-t-0 md:border-transparent md:!bg-transparent ">
+    <div className=" absolute  bottom-2  max-h-full w-full     ">
       <form
         onSubmit={handleSubmit(sendMessage)}
         className="relative mx-4  flex"
@@ -170,7 +219,7 @@ const CreateMessage = () => {
             <textarea
               id="createMessageInput"
               rows={1}
-              className="create-message-input h-auto max-h-96 w-full resize-none  rounded-xl  bg-gray-100 py-3.5 pl-4 pr-12 text-lg font-semibold text-gray-500  focus:outline-none dark:bg-zinc-600/90 dark:text-zinc-300"
+              className="create-message-input h-auto max-h-96 w-full resize-none  rounded-xl  bg-gray-100 py-3.5 pl-4 pr-12 text-lg font-semibold text-gray-500  focus:outline-none dark:bg-zinc-600 dark:text-zinc-300"
               {...register("content", {
                 required: true,
                 maxLength: 2400,
@@ -180,9 +229,17 @@ const CreateMessage = () => {
                 e.currentTarget.style.height = "auto";
                 e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
                 setCharacterCount(e.currentTarget.value.length);
-
                 if (characterCount >= 2400) {
                   e.preventDefault();
+                }
+
+                const containsScriptTag =
+                  /<script\b[^>]*>([\s\S]*?)<\/script>/gm.test(e.target.value);
+                if (containsScriptTag) {
+                  e.target.value = e.target.value.replace(
+                    /<script\b[^>]*>([\s\S]*?)<\/script>/gm,
+                    ""
+                  );
                 }
               }}
               onKeyDown={(e) => {
@@ -192,53 +249,16 @@ const CreateMessage = () => {
                 }
               }}
               onSelect={(e) => {
-                const selectedValue = e.target.value.slice(
-                  e.target.selectionStart,
-                  e.target.selectionEnd
+                const inputElement = e.target as HTMLInputElement;
+                const selectedValue = inputElement.value.slice(
+                  inputElement?.selectionStart!,
+                  inputElement?.selectionEnd!
                 );
                 setSelectedText(selectedValue);
-                setSelectionStart(e.target.selectionStart);
-                setSelectionEnd(e.target.selectionEnd);
+                setSelectionStart(inputElement?.selectionStart!);
+                setSelectionEnd(inputElement?.selectionEnd!);
               }}
             ></textarea>
-
-            {/* {selectedText && (
-              <div className="absolute bottom-14  my-2 flex justify-center space-x-4 rounded bg-zinc-900 p-2 text-gray-300">
-                <button
-                  type="button"
-                  onClick={() => insertMarkdown("**", "**", selectedText)}
-                >
-                  <Tooltip content="Bold" color="invert" placement="top">
-                    <FaBold />
-                  </Tooltip>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertMarkdown("*", "*", selectedText)}
-                >
-                  <Tooltip content="Italic" color="invert" placement="top">
-                    <FaItalic />
-                  </Tooltip>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertMarkdown("~~", "~~", selectedText)}
-                >
-                  <Tooltip
-                    content="StrikeThrough"
-                    color="invert"
-                    placement="top"
-                  >
-                    <FaStrikethrough />
-                  </Tooltip>
-                </button>
-                <button type="button" onClick={handleInsertImage}>
-                  <Tooltip content="Image" color="invert" placement="top">
-                    <FaImage />
-                  </Tooltip>
-                </button>
-              </div>
-            )} */}
             <TextFormattingToolbar
               selectedText={selectedText}
               insertMarkdown={insertMarkdown}
@@ -250,7 +270,7 @@ const CreateMessage = () => {
             />
 
             <div className="absolute bottom-[3.75rem] right-2 ">
-              <div className="flex space-x-3">
+              <div className="flex items-center justify-center space-x-3">
                 <div className="  ">
                   <Tooltip
                     content="Upload image"
@@ -279,20 +299,6 @@ const CreateMessage = () => {
                 </div> */}
               </div>
             </div>
-
-            {/* 
-            <div className="absolute bottom-[3.75rem] right-[4.5rem] pb-1 pr-2  text-sm">
-              <MessagingGuidelines />
-            </div>
-            <div
-              id="charLimit"
-              className={` absolute bottom-[3.75rem] right-2 text-sm  ${
-                characterCount <= 2400 ? "text-zinc-300" : "text-red-400"
-              }`}
-            >
-              {characterCount}/2400
-            </div>
- */}
 
             <button
               type="submit"

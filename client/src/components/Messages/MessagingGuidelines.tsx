@@ -13,16 +13,12 @@ import { Tooltip } from "@nextui-org/react";
 const MessagingGuidelines = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-
-  
   return (
     <MyModal
       buttonIcon={
-  
-          <Tooltip content="Messaging GuideLine" color="invert" placement="top">
-            <FaQuestionCircle size={18} className="text-gray-300" />
-          </Tooltip>
-
+        <Tooltip content="Messaging GuideLine" color="invert" placement="top">
+          <FaQuestionCircle size={18} className="text-gray-300" />
+        </Tooltip>
       }
       title="Messaging Guidelines for using Markdown"
     >

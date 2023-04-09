@@ -37,7 +37,9 @@ const Server: NextPage = () => {
     }
   };
   useEffect(() => {
-    fetchServerData(id);
+    if (id) {
+     fetchServerData(id);
+    }
   }, [id]);
 
   return (
