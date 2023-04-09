@@ -2,134 +2,63 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
 import { observer } from "mobx-react";
-import { useState } from "react";
-import { pb } from "../../utils/pocketBase";
-import { AppState } from "../../AppState";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
-import type { UsersRecord, UsersResponse } from "../../PocketBaseTypes/pocketbase-types";
-import { Collections } from "../../PocketBaseTypes/pocketbase-types";
-import { getRedirectOrPath } from "../../utils/Redirect";
-import { membersService } from "@/services/MembersService";
 import { authsService } from "../services";
-import { UserLogin } from "../../PocketBaseTypes";
+import type { UserLogin } from "../../PocketBaseTypes";
 import { useForm } from "react-hook-form";
+import Pop from "../../utils/Pop";
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
 
- const {
-   register,
-   handleSubmit,
-   watch,
-   setValue,
-   getValues,
-   reset,
-   formState: { errors },
- } = useForm({
-   defaultValues: {
-      username: "",
-      email: "",
-      password: "",
-      passwordConfirm: "",
-   },
- });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserLogin>();
 
-  async function login() {
-  try {
-      const user = await pb
-        .collection("users")
-        .authWithPassword(username, password);
-      console.log(user);
-      AppState.user = user.record;
-      AppState.user.token = user.token;
-      console.log(AppState.user);
-      await membersService.getUserServers(user.record.id);
-      const path = getRedirectOrPath();
-      router.push(path);
-  } catch (error) {
-    console.error(error)
-  }
-  }
-
- 
-
-  async function signUp(): Promise<void> {
+  async function onSubmit(data: UserLogin) {
     try {
-      const data = {
-        username,
-        password,
-        email,
-        avatarUrl: `https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${username}`,
-        passwordConfirm: confirmPassword,
-      };
-      
-      await authsService.signUp(data)
-    } catch (err) {
-      console.error(err);
+      // console.log(data);
+      if (!data.email || !data.password) {
+        return Pop.error("please provide an email and password");
+      }
+      const path = await authsService.login(data);
+      await router.push(path)
+    } catch (error) {
+      Pop.error(error);
     }
   }
-
-  // function signOut() {
-  //   pb.authStore.clear();
-  // }
-
-  // useEffect(() => {
-
-  // }, []);
 
   return (
     <>
       <main className="  dark flex  min-h-screen w-full flex-col  items-center justify-center bg-gray-300 dark:bg-zinc-900">
-        <div className="shadow-grey-900 z-10 container  flex w-1/2   flex-col items-center justify-center  rounded-lg bg-gray-200 p-5 shadow-2xl">
+        <div className="shadow-grey-900 container z-10  flex w-1/2   flex-col items-center justify-center  rounded-lg bg-gray-200 p-5 shadow-2xl">
           <h1 className="my-10 text-4xl font-bold ">Login</h1>
           <form
+            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-y-5"
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
           >
             <input
-              placeholder="Username"
-              type="text"
-              value={username}
+              {...register("email", { required: true })}
+              placeholder={"email"}
+              type="email"
               className="login-input"
-              onChange={(e) => setUsername(e.target.value)}
             />
+            {errors.email && <span>This field is required</span>}
             <input
-              placeholder="Email"
-              type="text"
-              value={email}
-              className="login-input"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <input
-              placeholder="Password"
+              {...register("password", { required: true, minLength: 8 })}
               type="password"
-              value={password}
+              name="password"
+              placeholder={"password"}
               className="login-input"
-              onChange={(e) => setPassword(e.target.value)}
             />
-            <input
-              placeholder="Confirm Password"
-              type="password"
-              value={confirmPassword}
-              className="login-input"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <button onClick={signUp}>Sign Up</button>
-            <button onClick={login}>Login</button>
+            {errors.password && <span>This field is required</span>}
+            <input type="submit" />
           </form>
+          <Link href={"/signup"}>go to signup</Link>
         </div>
-        <div className="container flex items-center justify-center">
-          <User user={AppState.user as UsersResponse} />
-        </div>
-
         <div className="shape-blob"></div>
         <div className="shape-blob one"></div>
         <div className="shape-blob two"></div>
@@ -138,24 +67,24 @@ function Login() {
   );
 }
 
-const User = ({ user } : {user: UsersResponse}) => {
-  if (AppState.user != null) {
-    return (
-      <div className="container mt-5  flex w-1/2 flex-col items-center justify-center rounded-lg bg-slate-300 p-3">
-        <h1 className="my-3 font-bold">Welcome!</h1>
-        <h2>{user.username}</h2>
-        <img
-          className="w-1/4 rounded-full"
-          src={user.avatarUrl}
-          alt={user.username}
-        />
-        <p>Email: {user.email}</p>
-        <p>UserName: {user.username}</p>
-        <Link href="/AccountPage">Visit Account Page </Link>
-      </div>
-    );
-  } else return <div></div>;
-};
+// const User = ({ user }: { user: UsersResponse }) => {
+//   if (AppState.user != null) {
+//     return (
+//       <div className="container mt-5  flex w-1/2 flex-col items-center justify-center rounded-lg bg-slate-300 p-3">
+//         <h1 className="my-3 font-bold">Welcome!</h1>
+//         <h2>{user.username}</h2>
+//         <img
+//           className="w-1/4 rounded-full"
+//           src={user.avatarUrl}
+//           alt={user.username}
+//         />
+//         <p>Email: {user.email}</p>
+//         <p>UserName: {user.username}</p>
+//         <Link href="/AccountPage">Visit Account Page </Link>
+//       </div>
+//     );
+//   } else return <div></div>;
+// };
 export default observer(Login);
 
 /**

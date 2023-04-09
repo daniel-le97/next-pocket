@@ -1,10 +1,10 @@
 FROM golang:1.19.5-alpine3.17
 
 RUN apk add -v build-base
-RUN apk add -v ca-certificates
-RUN apk add --no-cache \
-    unzip \
-    openssh
+# RUN apk add -v ca-certificates
+# RUN apk add --no-cache \
+#     unzip \
+#     openssh
 
 WORKDIR /app
 

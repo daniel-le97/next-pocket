@@ -23,16 +23,12 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   const user = AppState.user || pb.authStore.model;
   useEffect(() => {
     // if you want it to be fetch before anything else put your call here
-    // if (!user) return;
     (async () => {
       try {
         if (!user) return;
         await membersService.getUserServers(user.id);
-        // await usersService.getUserFriendRecord()
-        usersStatusService.setStatusOnline(user.id, 'online');
+        await usersStatusService.setStatusOnline(user.id, 'online');
         usersStatusService.handleListeners(false, user.id)
-        // console.log('user', user);
-        
       } catch (error) {
         Pop.error(error);
       }
@@ -41,13 +37,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     return () => {
       if (user) {
         usersStatusService.handleListeners(true, user.id)
-        // usersStatusService.setStatusOnline(user.id, false)
-        // usersStatusService.handle(true, user.id)
-        logger.assert("user logged out");
-        // usersService.setLastChannel()
       }
     };
-  }, []);
+  }, [user]);
 
   return (
     <Layout>

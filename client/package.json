@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build-serve": "npm run pre-build && next build && next export && cp -r ./out ../pocketbase/static",
-    "pre-build": "node scripts/pre-build.js",
+    "build-serve": "next build && next export && cp -r ./out ../pocketbase/static",
+    "build-pre": "node scripts/pre-build.js",
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
