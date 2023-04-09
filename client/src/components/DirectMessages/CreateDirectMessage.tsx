@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { pb } from "../../../utils/pocketBase";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { AppState } from "../../../AppState";
-import { FaLaugh, FaSmile } from "react-icons/fa";
+import { FaBold, FaImage, FaItalic, FaLaugh, FaSmile, FaStrikethrough } from "react-icons/fa";
 import { Dialog } from "@headlessui/react";
 import InputEmoji from "react-input-emoji";
 import { useRouter } from "next/router";
@@ -16,6 +16,11 @@ const CreateDirectMessage = () => {
   const id = router.query.id?.toString();
   const [characterCount, setCharacterCount] = useState(0);
   const [friendRecordId, setFriendRecordId] = useState("");
+
+
+  const [selectedText, setSelectedText] = useState("");
+  const [selectionStart, setSelectionStart] = useState(-1);
+  const [selectionEnd, setSelectionEnd] = useState(-1);
   const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       content: "",
@@ -76,8 +81,31 @@ const CreateDirectMessage = () => {
               handleSubmit(sendMessage)();
             }
           }}
+          onSelect={(e) => {
+            const selectedValue = e.target.value.slice(
+              e.target.selectionStart,
+              e.target.selectionEnd
+            );
+            setSelectedText(selectedValue);
+            setSelectionStart(e.target.selectionStart);
+            setSelectionEnd(e.target.selectionEnd);
+          }}
         ></textarea>
 
+        <div className="my-2 flex justify-center space-x-2">
+          <button onClick={() => insertMarkdown("**", "**")}>
+            <FaBold />
+          </button>
+          <button onClick={() => insertMarkdown("*", "*")}>
+            <FaItalic />
+          </button>
+          <button onClick={() => insertMarkdown("~~", "~~")}>
+            <FaStrikethrough />
+          </button>
+          <button onClick={handleInsertImage}>
+            <FaImage />
+          </button>
+        </div>
         <p
           id="charLimit"
           className={` absolute bottom-14 right-2 text-sm  ${

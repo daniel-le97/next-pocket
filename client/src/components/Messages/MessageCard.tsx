@@ -88,7 +88,7 @@ const MessageCard = ({
               return (
                 <div className="markdown-container ">
                   <div className=" markdown-banner ">
-                    {/* <span className="language-label">{language}</span> */}
+                    <span className="language-label">{className}</span>
                     <button
                       onClick={handleCopyClick}
                       className="markdown-copy-btn"

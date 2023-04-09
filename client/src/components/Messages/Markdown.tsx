@@ -37,9 +37,9 @@ const Markdown = ({ markdown }) => {
           const strlineNumbers = RE?.test(metadata)
             ? RE?.exec(metadata)[1]
             : "0";
-          const highlightLines = rangeParser(strlineNumbers);
+          const highlightLines = rangeParser(strlineNumbers!);
           const highlight = highlightLines;
-          const data: string = highlight.includes(applyHighlights)
+          const data: string | null = highlight.includes(applyHighlights)
             ? "highlight"
             : null;
           return { data };
@@ -53,7 +53,6 @@ const Markdown = ({ markdown }) => {
           style={syntaxTheme}
           language={hasLang[1]}
           PreTag="div"
-        
           showLineNumbers={true}
           wrapLines={hasMeta}
           useInlineStyles={true}

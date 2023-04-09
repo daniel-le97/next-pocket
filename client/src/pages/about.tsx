@@ -11,6 +11,7 @@ import router from "next/router";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import rehypeRaw from "rehype-raw";
 import CodeBlock from "~/utils/CodeBlock";
+import Markdown from "@/components/Messages/Markdown";
 const AboutPage: NextPage = () => {
   const user = AppState.user;
   const servers = AppState.userServers;
@@ -35,6 +36,7 @@ const AboutPage: NextPage = () => {
             className="markdown"
             rehypePlugins={[rehypeRaw]}
             linkTarget="_blank"
+            
             components={{
               code: ({ inline, className, children, ...props }) => {
                 if (inline) {
@@ -47,13 +49,8 @@ const AboutPage: NextPage = () => {
                 return (
                   <div className="markdown-container ">
                     <div className=" markdown-banner ">
-                      {/* <span className="language-label">{language}</span> */}
-                      <button
-                       
-                        className="markdown-copy-btn"
-                      >
-                        Copy
-                      </button>
+                      <span className="language-label items-center flex">{className}</span>
+                      <button className="markdown-copy-btn">Copy</button>
                     </div>
                     <CodeBlock
                       language={className && className.replace(/language-/, "")}
