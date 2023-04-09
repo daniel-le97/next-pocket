@@ -7,23 +7,37 @@ import { pb } from "../../utils/pocketBase";
 import { AppState } from "../../AppState";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
-import type { UsersResponse } from "../../PocketBaseTypes/pocketbase-types";
+import type { UsersRecord, UsersResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { getRedirectOrPath } from "../../utils/Redirect";
 import { membersService } from "@/services/MembersService";
+import { authsService } from "../services";
+import { UserLogin } from "../../PocketBaseTypes";
+import { useForm } from "react-hook-form";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
 
-  //  useEffect(() => {
-  //   const loggedInUser = pb.authStore.model
-  //   if () {
-
-  //   }
-  //  })
+ const {
+   register,
+   handleSubmit,
+   watch,
+   setValue,
+   getValues,
+   reset,
+   formState: { errors },
+ } = useForm({
+   defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+   },
+ });
 
   async function login() {
   try {
@@ -42,6 +56,8 @@ function Login() {
   }
   }
 
+ 
+
   async function signUp(): Promise<void> {
     try {
       const data = {
@@ -49,18 +65,10 @@ function Login() {
         password,
         email,
         avatarUrl: `https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${username}`,
-        passwordConfirm: password,
+        passwordConfirm: confirmPassword,
       };
-      const createdUser = await pb.collection("users").create(data);
-      const statusData = {
-        user: createdUser.id,
-        isOnline: true,
-      };
-      await pb
-        .collection(Collections.UsersStatus)
-        .create(statusData);
-      await login();
-      // await loginWithGithub();
+      
+      await authsService.signUp(data)
     } catch (err) {
       console.error(err);
     }
@@ -106,6 +114,13 @@ function Login() {
               value={password}
               className="login-input"
               onChange={(e) => setPassword(e.target.value)}
+            />
+            <input
+              placeholder="Confirm Password"
+              type="password"
+              value={confirmPassword}
+              className="login-input"
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <button onClick={signUp}>Sign Up</button>
             <button onClick={login}>Login</button>

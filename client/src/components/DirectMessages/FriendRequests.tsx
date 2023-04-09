@@ -2,34 +2,23 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { friendRequestService } from "@/services/FriendRequestsService";
+import { friendsService } from "@/services";
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
-import { useEffect } from "react";
 import Pop from "../../../utils/Pop";
 import UserBadge from "../GlobalComponents/UserBadge";
 import TimeAgo from "timeago-react";
-import { UsersResponse } from "PocketBaseTypes";
+import type { UsersResponse } from "PocketBaseTypes";
 
 const FriendRequests = () => {
   const sentRequests = AppState.friends?.filter(f => f.status === "pending" && f.requester?.id == AppState.user?.id  ) || []
   const receivedRequests = AppState.friends?.filter(f => f.status === "pending" && f.requester?.id != AppState.user?.id) || []
 
-  useEffect(() => {
-    if (AppState.userFriendId) {
-      (async () => {
-        try {
-          await friendRequestService.getUserFriendRequests();
-        } catch (error) {
-          Pop.error(error);
-        }
-      })();
-    }
-  }, [AppState.userFriendId]);
+
 
   async function handleAccept(friendRequestId: string) {
     try {
-      await friendRequestService.acceptFriendRequest(friendRequestId);
+      await friendsService.accept(friendRequestId)
     } catch (error) {
       Pop.error(error);
     }
@@ -37,7 +26,7 @@ const FriendRequests = () => {
 
   async function handleDecline(friendRequestId: string) {
     try {
-      await friendRequestService.declineFriendRequest(friendRequestId);
+      await friendsService.delete(friendRequestId);
     } catch (error) {
       Pop.error(error);
     }

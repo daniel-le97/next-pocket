@@ -7,7 +7,7 @@ import { observer } from "mobx-react";
 import { BsPlusCircleFill } from "react-icons/bs";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { ChangeEventHandler, Fragment, useState } from "react";
 import { serversService } from "../../services/ServersService";
 import { uploadService } from "../../services/UploadsService";
 import { pb } from "../../../utils/pocketBase";
@@ -46,7 +46,6 @@ const CreateServer = () => {
       name: "",
       image: "",
       members: [user?.id],
-      // imageUrl: "",
       owner: user?.id,
       description: "",
       private:false
@@ -66,12 +65,12 @@ const CreateServer = () => {
     }
   };
 
-  const handleFileChange = (event: any) => {
+  const handleFileChange = (event: ChangeEventHandler<HTMLInputElement>) => {
     const uploadFile = async () => {
       // const file = Array.from(event.target.files)[0];
 
       const record = await uploadService.uploadFile(event.target.files);
-      setImageUrl(record.url);
+      setImageUrl(record?.url);
       // setValue("imageUrl", record?.url);
       const id = record?.id;
       setValue("image", id!);
