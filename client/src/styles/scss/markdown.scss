@@ -66,7 +66,7 @@
   text-decoration: underline;
 }
 .markdown img {
-  @apply inline-block h-auto max-h-96  w-auto  max-w-full  rounded border-2 border-zinc-900 object-cover shadow-sm transition-all hover:border-blue-400 hover:shadow-md hover:shadow-zinc-900
+  @apply inline-block h-auto max-h-96  w-auto  max-w-full  rounded border-2 border-zinc-900 object-cover shadow-sm transition-all hover:border-blue-400 hover:shadow-md hover:shadow-zinc-900;
 }
 
 /* Emphasis */

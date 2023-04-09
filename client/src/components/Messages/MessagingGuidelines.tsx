@@ -18,11 +18,11 @@ const MessagingGuidelines = () => {
   return (
     <MyModal
       buttonIcon={
-        <div className="flex w-full  justify-between pb-1 pr-2 ">
+  
           <Tooltip content="Messaging GuideLine" color="invert" placement="top">
             <FaQuestionCircle size={18} className="text-gray-300" />
           </Tooltip>
-        </div>
+
       }
       title="Messaging Guidelines for using Markdown"
     >
@@ -58,6 +58,9 @@ const MessagingGuidelines = () => {
           </li>
           <li>
             Use <code>![alt text](image url)</code> for images.
+          </li>
+          <li>
+            Use <code> [![](image url)](image url)</code> for Link images.
           </li>
         </ul>
       </div>
