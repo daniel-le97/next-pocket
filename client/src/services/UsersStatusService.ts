@@ -28,18 +28,19 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
     logger.log("subscribing to UsersStatusService for DM view");
     const subscribe = await this.pb.subscribe(
       "*",
-      async ({ action, record }) => {
+      ({ action, record }) => {
         const status = record as unknown as UsersStatusResponse;
         // const friends = AppState.friends?.friends
-        logger.log({ action, record });
+        // logger.log({ action, record });
         const isFriend = AppState.friends?.find(f => f.friend?.id == status.user)
         if (!isFriend) return;
-        logger.log("status", status.status);
-        if (action !== "delete") {
-          await friendsService.getUserFriendsList();
-        } else {
-          filterStateArray("users", record, "id");
-        }
+        // logger.log("status", status.status);
+        isFriend.activityStatus = status.status
+        // if (action !== "delete") {
+        //   await friendsService.getUserFriendsList();
+        // } else {
+        //   filterStateArray("users", record, "id");
+        // }
       }
     );
     return subscribe;
