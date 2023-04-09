@@ -68,21 +68,19 @@
 }
 
 .markdown p:has(img) {
-  @apply flex  flex-wrap  bg-gray-900/20  items-start ;
+  @apply flex  flex-wrap  bg-gray-900/20  items-start w-fit ;
 }
 
 
 .markdown img {
   @apply m-1 inline-block h-auto  max-h-96 w-auto max-w-full  rounded border-2 border-zinc-900 object-cover shadow-sm transition-all hover:border-blue-400 hover:shadow-md hover:shadow-zinc-900;
 }
-.markdown img:first-child {
-  flex-basis: 50%;
-  order: 1;
-}
 
-.markdown img:first-child ~ img {
-  flex-basis: calc(25% - 1em);
-  order: 2;
+
+.markdown p:has(> img:nth-child(2))  img {
+  @apply h-44
+}
+.markdown p:has(> img:nth-child(3))  img {
   @apply h-28
 }
 /* Emphasis */
