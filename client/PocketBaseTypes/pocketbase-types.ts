@@ -72,6 +72,8 @@ export type FileUploadsRecord = {
 	url?: string
 	user: RecordIdString
 	status?: FileUploadsStatusOptions
+	directMessage?: RecordIdString
+	message?: RecordIdString
 }
 
 export enum FriendsStatusOptions {
@@ -103,9 +105,7 @@ export enum MessageAttachmentsStatusOptions {
 export type MessageAttachmentsRecord = {
 	file?: string[]
 	url?: string
-	user: RecordIdString
 	status?: MessageAttachmentsStatusOptions
-	channel?: RecordIdString
 	message?: RecordIdString
 }
 
