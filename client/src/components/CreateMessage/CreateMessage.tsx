@@ -7,32 +7,49 @@ import { AppState } from "../../../AppState";
 import { messageService } from "../../services/MessagesService";
 import DOMPurify from "dompurify";
 import type {
+  DirectMessagesRecord,
   FileUploadsResponse,
   MessagesRecord,
 } from "../../../PocketBaseTypes/pocketbase-types";
 import { useForm } from "react-hook-form";
 import Pop from "../../../utils/Pop";
 
-import { uploadService } from "@/services";
+import { directMessageService, uploadService } from "@/services";
 import MessageAttachments from "./MessageAttachments";
 import TextFormattingToolbar from "./TextFormattingToolbar";
 import CreateMessageToolbar from "./CreateMessageToolbar";
+import { useRouter } from "next/router";
 const CreateMessage = () => {
   const [selectedText, setSelectedText] = useState("");
   const [selectionStart, setSelectionStart] = useState(-1);
   const [selectionEnd, setSelectionEnd] = useState(-1);
   const user = AppState.user;
+  const router = useRouter();
   const [characterCount, setCharacterCount] = useState(0);
   const [messageAttachmentRecords, setMessageAttachmentRecords] = useState<
     FileUploadsResponse[]
   >([]);
-  const { register, handleSubmit, reset, setValue } = useForm({
-    defaultValues: {
-      content: "",
-      user: user!.id,
-      channel: "",
-      attachments: "",
-    },
+
+  const defaultValues = {
+    content: "",
+    attachments: "",
+  };
+
+  if (router.pathname === "/DirectMessages/[id]") {
+    defaultValues.sender = user!.id;
+    defaultValues.friendRecord = "";
+  } else {
+    defaultValues.user = user!.id;
+    defaultValues.channel = "";
+  }
+
+  // if (router.pathname === "/DirectMessages/[id]") {
+  //   defaultValues.sender = user!.id;
+  //   delete defaultValues.channel;
+  //   defaultValues.friendRecord = "test";
+  // }
+  const { register, handleSubmit, reset, setValue, getValues } = useForm({
+    defaultValues,
   });
 
   const sendMessage = async (data: MessagesRecord) => {
@@ -54,20 +71,30 @@ const CreateMessage = () => {
 
       data.channel = AppState.activeChannel?.id;
 
-      console.log(data.content);
+      // console.log(data.content);
 
+      if (router.pathname === "/DirectMessages/[id]") {
+        const directMessageData = data as DirectMessagesRecord;
+        delete directMessageData.channel;
+        setValue("friendRecord", router.query.id);
+        await directMessageService.createDirectMessage(directMessageData);
+        reset();
+        inputEl.style.height = "initial";
+        setCharacterCount(0);
+        setMessageAttachmentRecords([]);
+      }
       await messageService.sendMessage(data, messageAttachmentRecords);
       reset();
-
       inputEl.style.height = "initial";
-
       setCharacterCount(0);
-
       setMessageAttachmentRecords([]);
     } catch (error) {
       Pop.error(error);
     }
   };
+  useEffect(() => {
+    console.log(defaultValues);
+  }, []);
 
   useEffect(() => {
     if (selectedText) {
@@ -142,7 +169,7 @@ const CreateMessage = () => {
         onSubmit={handleSubmit(sendMessage)}
         className="relative mx-4  flex"
       >
-        {AppState.activeChannel ? (
+        {AppState.user ? (
           <>
             <textarea
               id="createMessageInput"
@@ -216,5 +243,4 @@ const CreateMessage = () => {
     </div>
   );
 };
-
 export default observer(CreateMessage);

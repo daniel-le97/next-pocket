@@ -22,6 +22,8 @@ class DirectMessageService {
    * @returns The newly created direct message object.
    */
   async createDirectMessage(message: DirectMessagesRecord) {
+    console.log(message);
+    
     const res = await pb
       .collection(Collections.DirectMessages)
       .create<DirectMessageWithUser>(message, {

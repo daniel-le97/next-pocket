@@ -14,19 +14,19 @@ import Loader from "../GlobalComponents/Loader";
 import MessageCard from "./MessageCard";
 const MessageScroll = () => {
   async function fetchMore() {
-    console.log(AppState.page, AppState.totalPages);
+    // console.log(AppState.page, AppState.totalPages);
     
     const channelId = AppState.activeChannel?.id;
     AppState.page++;
     await messageService.getMessagesByChannelId(channelId!);
-    console.log("page", AppState.page, "totalPage", AppState.totalPages);
+    // console.log("page", AppState.page, "totalPage", AppState.totalPages);
   }
   let subscribeMessage: UnsubscribeFunc | null;
   let subscribeLike: UnsubscribeFunc | null;
   useEffect(() => {
     (async () => {
       try {
-        console.log(AppState.page, AppState.totalPages);
+        // console.log(AppState.page, AppState.totalPages);
         
         // if(subscribeLike && subscribeMessage) return console.log("already subscribed")
         subscribeMessage = await messageService.subscribe();

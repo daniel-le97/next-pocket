@@ -13,6 +13,7 @@ import { withAuth } from "../../middleware";
 import { directMessageService, friendsService } from "../../services";
 import DirectMessageScroll from "@/components/DirectMessages/DirectMessageScroll";
 import CreateDirectMessage from "@/components/DirectMessages/CreateDirectMessage";
+import CreateMessage from "@/components/CreateMessage/CreateMessage";
 
 
 const DirectMessages: NextPage = () => {
@@ -67,7 +68,8 @@ const DirectMessages: NextPage = () => {
           <FriendsBar />
           <div className="message-container">
             {router.query.id && <DirectMessageScroll />}
-            <CreateDirectMessage />
+            {/* <CreateDirectMessage /> */}
+            <CreateMessage/>
           </div>
         </div>
       </main>

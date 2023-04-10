@@ -38,7 +38,7 @@ class MessageService {
 
     if (messageAttachmentRecords) {
       for await (const messageAttachmentRecord of messageAttachmentRecords) {
-        messageAttachmentRecord.status =  FileUploadsStatusOptions.uploaded
+        messageAttachmentRecord.status = FileUploadsStatusOptions.uploaded;
         messageAttachmentRecord.message = messageRecord.id;
         await pb
           .collection(Collections.FileUploads)
@@ -77,7 +77,7 @@ class MessageService {
         sort: "-created",
         expand: "user,likes(message)",
       });
-    console.log("messages", res);
+    // console.log("messages", res);
 
     AppState.messages = res.items;
   }
@@ -95,7 +95,7 @@ class MessageService {
     });
 
     const unMessages = res.items as unknown as TMessageWithUser[];
-    console.log("unMessages", unMessages);
+    // console.log("unMessages", unMessages);
 
     action(() => {
       const messages = unMessages.map((message, index) => {

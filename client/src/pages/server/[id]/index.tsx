@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { type NextPage } from "next";
+
 import Head from "next/head";
 import ChannelsBar from "@/components/ChannelsBar/ChannelsBar";
 import { Fragment, useEffect, useState } from "react";
@@ -19,6 +19,7 @@ import TopNavigation from "@/components/Messages/TopNavigation";
 import MessageScroll from "@/components/Messages/MessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
 import { Transition } from "@headlessui/react";
+import { NextPage } from "next";
 
 const Server: NextPage = () => {
   const router = useRouter();
@@ -26,6 +27,8 @@ const Server: NextPage = () => {
 
   const fetchServerData = async (id: string) => {
     try {
+      console.log("fetching server data",id);
+      
       AppState.messages = [];
       AppState.messageLikes = [[]];
       await channelsService.getChannelsByServerId(id);
@@ -36,10 +39,10 @@ const Server: NextPage = () => {
     }
   };
   useEffect(() => {
-    if (id) {
-      fetchServerData(id);
+    if (router.query.id) {
+      fetchServerData(router.query.id);
     }
-  }, [id]);
+  }, []);
 
   return (
     <>
