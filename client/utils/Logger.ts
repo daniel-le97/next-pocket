@@ -14,7 +14,7 @@ type Logger = {
 };
 
 function log(type: LogLevel, content: any[]): void {
-  const dev = true;
+  const dev = process.env.NODE_ENV === "development";
   if (dev) {
     console[type](
       `[${type}] :: ${new Date().toLocaleTimeString()} :: `,
