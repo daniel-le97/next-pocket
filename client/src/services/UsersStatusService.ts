@@ -1,12 +1,18 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { AppState } from "AppState";
-import type { UsersStatusResponse, UsersStatusStatusOptions, UsersStatusWithUser } from "PocketBaseTypes";
+import type {
+  UsersStatusResponse,
+  UsersStatusStatusOptions,
+  UsersStatusWithUser,
+} from "PocketBaseTypes";
+import { Friend } from "PocketBaseTypes";
 import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
 import { logger } from "utils/Logger";
 import { pb } from "~/utils/pocketBase";
 import { BaseT } from "./BaseService";
 import { friendsService } from "./FriendsService";
+import { action } from "mobx";
 
 class UsersStatusService extends BaseT<UsersStatusWithUser> {
   async subscribe() {
@@ -28,19 +34,19 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
     logger.log("subscribing to UsersStatusService for DM view");
     const subscribe = await this.pb.subscribe(
       "*",
-      ({ action, record }) => {
+      ({ action: method, record }) => {
         const status = record as unknown as UsersStatusResponse;
         // const friends = AppState.friends?.friends
-        // logger.log({ action, record });
-        const isFriend = AppState.friends?.find(f => f.friend?.id == status.user)
-        if (!isFriend) return;
-        // logger.log("status", status.status);
-        isFriend.activityStatus = status.status
-        // if (action !== "delete") {
-        //   await friendsService.getUserFriendsList();
-        // } else {
-        //   filterStateArray("users", record, "id");
-        // }
+        action(() => {
+          if (!AppState.friends) return;
+          const index = AppState.friends.findIndex(
+            (f) => f.friend?.id == status.user
+          );
+          if (!AppState.friends[index]) return;
+          // @ts-expect-error it is there
+          AppState.friends[index] = {...AppState.friends[index], activityStatus: status.status}
+
+        })();
       }
     );
     return subscribe;
@@ -58,25 +64,34 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
     return status;
   }
   async getOne(id: string) {
-    const status = await this.pb.getFullList<UsersStatusWithUser>({ filter: `id = "${id}"`, expand: "user" })
-    return status[0]
+    const status = await this.pb.getFullList<UsersStatusWithUser>({
+      filter: `id = "${id}"`,
+      expand: "user",
+    });
+    return status[0];
   }
 
-  async setStatusOnline(user = AppState.user?.id, status: keyof typeof UsersStatusStatusOptions) {
-    let userStatus: UsersStatusWithUser
-    if (!user) return 
+  async setStatusOnline(
+    user = AppState.user?.id,
+    status: keyof typeof UsersStatusStatusOptions
+  ) {
+    let userStatus: UsersStatusWithUser;
+    if (!user) return;
     const foundStatus = await this.getUserStatus(user);
-    if (!foundStatus) return
+    if (!foundStatus) return;
     if (foundStatus.status != status) {
-      userStatus = await this.pb.update(foundStatus.id, { user, status: status || 'online' }, { expand: "user" });
-    }else userStatus = foundStatus
-    AppState.userStatus = userStatus
+      userStatus = await this.pb.update(
+        foundStatus.id,
+        { user, status: status || "online" },
+        { expand: "user" }
+      );
+    } else userStatus = foundStatus;
+    AppState.userStatus = userStatus;
   }
   async create(userId: string) {
     return await this.pb.create({ user: userId, status: "online" });
   }
 
-  
   /**
    * Description placeholder
    * @date 4/6/2023 - 1:35:30 PM
@@ -88,32 +103,33 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
     // console.log("handling", user);
 
     const handleVisibilityChange = async (e: Event) => {
-      e.preventDefault()
+      e.preventDefault();
       // @ts-expect-error it is there
-      const isPageRefresh = performance?.getEntriesByType("navigation")[0]?.type === 'reload'
+      const isPageRefresh =
+        performance?.getEntriesByType("navigation")[0]?.type === "reload";
       // const isPage = performance?.getEntriesByType("navigation")[0]?.type
-      if(!isPageRefresh) return
-      if (document.hidden)   {
-       await this.setStatusOnline(user, 'away');
-      }else{
-        await this.setStatusOnline(user, 'online');
+      if (!isPageRefresh) return;
+      if (document.hidden) {
+        await this.setStatusOnline(user, "away");
+      } else {
+        await this.setStatusOnline(user, "online");
       }
-    }
+    };
     const handleBeforeUnload = async (e: Event) => {
       // const userId = pb.authStore.model?.id
       e.preventDefault();
-      await this.setStatusOnline(user, 'offline');
+      await this.setStatusOnline(user, "offline");
       // await pb
       //   .collection("tests")
       //   .create({ test: `beforeunload `, user });
-    }
-    if(unload == true){
+    };
+    if (unload == true) {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      document.addEventListener("visibilitychange", handleVisibilityChange)
-      return
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+      return;
     }
-    window.addEventListener("beforeunload", handleBeforeUnload)
-    document.addEventListener("visibilitychange", handleVisibilityChange)
-}
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+  }
 }
 export const usersStatusService = new UsersStatusService("UsersStatus");
