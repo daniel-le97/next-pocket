@@ -17,13 +17,12 @@ import { withAuth, withMember } from "@/middleware";
 
 import TopNavigation from "@/components/Messages/TopNavigation";
 import MessageScroll from "@/components/Messages/MessageScroll";
-import CreateMessage from "@/components/Messages/CreateMessage";
+import CreateMessage from "@/components/CreateMessage/CreateMessage";
 import { Transition } from "@headlessui/react";
 
 const Server: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
-
 
   const fetchServerData = async (id: string) => {
     try {
@@ -38,7 +37,7 @@ const Server: NextPage = () => {
   };
   useEffect(() => {
     if (id) {
-     fetchServerData(id);
+      fetchServerData(id);
     }
   }, [id]);
 

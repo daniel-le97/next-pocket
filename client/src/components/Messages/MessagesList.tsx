@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react";
 import { pb } from "../../../utils/pocketBase";
 import { AppState } from "../../../AppState";
-import CreateMessage from "./CreateMessage";
+import CreateMessage from "../CreateMessage/CreateMessage";
 import noMessage from "../../assets/noMessages.png";
 import type { MessagesResponse } from "../../../PocketBaseTypes/pocketbase-types";
 import MessageCard from "./MessageCard";
@@ -25,11 +25,9 @@ const MessageList = () => {
   // };
 
   useEffect(() => {
-    messageService.filterSubscribe()
-    return messageService.filterSubscribe() as unknown as void
+    messageService.filterSubscribe();
+    return messageService.filterSubscribe() as unknown as void;
   }, []);
-
- 
 
   return (
     <div
@@ -46,7 +44,7 @@ const MessageList = () => {
           />
         ))
       ) : (
-        <div className=" absolute top-1/4 left-1/2">
+        <div className=" absolute left-1/2 top-1/4">
           <img src={noMessage.src} alt="" width={400} />
         </div>
       )}

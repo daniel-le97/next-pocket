@@ -7,7 +7,7 @@
 import Compressor from "compressorjs";
 import { useEffect, useState } from "react";
 import { AppState } from "../../AppState";
-import { Collections } from "../../PocketBaseTypes/pocketbase-types";
+import { Collections, FileUploadsResponse } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 
@@ -37,17 +37,17 @@ class UploadService {
       formData.append("user", user!.id);
       formData.append("status", "pending");
 
-    //   // If there is a previous document, delete the associated file and update the status
-    // try {
-    //   const previousFile = await this.getFileUploadStatusByUserId(user!.id);
-    //   if (previousFile) {
-    //     await this.deleteFile(user!.id, previousFile.id);
-    //   }
-    // } catch (error) {
-    //   if (error.response.status !== 404) {
-    //     throw error; // re-throw if it's not a 404 error
-    //   }
-    // }
+      //   // If there is a previous document, delete the associated file and update the status
+      // try {
+      //   const previousFile = await this.getFileUploadStatusByUserId(user!.id);
+      //   if (previousFile) {
+      //     await this.deleteFile(user!.id, previousFile.id);
+      //   }
+      // } catch (error) {
+      //   if (error.response.status !== 404) {
+      //     throw error; // re-throw if it's not a 404 error
+      //   }
+      // }
 
       const createdFile = await this.createFile(formData);
 
@@ -59,7 +59,7 @@ class UploadService {
 
       const updatedFile = await pb
         .collection(Collections.FileUploads)
-        .update(createdFile.id, { url: url });
+        .update<FileUploadsResponse>(createdFile.id, { url: url });
       return updatedFile;
     }
   }

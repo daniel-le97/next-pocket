@@ -2,9 +2,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { AppState } from "AppState";
 import { action } from "mobx";
-import type {
+import {
   DirectMessagesRecord,
   DirectMessagesResponse,
+  FileUploadsRecord,
+  FileUploadsResponse,
+  FileUploadsStatusOptions,
   MessageAttachmentsRecord,
   MessagesRecord,
   MessageWithUser,
@@ -23,7 +26,10 @@ class MessageService {
    * @param data - The message data to send
    * @returns The newly created message
    */
-  async sendMessage(data: MessagesRecord, messageAttachmentRecords:MessageAttachmentsRecord) {
+  async sendMessage(
+    data: MessagesRecord,
+    messageAttachmentRecords: FileUploadsResponse[]
+  ) {
     // console.log(data);
 
     const messageRecord = await pb
@@ -31,20 +37,20 @@ class MessageService {
       .create<MessageWithUser>(data, { expand: "user" });
 
     if (messageAttachmentRecords) {
-    for await (const messageAttachmentRecord of messageAttachmentRecords) {
-       messageAttachmentRecord.status = "uploaded";
-      messageAttachmentRecord.message = messageRecord.id;
-      await pb
-        .collection(Collections.FileUploads)
-        .update(messageAttachmentRecord.id, messageAttachmentRecord, {
-          expand: "message",
-        });
+      for await (const messageAttachmentRecord of messageAttachmentRecords) {
+        messageAttachmentRecord.status =  FileUploadsStatusOptions.uploaded
+        messageAttachmentRecord.message = messageRecord.id;
+        await pb
+          .collection(Collections.FileUploads)
+          .update(messageAttachmentRecord.id, messageAttachmentRecord, {
+            expand: "message",
+          });
+      }
+      // if (res.id) {
+      //   addItemOrReplaceV2('messages', res, "id");
+      // }
     }
-    // if (res.id) {
-    //   addItemOrReplaceV2('messages', res, "id");
-    // }
   }
-}
 
   async sendDirectMessage(data: DirectMessagesRecord) {
     // const isUser = pb.authStore.model?.id == data.from;
