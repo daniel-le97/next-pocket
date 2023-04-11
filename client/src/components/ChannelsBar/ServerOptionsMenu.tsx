@@ -20,7 +20,7 @@ const ServerOptionsMenu = () => {
     <div className="relative ">
      
         <button
-          className="server-options-btn py-[17px]"
+          className="server-options-btn py-[19px]"
           onClick={() => setIsOpen(!isOpen)}
         >
           {AppState.activeServer?.name}

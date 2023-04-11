@@ -26,13 +26,15 @@
 /* Global Components.. Inputs, Buttons... etc */
 @layer components {
   input {
-
-    @apply w-full rounded-lg border   bg-gray-50 p-2.5  text-gray-900 outline-none focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-600 dark:bg-zinc-900 dark:text-white dark:placeholder-gray-400 dark:focus:border-indigo-500   dark:focus:ring-indigo-500;
+    @apply w-full rounded-lg border   bg-gray-50 p-2.5  text-gray-900 outline-none  dark:border-gray-600 dark:bg-zinc-900 dark:text-white dark:placeholder-gray-400;
+    /*
+    focus:border-indigo-500 focus:ring-indigo-500
+    dark:focus:border-indigo-500   dark:focus:ring-indigo-500
+    */
   }
   input:autofill {
-    -webkit-box-shadow: 0 0 0 40px rgb(24 24 27 )inset;
-    -webkit-text-fill-color:  rgb(255 255 255);
-   
+    -webkit-box-shadow: 0 0 0 40px rgb(24 24 27) inset;
+    -webkit-text-fill-color: rgb(255 255 255);
   }
   [type="file"] {
     @apply block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 text-sm text-gray-900 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:placeholder-gray-400;
@@ -43,7 +45,7 @@
   }
 
   .btn {
-    @apply rounded-md  py-2 px-3 font-bold text-zinc-300 transition-all duration-200 ease-linear hover:bg-opacity-80;
+    @apply rounded-md  px-3 py-2 font-bold text-zinc-300 transition-all duration-200 ease-linear hover:bg-opacity-80;
   }
   .btn-primary {
     @apply btn bg-indigo-500;
@@ -89,6 +91,12 @@
   }
 }
 
+/* Form Inputs */
+@layer components {
+  .create-server-input {
+    @apply invalid:border-red-500 invalid:ring-red-500;
+  }
+}
 /* Create Server Form/Modal*/
 @layer components {
   .upload-preview-image {
@@ -103,7 +111,7 @@
 /* Sidebar / Server Selection  */
 @layer components {
   .sidebar {
-    @apply fixed   top-0 left-0 z-50 flex max-h-screen min-h-screen w-16 flex-col  bg-gray-200 shadow-lg dark:bg-zinc-900;
+    @apply fixed   left-0 top-0 z-50 flex max-h-screen min-h-screen w-16 flex-col  bg-gray-200 shadow-lg dark:bg-zinc-900;
   }
 
   .sidebar::-webkit-scrollbar {
@@ -116,7 +124,7 @@
     @apply mx-2 rounded-full border border-gray-700 bg-gray-800;
   }
   .sidebar-icon {
-    @apply relative   mx-auto mt-2 mb-2 flex 
+    @apply relative   mx-auto mb-2 mt-2 flex 
     h-12 w-12 cursor-pointer   snap-start items-center  
     justify-center rounded-3xl bg-gray-400 
   text-green-500 shadow-lg
@@ -125,7 +133,6 @@
     ease-linear hover:rounded-xl hover:bg-green-600
     hover:text-white dark:bg-gray-800;
   }
-
 
   .server-selection {
     @apply my-2 flex  
@@ -166,8 +173,8 @@
   }
 
   .top-navigation-icon {
-    @apply mr-3
-    ml-4 cursor-pointer
+    @apply ml-4
+    mr-3 cursor-pointer
     text-gray-500 transition duration-300 
     ease-in-out 
     hover:text-green-500;
@@ -183,11 +190,9 @@
   }
 
   .channel-room-title {
-    @apply my-auto mr-auto ml-2 truncate bg-gradient-to-r  from-green-400
+    @apply my-auto ml-2 mr-auto truncate bg-gradient-to-r  from-green-400
     to-indigo-400 bg-clip-text text-2xl font-bold tracking-wider text-transparent;
   }
-
-
 }
 
 /* Channels Bar && Server Options Menu */
@@ -205,7 +210,7 @@
   }
 
   .channel-block-text {
-    @apply my-auto  mr-auto ml-4 align-middle text-lg font-bold tracking-wide text-gray-900 dark:text-gray-400;
+    @apply my-auto  ml-4 mr-auto align-middle text-lg font-bold tracking-wide text-gray-900 dark:text-gray-400;
   }
 
   .chevron-icon {
@@ -230,7 +235,7 @@
   }
 
   .dropdown-selection {
-    @apply relative my-0.5 mr-auto ml-2 flex cursor-pointer
+    @apply relative my-0.5 ml-2 mr-auto flex cursor-pointer
     flex-row items-center justify-between
     rounded p-1 transition
     duration-300 ease-in-out hover:bg-zinc-700;
@@ -263,7 +268,7 @@
   }
 
   .server-options {
-    @apply absolute z-10 flex w-full flex-col items-start justify-center rounded-lg  p-2 text-gray-900 transition-all ease-linear dark:text-gray-300;
+    @apply absolute z-10 flex w-full flex-col items-start justify-center rounded-lg  p-2  text-gray-900 transition-all ease-linear dark:text-gray-300;
   }
   .server-options-container {
     @apply w-full rounded bg-gray-100 p-2 dark:bg-zinc-900;
@@ -290,7 +295,7 @@
     @apply relative h-full flex-1 items-stretch overflow-hidden    bg-gray-300 pb-16   dark:bg-zinc-700;
   }
   .message-filtered {
-    @apply relative m-0  flex  w-full flex-row  items-center justify-evenly rounded-sm bg-indigo-500/20  py-4 px-8 
+    @apply relative m-0  flex  w-full flex-row  items-center justify-evenly rounded-sm bg-indigo-500/20  px-8 py-4 
  transition-all
     hover:bg-opacity-80
     hover:shadow-md
@@ -322,7 +327,7 @@
   }
 
   .message-user-avatar-status {
-    @apply relative  ml-auto mb-auto flex  flex-col items-center;
+    @apply relative  mb-auto ml-auto flex  flex-col items-center;
   }
   .message-icon-tooltip {
     @apply absolute bottom-8 right-0 z-50  w-auto min-w-max origin-left scale-0 rounded-md
@@ -343,14 +348,14 @@
   }
 
   .newest-message {
-    @apply absolute top-0 right-0 mr-5  transition-all group-hover:opacity-0;
+    @apply absolute right-0 top-0 mr-5  transition-all group-hover:opacity-0;
   }
   .newest-message-container {
     @apply relative w-full rounded-lg bg-red-400 px-3 pb-0.5 text-sm font-bold text-white;
   }
 
   .newest-message-line {
-    @apply absolute top-1/2 right-32  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400;
+    @apply absolute right-32 top-1/2  z-0 ml-32 w-full   rounded-full border border-red-400 bg-red-400;
   }
 
   .new-date {
@@ -360,7 +365,7 @@
     @apply w-20  text-center text-sm font-semibold text-zinc-400;
   }
   .avatar-wrapper {
-    @apply m-0 ml-auto mb-auto flex w-12 flex-col items-center;
+    @apply m-0 mb-auto ml-auto flex w-12 flex-col items-center;
   }
 
   .avatar {
@@ -387,7 +392,7 @@
   }
   .message-like-tooltip {
     @include tooltip-arrow("bottom", rgb(24 24 27 / var(--tw-bg-opacity)));
-    @apply absolute bottom-12 -left-28 w-72 origin-bottom   scale-0 rounded-lg  bg-zinc-900 p-2 text-zinc-300  transition-all ease-linear group-hover/like:scale-100;
+    @apply absolute -left-28 bottom-12 w-72 origin-bottom   scale-0 rounded-lg  bg-zinc-900 p-2 text-zinc-300  transition-all ease-linear group-hover/like:scale-100;
   }
   .message-like-tooltip-container {
     @apply flex items-center gap-x-2 rounded-xl    p-1 text-sm font-bold text-zinc-300;
@@ -410,10 +415,10 @@
     @apply rounded-lg bg-zinc-700 p-1 px-2 hover:bg-opacity-90 active:bg-indigo-400;
   }
 
-  .infinite-scroll-container{
-    @apply flex h-full  flex-col-reverse overflow-auto pb-32 pt-6
+  .infinite-scroll-container {
+    @apply flex h-full  flex-col-reverse overflow-auto pb-32 pt-6;
   }
-  .infinite-scroll-container-search{
+  .infinite-scroll-container-search {
     @apply infinite-scroll-container  rounded-sm border-2 border-indigo-500 shadow-inner;
   }
 }
@@ -438,11 +443,11 @@
   }
 
   .add-friend-input {
-    @apply z-10 w-full border-gray-600 focus:outline-none  rounded-md border-2   bg-zinc-900 p-5 leading-tight shadow  transition-all duration-200 ease-linear placeholder:text-zinc-300 focus:border-2 focus:border-indigo-500 dark:text-gray-300;
+    @apply z-10 w-full rounded-md border-2  border-gray-600 bg-zinc-900   p-5 leading-tight shadow transition-all  duration-200 ease-linear placeholder:text-zinc-300 focus:border-2 focus:border-indigo-500 focus:outline-none dark:text-gray-300;
   }
 
   .send-friend-request-button {
-    @apply absolute right-3  bottom-7 z-50 cursor-pointer rounded-md bg-indigo-700 p-2 font-semibold text-white transition-all duration-150 ease-linear hover:bg-opacity-80;
+    @apply absolute bottom-7  right-3 z-50 cursor-pointer rounded-md bg-indigo-700 p-2 font-semibold text-white transition-all duration-150 ease-linear hover:bg-opacity-80;
   }
   .send-friend-request-button-disabled {
     @apply send-friend-request-button cursor-not-allowed opacity-50;
@@ -480,7 +485,7 @@
 
   .join-button-tooltip {
     @include tooltip-arrow("right", rgb(24 24 27 / var(--tw-bg-opacity)));
-    @apply absolute right-8 -top-1/3 origin-right scale-0 rounded-md bg-zinc-900 p-2  px-2  transition-all ease-in group-hover/join:scale-100;
+    @apply absolute -top-1/3 right-8 origin-right scale-0 rounded-md bg-zinc-900 p-2  px-2  transition-all ease-in group-hover/join:scale-100;
   }
 }
 .shape-blob {

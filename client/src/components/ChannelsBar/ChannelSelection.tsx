@@ -20,14 +20,14 @@ import { useForm } from "react-hook-form";
 import Pop from "utils/Pop";
 const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user;
-  const channelTitle: string | undefined = AppState.activeChannel?.title;
+
   const joinChannel = async () => {
     try {
-      const user = AppState.user;
-      if (!user) {
-        console.error("must be logged in");
-        return;
-      }
+      // const user = AppState.user;
+      // if (!user) {
+      //   console.error("must be logged in");
+      //   return;
+      // }
 
       const data = {
         memberId: user?.id,
@@ -48,7 +48,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   return (
     <div
       className={`dropdown-selection  ${
-        selection.title === channelTitle
+        selection.title === AppState.activeChannel?.title
           ? "rounded bg-zinc-700 text-gray-300 "
           : "text-gray-500"
       }`}
@@ -63,24 +63,25 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
         {selection.title}
       </h5>
 
-      {selection.title == channelTitle && selection.title != "GeneralChat" && (
-        <div className="group relative">
-          <MyModal
-            buttonIcon={
-              <Tooltip
-                content={"Edit Channel"}
-                color="invert"
-                className=" font-bold"
-              >
-                <FaCog size={15} />
-              </Tooltip>
-            }
-            title="Edit Channel"
-          >
-            <EditChannel />
-          </MyModal>
-        </div>
-      )}
+      {selection.title == AppState.activeChannel?.title &&
+        selection.title != "GeneralChat" && (
+          <div className="group relative">
+            <MyModal
+              buttonIcon={
+                <Tooltip
+                  content={"Edit Channel"}
+                  color="invert"
+                  className=" font-bold"
+                >
+                  <FaCog size={15} />
+                </Tooltip>
+              }
+              title="Edit Channel"
+            >
+              <EditChannel />
+            </MyModal>
+          </div>
+        )}
     </div>
   );
 };
@@ -131,12 +132,11 @@ const EditChannel = () => {
           type="text "
           {...register("title", {
             required: true,
-            minLength:1,
+            minLength: 1,
             maxLength: 100,
-            
           })}
         />
-      
+
         <button className="btn-primary"> Submit</button>
       </form>
       <button className="btn btn-secondary mt-2 " onClick={deleteChannel}>

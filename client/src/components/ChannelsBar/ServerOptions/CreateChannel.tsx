@@ -1,14 +1,21 @@
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import { Bs0CircleFill, BsPlusCircleFill } from "react-icons/bs";
-import { FaChevronDown, FaHashtag, FaPlusCircle, FaPoundSign, FaUserMinus } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaHashtag,
+  FaPlusCircle,
+  FaPoundSign,
+  FaUserMinus,
+} from "react-icons/fa";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 import router from "next/router";
 import { serversService } from "@/services/ServersService";
 import MyModal from "../../GlobalComponents/Modal";
-import { channelsService } from "@/services";
+import { channelsService, messageService } from "@/services";
+import { ChannelsRecord } from "~/PocketBaseTypes";
 const CreateChannel = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,15 +35,22 @@ const CreateChannel = () => {
       server: AppState.activeServer?.id,
     },
   });
-  const onSubmit = async (data: ServersRecord) => {
+  const onSubmit = async (data: ChannelsRecord) => {
     try {
-      const newChannel = await channelsService.createChannel(data)
+      const newChannel = await channelsService.createChannel(data);
+      const welcomeMessage  = {
+        channel: newChannel.id,
+        content: "Welcome to the channel",
+        user: AppState.user?.id,
+        attachments:''
+      };
+   const defaultWelcomeMessage =   await messageService.sendMessage(welcomeMessage,"");
+
       reset();
 
       setIsOpen(false);
-    
     } catch (error) {
-      console.error( error);
+      console.error(error);
     }
   };
   return (
@@ -62,7 +76,10 @@ const CreateChannel = () => {
                 maxLength: 50,
               })}
             />
-            <FaHashtag size="20" className="title-hashtag absolute top-[1.2rem]" />
+            <FaHashtag
+              size="20"
+              className="title-hashtag absolute top-[1.2rem]"
+            />
           </div>
 
           <button className="btn-primary" type="submit">

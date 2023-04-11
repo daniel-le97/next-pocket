@@ -30,3 +30,7 @@ Flush out the Server Members Bar and User Status,
 -when a User is created, create a user Status record with it
 -when user is created, create a default friend to one of the Admins?
 -populate with fake data
+
+
+CONSTRAINTS
+- 5-10 channels to a Server?

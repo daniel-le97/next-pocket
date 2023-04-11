@@ -9,7 +9,6 @@ import {
   MessageWithUser,
   TMessageWithUser,
 } from "PocketBaseTypes/utils";
-import { debounce } from "lodash";
 import { action } from "mobx";
 import { Tooltip } from "@nextui-org/react";
 const TopNavigation = () => {
@@ -20,16 +19,8 @@ const TopNavigation = () => {
         {AppState.messageQuery === ""
           ? AppState.activeChannel?.title
           : "Searching Messages Within Server"}
-        {/* {AppState.messageQuery !== "" && (
-          <span className="text-gray-500 text-opacity-80">
-            {" "}
-            - Search Results
-          </span>
-        )} */}
       </h5>
       <Search />
-      {/* <FaRegBell size="24" className="top-navigation-icon" />
-      <FaUserCircle size="24" className="top-navigation-icon" /> */}
     </div>
   );
 };
@@ -60,20 +51,9 @@ const Search = () => {
     []
   );
 
-  // const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = event.target.value;
-  //   AppState.messageQuery = value;
-  //   setQuery(value);
-  //   debouncedFindMessage(value);
-  // };
-  // const toggleInput = () => {
-  //   setExpanded(!expanded);
-  // };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     AppState.messageQuery = query;
-    // setQuery(value);
     AppState.messages = [];
     AppState.page = 1;
     debouncedFindMessage(query);
@@ -81,13 +61,7 @@ const Search = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className=" relative  flex
-    
-    items-center
-    justify-start  gap-x-2
-   
-    "
-    >
+      className=" relative  flex items-center justify-start  gap-x-2">
       <input
         className={` pr-10 text-gray-300 transition-all   duration-700 focus:w-72  ${
           expanded ? "w-full" : ""
@@ -102,7 +76,9 @@ const Search = () => {
           <button className="m-0 pt-1 ">
             <FaSearch
               size={22}
-              className={`     my-auto text-gray-500 hover:text-green-500 ${query !=="" ? "text-green-500" : ""}`}
+              className={`     my-auto text-gray-500 hover:text-green-500 ${
+                query !== "" ? "text-green-500" : ""
+              }`}
             />
           </button>
         </Tooltip>
