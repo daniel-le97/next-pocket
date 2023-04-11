@@ -73,7 +73,7 @@ const DirectMessageScroll = () => {
             );
           })}
         </InfiniteScroll>
-      )}
+      
 
       {AppState.messageQuery == "" && messages.length == 0 && (
         <LoaderProgress />
