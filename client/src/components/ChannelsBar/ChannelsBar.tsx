@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useState } from "react";
-import { FaChevronDown, FaChevronRight, FaClipboard, FaCopy } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaChevronRight,
+  FaClipboard,
+  FaCopy,
+} from "react-icons/fa";
 import { observer } from "mobx-react";
 import ChannelSelection from "./ChannelSelection";
 import { AppState } from "../../../AppState";
@@ -74,11 +79,7 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
   return (
     user && (
       <div className="group">
-        <button
-          onFocus={handleClick}
-          className="user-bar group "
-       
-        >
+        <button onFocus={handleClick} className="user-bar group ">
           <div className=" user-bar-container">
             <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
 
@@ -134,7 +135,10 @@ export const UserIcon = ({ user }: { user: UsersResponse }) => {
                 >
                   {user.username + "#" + AppState.userStatus?.id}
                   <div className="opacity-0 group-hover/item:opacity-100">
-                    <FaCopy size={20} className={showTooltip ? "text-green-5  00":""} />
+                    <FaCopy
+                      size={20}
+                      className={showTooltip ? "text-green-5  00" : ""}
+                    />
                   </div>
                 </div>
               </Tooltip>

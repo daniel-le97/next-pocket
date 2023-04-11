@@ -42,7 +42,7 @@ const MessageScroll = () => {
         AppState.messageQuery != "" ? "infinite-scroll-container-search" : ''
       }`}
     >
-      {AppState.messages.length && (
+      {AppState.messages && (
         <InfiniteScroll
           dataLength={AppState.messages.length}
           next={fetchMore}
@@ -52,7 +52,7 @@ const MessageScroll = () => {
           loader={<LoaderProgress />}
           scrollableTarget="scrollableDiv"
         >
-          {AppState.messages.map((message, index) => {
+          {  AppState.messages.map((message, index) => {
             const currentDate = new Date(message.created).toLocaleDateString();
             const todaysDate = new Date(Date.now()).toLocaleDateString();
             const previousDate =

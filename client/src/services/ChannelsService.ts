@@ -17,31 +17,30 @@ class ChannelsService {
       .getFullList({ filter: `members.id ?= "${data.memberId}"` });
     // console.log('joining channel');
     const channelToLeave = channelsToLeave[0];
-    if (channelToLeave) {
+    if (channelToLeave?.id !== AppState.user?.currentChannel) {
       await this.leaveChannel({
         memberId: data.memberId,
         channelId: channelToLeave.id,
       });
-    }
+    } else {
+      // Get the channel record to join
+      const channelToJoin = await pb
+        .collection(Collections.Channels)
+        .getOne<ChannelsResponse>(data.channelId, {
+          expand: "members",
+        });
 
-    // Get the channel record to join
-    const channelToJoin = await pb
-      .collection(Collections.Channels)
-      .getOne<ChannelsResponse>(data.channelId, {
-        expand: "members",
+      // Add the user to the channel's member list
+      const newMemberList = [...(channelToJoin.members as []), data.memberId];
+      await pb
+        .collection("channels")
+        .update(channelToJoin.id, { members: newMemberList });
+
+      await pb.collection("users").update(data.memberId, {
+        currentChannel: channelToJoin.id,
       });
-
-    AppState.activeChannel = channelToJoin;
-
-    // Add the user to the channel's member list
-    const newMemberList = [...(channelToJoin.members as []), data.memberId];
-    await pb
-      .collection("channels")
-      .update(channelToJoin.id, { members: newMemberList });
-
-    await pb.collection("users").update(data.memberId, {
-      currentChannel: channelToJoin.id,
-    });
+      AppState.activeChannel = channelToJoin;
+    }
   }
 
   async leaveChannel(data: Data) {
@@ -71,13 +70,13 @@ class ChannelsService {
 
       AppState.channels = res;
       AppState.activeChannel = res[0];
-
-      // if (AppState.activeChannel && AppState.user) {
+      //TODO NEED TO FIGURE THIS OUT, NEED TO JOIN A CHANNEL  ON REFRESH IF YOU ARE NOT IN THE CHANNEL ALREADY ELSE  SKIP
+      // if (AppState.activeChannel?.id !== AppState.user?.currentChannel) {
       //   // console.log(activeChannel);
 
       //   await this.joinChannel({
-      //     memberId: AppState.user.id,
-      //     channelId: AppState.activeChannel.id,
+      //     memberId: AppState.user?.id!,
+      //     channelId: AppState.activeChannel?.id!,
       //   });
       // }
     } catch (error) {
