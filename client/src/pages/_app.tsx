@@ -8,7 +8,7 @@ import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 import Layout from "../components/Layout";
-import "../styles/tailwind.css";
+// import "../styles/tailwind.css";
 import "../styles/scss/globals.scss";
 import {
 

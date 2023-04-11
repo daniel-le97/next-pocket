@@ -30,14 +30,14 @@ const ChannelsBar = () => {
           <div className="m-0 w-full px-2 pb-2 transition duration-300 ease-in-out">
             <div
               onClick={() => setExpanded(!expanded)}
-              className="mx-0 flex cursor-pointer flex-row items-center  text-gray-500"
+              className=" mt-3 mx-0 flex cursor-pointer flex-row items-center  text-gray-500"
             >
               <ChevronIcon expanded={expanded} />
               <h5
-                className={
+                className={ 
                   expanded
-                    ? "text-lg font-bold text-indigo-500 text-opacity-90"
-                    : "text-gray-500text-opacity-90  cursor-default  text-lg font-semibold"
+                    ? "text-lg font-bold text-indigo-500 text-opacity-90 "
+                    : "text-gray-500text-opacity-90  cursor-default  text-lg font-semibold "
                 }
               >
                 Text Channels

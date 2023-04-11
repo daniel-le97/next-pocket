@@ -18,22 +18,22 @@ import MyModal from "../GlobalComponents/Modal";
 import { Tooltip } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import Pop from "utils/Pop";
+import { debounce } from "lodash";
 const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user;
-
-  const joinChannel = async () => {
+  const joinChannel =  async () => {
     try {
       // const user = AppState.user;
       // if (!user) {
       //   console.error("must be logged in");
       //   return;
       // }
-
+      
       const data = {
         memberId: user?.id,
         channelId: selection?.id,
       };
-
+      
       // AppState.page = 1
       AppState.messages = [];
       AppState.messageQuery = "";
@@ -44,6 +44,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
       console.error(error);
     }
   };
+  const debouncedJoinChannel = debounce(joinChannel, 500);
 
   return (
     <div
@@ -52,7 +53,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
           ? "rounded bg-zinc-700 text-gray-300 "
           : "text-gray-500"
       }`}
-      onClick={joinChannel}
+      onClick={debouncedJoinChannel}
     >
       <BsHash size="24" className="text-gray-400" />
       <h5

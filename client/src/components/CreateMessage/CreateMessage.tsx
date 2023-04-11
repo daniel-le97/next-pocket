@@ -67,6 +67,8 @@ const CreateMessage = () => {
         directMessage.friendRecord = router.query.id as string;
         await directMessageService.createDirectMessage(directMessage);
       } else {
+       
+        
         const message = data as MessagesRecord & { channel: string };
         message.channel = AppState.activeChannel?.id as string;
         await messageService.sendMessage(message, messageAttachmentRecords);
@@ -79,7 +81,6 @@ const CreateMessage = () => {
       Pop.error(error);
     }
   };
- 
 
   useEffect(() => {
     if (selectedText) {
@@ -123,19 +124,19 @@ const CreateMessage = () => {
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const inputEl = document.getElementById(
-        "createMessageInput"
-      ) as HTMLInputElement;
-  
-      const record = await uploadService.uploadFile(e.target.files);
+    const inputEl = document.getElementById(
+      "createMessageInput"
+    ) as HTMLInputElement;
 
-      const id = record?.id;
-      setValue("attachments", [id!]);
-      setMessageAttachmentRecords([
-        ...messageAttachmentRecords,
-        record as FileUploadsResponse,
-      ]);
-      inputEl.value = inputEl.value + `![${record?.url}](${record?.url})`;
+    const record = await uploadService.uploadFile(e.target.files);
+
+    const id = record?.id;
+    setValue("attachments", [id!]);
+    setMessageAttachmentRecords([
+      ...messageAttachmentRecords,
+      record as FileUploadsResponse,
+    ]);
+    inputEl.value = inputEl.value + `![${record?.url}](${record?.url})`;
   };
   return (
     <div className=" absolute  bottom-2  max-h-full w-full     ">
@@ -172,10 +173,10 @@ const CreateMessage = () => {
                   );
                 }
               }}
-              onKeyDown={async(e) => {
+              onKeyDown={async (e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                 await handleSubmit(sendMessage)();
+                  await handleSubmit(sendMessage)();
                 }
               }}
               onSelect={(e) => {

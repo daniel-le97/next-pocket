@@ -232,9 +232,11 @@ const CreateServer = () => {
                           required: true,
                           maxLength: 30,
                           minLength: 5,
+                          pattern: /^[a-zA-Z0-9_-]+$/,
                         })}
                         minLength={5}
                         maxLength={30}
+                        pattern="^[a-zA-Z0-9_-]+$"
                         type="text"
                         className=" create-server-input"
                       />
