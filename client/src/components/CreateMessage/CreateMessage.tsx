@@ -57,7 +57,6 @@ const CreateMessage = () => {
         const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))(?=[^\s]*\s)/g;
         const input = data.replace(regex, "![$1]($1)") ?? "";
         const sanitized = DOMPurify.sanitize(input);
-
         return sanitized;
       }
       data.content = sanitizeUserInput(data.content);
@@ -66,7 +65,6 @@ const CreateMessage = () => {
           friendRecord: string;
         };
         directMessage.friendRecord = router.query.id as string;
-
         await directMessageService.createDirectMessage(directMessage);
       } else {
         const message = data as MessagesRecord & { channel: string };
