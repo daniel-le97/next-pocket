@@ -17,8 +17,6 @@ import MyModal from "../../GlobalComponents/Modal";
 import { channelsService, messageService } from "@/services";
 import { ChannelsRecord } from "~/PocketBaseTypes";
 const CreateChannel = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -38,17 +36,16 @@ const CreateChannel = () => {
   const onSubmit = async (data: ChannelsRecord) => {
     try {
       const newChannel = await channelsService.createChannel(data);
-      const welcomeMessage  = {
-        channel: newChannel.id,
-        content: "Welcome to the channel",
-        user: AppState.user?.id,
-        attachments:''
-      };
-   const defaultWelcomeMessage =   await messageService.sendMessage(welcomeMessage,"");
+      await messageService.getMessagesByChannelId(newChannel?.id!);
+      // const welcomeMessage = {
+      //   channel: newChannel.id,
+      //   content: "Welcome to the channel",
+      //   user: AppState.user?.id,
+      //   attachments: "",
+      // };
+      //  const defaultWelcomeMessage =   await messageService.sendMessage(welcomeMessage,"");
 
       reset();
-
-      setIsOpen(false);
     } catch (error) {
       console.error(error);
     }

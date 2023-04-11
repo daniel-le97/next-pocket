@@ -10,36 +10,37 @@ type Data = { memberId: string; channelId: string };
 
 class ChannelsService {
   async joinChannel(data: Data) {
-    // console.log(data);
+    // // console.log(data);
 
-    const channelsToLeave = await pb
+    // const channelsToLeave = await pb
+    //   .collection(Collections.Channels)
+    //   .getFullList({ filter: `members.id ?= "${data.memberId}"` });
+    // // console.log('joining channel');
+    // const channelToLeave = channelsToLeave[0];
+    // if (channelToLeave) {
+    // }
+    await this.leaveChannel({
+      memberId: data.memberId,
+      channelId: AppState.user?.currentChannel!,
+    });
+
+    // Get the channel record to join
+    const channelToJoin = await pb
       .collection(Collections.Channels)
-      .getFullList({ filter: `members.id ?= "${data.memberId}"` });
-    // console.log('joining channel');
-    const channelToLeave = channelsToLeave[0];
-    if (channelToLeave) {
-      await this.leaveChannel({
-        memberId: data.memberId,
-        channelId: channelToLeave.id,
+      .getOne<ChannelsResponse>(data.channelId, {
+        expand: "members",
       });
-    } else {
-      // Get the channel record to join
-      const channelToJoin = await pb
-        .collection(Collections.Channels)
-        .getOne<ChannelsResponse>(data.channelId, {
-          expand: "members",
-        });
-      AppState.activeChannel = channelToJoin;
-      // Add the user to the channel's member list
-      const newMemberList = [...(channelToJoin.members as []), data.memberId];
-      await pb
-        .collection("channels")
-        .update(channelToJoin.id, { members: newMemberList });
+    AppState.activeChannel = channelToJoin;
+    // Add the user to the channel's member list
 
-      await pb.collection("users").update(data.memberId, {
-        currentChannel: channelToJoin.id,
-      });
-    }
+    const newMemberList = [...(channelToJoin.members as []), data.memberId];
+    await pb
+      .collection("channels")
+      .update(channelToJoin.id, { members: newMemberList });
+
+    await pb.collection("users").update(data.memberId, {
+      currentChannel: channelToJoin.id,
+    });
   }
 
   async leaveChannel(data: Data) {
@@ -47,9 +48,6 @@ class ChannelsService {
     const channel = await pb
       .collection(Collections.Channels)
       .getOne<ChannelsResponse>(data.channelId);
-    if (!channel) {
-      throw new Error("Channel not found");
-    }
 
     // Remove the user from the channel's member list
     const newMemberList = channel.members?.filter((m) => m !== data.memberId);
@@ -92,6 +90,7 @@ class ChannelsService {
     if (newChannel) {
       AppState.channels = [...AppState.channels, newChannel];
       AppState.activeChannel = newChannel;
+     
     }
   }
 

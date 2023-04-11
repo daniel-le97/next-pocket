@@ -21,30 +21,30 @@ import Pop from "utils/Pop";
 import { debounce } from "lodash";
 const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user;
-  const joinChannel =  async () => {
+
+  const joinChannel = async () => {
     try {
-      // const user = AppState.user;
-      // if (!user) {
-      //   console.error("must be logged in");
-      //   return;
-      // }
-      
       const data = {
-        memberId: user?.id,
+        memberId: user?.id!,
         channelId: selection?.id,
       };
-      
+
       // AppState.page = 1
       AppState.messages = [];
       AppState.messageQuery = "";
+      // console.log(AppState.messages);
+
+      // console.log(AppState.activeChannel?.title);
       await channelsService.joinChannel(data);
-      await messageService.getMessagesByChannelId(selection.id);
+      await messageService.getMessagesByChannelId(selection.id!);
+      // console.log(AppState.messages);
+      //  console.log(AppState.activeChannel?.title);
       // await messageService.getMessages();
     } catch (error) {
       console.error(error);
     }
   };
-  const debouncedJoinChannel = debounce(joinChannel, 500);
+  const debouncedJoinChannel = debounce(joinChannel, 200);
 
   return (
     <div

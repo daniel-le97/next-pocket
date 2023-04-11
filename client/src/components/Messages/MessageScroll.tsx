@@ -86,15 +86,7 @@ const MessageScroll = () => {
               );
             })
           ) : (
-            <div className="container flex h-full w-full flex-col items-center justify-center py-40 text-lg font-semibold text-zinc-500">
-              NO MESSAGES
-              <div className="mt-10">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/5089/5089742.png"
-                  alt=""
-                />
-              </div>
-            </div>
+          <LoaderProgress/>
           )}
         </InfiniteScroll>
       )}
