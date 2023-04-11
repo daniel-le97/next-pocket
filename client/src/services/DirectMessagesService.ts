@@ -1,6 +1,7 @@
 import { AppState } from "AppState";
 import type {
   DirectMessagesRecord,
+  DirectMessagesResponse,
   DirectMessageWithUser} from "PocketBaseTypes";
 import {
   DirectMessage
@@ -11,6 +12,12 @@ import { pb } from "utils/pocketBase";
 
 
 class DirectMessageService {
+  async getOne(id: string) {
+    const res = await pb
+      .collection(Collections.DirectMessages)
+      .getOne<DirectMessagesResponse>(id);
+    return res;
+  }
   /**
    * Creates a new direct message.
    * @param message - The direct message to create.
@@ -32,9 +39,16 @@ class DirectMessageService {
    * @returns The updated direct message object.
    */
   async updateDirectMessage(id: string, message: DirectMessagesRecord) {
+    const dm = await this.getOne(id);
+    const newDm: DirectMessagesRecord = {
+      user: message.user || dm.user,
+      friendRecord:message.friendRecord || dm.friendRecord,
+      content: message.content || dm.content,
+      attachments: message.attachments || dm.attachments,
+    }
     const res = await pb
       .collection(Collections.DirectMessages)
-      .update<DirectMessageWithUser>(id, message, {expand: "user"});
+      .update<DirectMessageWithUser>(id, newDm);
     return res;
   }
 

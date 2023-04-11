@@ -8,7 +8,6 @@ import {
   FileUploadsRecord,
   FileUploadsResponse,
   FileUploadsStatusOptions,
-  MessageAttachmentsRecord,
   MessagesRecord,
   MessageWithUser,
   TMessageWithUser,
@@ -142,7 +141,14 @@ class MessageService {
     await pb.collection(Collections.Messages).delete(id);
   }
   async editMessage(id: string, data: MessagesRecord) {
-    await pb.collection(Collections.Messages).update(id, data, {
+    const message = await this.getById(id);
+    const newMessage: MessagesRecord = {
+      user: data.user || message.user.id,
+      channel: data.channel || message.channel,
+      content: data.content || message.content,
+      attachments: data.attachments || message.attachments,
+    }
+   return await pb.collection(Collections.Messages).update<TMessageWithUser>(id, newMessage, {
       expand: "user,likes(message)",
     });
   }

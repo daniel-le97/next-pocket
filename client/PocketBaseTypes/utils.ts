@@ -76,6 +76,7 @@ export class Message {
   channel?: string;
   user: UsersResponse;
   likes: number;
+  attachments: string[]
 
   constructor(data: TMessageWithUser) {
     this.id = data.id;
@@ -84,6 +85,7 @@ export class Message {
     this.updated = data.updated;
     this.channel = data.channel;
     this.user = data.expand.user;
+    this.attachments = data.attachments || []
     this.likes = data.expand["likes(message)"]
       ? data.expand["likes(message)"].length
       : 0;
@@ -109,8 +111,11 @@ export class DirectMessage {
     this.updated = data.updated;
     this.friendRecord = data.friendRecord;
     this.user = data.expand.user;
-    this.likes = data.expand["likes(directMessage)"].length || 0
-      
+    if(data.expand["likes(directMessage)"]){
+      this.likes = data.expand["likes(directMessage)"].length
+    }else{
+      this.likes = 0
+    }
   }
   id: string;
   content?: string | undefined;

@@ -16,7 +16,7 @@ import { BaseService } from "./BaseService";
 
 class LikesService
   extends BaseService
-  implements IBaseService<LikesWithUser, LikesRecord>
+  
 {
   update(data: LikesRecord): Promise<void> {
     throw new Error("Method not implemented.");
@@ -40,7 +40,7 @@ class LikesService
     console.log("likeService.delete()");
     return;
   }
-  async create(id: string): Promise<LikesWithUser | undefined> {
+  async create(id: string, collection: 'directMessage' | 'message'): Promise<LikesWithUser | undefined> {
     // console.log("creating");
     const alreadyReacted = await this.getById(id);
     if (alreadyReacted) {

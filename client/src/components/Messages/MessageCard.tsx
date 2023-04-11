@@ -10,7 +10,12 @@ import EditMessage from "./MessageOptions/EditMessage";
 import LikeMessage from "./MessageOptions/LikeMessage";
 import rehypeRaw from "rehype-raw";
 import Pop from "utils/Pop";
-import type { LikesWithUser, MessageWithUser } from "PocketBaseTypes";
+import type {
+  DirectMessage,
+  LikesWithUser,
+  Message,
+  MessageWithUser,
+} from "PocketBaseTypes";
 import { AppState } from "AppState";
 import UserAvatar from "../GlobalComponents/UserAvatar";
 import CodeBlock from "utils/CodeBlock";
@@ -20,11 +25,11 @@ const MessageCard = ({
   message,
   index,
 }: {
-  message: MessageWithUser;
+  message: Message | DirectMessage;
   index: number;
 }) => {
   const messageQuery = AppState.messageQuery;
-  const likes = AppState.messageLikes[index] ?? null;
+  const likes = AppState.messageLikes[index] ?? [];
   const handleCopyClick = () => {
     function removeBackticks(str: string): string {
       const pattern = /```([\s\S]*)```/;
@@ -49,13 +54,13 @@ const MessageCard = ({
         <UserAvatar
           width="w-12"
           height="h-12"
-          avatarUrl={message.user.avatarUrl || message.expand.user.avatarUrl}
+          avatarUrl={message.user.avatarUrl}
         />
         {/* <UserStatus user={message?.expand?.user} /> */}
       </div>
       <div className=" message-content      ">
         <p className=" font-bold  text-red-500">
-          {message.user?.username || message.expand.user.username}
+          {message.user?.username}
           <small className="message-timestamp">
             {
               <TimeAgo
@@ -96,7 +101,7 @@ const MessageCard = ({
                   </div>
                   <CodeBlock
                     language={className && className.replace(/language-/, "")}
-                    value={children}
+                    value={children.toString()}
                     {...props}
                   />
                 </div>
