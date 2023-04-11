@@ -72,16 +72,14 @@ class ChannelsService {
       AppState.channels = res;
       AppState.activeChannel = res[0];
 
-      const activeChannel = AppState.activeChannel;
-      if (activeChannel && AppState.user) {
-        // console.log(activeChannel);
+      // if (AppState.activeChannel && AppState.user) {
+      //   // console.log(activeChannel);
 
-        await this.joinChannel({
-          memberId: AppState.user.id,
-          channelId: activeChannel.id,
-        });
-      }
-
+      //   await this.joinChannel({
+      //     memberId: AppState.user.id,
+      //     channelId: AppState.activeChannel.id,
+      //   });
+      // }
     } catch (error) {
       console.error(error);
       throw new Error("Failed to get channel list");

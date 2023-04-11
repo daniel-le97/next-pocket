@@ -23,29 +23,26 @@ const Server: NextPage = () => {
   const id = router.query.id as string;
 
   useEffect(() => {
-     if (!router.query.id) {
-       return;
-     }
-    
-      const fetchServerData = async () => {
-        try {
-          AppState.messages = [];
-          AppState.messageLikes = [[]];
-          await channelsService.getChannelsByServerId(id);
-      
-           await messageService.getMessagesByChannelId(
-             AppState.activeChannel!.id
-           );
-       
-          await serversService.getMembers(id);
-          console.log(AppState.messages);
-        } catch (error) {
-          Pop.error(error);
-        }
-      };
-      fetchServerData();
-      
-    
+    if (!router.query.id) {
+      return;
+    }
+
+    const fetchServerData = async () => {
+      try {
+        // AppState.messages = [];
+        // AppState.messageLikes = [[]];
+
+        await channelsService.getChannelsByServerId(id);
+
+        await messageService.getMessagesByChannelId(AppState.activeChannel!.id);
+
+        // await serversService.getMembers(id);
+        console.log(AppState.messages);
+      } catch (error) {
+        Pop.error(error);
+      }
+    };
+    fetchServerData();
   }, [router.query.id]);
 
   return (
@@ -62,7 +59,7 @@ const Server: NextPage = () => {
           <div className=" message-container ">
             <TopNavigation />
 
-            {router.query.id && <MessageScroll />}
+            <MessageScroll />
             <CreateMessage />
           </div>
           <ServerMembersBar />

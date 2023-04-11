@@ -15,11 +15,14 @@ import CreateMessage from "@/components/CreateMessage/CreateMessage";
 
 const DirectMessages: NextPage = () => {
   const router = useRouter();
-  const id = router.query.id as string; 
+  const id = router.query.id as string;
 
   useEffect(() => {
     if (id) {
-      AppState.dmRouterQuery = router.query.id as string
+      AppState.page = 1;
+     
+
+      AppState.dmRouterQuery = router.query.id as string;
       const fetchMessages = async () => {
         try {
           const nID = id as unknown as number;
@@ -28,11 +31,17 @@ const DirectMessages: NextPage = () => {
             (dm) => dm.id != id
           );
           AppState.dmTracker[nID] = true;
-          AppState.page = 1;
-          await directMessageService.getDirectMessages(id );
+
+          await directMessageService.getDirectMessages(id);
           await friendsService.getUserFriendsList();
           // console.log(AppState.directMessages[nID]);
           // console.log("all", AppState.directMessages);
+          //  console.log(
+          //    "page",
+          //    AppState.page,
+          //    "totalPages",
+          //    AppState.totalPages
+          //  );
         } catch (error) {
           Pop.error(error);
         }
@@ -57,7 +66,7 @@ const DirectMessages: NextPage = () => {
           <div className="message-container">
             {router.query.id && <DirectMessageScroll />}
             {/* <CreateDirectMessage /> */}
-            <CreateMessage/>
+            <CreateMessage />
           </div>
         </div>
       </main>

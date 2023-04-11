@@ -49,13 +49,13 @@ const MessageCard = ({
         <UserAvatar
           width="w-12"
           height="h-12"
-          avatarUrl={message.user.avatarUrl}
+          avatarUrl={message.user.avatarUrl || message.expand.user.avatarUrl}
         />
         {/* <UserStatus user={message?.expand?.user} /> */}
       </div>
       <div className=" message-content      ">
         <p className=" font-bold  text-red-500">
-          {message.user?.username}
+          {message.user?.username || message.expand.user.username}
           <small className="message-timestamp">
             {
               <TimeAgo
