@@ -3,17 +3,18 @@
 
 import { observer } from "mobx-react";
 import { BsEmojiSmile } from "react-icons/bs";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import TimeAgo from "timeago-react";
-import { messageService } from "@/services";
-import type { MessagesRecord, MessageWithUser } from "PocketBaseTypes";
+import { directMessageService, messageService } from "@/services";
+import type { DirectMessagesRecord, IBaseMessage, MessagesRecord, MessageWithUser } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import { Tooltip } from "@nextui-org/react";
+import { useRouter } from "next/router";
 
-const EditMessage = ({ message }: { message: MessageWithUser }) => {
+const EditMessage = ({ message }: { message: IBaseMessage }) => {
   return (
     <div className="message-options-icon  group/item">
       <Tooltip content="Edit" placement="top" color="invert">
@@ -25,10 +26,12 @@ const EditMessage = ({ message }: { message: MessageWithUser }) => {
 
 
 
-const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
+const EditMessageModal = ({ message }: { message: IBaseMessage}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const isDmPath = router.pathname.includes("DirectMessages");
 
-  const checkIfEdited = (data: MessagesRecord) => {
+  const checkIfEdited = (data: IBaseMessage) => {
     if(data.content?.includes(" *(edited)*")) return
     data.content += " *(edited)*";
   }
@@ -40,14 +43,27 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
     defaultValues: {
       content: message.content?.replace(" *(edited)*", ""),
       user: message.user.id,
-      channel: AppState.activeChannel?.id,
     },
   });
-  const onSubmit = async (data: MessagesRecord) => {
+  const onSubmit: SubmitHandler<{
+    content: string | undefined;
+    user: string;
+  }> = async (
+    data
+  ) => {
     try {
-      checkIfEdited(data);
-      await messageService.editMessage(message.id, data);
-
+      checkIfEdited(data as unknown as IBaseMessage);
+      if (isDmPath) {
+        await directMessageService.updateDirectMessage(
+          message.id,
+          data as unknown as DirectMessagesRecord
+        );
+      } else {
+      }
+      await messageService.editMessage(
+        message.id,
+        data as unknown as MessagesRecord
+      );
 
       setIsOpen(false);
     } catch (error) {
@@ -106,7 +122,7 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
                   >
                     <div className="rounded-sm bg-zinc-800">
                       <div className="message group">
-                        <div className="relative m-0 ml-auto mb-auto flex w-12 flex-col items-center">
+                        <div className="relative m-0 mb-auto ml-auto flex w-12 flex-col items-center">
                           <img
                             className="mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md shadow-zinc-500 dark:shadow-zinc-800"
                             src={
@@ -140,7 +156,7 @@ const EditMessageModal = ({ message }: { message: MessageWithUser }) => {
                               })}
                               rows={4}
                               cols={50}
-                              className="peer m-2 block min-h-[auto] w-full rounded border-0 bg-zinc-700/20  py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 "
+                              className="peer m-2 block min-h-[auto] w-full rounded border-0 bg-zinc-700/20  px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 "
                             ></textarea>
                           </p>
                         </div>
