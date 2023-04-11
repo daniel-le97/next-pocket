@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AppState } from "../../AppState";
 import type {
+  ChannelsRecord,
   ServersRecord,
   ServersResponse,
 } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
-import type { Server, MemberUser } from "../../PocketBaseTypes/utils";
+import {
+  ServerWithRelations,
+  MemberUser,
+  Server,
+} from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
 import { uploadService } from "./UploadsService";
 
@@ -13,26 +18,28 @@ class ServersService {
   async getById(id: string) {
     const server = await pb
       .collection(Collections.Servers)
-      .getFirstListItem<Server>(`id="${id}"`, {
-        expand: "server.image",
+      .getFirstListItem<ServerWithRelations>(`id="${id}"`, {
+        expand: "image,members,channels(server)",
       });
     console.log("server.getById", server);
-
-    AppState.activeServer = server;
-    return server;
+      const newServer = new Server(server)
+    AppState.activeServer = newServer;
+    return newServer
   }
-  async getServersList(page: number, ) {
+  async getServersList(page: number) {
     // get all servers available
     const res = await pb
       .collection(Collections.Servers)
-      .getList<Server>(page, 9, {
-        expand: "image,members",
+      .getList<ServerWithRelations>(page, 9, {
+        expand: "image,members,channels(server)",
         sort: `created`,
-        filter: 'private=false'
+        filter: "private=false",
       });
+    console.log("servers", res.items);
 
+    const servers = res.items.map((s) => new Server(s));
     // add the servers to the global state
-    AppState.servers = res.items;
+    AppState.servers = servers
     // console.log("servers", res.items);
     AppState.page = res.page;
     AppState.totalPages = res.totalPages;
@@ -42,19 +49,19 @@ class ServersService {
   //TODO When Creating a Server must also create a Member Collection Record & a Default Channel Record for the Server, push them to the server.Id page .
   async createServer(serverData: ServersRecord) {
     // create a server with the provided data
-   
+
     const newServer = await pb
       .collection(Collections.Servers)
-      .create<ServersResponse>(serverData, {
+      .create<ServerWithRelations>(serverData, {
         expand: "image",
       });
+      const server = new Server(newServer)
 
-    AppState.userServers = [...AppState.userServers, newServer];
-    AppState.servers = [...AppState.servers, newServer];
-    AppState.activeServer = newServer
-    const channelData = {
+    AppState.userServers = [...AppState.userServers, server];
+    AppState.servers = [...AppState.servers, server];
+    // AppState.activeServer = newServer
+    const channelData: ChannelsRecord = {
       members: [],
-      messages: [],
       title: "GeneralChat",
       server: newServer.id,
     };
@@ -117,12 +124,15 @@ class ServersService {
     const newServer: ServersRecord = {
       name: data.name || server.name,
       description: data.description || server.description,
-      image: data.image || server.image,
+      image: data.image || server.image.url,
       private: data.private || server.private,
-      members: data.members || server.members,
+      members: data.members || server.members.map((m) => m.id),
       owner: data.owner || server.owner,
-    }
-    const updatedServer = await pb.collection(Collections.Servers).update<Server>(id, newServer)
+    };
+    const sentServer = await pb
+      .collection(Collections.Servers)
+      .update<ServerWithRelations>(id, newServer);
+    const updatedServer = new Server(sentServer);
     AppState.activeServer = updatedServer;
     return updatedServer;
   }

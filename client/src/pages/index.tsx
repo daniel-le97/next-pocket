@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState,useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { AppState } from "../../AppState";
 import { pb } from "../../utils/pocketBase";
 import ServerCard from "../components/Explore/ServerCard";
@@ -15,14 +15,12 @@ import SearchBar from "@/components/Explore/SearchBar";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import { debounce } from "lodash";
 import ServerPagination from "@/components/Explore/ServerPagination";
-import { Server } from "~/PocketBaseTypes";
-
+import type { ServerWithRelations } from "~/PocketBaseTypes";
 
 const Explore: NextPage = () => {
   const router = useRouter();
   const servers = AppState.servers;
 
- 
   useEffect(() => {
     const user = pb.authStore.model;
     if (!user) {
@@ -32,15 +30,12 @@ const Explore: NextPage = () => {
 
   useEffect(() => {
     const getServers = async () => {
-      AppState.page = 1
-      
+      AppState.page = 1;
+
       await serversService.getServersList(AppState.page);
     };
     getServers();
-
-   
   }, []);
-
 
   return (
     <>
@@ -60,7 +55,10 @@ const Explore: NextPage = () => {
           totalPages={AppState.totalPages}
         />
         <div className="mb-4  flex  flex-wrap    justify-center ">
-          {servers && servers.map((s) => <ServerCard server={s as Server} key={s.id} />)}
+          {servers &&
+            servers.map((s) => (
+              <ServerCard server={s} key={s.id} />
+            ))}
         </div>
       </main>
     </>
@@ -69,18 +67,18 @@ const Explore: NextPage = () => {
 
 const ExploreBanner = () => {
   return (
-       <div className="explore-banner  ">
-          <div className="relative  ">
-            <img
-              src="https://img.freepik.com/free-vector/telescope-science-discovery-watching-stars-planets-outer-space_107791-4920.jpg?w=900&t=st=1677706310~exp=1677706910~hmac=1f7b435bec55558f1de8b5bc54632ee088625c1772d5eb3c102107da67f9327a"
-              alt=""
-              className="rounded-xl shadow-md shadow-zinc-900  "
-            />
-            <div className=" absolute top-24 left-80 text-2xl  font-bold text-white">
-              Find your community
-            </div>
-          </div>
+    <div className="explore-banner  ">
+      <div className="relative  ">
+        <img
+          src="https://img.freepik.com/free-vector/telescope-science-discovery-watching-stars-planets-outer-space_107791-4920.jpg?w=900&t=st=1677706310~exp=1677706910~hmac=1f7b435bec55558f1de8b5bc54632ee088625c1772d5eb3c102107da67f9327a"
+          alt=""
+          className="rounded-xl shadow-md shadow-zinc-900  "
+        />
+        <div className=" absolute left-80 top-24 text-2xl  font-bold text-white">
+          Find your community
         </div>
+      </div>
+    </div>
   );
 };
 

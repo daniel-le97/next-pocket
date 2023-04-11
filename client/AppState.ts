@@ -12,10 +12,11 @@ import type {
   LikesWithUser,
   MemberUser,
   MessageWithUser,
-  Server,
+  ServerWithRelations,
   UsersStatusWithUser,
   DirectMessageWithUser,
   Friend,
+  Server,
   DirectMessage,
 } from "./PocketBaseTypes/utils";
 import { isValidProp } from "./utils/isValidProp";
@@ -26,7 +27,7 @@ class ObservableAppState {
   user: User = null;
 
   userStatus: UsersStatusWithUser | null = null;
-  userServers: (ServersResponse<unknown> | undefined)[] = [];
+  userServers: Server[] = [];
   users: UsersStatusWithUser[] = [];
   members: MemberUser[] = [];
   userFriendId = "";
@@ -34,11 +35,11 @@ class ObservableAppState {
   messageQuery = "";
 
   activeChannel: ChannelsResponse | null | undefined = null;
-  activeServer: ServersResponse | Server | null = null;
+  activeServer: Server | undefined = undefined;
   activeMembership: MembersResponse | null = null;
 
   channels: ChannelsResponse[] = [];
-  servers: ServersResponse[] = [];
+  servers: Server[] = []
   messages: MessageWithUser[] = [];
   directMessages: DirectMessage[] = [];
   dmTracker: boolean[] = [];
@@ -70,9 +71,9 @@ class ObservableAppState {
       this.userServers = [];
       this.messageQuery = "";
       this.activeChannel = null;
-      this.activeServer = null;
+      this.activeServer = undefined;
       this.activeMembership = null;
-      this.channelTitles = [];
+      // this.channelTitles = [];
       this.channels = [];
       this.servers = [];
       this.users = [];
