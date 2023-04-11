@@ -89,6 +89,7 @@ export class Message {
       : 0;
   }
 }
+export class DirectMessage{}
 
 export class UserClass {
   id: string;
@@ -170,7 +171,7 @@ export class ConvertDMToMessage {
   created: string;
   updated: string;
 
-  files?: string[] | undefined;
+  attachments?: string[] | undefined;
   constructor(data: DirectMessageWithUser) {
     this.user = data.expand.sender
     this.channel = data.friendRecord;
@@ -178,6 +179,6 @@ export class ConvertDMToMessage {
     this.id = data.id;
     this.created = data.created;
     this.updated = data.updated;
-    this.files = data.files;
+    this.attachments = data.attachments;
   }
 }

@@ -19,6 +19,11 @@ import MessageAttachments from "./MessageAttachments";
 import TextFormattingToolbar from "./TextFormattingToolbar";
 import CreateMessageToolbar from "./CreateMessageToolbar";
 import { useRouter } from "next/router";
+type BaseMessage = {
+  content: string;
+  attachments: string[];
+};
+// import { DirectMessageRecord, MessagesRecord } from "../../../PocketBaseTypes";
 const CreateMessage = () => {
   const [selectedText, setSelectedText] = useState("");
   const [selectionStart, setSelectionStart] = useState(-1);
@@ -31,59 +36,43 @@ const CreateMessage = () => {
   >([]);
 
   const defaultValues = {
+    user: user?.id,
     content: "",
-    attachments: "",
+    attachments: [""],
   };
 
-  if (router.pathname === "/DirectMessages/[id]") {
-    defaultValues.sender = user!.id;
-    defaultValues.friendRecord = "";
-  } else {
-    defaultValues.user = user!.id;
-    defaultValues.channel = "";
-  }
-
-  // if (router.pathname === "/DirectMessages/[id]") {
-  //   defaultValues.sender = user!.id;
-  //   delete defaultValues.channel;
-  //   defaultValues.friendRecord = "test";
-  // }
-  const { register, handleSubmit, reset, setValue, getValues } = useForm({
+  // const pathname = typeof DirectMessageRecord | typeof MessagesRecord
+  type IMessage = DirectMessagesRecord | MessagesRecord;
+  const { register, handleSubmit, reset, setValue } = useForm({
     defaultValues,
   });
 
-  const sendMessage = async (data: MessagesRecord) => {
+  const sendMessage = async (data: typeof defaultValues) => {
     try {
       const inputEl = document.getElementById(
         "createMessageInput"
       ) as HTMLInputElement;
 
-      function sanitizeUserInput(input: string) {
+      function sanitizeUserInput(data: string) {
+        const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))(?=[^\s]*\s)/g;
+        const input = data.replace(regex, "![$1]($1)") ?? "";
         const sanitized = DOMPurify.sanitize(input);
+
         return sanitized;
       }
+      data.content = sanitizeUserInput(data.content);
+      if (router.pathname.includes("DirectMessages")) {
+        const directMessage = data as DirectMessagesRecord & {
+          friendRecord: string;
+        };
+        directMessage.friendRecord = router.query.id as string;
 
-      if (data.content) {
-        const regex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))(?=[^\s]*\s)/g;
-        data.content = data.content.replace(regex, "![$1]($1)");
-        data.content = sanitizeUserInput(data.content);
+        await directMessageService.createDirectMessage(directMessage);
+      } else {
+        const message = data as MessagesRecord & { channel: string };
+        message.channel = AppState.activeChannel?.id as string;
+        await messageService.sendMessage(message, messageAttachmentRecords);
       }
-
-      data.channel = AppState.activeChannel?.id;
-
-      // console.log(data.content);
-
-      if (router.pathname === "/DirectMessages/[id]") {
-        const directMessageData = data as DirectMessagesRecord;
-        delete directMessageData.channel;
-        setValue("friendRecord", router.query.id);
-        await directMessageService.createDirectMessage(directMessageData);
-        reset();
-        inputEl.style.height = "initial";
-        setCharacterCount(0);
-        setMessageAttachmentRecords([]);
-      }
-      await messageService.sendMessage(data, messageAttachmentRecords);
       reset();
       inputEl.style.height = "initial";
       setCharacterCount(0);
@@ -92,9 +81,7 @@ const CreateMessage = () => {
       Pop.error(error);
     }
   };
-  useEffect(() => {
-    console.log(defaultValues);
-  }, []);
+ 
 
   useEffect(() => {
     if (selectedText) {
@@ -129,39 +116,28 @@ const CreateMessage = () => {
 
   const deleteMessageAttachment = async (id: string) => {
     try {
-      await uploadService.deleteFile(AppState?.user?.id!, id);
-
+      await uploadService.deleteFile(AppState?.user?.id || "", id);
       setMessageAttachmentRecords([]);
-      setValue("attachments", "");
-      // inputEl.value = inputEl.value.replace(
-      //   `![${messageAttachmentRecord.name}](${messageAttachmentRecord.url})`,
-      //   ""
-      // );
+      setValue("attachments", [""]);
     } catch (error) {
       Pop.error(error);
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadFile = async () => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const inputEl = document.getElementById(
         "createMessageInput"
       ) as HTMLInputElement;
-      // const record = await uploadService.uploadMessageAttachment(
-      //   e.target.files
-      // );
-
+  
       const record = await uploadService.uploadFile(e.target.files);
 
       const id = record?.id;
-      setValue("attachments", id!);
+      setValue("attachments", [id!]);
       setMessageAttachmentRecords([
         ...messageAttachmentRecords,
         record as FileUploadsResponse,
       ]);
       inputEl.value = inputEl.value + `![${record?.url}](${record?.url})`;
-    };
-    uploadFile();
   };
   return (
     <div className=" absolute  bottom-2  max-h-full w-full     ">
@@ -169,7 +145,7 @@ const CreateMessage = () => {
         onSubmit={handleSubmit(sendMessage)}
         className="relative mx-4  flex"
       >
-        {AppState.user ? (
+        {user ? (
           <>
             <textarea
               id="createMessageInput"
@@ -198,21 +174,22 @@ const CreateMessage = () => {
                   );
                 }
               }}
-              onKeyDown={(e) => {
+              onKeyDown={async(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleSubmit(sendMessage)();
+                 await handleSubmit(sendMessage)();
                 }
               }}
               onSelect={(e) => {
                 const inputElement = e.target as HTMLInputElement;
+                const el = inputElement;
                 const selectedValue = inputElement.value.slice(
-                  inputElement?.selectionStart!,
-                  inputElement?.selectionEnd!
+                  el.selectionStart as number,
+                  inputElement?.selectionEnd as number
                 );
                 setSelectedText(selectedValue);
-                setSelectionStart(inputElement?.selectionStart!);
-                setSelectionEnd(inputElement?.selectionEnd!);
+                setSelectionStart(inputElement?.selectionStart as number);
+                setSelectionEnd(inputElement?.selectionEnd as number);
               }}
             ></textarea>
             <TextFormattingToolbar
