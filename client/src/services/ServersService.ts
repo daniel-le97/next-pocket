@@ -42,6 +42,7 @@ class ServersService {
   //TODO When Creating a Server must also create a Member Collection Record & a Default Channel Record for the Server, push them to the server.Id page .
   async createServer(serverData: ServersRecord) {
     // create a server with the provided data
+   
     const newServer = await pb
       .collection(Collections.Servers)
       .create<ServersResponse>(serverData, {
@@ -72,7 +73,7 @@ class ServersService {
       .create(channelData);
     console.log(defaultChannel);
 
-    const welcomeMessage = await pb.collection(Collections.Messages).create({
+    await pb.collection(Collections.Messages).create({
       content: `Welcome to ${newServer.name}! Be Respectful and have fun!`,
       user: newServer.owner,
       channel: defaultChannel.id,
@@ -109,6 +110,21 @@ class ServersService {
     AppState.userServers = AppState.userServers.filter(
       (s) => s?.id != serverId
     );
+  }
+
+  async updateServer(id: string, data: ServersRecord) {
+    const server = await this.getById(id);
+    const newServer: ServersRecord = {
+      name: data.name || server.name,
+      description: data.description || server.description,
+      image: data.image || server.image,
+      private: data.private || server.private,
+      members: data.members || server.members,
+      owner: data.owner || server.owner,
+    }
+    const updatedServer = await pb.collection(Collections.Servers).update<Server>(id, newServer)
+    AppState.activeServer = updatedServer;
+    return updatedServer;
   }
 }
 

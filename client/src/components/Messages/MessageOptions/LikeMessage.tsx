@@ -23,7 +23,7 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
       className="group/item message-options-icon"
       onClick={likeMessage}
     >
-      <Tooltip content="Like" color="invert" placement="Top">
+      <Tooltip content="Like" color="invert" placement="top">
         <FaThumbsUp size={22} />
       </Tooltip>
       {/* <span
