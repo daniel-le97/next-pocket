@@ -9,7 +9,6 @@ export enum Collections {
 	Friends = "friends",
 	Likes = "likes",
 	Members = "members",
-	MessageAttachments = "messageAttachments",
 	Messages = "messages",
 	Servers = "servers",
 	Tests = "tests",
@@ -56,10 +55,10 @@ export type ChannelsRecord = {
 }
 
 export type DirectMessagesRecord = {
-	sender: RecordIdString
-	files?: string[]
+	user: RecordIdString
 	content: HTMLString
 	friendRecord: RecordIdString
+	attachments?: RecordIdString[]
 }
 
 export enum FileUploadsStatusOptions {
@@ -90,6 +89,7 @@ export type FriendsRecord = {
 export type LikesRecord = {
 	message: RecordIdString
 	user: RecordIdString
+	directMessage?: RecordIdString
 }
 
 export type MembersRecord = {
@@ -97,24 +97,11 @@ export type MembersRecord = {
 	server: RecordIdString
 }
 
-export enum MessageAttachmentsStatusOptions {
-	"uploaded" = "uploaded",
-	"rejected" = "rejected",
-	"pending" = "pending",
-}
-export type MessageAttachmentsRecord = {
-	file?: string[]
-	url?: string
-	status?: MessageAttachmentsStatusOptions
-	message?: RecordIdString
-}
-
 export type MessagesRecord = {
 	user: RecordIdString
 	channel?: RecordIdString
 	content?: HTMLString
-	files?: string[]
-	attachments?: RecordIdString
+	attachments?: RecordIdString[]
 }
 
 export type ServersRecord = {
@@ -155,7 +142,6 @@ export type FileUploadsResponse<Texpand = unknown> = FileUploadsRecord & BaseSys
 export type FriendsResponse<Texpand = unknown> = FriendsRecord & BaseSystemFields<Texpand>
 export type LikesResponse<Texpand = unknown> = LikesRecord & BaseSystemFields<Texpand>
 export type MembersResponse<Texpand = unknown> = MembersRecord & BaseSystemFields<Texpand>
-export type MessageAttachmentsResponse<Texpand = unknown> = MessageAttachmentsRecord & BaseSystemFields<Texpand>
 export type MessagesResponse<Texpand = unknown> = MessagesRecord & BaseSystemFields<Texpand>
 export type ServersResponse<Texpand = unknown> = ServersRecord & BaseSystemFields<Texpand>
 export type TestsResponse<Texpand = unknown> = TestsRecord & BaseSystemFields<Texpand>
@@ -169,7 +155,6 @@ export type CollectionRecords = {
 	friends: FriendsRecord
 	likes: LikesRecord
 	members: MembersRecord
-	messageAttachments: MessageAttachmentsRecord
 	messages: MessagesRecord
 	servers: ServersRecord
 	tests: TestsRecord

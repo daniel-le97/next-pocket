@@ -92,7 +92,7 @@ const CreateDirectMessage = () => {
           }}
         ></textarea>
 
-        <div className="my-2 flex justify-center space-x-2">
+        {/* <div className="my-2 flex justify-center space-x-2">
           <button onClick={() => insertMarkdown("**", "**")}>
             <FaBold />
           </button>
@@ -105,7 +105,7 @@ const CreateDirectMessage = () => {
           <button onClick={handleInsertImage}>
             <FaImage />
           </button>
-        </div>
+        </div> */}
         <p
           id="charLimit"
           className={` absolute bottom-14 right-2 text-sm  ${
