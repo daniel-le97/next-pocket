@@ -17,19 +17,12 @@ import type { ServersRecord } from "../../../PocketBaseTypes/pocketbase-types";
 import MyModal from "../GlobalComponents/Modal";
 import{Tooltip} from '@nextui-org/react'
 import { FaLock, FaLockOpen } from "react-icons/fa";
-const user = pb.authStore.model;
+import { AppState } from "~/AppState";
 
-const initialFormData = {
-  name: "",
-  description: "",
-  members: [user?.id],
-  imageUrl: "",
-  // imageFile: null,
-};
+
 const CreateServer = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState(initialFormData);
-  const [progress, setProgress] = useState(0);
+  const user = AppState.user
+
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();

@@ -23,9 +23,9 @@ const ServerSelection = () => {
   const router = useRouter();
 
   useEffect(() => {
-    setServers(AppState.userServers);
+    // setServers(AppState.userServers);
     if (router.query.id && servers) {
-      let server = servers.find((s) => s?.id == router.query.id);
+      let server = AppState.userServers.find((s) => s?.id == router.query.id);
       AppState.activeServer = server;
       AppState.messages = [];
     }
@@ -33,8 +33,8 @@ const ServerSelection = () => {
 
   return (
     <>
-      {servers &&
-        servers.map((s, index) => <ServerIcon server={s} key={index} />)}
+      {AppState.userServers &&
+        AppState.userServers.map((s, index) => <ServerIcon server={s} key={index} />)}
     </>
   );
 };
@@ -79,7 +79,6 @@ const ServerIcon = ({
           />
         </Tooltip>
 
-      
         {activeServer?.id !== server.id ? (
           <span className="server-icon-bubble group-hover:h-7"></span>
         ) : (

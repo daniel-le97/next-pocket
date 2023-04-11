@@ -49,15 +49,16 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
     <div
       className={`dropdown-selection  ${
         selection.title === channelTitle
-          ? "rounded bg-zinc-700 text-gray-300"
+          ? "rounded bg-zinc-700 text-gray-300 "
           : "text-gray-500"
       }`}
       onClick={joinChannel}
     >
       <BsHash size="24" className="text-gray-400" />
       <h5
-        className="dropdown-selection-text "
-      
+        className={`dropdown-selection-text ${
+          selection.title?.length! >= 30 && " truncate"
+        }`}
       >
         {selection.title}
       </h5>
