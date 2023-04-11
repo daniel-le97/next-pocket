@@ -56,7 +56,7 @@ export type UsersStatusWithUser = UsersStatusResponse & {
   expand: { user: UsersResponse };
 };
 export type DirectMessageWithUser = DirectMessagesResponse & {
-  expand: { sender: UsersResponse };
+  expand: { user: UsersResponse, "likes(directMessage)": LikesWithUser[] };
 };
 export type UserWithStatus = UsersResponse & {
   expand: { onlineStatus: UsersStatusResponse };
@@ -89,7 +89,38 @@ export class Message {
       : 0;
   }
 }
-export class DirectMessage{}
+
+export interface IBaseMessage{
+  id: string;
+  content?: string;
+  created: string;
+  updated: string;
+  user: UsersResponse;
+  likes: number;
+  friendRecord: string
+  channel: string
+  
+}
+export class DirectMessage {
+  constructor(data: DirectMessageWithUser) {
+    this.id = data.id;
+    this.content = data.content;
+    this.created = data.created;
+    this.updated = data.updated;
+    this.friendRecord = data.friendRecord;
+    this.user = data.expand.user;
+    this.likes = data.expand["likes(directMessage)"].length || 0
+      
+  }
+  id: string;
+  content?: string | undefined;
+  created: string;
+  updated: string;
+  user: UsersResponse<unknown>;
+  likes: number;
+  friendRecord: string;
+
+}
 
 export class UserClass {
   id: string;
@@ -173,7 +204,7 @@ export class ConvertDMToMessage {
 
   attachments?: string[] | undefined;
   constructor(data: DirectMessageWithUser) {
-    this.user = data.expand.sender
+    this.user = data.expand.user
     this.channel = data.friendRecord;
     this.content = data.content;
     this.id = data.id;

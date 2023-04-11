@@ -39,7 +39,7 @@ const MessageScroll = () => {
     <div
       id="scrollableDiv"
       className={`infinite-scroll-container  ${
-        AppState.messageQuery != "" && "infinite-scroll-container-search  "
+        AppState.messageQuery != "" ? "infinite-scroll-container-search" : ''
       }`}
     >
       {AppState.messages.length && (
@@ -93,7 +93,7 @@ const MessageScroll = () => {
           No messages contain
           <br />
           <div className="my-2 font-bold text-gray-200">
-            "{AppState.messageQuery}"
+            {AppState.messageQuery}
           </div>
           Refine Your search
         </div>
