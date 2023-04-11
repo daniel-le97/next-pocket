@@ -126,13 +126,6 @@
     hover:text-white dark:bg-gray-800;
   }
 
-  // .sidebar-tooltip {
-  //   z-index: 999999 !important;
-  //   @apply absolute left-14 m-2 w-auto min-w-max origin-left scale-0 rounded-md
-  //   bg-zinc-900 p-2
-  //   text-xs font-bold
-  //   text-white shadow-md transition-all duration-100;
-  // }
 
   .server-selection {
     @apply my-2 flex  
@@ -194,21 +187,7 @@
     to-indigo-400 bg-clip-text text-2xl font-bold tracking-wider text-transparent;
   }
 
-  /* .search {
-    @apply z-10 ml-0 mr-0 flex h-9 
-    w-1/5 items-center
-    justify-start
-    rounded-md bg-gray-400 px-2 text-gray-500 
-    shadow-md transition
-    duration-300 ease-in-out dark:bg-gray-600;
-  } */
 
-  /* .search-input {
-    @apply w-full rounded bg-transparent
-    pl-1 font-sans 
-    font-semibold  text-gray-500
-    placeholder-gray-500 outline-none;
-  } */
 }
 
 /* Channels Bar && Server Options Menu */
@@ -429,6 +408,13 @@
   }
   .markdown-copy-btn {
     @apply rounded-lg bg-zinc-700 p-1 px-2 hover:bg-opacity-90 active:bg-indigo-400;
+  }
+
+  .infinite-scroll-container{
+    @apply flex h-full  flex-col-reverse overflow-auto pb-32 pt-6
+  }
+  .infinite-scroll-container-search{
+    @apply infinite-scroll-container  rounded-sm border-2 border-indigo-500 shadow-inner;
   }
 }
 

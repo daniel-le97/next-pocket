@@ -7,42 +7,46 @@ import ChannelsBar from "@/components/ChannelsBar/ChannelsBar";
 import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { observer } from "mobx-react";
-
 import Pop from "utils/Pop";
 import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";
 import { AppState } from "AppState";
 import { setRedirect } from "utils/Redirect";
 import { channelsService, messageService, serversService } from "@/services";
 import { withAuth, withMember } from "@/middleware";
-
 import TopNavigation from "@/components/Messages/TopNavigation";
 import MessageScroll from "@/components/Messages/MessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
-import { Transition } from "@headlessui/react";
 import { NextPage } from "next";
 
 const Server: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
 
-  const fetchServerData = async (id: string) => {
-    try {
-      console.log("fetching server data",id);
-      
-      AppState.messages = [];
-      AppState.messageLikes = [[]];
-      await channelsService.getChannelsByServerId(id);
-      await messageService.getMessagesByChannelId(AppState.activeChannel!.id);
-      await serversService.getMembers(id);
-    } catch (error) {
-      Pop.error(error);
-    }
-  };
   useEffect(() => {
-    if (router.query.id) {
-      fetchServerData(router.query.id);
-    }
-  }, []);
+     if (!router.query.id) {
+       return;
+     }
+    
+      const fetchServerData = async () => {
+        try {
+          AppState.messages = [];
+          AppState.messageLikes = [[]];
+          await channelsService.getChannelsByServerId(id);
+      
+           await messageService.getMessagesByChannelId(
+             AppState.activeChannel!.id
+           );
+       
+          await serversService.getMembers(id);
+          console.log(AppState.messages);
+        } catch (error) {
+          Pop.error(error);
+        }
+      };
+      fetchServerData();
+      
+    
+  }, [router.query.id]);
 
   return (
     <>
@@ -58,7 +62,7 @@ const Server: NextPage = () => {
           <div className=" message-container ">
             <TopNavigation />
 
-            <MessageScroll />
+            {router.query.id && <MessageScroll />}
             <CreateMessage />
           </div>
           <ServerMembersBar />

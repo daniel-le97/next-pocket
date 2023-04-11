@@ -15,44 +15,31 @@ const DirectMessageScroll = () => {
   const router = useRouter();
   const id = router.query.id;
   const directMessages = AppState.directMessages
-  .filter(dm => dm.id != id)
-  .map(dm => new ConvertDMToMessage(dm) as unknown as Message);
+    .filter((dm) => dm.id != id)
+    .map((dm) => new ConvertDMToMessage(dm) as unknown as Message);
   // console.log("directMessages", directMessages);
-  
+
   const fetchMore = async () => {
-
-    console.log(
-      "CurrentPage:",
-      AppState.page,
-      "TotalPages:",
-      AppState.totalPages
-    );
-AppState.page++
-
-console.log(id);
-
-    await directMessageService.getDirectMessages(id as string);
+    AppState.page++;
+    await directMessageService.getDirectMessages(AppState.dmRouterQuery);
   };
   return (
     <div
       id="scrollableDiv2"
-      className={`flex h-full  flex-col-reverse overflow-auto pb-32 pt-6  ${
-        AppState.messageQuery != ""
-          ? "rounded-sm border-2 border-indigo-500 shadow-inner  "
-          : " "
+      className={`infinite-scroll-container  ${
+        AppState.messageQuery != "" && "infinite-scroll-container-search  "
       }`}
     >
-      {/*Put the scroll bar always on the bottom*/}
       <InfiniteScroll
-        dataLength={directMessages.length}
+        dataLength={AppState.directMessages.length}
         next={fetchMore}
         className="    flex flex-col-reverse pt-6 "
-        inverse={true} //
+        inverse={true} 
         hasMore={AppState.totalPages != AppState.page}
         loader={<LoaderProgress />}
         scrollableTarget="scrollableDiv2"
       >
-        {directMessages.map((message, index) => {
+        {AppState.directMessages.map((message, index) => {
           const currentDate = new Date(message.created).toLocaleDateString();
           const todaysDate = new Date(Date.now()).toLocaleDateString();
           const previousDate =
@@ -83,7 +70,19 @@ console.log(id);
         })}
       </InfiniteScroll>
 
- 
+      {AppState.messageQuery == "" && AppState.messages.length == 0 && (
+        <LoaderProgress />
+      )}
+      {AppState.messageQuery != "" && AppState.messages.length == 0 && (
+        <div className="container w-1/2 rounded  p-3 text-center text-xl text-gray-400">
+          No messages contain
+          <br />
+          <div className="my-2 font-bold text-gray-200">
+            "{AppState.messageQuery}"
+          </div>
+          Refine Your search
+        </div>
+      )}
     </div>
   );
 };

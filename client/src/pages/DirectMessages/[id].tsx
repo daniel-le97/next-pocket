@@ -8,32 +8,20 @@ import { AppState } from "AppState";
 import { observer } from "mobx-react";
 import Pop from "utils/Pop";
 import FriendsBar from "@/components/DirectMessages/FriendsBar";
-
 import { withAuth } from "../../middleware";
 import { directMessageService, friendsService } from "../../services";
 import DirectMessageScroll from "@/components/DirectMessages/DirectMessageScroll";
-import CreateDirectMessage from "@/components/DirectMessages/CreateDirectMessage";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
-
 
 const DirectMessages: NextPage = () => {
   const router = useRouter();
-  const id = router.query.id;
-  const user = AppState.user;
-
-  // const messages = AppState.directMessages.filter(dm => dm.id == id)
+  const id = router.query.id as string; 
 
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
-      return;
-    }
-
     if (id) {
       AppState.dmRouterQuery = router.query.id as string
       const fetchMessages = async () => {
         try {
-          // these
           const nID = id as unknown as number;
           if (AppState.dmTracker[nID] == true) return;
           AppState.directMessages = AppState.directMessages.filter(
@@ -41,7 +29,7 @@ const DirectMessages: NextPage = () => {
           );
           AppState.dmTracker[nID] = true;
           AppState.page = 1;
-          await directMessageService.getDirectMessages(id as string);
+          await directMessageService.getDirectMessages(id );
           await friendsService.getUserFriendsList();
           // console.log(AppState.directMessages[nID]);
           // console.log("all", AppState.directMessages);

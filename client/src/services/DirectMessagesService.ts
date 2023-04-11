@@ -72,7 +72,7 @@ class DirectMessageService {
       .getList(page, 50, {
         filter: `friendRecord.id = "${friendId}"`,
         sort: "-created",
-        expand: "sender",
+        expand: "user",
       });
     const messages = res.items as unknown as DirectMessageWithUser[];
     // console.log('messages', messages);

@@ -28,8 +28,7 @@ class ObservableAppState {
   userServers: (ServersResponse<unknown> | undefined)[] = [];
   users: UsersStatusWithUser[] = [];
   members: MemberUser[] = [];
-  userFriendId = ""
-
+  userFriendId = "";
 
   messageQuery = "";
 
@@ -37,7 +36,6 @@ class ObservableAppState {
   activeServer: ServersResponse | Server | null = null;
   activeMembership: MembersResponse | null = null;
 
-  channelTitles: (string | undefined)[] = [];
   channels: ChannelsResponse[] = [];
   servers: ServersResponse[] = [];
   messages: MessageWithUser[] = [];
@@ -51,13 +49,12 @@ class ObservableAppState {
   page = 1;
   loading = 0;
 
-  friends : Friend[] | null = null;
+  friends: Friend[] | null = null;
 
   lastPath: string | null = null;
   lastQueryId: string | null = null;
 
   // AppState: undefined;
-
 
   reset: () => void;
 
@@ -67,7 +64,7 @@ class ObservableAppState {
     // this.AppState = undefined;
     this.reset = action(() => {
       this.user = null;
-      this.userStatus =  null;
+      this.userStatus = null;
       this.members = [];
       this.userServers = [];
       this.messageQuery = "";
@@ -109,6 +106,5 @@ export const AppState = new Proxy<ObservableAppState>(
       })();
       return true;
     },
-    
   }
 );

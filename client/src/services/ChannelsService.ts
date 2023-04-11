@@ -9,7 +9,6 @@ import { pb } from "../../utils/pocketBase";
 type Data = { memberId: string; channelId: string };
 
 class ChannelsService {
- 
   async joinChannel(data: Data) {
     // console.log(data);
 
@@ -83,10 +82,6 @@ class ChannelsService {
         });
       }
 
-      const channelTitles = res.map((i) => i.title);
-      AppState.channelTitles = channelTitles;
-
-      // return channelTitles;
     } catch (error) {
       console.error(error);
       throw new Error("Failed to get channel list");
@@ -121,8 +116,7 @@ class ChannelsService {
     }
   }
 
-
-  async  updateChannel(id:string,data: ChannelsRecord) {
+  async updateChannel(id: string, data: ChannelsRecord) {
     const channel = await pb
       .collection(Collections.Channels)
       .update<ChannelsResponse>(id, data);
