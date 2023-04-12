@@ -12,19 +12,19 @@ import { withAuth } from "../../middleware";
 import { directMessageService, friendsService } from "../../services";
 import DirectMessageScroll from "@/components/DirectMessages/DirectMessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
+import { UnsubscribeFunc } from "pocketbase";
 
 const DirectMessages: NextPage = () => {
   const router = useRouter();
   const id = router.query.id as string;
 
   useEffect(() => {
+    let unsubscribe: UnsubscribeFunc
     if (id) {
-      AppState.page = 1;
-     
-
-      AppState.dmRouterQuery = router.query.id as string;
-      const fetchMessages = async () => {
+      (async () => {
         try {
+          AppState.page = 1;
+          AppState.dmRouterQuery = router.query.id as string;
           const nID = id as unknown as number;
           if (AppState.dmTracker[nID] == true) return;
           AppState.directMessages = AppState.directMessages.filter(
@@ -34,22 +34,15 @@ const DirectMessages: NextPage = () => {
 
           await directMessageService.getDirectMessages(id);
           await friendsService.getUserFriendsList();
-          // console.log(AppState.directMessages[nID]);
-          // console.log("all", AppState.directMessages);
-          //  console.log(
-          //    "page",
-          //    AppState.page,
-          //    "totalPages",
-          //    AppState.totalPages
-          //  );
+          unsubscribe = await directMessageService.subscribeToDM(id)
         } catch (error) {
           Pop.error(error);
         }
-      };
-      fetchMessages();
+      })();
     }
     return () => {
       AppState.dmTracker[id as unknown as number] = false;
+      unsubscribe ? unsubscribe() : null
     };
   }, [router.query.id]);
 
