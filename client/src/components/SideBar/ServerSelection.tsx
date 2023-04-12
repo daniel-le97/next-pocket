@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 
@@ -7,34 +8,34 @@ import { observer } from "mobx-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AppState } from "../../../AppState";
+import { Server } from "../../../PocketBaseTypes";
 import type {
   FileUploadsResponse,
   ServersResponse,
 } from "../../../PocketBaseTypes/pocketbase-types";
-import { useUser } from "../../../utils/pocketBase";
+// import { useUser } from "../../../utils/pocketBase";
 import { membersService } from "../../services/MembersService";
 import CreateServer from "./CreateServer";
 
 const ServerSelection = () => {
-  const [servers, setServers] = useState<
-    ServersResponse<FileUploadsResponse<unknown>>[]
-  >([]);
+  
   const user = AppState.user;
   const router = useRouter();
+  const servers = AppState.userServers;
 
   useEffect(() => {
     // setServers(AppState.userServers);
     if (router.query.id && servers) {
-      let server = AppState.userServers.find((s) => s?.id == router.query.id);
-      AppState.activeServer = server;
+    const server = servers.find((s) => s.id == router.query.id);
+      AppState.activeServer = server 
       AppState.messages = [];
     }
-  }, [AppState.userServers, router.query.id]);
+  }, [servers, router.query.id]);
 
   return (
     <>
-      {AppState.userServers &&
-        AppState.userServers.map((s, index) => <ServerIcon server={s} key={index} />)}
+      {servers &&
+        servers.map((s, index) => <ServerIcon server={s} key={index} />)}
     </>
   );
 };
@@ -42,15 +43,17 @@ const ServerSelection = () => {
 const ServerIcon = ({
   server,
 }: {
-  server: ServersResponse<FileUploadsResponse<unknown>>;
+  server: Server
 }) => {
   const router = useRouter();
   const activeServer = AppState.activeServer;
   const [isShowing, setShowing] = useState(false);
-  const handleClick = () => {
+  const handleClick = async() => {
     AppState.activeServer = server;
+    const defaultServer = server.channels[0];
+    console.log(`/server/${server.id}/channel/${defaultServer!.id}`);
 
-    router.push(`/server/${server.id}`);
+    await router.push(`/server/${server.id}/channel/${defaultServer!.id}`);
   };
   useEffect(() => {
     setShowing(!isShowing);
@@ -68,7 +71,7 @@ const ServerIcon = ({
       <div className=" sidebar-icon group   ">
         <Tooltip color="invert" content={server.name} placement="right">
           <img
-            src={server?.expand?.image?.url}
+            src={server.image?.url}
             alt="UserIcon"
             className={
               activeServer?.id !== server.id

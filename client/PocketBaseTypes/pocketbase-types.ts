@@ -49,7 +49,6 @@ export type ViewSystemFields<T = never> = {
 
 export type ChannelsRecord = {
 	members?: RecordIdString[]
-	messages?: RecordIdString[]
 	title?: string
 	server?: RecordIdString
 }

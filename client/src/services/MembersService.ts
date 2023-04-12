@@ -5,7 +5,7 @@ import type {
   MembersResponse,
 } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
-import type { TServerExpand } from "../../PocketBaseTypes/utils";
+import { Server, ServerWithRelations, TServerExpand } from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
 
@@ -29,15 +29,15 @@ class MembersService {
     const res = await pb
       .collection(Collections.Members)
       .create<MembersResponse<TServerExpand<FileUploadsResponse>>>(data, {
-        expand: "server.image",
-        '$autoCancel': true
+        expand: "server.image, server.channels(server)"
       });
     console.log("joinedServer", res);
-    AppState.userServers = [...AppState.userServers, res.expand?.server];
-    AppState.activeServer = res.expand?.server ? res.expand.server : null;
+    const server = new Server(res.expand?.server as unknown as ServerWithRelations)
+    AppState.userServers = [...AppState.userServers, server];
+    AppState.activeServer = server;
 
     // return the response for use as a "hook"
-    return {new: true};
+    return server
   }
   async getUserMemberRecord(data: MembersRecord, setMember?:boolean) {
   
@@ -75,11 +75,12 @@ class MembersService {
       .collection("Members")
       .getFullList<MembersResponse<TServerExpand<FileUploadsResponse>>>({
         filter: `user="${userId}"`,
-        expand: "server.image",
+        expand: "server.image,server.channels(server)",
       });
+    console.log("userServers", res);
 
     // filter out the servers from the Members records
-    const servers = res.map((member) => member.expand?.server);
+    const servers = res.map((member) => new Server(member.expand?.server as unknown as ServerWithRelations));
     // console.log('userServers', servers)
     // return;
 

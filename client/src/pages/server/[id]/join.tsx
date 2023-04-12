@@ -39,11 +39,11 @@ const ServerLink : NextPage = () => {
                 server: id
             }
             const member = await membersService.joinServer(data)
-            const isNew = member?.new
-            if(isNew){
+            if(member){
              Pop.success(`Welcome to ${AppState.activeServer?.name}`)
+             const channel = member?.channels[0]?.id
+             await router.push(`/server/${id}/channel/${channel}}`)
             }
-            router.push(`/server/${id}`)
           } catch (error) {
             Pop.error(error, `server/${id}/join`)
           }

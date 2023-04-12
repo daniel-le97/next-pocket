@@ -13,9 +13,9 @@ import Pop from "../../../utils/Pop";
 import { membersService } from "../../services/MembersService";
 import { BsCheck, BsCircleFill } from "react-icons/bs";
 import React from "react";
-import type { Server } from "../../../PocketBaseTypes/utils";
+import type { Server, ServerWithRelations } from "../../../PocketBaseTypes/utils";
 import { Transition } from "@headlessui/react";
-const ServerCard = ({ server }: { server: Server }) => {
+const ServerCard = ({ server }: { server: Server}) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
   const router = useRouter();
@@ -51,7 +51,7 @@ const ServerCard = ({ server }: { server: Server }) => {
   }
 
   const checkIfMember = () => {
-    if (server.members?.includes(user?.id)) {
+    if (server.members?.find((m) => m.id == user?.id)) {
       setIsMember(true);
     }
   };
@@ -76,7 +76,7 @@ const ServerCard = ({ server }: { server: Server }) => {
             : "bg-gray-300 from-zinc-900 to-gray-600"
         }`}
       >
-        <img src={server.expand?.image.url} alt="" className="server-image" />
+        <img src={server.image.url} alt="" className="server-image" />
 
         <div className="mt-2 p-3">
           <div className=" flex w-full justify-between ">
