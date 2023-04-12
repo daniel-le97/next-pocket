@@ -2,7 +2,8 @@ import { AppState } from "AppState";
 import type {
   DirectMessagesRecord,
   DirectMessagesResponse,
-  DirectMessageWithUser} from "PocketBaseTypes";
+  DirectMessageWithUser,
+  UsersResponse} from "PocketBaseTypes";
 import {
   DirectMessage
 } from "PocketBaseTypes";
@@ -51,6 +52,32 @@ class DirectMessageService {
       .update<DirectMessageWithUser>(id, newDm);
     return res;
   }
+  async subscribeToDM(id:string){
+    // console.log("subscribing to dm")
+    const subscribe = await pb
+      .collection(Collections.DirectMessages)
+      .subscribe("*",({ action, record }) => {
+        const message = record as unknown as DirectMessageWithUser;
+        console.log('subscribe on dms',{message: message, action: action})
+        const isFriend = AppState.friends?.find((f) => f.id === message.friendRecord && f.requester?.id == message.user)
+        if (!isFriend) return;
+        if (action !== 'delete'){
+          // message.expand.user = isFriend.friend as UsersResponse;
+          const directMessage = new DirectMessage(message);
+          directMessage.user = isFriend.requester
+          const foundIndex = AppState.directMessages.findIndex((m) => m.id === message.id);
+          if (foundIndex === -1) {
+            AppState.directMessages = [directMessage, ...AppState.directMessages];
+          }else{
+            AppState.directMessages[foundIndex] = directMessage;
+          }
+          return
+        }
+        AppState.directMessages = AppState.directMessages.filter((m) => m.id !== message.id);
+      });
+    return subscribe;
+
+  }
 
   /**
    * Deletes an existing direct message with the specified ID.
@@ -73,7 +100,7 @@ class DirectMessageService {
       .getList(page, 50, {
         filter: `friendRecord.id = "${friendId}"`,
         sort: "-created",
-        expand: "user,likes(directMessage)",
+        expand: "user,likes(directMessage).user",
       });
     const messages = (res.items as unknown as DirectMessageWithUser[]).map((message, index) => {
       const newMessage = new DirectMessage(message);

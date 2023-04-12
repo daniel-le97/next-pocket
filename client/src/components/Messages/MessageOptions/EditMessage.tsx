@@ -42,7 +42,7 @@ const EditMessageModal = ({ message }: { message: IBaseMessage}) => {
   } = useForm({
     defaultValues: {
       content: message.content?.replace(" *(edited)*", ""),
-      user: message.user.id,
+      user: message.user?.id,
     },
   });
   const onSubmit: SubmitHandler<{
@@ -126,7 +126,7 @@ const EditMessageModal = ({ message }: { message: IBaseMessage}) => {
                           <img
                             className="mx-0  mb-auto mt-0 h-12 w-12  cursor-pointer rounded-full bg-gray-100 object-cover object-top shadow-md shadow-zinc-500 dark:shadow-zinc-800"
                             src={
-                              message.user.avatarUrl ||
+                              message.user?.avatarUrl ||
                               `https://api.dicebear.com/5.x/bottts-neutral/svg`
                             }
                             alt="avatar"

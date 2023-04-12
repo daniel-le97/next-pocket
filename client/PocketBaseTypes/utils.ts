@@ -123,7 +123,7 @@ export interface IBaseMessage {
   content?: string;
   created: string;
   updated: string;
-  user: UsersResponse;
+  user: UsersResponse | UserWithStatus | undefined;
   likes: number;
   friendRecord: string;
   channel: string;
@@ -135,19 +135,14 @@ export class DirectMessage {
     this.created = data.created;
     this.updated = data.updated;
     this.friendRecord = data.friendRecord;
-    this.user = data.expand.user;
-    if (data.expand["likes(directMessage)"]) {
-      this.likes = data.expand["likes(directMessage)"].length;
-    } else {
-      this.likes = 0;
-    }
+    this.user = data.expand?.user || undefined;
   }
   id: string;
   content?: string | undefined;
   created: string;
   updated: string;
-  user: UsersResponse<unknown>;
-  likes: number;
+  user: UsersResponse | UserWithStatus | undefined;
+
   friendRecord: string;
 }
 
