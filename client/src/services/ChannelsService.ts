@@ -9,39 +9,33 @@ import { pb } from "../../utils/pocketBase";
 type Data = { memberId: string; channelId: string };
 
 class ChannelsService {
-  async joinChannel(data: Data) {
-    // // console.log(data);
+ async  joinChannel(data: Data) {
+  // Leave the current channel
+  await this.leaveChannel({
+    memberId: data.memberId,
+    channelId: AppState.user?.currentChannel,
+  });
 
-    // const channelsToLeave = await pb
-    //   .collection(Collections.Channels)
-    //   .getFullList({ filter: `members.id ?= "${data.memberId}"` });
-    // // console.log('joining channel');
-    // const channelToLeave = channelsToLeave[0];
-    // if (channelToLeave) {
-    // }
-    await this.leaveChannel({
-      memberId: data.memberId,
-      channelId: AppState.user?.currentChannel!,
-    });
+  // Get the channel record to join
+  const channelToJoin = await pb
+    .collection(Collections.Channels)
+    .getOne<ChannelsResponse>(data.channelId, { expand: "members" });
 
-    // Get the channel record to join
-    const channelToJoin = await pb
-      .collection(Collections.Channels)
-      .getOne<ChannelsResponse>(data.channelId, {
-        expand: "members",
-      });
-    AppState.activeChannel = channelToJoin;
-    // Add the user to the channel's member list
+  // Add the user to the channel's member list
+  const newMemberList = [...channelToJoin.members as [], data.memberId];
+  await pb.collection(Collections.Channels).update(channelToJoin.id, {
+    members: newMemberList,
+  });
 
-    const newMemberList = [...(channelToJoin.members as []), data.memberId];
-    await pb
-      .collection("channels")
-      .update(channelToJoin.id, { members: newMemberList });
+  // Update user's current channel
+  await pb.collection(Collections.Users).update(data.memberId, {
+    currentChannel: channelToJoin.id,
+  });
 
-    await pb.collection("users").update(data.memberId, {
-      currentChannel: channelToJoin.id,
-    });
-  }
+  // Update active channel in app state
+  AppState.activeChannel = channelToJoin;
+}
+
 
   async leaveChannel(data: Data) {
     // Get the channel record to leave
