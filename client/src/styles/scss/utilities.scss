@@ -61,16 +61,16 @@
     transform: rotate(360deg);
   }
 }
-
 @keyframes loader {
-0% {
-transform: translateX(-100%);
-}
-100% {
-transform: translateX(100%);
-}
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
 }
 
 .animate-loader {
-animation: loader 1.5s linear infinite;
+  animation: loader 1.5s linear infinite;
+  transform-origin: left;
 }

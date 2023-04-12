@@ -39,6 +39,8 @@
 .markdown p {
   margin: 1rem 0;
   line-height: 1.5;
+  word-break:  break-all;
+  overflow-wrap: break-word;
 // @apply flex items-start flex-wrap
 }
 
@@ -92,4 +94,9 @@
 .markdown em,
 .markdown i {
   font-style: italic;
+}
+
+code{
+  word-break: break-all;
+  overflow-wrap: break-word;
 }

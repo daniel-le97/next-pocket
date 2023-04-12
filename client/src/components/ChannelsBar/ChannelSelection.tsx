@@ -24,27 +24,18 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user;
   const router = useRouter();
   const { id, channel } = router.query as { id: string; channel: string };
+  //TODO seems to be a bug with the router and the active channel due to the _app.tsx useEffect watching the userRecord, which is  updated when the user changes the channel
   const joinChannel = async () => {
     try {
-      const data = {
-        memberId: user?.id!,
-        channelId: channel as string,
-      };
+      await router.push(`/server/${id}/channel/${selection.id}`);
 
-       await router.push(`/server/${id}/channel/${selection.id}`);
-      // AppState.page = 1
       AppState.messages = [];
       AppState.messageQuery = "";
-      // console.log(AppState.messages);
 
-      console.log(AppState.activeChannel?.title);
-      console.log(AppState.user?.currentChannel);
-      await channelsService.joinChannel(data);
-      await messageService.getMessagesByChannelId(selection.id!);
-      // console.log(AppState.messages);
-      console.log(AppState.user?.currentChannel);
-      console.log(AppState.activeChannel?.title);
-      // await messageService.getMessages();
+      // await channelsService.joinChannel({
+      //   memberId: user?.id!,
+      //   channelId: selection.id,
+      // });
     } catch (error) {
       console.error(error);
     }

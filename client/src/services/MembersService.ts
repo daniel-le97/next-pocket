@@ -77,7 +77,7 @@ class MembersService {
         filter: `user="${userId}"`,
         expand: "server.image,server.channels(server)",
       });
-    console.log("userServers", res);
+    // console.log("userServers", res);
 
     // filter out the servers from the Members records
     const servers = res.map((member) => new Server(member.expand?.server as unknown as ServerWithRelations));

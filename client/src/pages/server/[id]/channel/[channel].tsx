@@ -14,10 +14,11 @@ import TopNavigation from "@/components/Messages/TopNavigation";
 import MessageScroll from "@/components/Messages/MessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
 import { NextPage } from "next";
+import ProgressBar from "@badrap/bar-of-progress";
 
 const ServerOne: NextPage = () => {
   const router = useRouter();
-  const {id, channel} = router.query as {id:string; channel:string};
+  const { id, channel } = router.query as { id: string; channel: string };
   // const serverId = router.query.id as string;
   // const channelId = router.query.channel as string;
   useEffect(() => {
@@ -32,16 +33,44 @@ const ServerOne: NextPage = () => {
 
         await channelsService.getChannelsByServerId(id);
 
-        await messageService.getMessagesByChannelId(channel);
-
         // await serversService.getMembers(id);
-        console.log(AppState.messages);
+        // console.log(AppState.messages);
       } catch (error) {
         Pop.error(error);
       }
     };
     fetchServerData();
-  }, [id, channel]);
+  }, [id]);
+
+  useEffect(() => {
+    if (!id || !channel) {
+      return;
+    }
+
+    const progress = new ProgressBar({
+      size: 2,
+      color: "#4b60dd",
+      className: "bar-of-progress",
+      delay: 100,
+    });
+
+    const fetchChannelData = async () => {
+      try {
+        progress.start();
+        await channelsService.joinChannel({
+          memberId: AppState.user?.id!,
+          channelId: channel,
+        });
+        await messageService.getMessagesByChannelId(channel);
+        progress.finish();
+      } catch (error) {
+        progress.finish();
+        Pop.error(error);
+      }
+    };
+
+    fetchChannelData();
+  }, [channel]);
 
   return (
     <>

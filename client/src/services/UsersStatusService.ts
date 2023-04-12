@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { AppState } from "AppState";
-import type {
+import {
+  Collections,
   UsersStatusResponse,
   UsersStatusStatusOptions,
   UsersStatusWithUser,
@@ -44,8 +45,10 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
           );
           if (!AppState.friends[index]) return;
           // @ts-expect-error it is there
-          AppState.friends[index] = {...AppState.friends[index], activityStatus: status.status}
-
+          AppState.friends[index] = {
+            ...AppState.friends[index],
+            activityStatus: status.status,
+          };
         })();
       }
     );
@@ -130,6 +133,13 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
     }
     window.addEventListener("beforeunload", handleBeforeUnload);
     document.addEventListener("visibilitychange", handleVisibilityChange);
+  }
+
+  async updateCurrentChannel(channelToJoinId: string) {
+    const userStatus = await this.getUserStatus();
+    await pb.collection(Collections.UsersStatus).update(userStatus.id, {
+      currentChannel: channelToJoinId,
+    });
   }
 }
 export const usersStatusService = new UsersStatusService("UsersStatus");

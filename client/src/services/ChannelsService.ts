@@ -5,37 +5,35 @@ import type {
 } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
 import { pb } from "../../utils/pocketBase";
+import { usersService } from "./UsersService";
+import { usersStatusService } from "./UsersStatusService";
 
 type Data = { memberId: string; channelId: string };
 
 class ChannelsService {
- async  joinChannel(data: Data) {
-  // Leave the current channel
-  await this.leaveChannel({
-    memberId: data.memberId,
-    channelId: AppState.user?.currentChannel,
-  });
+  async joinChannel(data: Data) {
+    // Leave the current channel
+    await this.leaveChannel({
+      memberId: data.memberId,
+      channelId: AppState.user?.currentChannel,
+    });
 
-  // Get the channel record to join
-  const channelToJoin = await pb
-    .collection(Collections.Channels)
-    .getOne<ChannelsResponse>(data.channelId, { expand: "members" });
+    // Get the channel record to join
+    const channelToJoin = await pb
+      .collection(Collections.Channels)
+      .getOne<ChannelsResponse>(data.channelId, { expand: "members" });
 
-  // Add the user to the channel's member list
-  const newMemberList = [...channelToJoin.members as [], data.memberId];
-  await pb.collection(Collections.Channels).update(channelToJoin.id, {
-    members: newMemberList,
-  });
+    // Add the user to the channel's member list
+    const newMemberList = [...(channelToJoin.members as []), data.memberId];
+    await pb.collection(Collections.Channels).update(channelToJoin.id, {
+      members: newMemberList,
+    });
 
-  // Update user's current channel
-  await pb.collection(Collections.Users).update(data.memberId, {
-    currentChannel: channelToJoin.id,
-  });
+    await usersStatusService.updateCurrentChannel(data.channelId);
 
-  // Update active channel in app state
-  AppState.activeChannel = channelToJoin;
-}
-
+    // Update active channel in app state
+    AppState.activeChannel = channelToJoin;
+  }
 
   async leaveChannel(data: Data) {
     // Get the channel record to leave
@@ -84,7 +82,6 @@ class ChannelsService {
     if (newChannel) {
       AppState.channels = [...AppState.channels, newChannel];
       AppState.activeChannel = newChannel;
-     
     }
   }
 

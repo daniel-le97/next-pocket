@@ -18,10 +18,35 @@ import {
 } from "../services";
 import { useRouter } from "next/router";
 import { logger } from "~/utils/Logger";
+import ProgressBar from "@badrap/bar-of-progress";
+import Router from "next/router";
+
+const progress = new ProgressBar({
+  size: 2,
+  color: "#38a169",
+  className: "bar-of-progress",
+  delay: 100,
+});
+
+
+Router.events.on("routeChangeStart", progress.start);
+Router.events.on("routeChangeComplete", progress.finish);
+Router.events.on("routeChangeError", progress.finish);
+
+
+
+
+
+
+
+
+
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const user = AppState.user || pb.authStore.model;
   useEffect(() => {
+    console.log('userChanged');
+    
     // if you want it to be fetch before anything else put your call here
     (async () => {
       try {

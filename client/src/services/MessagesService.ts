@@ -88,29 +88,28 @@ class MessageService {
    * @returns The list of messages for the specified channel
    */
   async getMessagesByChannelId(id: string, page = AppState.page) {
-   
-    
-    const res = await pb.collection(Collections.Messages).getList(page, 50, {
-      filter: `channel.id = "${id}"`,
-      sort: "-created",
-      expand: "user,likes(message).user",
-    });
+    const { items, totalPages } = await pb
+      .collection(Collections.Messages)
+      .getList(page, 50, {
+        filter: `channel.id = "${id}"`,
+        sort: "-created",
+        expand: "user,likes(message).user",
+      });
 
-    const unMessages = res.items as unknown as TMessageWithUser[];
+    const unMessages = items as unknown as TMessageWithUser[];
     // console.log("unMessages", unMessages);
 
     action(() => {
-      const messages = unMessages.map((message, index) => {
-        const _Message: MessageWithUser = new Message(message);
-        AppState.messageLikes[index] = message.expand["likes(message)"] || [];
-        return _Message;
-      });
-      AppState.messages = [...AppState.messages, ...messages];
-      AppState.totalPages = res.totalPages;
+      AppState.messages = [
+        ...AppState.messages,
+        ...unMessages.map((message, index) => {
+          const _Message: MessageWithUser = new Message(message);
+          AppState.messageLikes[index] = message.expand["likes(message)"] || [];
+          return _Message;
+        }),
+      ];
+      AppState.totalPages = totalPages;
     })();
-
-
-    
   }
 
   async subscribe() {
@@ -147,10 +146,12 @@ class MessageService {
       channel: data.channel || message.channel,
       content: data.content || message.content,
       attachments: data.attachments || message.attachments,
-    }
-   return await pb.collection(Collections.Messages).update<TMessageWithUser>(id, newMessage, {
-      expand: "user,likes(message)",
-    });
+    };
+    return await pb
+      .collection(Collections.Messages)
+      .update<TMessageWithUser>(id, newMessage, {
+        expand: "user,likes(message)",
+      });
   }
 }
 

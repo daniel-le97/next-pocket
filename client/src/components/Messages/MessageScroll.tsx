@@ -49,7 +49,7 @@ const MessageScroll = () => {
           className="flex flex-col-reverse pt-6    "
           inverse={true}
           hasMore={AppState.totalPages != AppState.page}
-          loader={AppState.messages.length >= 1 && <LoaderProgress />}
+          loader={  AppState.messages.length >=1 &&<LoaderProgress />}
           scrollableTarget="scrollableDiv"
         >
           {AppState.messages.length > 0 ? (
@@ -86,7 +86,8 @@ const MessageScroll = () => {
               );
             })
           ) : (
-          <LoaderProgress/>
+          // <LoaderProgress/>
+          <div className=""></div>
           )}
         </InfiniteScroll>
       )}
@@ -111,7 +112,7 @@ const MessageScroll = () => {
 export const LoaderProgress = () => {
   return (
     <div className="fixed inset-0 h-1">
-      <div className="relative h-1 w-full overflow-hidden rounded-lg shadow  ">
+      <div className="relative h-0.5 w-full overflow-hidden rounded-lg shadow  ">
         <div className="animate-loader   absolute inset-0 bg-gradient-to-r from-indigo-400 to-indigo-500 shadow-md shadow-indigo-500  "></div>
       </div>
     </div>
