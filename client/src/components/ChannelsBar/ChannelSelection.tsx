@@ -19,26 +19,31 @@ import { Tooltip } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import Pop from "utils/Pop";
 import { debounce } from "lodash";
+import { useRouter } from "next/router";
 const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user;
-
+  const router = useRouter();
+  const { id, channel } = router.query as { id: string; channel: string };
   const joinChannel = async () => {
     try {
       const data = {
         memberId: user?.id!,
-        channelId: selection?.id,
+        channelId: channel as string,
       };
 
+       await router.push(`/server/${id}/channel/${selection.id}`);
       // AppState.page = 1
       AppState.messages = [];
       AppState.messageQuery = "";
       // console.log(AppState.messages);
 
-      // console.log(AppState.activeChannel?.title);
+      console.log(AppState.activeChannel?.title);
+      console.log(AppState.user?.currentChannel);
       await channelsService.joinChannel(data);
       await messageService.getMessagesByChannelId(selection.id!);
       // console.log(AppState.messages);
-      //  console.log(AppState.activeChannel?.title);
+      console.log(AppState.user?.currentChannel);
+      console.log(AppState.activeChannel?.title);
       // await messageService.getMessages();
     } catch (error) {
       console.error(error);
