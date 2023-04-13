@@ -1,4 +1,5 @@
 import { AppState } from "AppState";
+import { action as mob } from "mobx";
 import type {
   DirectMessagesRecord,
   DirectMessagesResponse,
@@ -57,23 +58,34 @@ class DirectMessageService {
     const subscribe = await pb
       .collection(Collections.DirectMessages)
       .subscribe("*",({ action, record }) => {
+
         const message = record as unknown as DirectMessageWithUser;
         console.log('subscribe on dms',{message: message, action: action})
         const isFriend = AppState.friends?.find((f) => f.id === message.friendRecord && f.requester?.id == message.user)
         if (!isFriend) return;
-        if (action !== 'delete'){
-          // message.expand.user = isFriend.friend as UsersResponse;
-          const directMessage = new DirectMessage(message);
-          directMessage.user = isFriend.requester
-          const foundIndex = AppState.directMessages.findIndex((m) => m.id === message.id);
-          if (foundIndex === -1) {
-            AppState.directMessages = [directMessage, ...AppState.directMessages];
-          }else{
-            AppState.directMessages[foundIndex] = directMessage;
-          }
-          return
-        }
-        AppState.directMessages = AppState.directMessages.filter((m) => m.id !== message.id);
+        mob(() => {
+            if (action !== "delete") {
+              // message.expand.user = isFriend.friend as UsersResponse;
+              const directMessage = new DirectMessage(message);
+              directMessage.user = isFriend.requester;
+              const foundIndex = AppState.directMessages.findIndex(
+                (m) => m.id === message.id
+              );
+              if (foundIndex === -1) {
+                AppState.directMessages = [
+                  directMessage,
+                  ...AppState.directMessages,
+                ];
+              } else {
+                AppState.directMessages[foundIndex] = directMessage;
+              }
+              return;
+            }
+            AppState.directMessages = AppState.directMessages.filter(
+              (m) => m.id !== message.id
+            );
+        })()
+      
       });
     return subscribe;
 

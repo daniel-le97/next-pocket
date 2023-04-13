@@ -40,3 +40,5 @@ Instead of Return message in withMember, to router push to home instead "/" not 
 
 switching between channels fast creates a delay bug
 when theres no AppState.messages don't show the loading bar, instead show a message
+
+edit channels on click needs to be put it into its own little box to handle double on click functionality happening
