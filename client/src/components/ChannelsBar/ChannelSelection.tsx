@@ -63,7 +63,7 @@ const [selectedItem, setSelectedItem] = useState(null);
       <BsHash size="24" className="text-gray-400" />
       <h5
         className={`dropdown-selection-text ${
-          selection.title?.length! >= 30 && " truncate"
+          selection.title?.length >= 30 ? " truncate"  : ''
         }`}
       >
         {selection.title}

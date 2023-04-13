@@ -5,19 +5,17 @@
 import { useEffect, useState} from "react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import { Transition, Dialog } from "@headlessui/react";
 import Pop from "utils/Pop";
-import { User, UserWithStatus} from "PocketBaseTypes";
-import type { Friend, UsersResponse, UsersStatusResponse } from "PocketBaseTypes";
+import type { Friend, UsersResponse } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import { friendsService, usersStatusService } from "@/services";
-import { UserIcon } from "../ChannelsBar/ChannelsBar";
-import UserStatus from "../Messages/UsersStatus";
-import { UnsubscribeFunc } from "pocketbase";
-import { FaPersonBooth } from "react-icons/fa";
 
-const topics = ["general", "tailwind-css", "react"];
+import UserStatus from "../Messages/UsersStatus";
+import type { UnsubscribeFunc } from "pocketbase";
+import { FaPersonBooth } from "react-icons/fa";
+import UserProfileBar from "../GlobalComponents/UserProfileBar";
+
+
 
 const FriendsBar = () => {
   const friends = AppState.friends?.filter((friend) => friend.status === "accepted");
@@ -71,8 +69,7 @@ const FriendsBar = () => {
             ))}
         </div>
       </div>
-      {/* <UserIcon user={user} /> */}
-      <UserIcon user={user as UsersResponse}/>
+      <UserProfileBar user={user as UsersResponse}/>
     </div>
   );
 };
@@ -80,7 +77,7 @@ const FriendsBar = () => {
 const UserCard = ({ friendShip}: { friendShip: Friend}) => {
   // console.log('friendShip', friendShip);
   
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   // function closeModal() {
   //   setIsOpen(false);
@@ -108,7 +105,7 @@ const UserCard = ({ friendShip}: { friendShip: Friend}) => {
           className="rounded-full shadow-md shadow-zinc-900"
         />
         <div className="absolute left-11 top-10">
-          {friendShip && <UserStatus status={friendShip.activityStatus!} />}
+          {friendShip.activityStatus && <UserStatus status={friendShip.activityStatus} />}
         </div>
       </div>
       {/* <Menu isOpen={isOpen} /> */}
