@@ -115,7 +115,7 @@ const MessageCard = ({
       {index === 0 && <IsNewestMessage />}
       <div className="message-options">
         <div className="message-options-container">
-          {AppState.user?.id == message.user.id ? (
+          {AppState.user?.id == message.user?.id! ? (
             <>
               <EditMessage message={message} />
               <DeleteMessage messageId={message.id} />

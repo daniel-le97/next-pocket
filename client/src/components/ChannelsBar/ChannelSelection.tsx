@@ -24,9 +24,17 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user;
   const router = useRouter();
   const { id, channel } = router.query as { id: string; channel: string };
+
+const [selectedItem, setSelectedItem] = useState(null);
+
+
+
+
+
   //TODO seems to be a bug with the router and the active channel due to the _app.tsx useEffect watching the userRecord, which is  updated when the user changes the channel
   const joinChannel = async () => {
     try {
+     
       await router.push(`/server/${id}/channel/${selection.id}`);
 
       AppState.messages = [];
@@ -44,13 +52,14 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
 
   return (
     <div
-      className={`dropdown-selection  ${
+      className={` dropdown-selection ${
         selection.title === AppState.activeChannel?.title
-          ? "rounded bg-zinc-700 text-gray-300 "
+          ? "   rounded-md bg-indigo-500 text-white "
           : "text-gray-500"
       }`}
       onClick={debouncedJoinChannel}
     >
+     
       <BsHash size="24" className="text-gray-400" />
       <h5
         className={`dropdown-selection-text ${
@@ -59,7 +68,8 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
       >
         {selection.title}
       </h5>
-
+{/* some reason clicking the cog icon causes the channel to change and not display any messages 
+It may be do to only router.pushing to the channel page... Check the [channel] page and check if clicking the same channel over and overagain is causing a bug.*/}
       {selection.title == AppState.activeChannel?.title &&
         selection.title != "GeneralChat" && (
           <div className="group relative">
@@ -70,7 +80,9 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
                   color="invert"
                   className=" font-bold"
                 >
-                  <FaCog size={15} />
+                  <FaCog size={15} onClick={(e)=>{
+                 e.stopPropagation();
+                  }} />
                 </Tooltip>
               }
               title="Edit Channel"
@@ -113,7 +125,7 @@ const EditChannel = () => {
       if (!yes) {
         return;
       }
-      await channelsService.deleteChannel(AppState.activeChannel?.id);
+      await channelsService.deleteChannel(AppState.activeChannel?.id!);
     } catch (error) {
       console.error(error);
     }
@@ -134,10 +146,10 @@ const EditChannel = () => {
           })}
         />
 
-        <button className="btn-primary"> Submit</button>
+        <button type="submit" className="btn-primary"> Submit</button>
       </form>
       <button className="btn btn-secondary mt-2 " onClick={deleteChannel}>
-        Delete Channel{" "}
+        Delete Channel
       </button>
     </>
   );

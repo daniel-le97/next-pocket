@@ -26,8 +26,8 @@
 /* Global Components.. Inputs, Buttons... etc */
 @layer components {
   .bar-of-progress {
-  z-index:9999999999999999999 !important;
-}
+    z-index: 9999999999999999999 !important;
+  }
   input {
     @apply w-full rounded-lg border   bg-gray-50 p-2.5  text-gray-900 outline-none  dark:border-gray-600 dark:bg-zinc-900 dark:text-white dark:placeholder-gray-400;
     /*
@@ -201,11 +201,8 @@
 /* Channels Bar && Server Options Menu */
 @layer components {
   .channel-bar {
-    @apply m-0 flex h-auto w-60 max-w-xs  relative  flex-col justify-between  bg-gray-200 shadow-lg dark:bg-zinc-800;
+    @apply relative m-0 flex h-auto w-60  max-w-xs  flex-col justify-between  bg-gray-200 shadow-lg dark:bg-zinc-800;
   }
-
-
-
 
   .channel-container {
     @apply m-0 flex h-16 flex-col items-center justify-start p-0;
@@ -245,6 +242,16 @@
     flex-row items-center justify-between
     rounded p-1 transition
     duration-300 ease-in-out hover:bg-zinc-700;
+  }
+
+  .active-dropdown-selection-block::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    width: 49px;
+    background: #c70606;
   }
 
   .dropdown-selection-text {
@@ -422,7 +429,7 @@
   }
 
   .infinite-scroll-container {
-    @apply flex h-full  flex-col-reverse overflow-auto pb-32 pt-6;
+    @apply flex h-full  flex-col-reverse overflow-auto pb-24 pt-6;
   }
   .infinite-scroll-container-search {
     @apply infinite-scroll-container  rounded-sm border-2 border-indigo-500 shadow-inner;
