@@ -25,16 +25,11 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const router = useRouter();
   const { id, channel } = router.query as { id: string; channel: string };
 
-const [selectedItem, setSelectedItem] = useState(null);
-
-
-
-
+  const [selectedItem, setSelectedItem] = useState(null);
 
   //TODO seems to be a bug with the router and the active channel due to the _app.tsx useEffect watching the userRecord, which is  updated when the user changes the channel
   const joinChannel = async () => {
     try {
-     
       await router.push(`/server/${id}/channel/${selection.id}`);
 
       AppState.messages = [];
@@ -54,25 +49,28 @@ const [selectedItem, setSelectedItem] = useState(null);
     <div
       className={` dropdown-selection ${
         selection.title === AppState.activeChannel?.title
-          ? "   rounded-md bg-indigo-500 text-white "
+          ? "   rounded-md bg-indigo-500 text-white  "
           : "text-gray-500"
       }`}
-      onClick={debouncedJoinChannel}
+      onClick={
+        AppState.activeChannel?.id != selection.id
+          ? debouncedJoinChannel
+          : () => {}
+      }
     >
-     
       <BsHash size="24" className="text-gray-400" />
       <h5
         className={`dropdown-selection-text ${
-          selection.title?.length >= 30 ? " truncate"  : ''
+          selection.title?.length! >= 30 ? " truncate" : ""
         }`}
       >
         {selection.title}
       </h5>
-{/* some reason clicking the cog icon causes the channel to change and not display any messages 
+      {/* some reason clicking the cog icon causes the channel to change and not display any messages 
 It may be do to only router.pushing to the channel page... Check the [channel] page and check if clicking the same channel over and overagain is causing a bug.*/}
       {selection.title == AppState.activeChannel?.title &&
         selection.title != "GeneralChat" && (
-          <div className="group relative">
+          <div className="group relative ">
             <MyModal
               buttonIcon={
                 <Tooltip
@@ -80,9 +78,7 @@ It may be do to only router.pushing to the channel page... Check the [channel] p
                   color="invert"
                   className=" font-bold"
                 >
-                  <FaCog size={15} onClick={(e)=>{
-                 e.stopPropagation();
-                  }} />
+                  <FaCog size={15}  />
                 </Tooltip>
               }
               title="Edit Channel"
@@ -146,7 +142,10 @@ const EditChannel = () => {
           })}
         />
 
-        <button type="submit" className="btn-primary"> Submit</button>
+        <button type="submit" className="btn-primary">
+          {" "}
+          Submit
+        </button>
       </form>
       <button className="btn btn-secondary mt-2 " onClick={deleteChannel}>
         Delete Channel

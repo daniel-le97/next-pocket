@@ -15,6 +15,7 @@ import MessageScroll from "@/components/Messages/MessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
 import { NextPage } from "next";
 import ProgressBar from "@badrap/bar-of-progress";
+import { progress } from "@/components/GlobalComponents/LoaderProgressBar";
 
 const ServerOne: NextPage = () => {
   const router = useRouter();
@@ -47,15 +48,11 @@ const ServerOne: NextPage = () => {
       return;
     }
 
-    const progress = new ProgressBar({
-      size: 2,
-      color: "#4b60dd",
-      className: "bar-of-progress",
-      delay: 100,
-    });
+  
 
     const fetchChannelData = async () => {
       try {
+        
         progress.start();
         await channelsService.joinChannel({
           memberId: AppState.user?.id!,

@@ -12,13 +12,14 @@ import Pop from "utils/Pop";
 
 // import type { Server } from "../../../PocketBaseTypes/utils"
 
-const DeleteServer = () => {
+const DeleteServer = ({ toggleOpen }: { toggleOpen: () => void }) => {
   const router = useRouter();
   const id = router.query.id as string;
   const server = AppState.activeServer;
   const user = AppState.user;
   const handleClick = async () => {
     try {
+      toggleOpen();
       const yes = await Pop.confirm();
       if (!yes) {
         return;

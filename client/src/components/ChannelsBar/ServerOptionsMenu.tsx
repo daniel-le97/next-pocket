@@ -12,57 +12,60 @@ import { withMember } from "@/middleware";
 import { FaArrowDown, FaArrowUp, FaDropbox } from "react-icons/fa";
 import { Tooltip } from "@nextui-org/react";
 
-const ServerOptionsMenu = () => {
+const ServerOptionsParent = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const toggleOpen = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <>
+      <ServerOptionsMenu isOpen={isOpen} toggleOpen={toggleOpen} />
+      <ServerOptions isOpen={isOpen} toggleOpen={toggleOpen} />
+    </>
+  );
+};
+
+const ServerOptionsMenu = ({ isOpen, toggleOpen }) => {
+  const handleClick = () => {
+    toggleOpen();
+  };
 
   return (
     <div className="relative ">
-     
-        <button
-          className="server-options-btn py-[19px]"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {AppState.activeServer?.name}
-          {isOpen ? <FaArrowUp /> : <FaArrowDown />}
-        </button>
-    
-
-      {isOpen && (
-      <ServerOptions/>
-      )}
+      <button className="server-options-btn py-[19px]" onClick={handleClick}>
+        {AppState.activeServer?.name}
+        {isOpen ? <FaArrowUp /> : <FaArrowDown />}
+      </button>
+      {/* {isOpen && <ServerOptions />} */}
     </div>
   );
 };
 
-const  ServerOptions = () =>{
-  
+const ServerOptions = ({ isOpen, toggleOpen }) => {
   const isServerOwner = AppState.activeServer?.owner === AppState.user?.id;
 
+ 
+
   return (
-  <div  className="  server-options ">
-            <div className="server-options-container">
-           
-                
-                  <LeaveServer />
-                  {isServerOwner && (
-                    <>
-                      <DeleteServer />
-                      <CreateChannel />
-                    </>
-                  )}
-                  <ShareLink />
-                  <SearchMembers />
-                  <ServerGuidelines />
-           
-            </div>
-          </div>
-  )
-}
+    <div className={`server-options ${isOpen ? "visible" : "hidden"}`}>
+      <div className="server-options-container">
+        <LeaveServer toggleOpen={toggleOpen} />
+        {isServerOwner && (
+          <>
+            <DeleteServer toggleOpen={toggleOpen} />
+            <CreateChannel toggleOpen={toggleOpen} />
+          </>
+        )}
+        <ShareLink  />
+        {/* <SearchMembers  /> */}
+        <ServerGuidelines toggleOpen={toggleOpen} />
+      </div>
+    </div>
+  );
+};
 
-//  ANCHOR this is where we need to do our autth checks
-//check if they are a member of the server and if they are the owner
-// if they are the owner, show the delete server option
-// if they are a member, show the leave server option
 
-export default observer(withMember(ServerOptionsMenu));
+
+export default observer(withMember(ServerOptionsParent));

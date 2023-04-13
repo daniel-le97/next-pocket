@@ -6,12 +6,14 @@ type ModalProps = {
   buttonIcon: React.ReactNode;
   title: string;
   children: React.ReactNode;
+ 
 };
-const MyModal = ({ buttonIcon, title, children }: ModalProps) => {
+const MyModal = ({ buttonIcon, title, children}: ModalProps) => {
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
     setIsOpen(false);
+     
   }
 
   function openModal() {
@@ -20,14 +22,14 @@ const MyModal = ({ buttonIcon, title, children }: ModalProps) => {
 
   return (
     <>
-      <div className=" flex items-center justify-center w-full">
+      <div className=" flex w-full items-center justify-center">
         <button
           type="button"
           onClick={openModal}
           className="w-full  "
           // className="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         >
-         {buttonIcon}
+          {buttonIcon}
         </button>
       </div>
 
@@ -57,11 +59,8 @@ const MyModal = ({ buttonIcon, title, children }: ModalProps) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="dialog-modal">
-                  <Dialog.Title
-                    as="h3"
-                    className="dialog-title"
-                  >
-                 {title}
+                  <Dialog.Title as="h3" className="dialog-title">
+                    {title}
                   </Dialog.Title>
                   {/* <div className="mt-2">
                     <p className="text-sm text-gray-500">
@@ -69,14 +68,14 @@ const MyModal = ({ buttonIcon, title, children }: ModalProps) => {
                       you an email with all of the details of your order.
                     </p>
                   </div> */}
-{children}
+                  {children}
                   <div className="mt-4">
                     <button
                       type="button"
                       className="btn-secondary"
                       onClick={closeModal}
                     >
-                    Cancel
+                      Cancel
                     </button>
                   </div>
                 </Dialog.Panel>

@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import router from "next/router";
 import { serversService } from "@/services/ServersService";
 import MyModal from "../../GlobalComponents/Modal";
-const ServerGuidelines = () => {
+const ServerGuidelines = ({toggleOpen} : {toggleOpen: () => void}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const {
@@ -39,7 +39,7 @@ const ServerGuidelines = () => {
     }
   };
   return (
-    <button className=" server-options-selection">
+    <button className=" server-options-selection" onClick={toggleOpen}>
       <MyModal
         buttonIcon={
           <div className="flex w-full  justify-between">

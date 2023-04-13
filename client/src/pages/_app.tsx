@@ -20,13 +20,9 @@ import { useRouter } from "next/router";
 import { logger } from "~/utils/Logger";
 import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
+import { progress } from "@/components/GlobalComponents/LoaderProgressBar";
 
-const progress = new ProgressBar({
-  size: 2,
-  color: "#38a169",
-  className: "bar-of-progress",
-  delay: 100,
-});
+ 
 
 
 Router.events.on("routeChangeStart", progress.start);
