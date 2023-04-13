@@ -2,19 +2,18 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import Head from "next/head";
 import ChannelsBar from "@/components/ChannelsBar/ChannelsBar";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { observer } from "mobx-react";
 import Pop from "utils/Pop";
 import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";
 import { AppState } from "AppState";
-import { setRedirect } from "utils/Redirect";
-import { channelsService, messageService, serversService } from "@/services";
+import { channelsService, messageService } from "@/services";
 import { withAuth, withMember } from "@/middleware";
 import TopNavigation from "@/components/Messages/TopNavigation";
 import MessageScroll from "@/components/Messages/MessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import ProgressBar from "@badrap/bar-of-progress";
 
 interface IProgressBar{
