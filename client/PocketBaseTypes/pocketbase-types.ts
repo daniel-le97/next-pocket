@@ -132,6 +132,7 @@ export enum UsersStatusStatusOptions {
 export type UsersStatusRecord = {
 	user: RecordIdString
 	status?: UsersStatusStatusOptions
+	currentChannel?: RecordIdString
 }
 
 // Response types include system fields and match responses from the PocketBase API
