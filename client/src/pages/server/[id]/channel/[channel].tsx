@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import Head from "next/head";
 import ChannelsBar from "@/components/ChannelsBar/ChannelsBar";
@@ -16,6 +17,10 @@ import CreateMessage from "@/components/CreateMessage/CreateMessage";
 import { NextPage } from "next";
 import ProgressBar from "@badrap/bar-of-progress";
 
+interface IProgressBar{
+  start(): void;
+  finish(): void;
+}
 const ServerOne: NextPage = () => {
   const router = useRouter();
   const { id, channel } = router.query as { id: string; channel: string };
@@ -47,18 +52,18 @@ const ServerOne: NextPage = () => {
       return;
     }
 
-    const progress = new ProgressBar({
-      size: 2,
-      color: "#4b60dd",
-      className: "bar-of-progress",
-      delay: 100,
-    });
-
+    
     const fetchChannelData = async () => {
+      const progress = new ProgressBar({
+        size: 2,
+        color: "#4b60dd",
+        className: "bar-of-progress",
+        delay: 100,
+      }) as unknown as IProgressBar;
       try {
         progress.start();
         await channelsService.joinChannel({
-          memberId: AppState.user?.id!,
+          memberId: AppState.user!.id,
           channelId: channel,
         });
         await messageService.getMessagesByChannelId(channel);
