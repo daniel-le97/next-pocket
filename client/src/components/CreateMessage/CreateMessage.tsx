@@ -67,10 +67,8 @@ const CreateMessage = () => {
         directMessage.friendRecord = router.query.id as string;
         await directMessageService.createDirectMessage(directMessage);
       } else {
-       
-        
-        const message = data as MessagesRecord & { channel: string };
-        message.channel = AppState.activeChannel?.id as string;
+        const message = data as MessagesRecord;
+        message.channel = AppState.activeChannel?.id;
         await messageService.sendMessage(message, messageAttachmentRecords);
       }
       reset();

@@ -1,31 +1,20 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { observer } from "mobx-react";
-import { useRef, useState } from "react";
-import { pb } from "../../utils/pocketBase";
-import { AppState } from "../../AppState";
+import { useRef } from "react";
 import Link from "next/link.js";
 import { useRouter } from "next/router.js";
-import type {
-  UsersRecord,
-  UsersResponse,
-} from "../../PocketBaseTypes/pocketbase-types";
-import { Collections } from "../../PocketBaseTypes/pocketbase-types";
-import { getRedirectOrPath } from "../../utils/Redirect";
-import { membersService } from "@/services/MembersService";
 import { authsService } from "../services";
-import { UserLogin } from "../../PocketBaseTypes";
+import type { UserLogin } from "../../PocketBaseTypes";
 import { useForm } from "react-hook-form";
 import Pop from "../../utils/Pop";
-import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+import { FaArrowAltCircleRight } from "react-icons/fa";
 
 function SignUp() {
   const {
     register,
     handleSubmit,
     watch,
-    getValues,
-    setError,
     formState: { errors },
   } = useForm<UserLogin>();
   const password = useRef({});

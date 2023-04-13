@@ -1,22 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import Head from "next/head";
 import ChannelsBar from "@/components/ChannelsBar/ChannelsBar";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { observer } from "mobx-react";
 import Pop from "utils/Pop";
 import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";
 import { AppState } from "AppState";
-import { setRedirect } from "utils/Redirect";
-import { channelsService, messageService, serversService } from "@/services";
+import { channelsService, messageService } from "@/services";
 import { withAuth, withMember } from "@/middleware";
 import TopNavigation from "@/components/Messages/TopNavigation";
 import MessageScroll from "@/components/Messages/MessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import ProgressBar from "@badrap/bar-of-progress";
 import { progress } from "@/components/GlobalComponents/LoaderProgressBar";
 
+interface IProgressBar{
+  start(): void;
+  finish(): void;
+}
 const ServerOne: NextPage = () => {
   const router = useRouter();
   const { id, channel } = router.query as { id: string; channel: string };
@@ -48,14 +52,19 @@ const ServerOne: NextPage = () => {
       return;
     }
 
-  
-
+    
     const fetchChannelData = async () => {
+      const progress = new ProgressBar({
+        size: 2,
+        color: "#4b60dd",
+        className: "bar-of-progress",
+        delay: 100,
+      }) as unknown as IProgressBar;
       try {
         
         progress.start();
         await channelsService.joinChannel({
-          memberId: AppState.user?.id!,
+          memberId: AppState.user!.id,
           channelId: channel,
         });
         await messageService.getMessagesByChannelId(channel);

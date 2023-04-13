@@ -54,16 +54,17 @@ const EditMessageModal = ({ message }: { message: IBaseMessage}) => {
     try {
       checkIfEdited(data as unknown as IBaseMessage);
       if (isDmPath) {
+        console.log("is dm path")
         await directMessageService.updateDirectMessage(
           message.id,
           data as unknown as DirectMessagesRecord
         );
       } else {
+        await messageService.editMessage(
+          message.id,
+          data as unknown as MessagesRecord
+        );
       }
-      await messageService.editMessage(
-        message.id,
-        data as unknown as MessagesRecord
-      );
 
       setIsOpen(false);
     } catch (error) {
