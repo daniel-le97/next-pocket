@@ -2,17 +2,25 @@
 import { likesService } from "@/services/LikesService";
 import { Tooltip } from "@nextui-org/react";
 import { observer } from "mobx-react";
+import { useRouter } from "next/router";
 import { FaThumbsUp } from "react-icons/fa";
 import Pop from "utils/Pop";
 
 const LikeMessage = ({ messageId }: { messageId: string }) => {
+  const router = useRouter();
+  const isDMPath = router.pathname.includes("DirectMessages");
   const likeMessage = async () => {
     try {
       // const yes = await Pop.confirm();
       // if (!yes) {
       //   return;
       // }
-      await likesService.create(messageId);
+      if (isDMPath) {
+        await likesService.create(messageId, 'directMessage');
+        return;
+      }
+
+      await likesService.create(messageId, 'message');
     } catch (error) {
       Pop.error(error);
     }

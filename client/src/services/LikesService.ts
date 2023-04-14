@@ -21,10 +21,11 @@ class LikesService
   update(data: LikesRecord): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  async getById(messageId: string) {
+  async getById(messageId: string, collection: 'directMessage' | 'message'): Promise<LikesWithUser | undefined> {
     const userId = AppState.user!.id;
+    // const relation = collection.slice(0,1)
     const res = await this.pb.getList(1, 1, {
-      filter: `message = "${messageId}" && user = "${userId}"`,
+      filter: `${collection} = "${messageId}" && user = "${userId}"`,
     });
     return res.items[0] as unknown as LikesWithUser;
   }
@@ -42,7 +43,7 @@ class LikesService
   }
   async create(id: string, collection: 'directMessage' | 'message'): Promise<LikesWithUser | undefined> {
     // console.log("creating");
-    const alreadyReacted = await this.getById(id);
+    const alreadyReacted = await this.getById(id, collection);
     if (alreadyReacted) {
       // console.log(alreadyReacted);
 
@@ -51,10 +52,8 @@ class LikesService
       // console.log("deleted");
       return;
     }
-    const data: LikesRecord = {
-      message: id,
-      user: this.user!.id,
-    };
+    const  data : Partial<LikesRecord> = {user: this.user!.id}
+    collection == 'message' ? data.message = id : data.directMessage = id
 
     await this.pb.create<LikesWithUser>(data, {
       expand: "user",
