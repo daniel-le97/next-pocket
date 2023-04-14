@@ -53,8 +53,21 @@
 
 .markdown li {
   margin: 0.5rem 0;
+  @apply text-gray-300 font-semibold list-disc ;
 }
 
+ .markdown th,
+  .markdown td {
+   
+   @apply text-start p-2 border border-zinc-900
+  }
+  .markdown th {
+  
+    @apply w-24 font-bold text-zinc-900 bg-zinc-300
+  }
+  .markdown table{
+    @apply w-full 
+  }
 /* Links */
 .markdown a {
   text-decoration: none;

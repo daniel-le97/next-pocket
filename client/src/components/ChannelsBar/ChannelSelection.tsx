@@ -49,7 +49,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
     <div
       className={` dropdown-selection ${
         selection.title === AppState.activeChannel?.title
-          ? "   rounded-md bg-indigo-500 text-white  "
+          ? "   rounded-md bg-indigo-500 bg-opacity-70  text-white "
           : "text-gray-500"
       }`}
       onClick={
@@ -78,7 +78,7 @@ It may be do to only router.pushing to the channel page... Check the [channel] p
                   color="invert"
                   className=" font-bold"
                 >
-                  <FaCog size={15}  />
+                  <FaCog size={15} />
                 </Tooltip>
               }
               title="Edit Channel"

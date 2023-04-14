@@ -49,7 +49,7 @@ const MessageScroll = () => {
           className="flex flex-col-reverse pt-6    "
           inverse={true}
           hasMore={AppState.totalPages != AppState.page}
-          loader={  AppState.messages.length >=1 &&<LoaderProgress />}
+          loader={AppState.messages.length >= 1 && <LoaderProgress />}
           scrollableTarget="scrollableDiv"
         >
           {AppState.messages.length > 0 ? (
@@ -86,25 +86,13 @@ const MessageScroll = () => {
               );
             })
           ) : (
-          // <LoaderProgress/>
-          <div className=""></div>
+            <div className=""></div>
           )}
         </InfiniteScroll>
       )}
 
-      {/* {AppState.messageQuery == "" && AppState.messages.length == 0 && (
-        <LoaderProgress />
-      )} */}
-      {AppState.messageQuery != "" && AppState.messages.length == 0 && (
-        <div className="container w-1/2 rounded  p-3 text-center text-xl text-gray-400">
-          No messages contain
-          <br />
-          <div className="my-2 font-bold text-gray-200">
-            {AppState.messageQuery}
-          </div>
-          Refine Your search
-        </div>
-      )}
+      
+     <NoMessagesFoundInSearch/>
     </div>
   );
 };
@@ -118,4 +106,22 @@ export const LoaderProgress = () => {
     </div>
   );
 };
+
+
+const NoMessagesFoundInSearch= () => {
+  return (
+    <>
+      {AppState.messageQuery != "" && AppState.messages.length == 0 && (
+        <div className="container h-full w-full flex items-center justify-center flex-col rounded  p-3 text-center text-xl text-gray-400">
+          No messages contain
+          <br />
+          <div className="my-2 font-bold text-gray-200">
+            {AppState.messageQuery}
+          </div>
+          Refine Your search
+        </div>
+      )}
+    </>
+  );
+}
 export default observer(MessageScroll);

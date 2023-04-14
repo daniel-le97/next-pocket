@@ -54,7 +54,7 @@ const MessageCard = ({
         <UserAvatar
           width="w-12"
           height="h-12"
-          avatarUrl={message.user.avatarUrl}
+          avatarUrl={message.user?.avatarUrl!}
         />
         {/* <UserStatus user={message?.expand?.user} /> */}
       </div>

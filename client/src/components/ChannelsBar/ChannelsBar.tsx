@@ -43,7 +43,7 @@ const ChannelsBar = () => {
               <h5
                 className={
                   expanded
-                    ? "text-lg font-bold text-indigo-500 text-opacity-90 "
+                    ? "text-lg font-bold text-indigo-500  "
                     : "text-gray-500text-opacity-90  cursor-default  text-lg font-semibold "
                 }
               >
