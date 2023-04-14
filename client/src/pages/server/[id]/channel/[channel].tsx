@@ -15,7 +15,7 @@ import MessageScroll from "@/components/Messages/MessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
 import type { NextPage } from "next";
 import ProgressBar from "@badrap/bar-of-progress";
-import { UnsubscribeFunc } from "pocketbase";
+import type { UnsubscribeFunc } from "pocketbase";
 import DirectMessageScroll from "../../../../components/DirectMessages/DirectMessageScroll";
 
 
