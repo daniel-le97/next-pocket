@@ -47,10 +47,9 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
 
   return (
     <div
-      className={` dropdown-selection ${
-        selection.title === AppState.activeChannel?.title
-          ? "   rounded-md bg-indigo-500 bg-opacity-70  text-white "
-          : "text-gray-500"
+      className={` channel-selection ${
+        selection.title === AppState.activeChannel?.title &&
+        " active-channel-selection  "
       }`}
       onClick={
         AppState.activeChannel?.id != selection.id
@@ -60,14 +59,13 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
     >
       <BsHash size="24" className="text-gray-400" />
       <h5
-        className={`dropdown-selection-text ${
+        className={`channel-selection-text ${
           selection.title?.length! >= 30 ? " truncate" : ""
         }`}
       >
         {selection.title}
       </h5>
-      {/* some reason clicking the cog icon causes the channel to change and not display any messages 
-It may be do to only router.pushing to the channel page... Check the [channel] page and check if clicking the same channel over and overagain is causing a bug.*/}
+
       {selection.title == AppState.activeChannel?.title &&
         selection.title != "GeneralChat" && (
           <div className="group relative ">

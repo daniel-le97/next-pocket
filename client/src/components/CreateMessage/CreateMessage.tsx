@@ -147,7 +147,7 @@ const CreateMessage = () => {
             <textarea
               id="createMessageInput"
               rows={1}
-              className="create-message-input h-auto max-h-96 w-full resize-none  rounded-xl  bg-gray-100 py-3.5 pl-4 pr-12 text-lg font-semibold text-gray-500  focus:outline-none dark:bg-zinc-600 dark:text-zinc-300"
+              className="create-message-input"
               {...register("content", {
                 required: true,
                 maxLength: 2400,

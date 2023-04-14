@@ -43,20 +43,15 @@ const ChannelsBar = () => {
               <h5
                 className={
                   expanded
-                    ? "text-lg font-bold text-indigo-500  "
-                    : "text-gray-500text-opacity-90  cursor-default  text-lg font-semibold "
+                    ? "channel-selection-header-expanded  "
+                    : "channel-selection-header "
                 }
               >
                 Text Channels
               </h5>
-              {/* <FaPlus
-                size="12"
-                className="text-accent my-auto ml-auto text-opacity-80"
-              /> */}
             </div>
             {expanded &&
               channels &&
-              // @ts-ignore
               channels.map((c) => (
                 <ChannelSelection selection={c} key={c.id} />
               ))}
