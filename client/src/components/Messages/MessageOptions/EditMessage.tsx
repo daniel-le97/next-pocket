@@ -47,7 +47,7 @@ const EditMessageModal = ({ message }: { message: IBaseMessage}) => {
   });
   const onSubmit: SubmitHandler<{
     content: string | undefined;
-    user: string;
+    user: string | undefined;
   }> = async (
     data
   ) => {

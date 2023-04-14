@@ -12,6 +12,7 @@ import rehypeRaw from "rehype-raw";
 import Pop from "utils/Pop";
 import type {
   DirectMessage,
+  IBaseMessage,
   LikesWithUser,
   Message,
   MessageWithUser,
@@ -29,7 +30,7 @@ const MessageCard = ({
   index: number;
 }) => {
   const messageQuery = AppState.messageQuery;
-  const likes = AppState.messageLikes[index] ?? [];
+  const likes = AppState.messageLikes[message.id as unknown as number] ?? [];
   const handleCopyClick = () => {
     function removeBackticks(str: string): string {
       const pattern = /```([\s\S]*)```/;
@@ -54,7 +55,7 @@ const MessageCard = ({
         <UserAvatar
           width="w-12"
           height="h-12"
-          avatarUrl={message.user?.avatarUrl!}
+          avatarUrl={message.user?.avatarUrl}
         />
         {/* <UserStatus user={message?.expand?.user} /> */}
       </div>
@@ -110,14 +111,14 @@ const MessageCard = ({
           }}
         />
 
-        {likes?.length! >= 1 && <MessageLikes likes={likes} />}
+        {likes?.length >= 1 && <MessageLikes likes={likes} />}
       </div>
       {index === 0 && <IsNewestMessage />}
       <div className="message-options">
         <div className="message-options-container">
-          {AppState.user?.id == message.user?.id! ? (
+          {AppState.user?.id == message.user?.id ? (
             <>
-              <EditMessage message={message} />
+              <EditMessage message={message as IBaseMessage} />
               <DeleteMessage messageId={message.id} />
             </>
           ) : (
