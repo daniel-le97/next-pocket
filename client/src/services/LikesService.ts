@@ -69,24 +69,18 @@ class LikesService
       "*",
       async ({ action, record }) => {
         // an action happened on the likes table sp we need to update state
-        const index = AppState.messages.findIndex(
-          (message) => message.id == record.message
-        );
-        if (index == -1) {
-          logger.log(
-            "likeService.subscribe() message not found",
-            record.message
-          );
-          return;
-        }
+
         const _record = record as unknown as LikesWithUser;
+        const messageIndex = _record.message as unknown as number
+
+
         //  action can be create, update, delete
         if (action !== "delete") {
           const like = await this.getOne(record.id);
-          this.addLikeOrReplaceToMessage(like, index);
+          this.addLikeOrReplaceToMessage(like, messageIndex);
         }
         if (action === "delete") {
-          this.filterLikeFromMessage(_record, index);
+          this.filterLikeFromMessage(_record, messageIndex);
           console.log("likeService.subscribe(delete)", _record);
         }
       }
@@ -96,14 +90,14 @@ class LikesService
 
   protected addLikeOrReplaceToMessage(
     like: LikesWithUser,
-    messageIndex: number
+    likeMessageIndex: number
   ) {
-    const likes = AppState.messageLikes[messageIndex];
+    const likes = AppState.messageLikes[likeMessageIndex];
     const likeIndex = likes?.findIndex((_like) => _like.id == like.id);
-    if (likes && likeIndex != undefined) {
+    if (likes && likeIndex) {
       action(() => {
         if (likeIndex == -1) {
-          AppState.messageLikes[messageIndex] = [...likes, like];
+          AppState.messageLikes[likeMessageIndex] = [...likes, like];
           return;
         }
         likes[likeIndex] = like;
@@ -111,11 +105,11 @@ class LikesService
     }
   }
 
-  protected filterLikeFromMessage(like: LikesWithUser, messageIndex: number) {
-    const likes = AppState.messageLikes[messageIndex];
+  protected filterLikeFromMessage(like: LikesWithUser, likeMessageIndex:  number) {
+    const likes = AppState.messageLikes[likeMessageIndex];
     if (likes) {
       action(() => {
-        AppState.messageLikes[messageIndex] = likes.filter(
+        AppState.messageLikes[likeMessageIndex] = likes.filter(
           (_like) => _like.id != like.id
         );
       })();
