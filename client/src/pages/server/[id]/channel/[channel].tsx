@@ -15,7 +15,9 @@ import MessageScroll from "@/components/Messages/MessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
 import type { NextPage } from "next";
 import ProgressBar from "@badrap/bar-of-progress";
-import { progress } from "@/components/GlobalComponents/LoaderProgressBar";
+import { UnsubscribeFunc } from "pocketbase";
+import DirectMessageScroll from "../../../../components/DirectMessages/DirectMessageScroll";
+
 
 interface IProgressBar{
   start(): void;
@@ -48,12 +50,13 @@ const ServerOne: NextPage = () => {
   }, [id]);
 
   useEffect(() => {
+
     if (!id || !channel) {
       return;
     }
-
+    let messageSubscribe: UnsubscribeFunc | null;
     
-    const fetchChannelData = async () => {
+    (async () => {
       const progress = new ProgressBar({
         size: 2,
         color: "#4b60dd",
@@ -69,13 +72,17 @@ const ServerOne: NextPage = () => {
         });
         await messageService.getMessagesByChannelId(channel);
         progress.finish();
+        messageSubscribe = await messageService.subscribe()
+
       } catch (error) {
         progress.finish();
         Pop.error(error);
       }
-    };
+    })();
 
-    fetchChannelData();
+    return () => {
+      messageSubscribe ? messageSubscribe() : null;
+    }
   }, [channel]);
 
   return (
@@ -92,7 +99,8 @@ const ServerOne: NextPage = () => {
           <div className=" message-container ">
             <TopNavigation />
 
-            <MessageScroll />
+            {/* <MessageScroll /> */}
+            <DirectMessageScroll/>
             <CreateMessage />
           </div>
           <ServerMembersBar />
