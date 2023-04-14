@@ -110,6 +110,7 @@ class ChannelsService {
       AppState.channels = AppState.channels.map((c) =>
         c.id === channel.id ? channel : c
       );
+      AppState.activeChannel = channel;
     }
   }
 }

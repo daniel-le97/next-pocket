@@ -10,7 +10,7 @@ import Pop from "utils/Pop";
 import FriendsBar from "@/components/DirectMessages/FriendsBar";
 import { withAuth } from "../../middleware";
 import { directMessageService, friendsService } from "../../services";
-import DirectMessageScroll from "@/components/DirectMessages/DirectMessageScroll";
+import DirectMessageScroll from "@/components/GlobalComponents/InfiniteMessageScroll";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
 import { UnsubscribeFunc } from "pocketbase";
 

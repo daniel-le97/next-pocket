@@ -16,10 +16,10 @@ import { serversService } from "@/services/ServersService";
 import MyModal from "../../GlobalComponents/Modal";
 import { channelsService, messageService } from "@/services";
 import { ChannelsRecord } from "~/PocketBaseTypes";
-const CreateChannel = ({toggleOpen}) => {
+const CreateChannel = ({ toggleOpen }) => {
   const [closeModal, setCloseModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const {
     register,
     handleSubmit,
@@ -40,7 +40,7 @@ const CreateChannel = ({toggleOpen}) => {
     try {
       const newChannel = await channelsService.createChannel(data);
       await messageService.getMessagesByChannelId(newChannel?.id!);
-     setIsOpen(false);
+      setIsOpen(false);
       toggleOpen();
       // const welcomeMessage = {
       //   channel: newChannel.id,
@@ -66,7 +66,8 @@ const CreateChannel = ({toggleOpen}) => {
       <button
         className=" server-options-selection"
         onClick={() => {
-          setIsOpen(true);   toggleOpen();;
+          setIsOpen(true);
+          toggleOpen();
         }}
       >
         <div className="flex w-full  justify-between">
@@ -108,7 +109,6 @@ const CreateChannel = ({toggleOpen}) => {
                   <Dialog.Title as="h3" className="dialog-title">
                     Create Channel
                   </Dialog.Title>
-
 
                   <div className="mt-4">
                     <form onSubmit={handleSubmit(onSubmit)} className="">
