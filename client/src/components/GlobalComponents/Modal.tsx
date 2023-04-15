@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import React from "react";
 import { Fragment, useState } from "react";
 import { ReactNode } from "react";
+import { AppState } from "../../../AppState";
 type ModalProps = {
   buttonIcon: React.ReactNode;
   title: string;
@@ -9,23 +10,14 @@ type ModalProps = {
  
 };
 const MyModal = ({ buttonIcon, title, children}: ModalProps) => {
-  let [isOpen, setIsOpen] = useState(false);
 
-  function closeModal() {
-    setIsOpen(false);
-     
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
 
   return (
     <>
       <div className=" flex w-full items-center justify-center">
         <button
           type="button"
-          onClick={openModal}
+          onClick={() => AppState.modalStatus = true}
           className="w-full  "
           // className="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         >
@@ -33,8 +25,8 @@ const MyModal = ({ buttonIcon, title, children}: ModalProps) => {
         </button>
       </div>
 
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+      <Transition appear show={AppState.modalStatus} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={() => AppState.modalStatus = false}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -73,7 +65,7 @@ const MyModal = ({ buttonIcon, title, children}: ModalProps) => {
                     <button
                       type="button"
                       className="btn-secondary"
-                      onClick={closeModal}
+                      onClick={() => AppState.modalStatus = false}
                     >
                       Cancel
                     </button>

@@ -55,6 +55,7 @@ class ObservableAppState {
 
   lastPath: string | null = null;
   lastQueryId: string | null = null;
+  modalStatus = false
 
   // AppState: undefined;
 

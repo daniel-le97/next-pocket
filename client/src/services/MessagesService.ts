@@ -102,7 +102,7 @@ class MessageService {
     action(() => {
       AppState.messages = [
         ...AppState.messages,
-        ...unMessages.map((message, index) => {
+        ...unMessages.map((message) => {
           const _Message: MessageWithUser = new Message(message);
           AppState.messageLikes[message.id as unknown as number] = message.expand["likes(message)"] || [];
           return _Message;
