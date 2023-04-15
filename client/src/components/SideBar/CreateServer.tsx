@@ -65,7 +65,7 @@ const CreateServer = () => {
     const uploadFile = async () => {
       // const file = Array.from(event.target.files)[0];
 
-      const record = await uploadService.uploadFile(event.target.files);
+      const record = await uploadService.uploadFile(event.currentTarget.files);
       setImageUrl(record?.url);
       // setValue("imageUrl", record?.url);
       const id = record?.id;

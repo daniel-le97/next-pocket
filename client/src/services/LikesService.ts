@@ -68,9 +68,10 @@ class LikesService
       "*",
       async ({ action, record }) => {
         // an action happened on the likes table sp we need to update state
-
+ 
         const _record = record as unknown as LikesWithUser;
         const messageIndex = _record.message as unknown as number
+        // const random = btoa(_record.id)
 
 
         //  action can be create, update, delete
