@@ -1,53 +1,42 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { observer } from "mobx-react";
-import { useState, useEffect,Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { BsHash } from "react-icons/bs";
 import { AppState } from "../../../AppState";
+import { ChannelsResponse } from "../../../PocketBaseTypes/pocketbase-types";
 
-import {
-  ChannelsRecord,
-  ChannelsResponse,
-} from "../../../PocketBaseTypes/pocketbase-types";
-import { pb } from "../../../utils/pocketBase";
-import { channelsService } from "../../services/ChannelsService";
-import { messageService } from "../../services/MessagesService";
 import React from "react";
-import { FaCog, FaTrash } from "react-icons/fa";
+import { FaCog } from "react-icons/fa";
 import MyModal from "../GlobalComponents/Modal";
 import { Tooltip } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
-import Pop from "utils/Pop";
-import { debounce } from "lodash";
+
 import { useRouter } from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
+import EditChannel from "./EditChannel";
+import { debounce } from "lodash";
 const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user;
   const router = useRouter();
   const { id, channel } = router.query as { id: string; channel: string };
 
   const [selectedItem, setSelectedItem] = useState(null);
-const [isOpen, setIsOpen] = useState(false);
-const toggleOpen = () =>{
-  setIsOpen(false)
-}
-  //TODO seems to be a bug with the router and the active channel due to the _app.tsx useEffect watching the userRecord, which is  updated when the user changes the channel
-  const joinChannel = async () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleOpen = () => {
+    setIsOpen(false);
+  };
+
+  const changeChannel = async () => {
     try {
       await router.push(`/server/${id}/channel/${selection.id}`);
 
       AppState.messages = [];
       AppState.messageQuery = "";
-
-      // await channelsService.joinChannel({
-      //   memberId: user?.id!,
-      //   channelId: selection.id,
-      // });
     } catch (error) {
       console.error(error);
     }
   };
-  const debouncedJoinChannel = debounce(joinChannel, 200);
+  const debouncedChangeChannel = debounce(changeChannel, 200);
 
   return (
     <div
@@ -57,7 +46,7 @@ const toggleOpen = () =>{
       }`}
       onClick={
         AppState.activeChannel?.id != selection.id
-          ? debouncedJoinChannel
+          ? debouncedChangeChannel
           : () => {}
       }
     >
@@ -115,7 +104,7 @@ const toggleOpen = () =>{
                           className="dialog-title"
                         ></Dialog.Title>
 
-                        <EditChannel toggleOpen={toggleOpen}  />
+                        <EditChannel toggleOpen={toggleOpen} />
 
                         <div className="mt-4">
                           <button
@@ -155,70 +144,4 @@ const toggleOpen = () =>{
   );
 };
 
-const EditChannel = ({toggleOpen}:{toggleOpen: ()=> void}) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      members: AppState.activeChannel?.members,
-      messages: AppState.activeChannel?.messages,
-
-      title: AppState.activeChannel?.title,
-      server: AppState.activeServer?.id,
-    },
-  });
-
-  const updateChannel = async (data: ChannelsRecord) => {
-    try {
-      const id = AppState.activeChannel?.id;
-      await channelsService.updateChannel(id, data);
-      Pop.success("Channel Updated");
-      toggleOpen()
-    } catch (error) {
-      Pop.error(error);
-    }
-  };
-
-  const deleteChannel = async () => {
-    try {
-      const yes = await Pop.confirm();
-      if (!yes) {
-        return;
-      }
-      await channelsService.deleteChannel(AppState.activeChannel?.id!);
-    } catch (error) {
-      Pop.error(error);
-    }
-  };
-
-  return (
-    <>
-      <form onSubmit={handleSubmit(updateChannel)}>
-        <label className=" block text-sm font-bold text-zinc-300">
-          Channel Title:
-        </label>
-        <input
-          className="my-2"
-          type="text "
-          {...register("title", {
-            required: true,
-            minLength: 1,
-            maxLength: 100,
-          })}
-        />
-
-        <button type="submit" className="btn-primary">
-        
-          Submit
-        </button>
-      </form>
-      <button className=" btn bg-red-600 mt-2 flex" onClick={deleteChannel}>
-        Delete Channel
-        <FaTrash size={15} className="ml-2" />
-      </button>
-    </>
-  );
-};
 export default observer(ChannelSelection);
