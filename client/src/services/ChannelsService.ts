@@ -29,7 +29,7 @@ class ChannelsService {
       members: newMemberList,
     });
 
-    await usersStatusService.updateCurrentChannel(data.channelId);
+    // await usersStatusService.updateCurrentChannel(data.channelId);
 
     // Update active channel in app state
     AppState.activeChannel = channelToJoin;

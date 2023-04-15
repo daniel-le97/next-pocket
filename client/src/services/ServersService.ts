@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AppState } from "../../AppState";
-import type {
+import {
   ChannelsRecord,
+  ChannelsResponse,
   ServersRecord,
   ServersResponse,
 } from "../../PocketBaseTypes/pocketbase-types";
@@ -77,7 +78,7 @@ class ServersService {
 
     const defaultChannel = await pb
       .collection(Collections.Channels)
-      .create(channelData);
+      .create<ChannelsResponse>(channelData);
     console.log(defaultChannel);
 
     await pb.collection(Collections.Messages).create({
@@ -90,7 +91,7 @@ class ServersService {
       serverData.owner!
     );
     await uploadService.updateStatus(serverData.owner!, fileUpload!.id);
-    return newServer;
+    return {newServer, defaultChannel}
   }
 
   async getMembers(serverId: string) {

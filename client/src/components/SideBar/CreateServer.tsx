@@ -1,39 +1,35 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
 import { observer } from "mobx-react";
 import { BsPlusCircleFill } from "react-icons/bs";
-import { SubmitHandler, useForm } from "react-hook-form";
+import type { SubmitHandler} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Dialog, Transition } from "@headlessui/react";
-import { ChangeEventHandler, Fragment, useState } from "react";
+import type { ChangeEventHandler} from "react";
+import { Fragment, useState } from "react";
 import { serversService } from "../../services/ServersService";
 import { uploadService } from "../../services/UploadsService";
-import { pb } from "../../../utils/pocketBase";
 import Loader from "../GlobalComponents/Loader";
 import { useRouter } from "next/router";
 import type { ServersRecord } from "../../../PocketBaseTypes/pocketbase-types";
-import MyModal from "../GlobalComponents/Modal";
 import { Tooltip } from "@nextui-org/react";
-import { FaAsterisk, FaLock, FaLockOpen, FaUnlock } from "react-icons/fa";
+import { FaAsterisk, FaLock, FaUnlock } from "react-icons/fa";
 import { AppState } from "~/AppState";
+import { logger } from "../../../utils/Logger";
 
 const CreateServer = () => {
   const user = AppState.user;
   const [isOpen, setIsOpen] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [uploading,] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const router = useRouter();
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
-    getValues,
     reset,
-    formState: { errors },
   } = useForm({
     defaultValues: {
       name: "",
@@ -44,35 +40,38 @@ const CreateServer = () => {
       private: false,
     },
   });
-  const onSubmit = async (data: ServersRecord) => {
+  const onSubmit: SubmitHandler<{ name: string; image: string; members: (string | undefined)[]; owner: string | undefined; description: string; private: boolean; }> = async (data) => {
     try {
       // console.log("hi");
       // console.log(data);
-
-      const newServer = await serversService.createServer(data);
+      const newServerData = data as unknown as ServersRecord; 
+      const {newServer, defaultChannel} = await serversService.createServer(newServerData);
       reset();
       setImageUrl("");
-      router.push(`/server/${newServer.id}`);
+      await router.push(`/server/${newServer.id}/channel/${defaultChannel.id}`);
       setIsOpen(false);
     } catch (error) {
       console.error("createServer", error);
 
-      await uploadService.deleteFile(user!.id, data.image!);
+      await uploadService.deleteFile(user!.id, data.image);
     }
   };
 
-  const handleFileChange = (event: ChangeEventHandler<HTMLInputElement>) => {
-    const uploadFile = async () => {
-      // const file = Array.from(event.target.files)[0];
+  const handleFileChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
+    
+      try {
+        const record = await uploadService.uploadFile(e.target.files);
+        const url = record?.url as string
+        const id = record?.id as string
+          setImageUrl(url);
+          setValue("image", id);
+        
+      } catch (error) {
+        logger.error("unable to upload files", error)
+      }
+  
 
-      const record = await uploadService.uploadFile(event.currentTarget.files);
-      setImageUrl(record?.url);
-      // setValue("imageUrl", record?.url);
-      const id = record?.id;
-      setValue("image", id!);
-    };
-    uploadFile();
-  };
+  }
 
   function closeModal() {
     setIsOpen(false);
@@ -83,7 +82,7 @@ const CreateServer = () => {
   }
 
   return (
-    <div className=" sidebar-icon group justify-center ">
+    <div className=" sidebar-icon group justify-center " onBlur={closeModal}>
    
       <div className="flex items-center justify-center">
         <Tooltip content="Create Server" placement="right" color="invert">
@@ -180,7 +179,7 @@ const CreateServer = () => {
                           <FaLock
                             className=" cursor-pointer text-red-500"
                             size={20}
-                            onClick={(e) => {
+                            onClick={() => {
                               setIsChecked(false);
                               setValue("private", false);
                             }}
@@ -189,7 +188,7 @@ const CreateServer = () => {
                           <FaUnlock
                             className=" cursor-pointer text-green-500"
                             size={20}
-                            onClick={(e) => {
+                            onClick={() => {
                               setIsChecked(true);
                               setValue("private", true);
                             }}
