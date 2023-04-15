@@ -8,7 +8,7 @@ import { observer } from "mobx-react";
 import Pop from "utils/Pop";
 import ServerMembersBar from "@/components/MembersBar/ServerMembersBar";
 import { AppState } from "AppState";
-import { channelsService, messageService } from "@/services";
+import { channelsService, messageService, serversService } from "@/services";
 import { withAuth, withMember } from "@/middleware";
 import TopNavigation from "@/components/Messages/TopNavigation";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
@@ -39,7 +39,7 @@ const ServerOne: NextPage = () => {
 
         await channelsService.getChannelsByServerId(id);
 
-        // await serversService.getMembers(id);
+        await serversService.getMembers(id);
         // console.log(AppState.messages);
       } catch (error) {
         Pop.error(error);

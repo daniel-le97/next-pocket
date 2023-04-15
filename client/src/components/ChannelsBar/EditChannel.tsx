@@ -23,6 +23,10 @@ const EditChannel = ({ toggleOpen }: { toggleOpen: () => void }) => {
 
   const updateChannel = async (data: ChannelsRecord) => {
     try {
+        const yes = await Pop.confirm("update channel?", "Are you sure?");
+        if (!yes) {
+          return;
+        }
       const id = AppState.activeChannel?.id;
       await channelsService.updateChannel(id!, data);
       Pop.success("Channel Updated");
@@ -34,11 +38,12 @@ const EditChannel = ({ toggleOpen }: { toggleOpen: () => void }) => {
 
   const deleteChannel = async () => {
     try {
-      const yes = await Pop.confirm();
+      const yes = await Pop.confirm("Delete channel?", "Are you sure?");
       if (!yes) {
         return;
       }
       await channelsService.deleteChannel(AppState.activeChannel?.id!);
+      toggleOpen();
     } catch (error) {
       Pop.error(error);
     }

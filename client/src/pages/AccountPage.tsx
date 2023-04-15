@@ -63,11 +63,11 @@ const [hide, setHide] = useState(false);
   return (
     <main className="  min-h-screen w-full   dark:bg-zinc-800">
       <div className="p-5 ">
-        <div className="text-xl font-bold text-gray-300">My Account</div>
-        <div className=" flex flex-col items-center justify-center p-5 text-center  text-gray-400 ">
+        <div className="text-4xl font-bold text-gray-300 text-center">My Account</div>
+        <div className="bg-zinc-700 rounded mt-10 shadow-md flex flex-col items-center justify-center p-5 text-center  text-gray-400 ">
           <UserAvatar avatarUrl={user?.avatarUrl!} width="w-48" height="h-48" />
 
-          <div className=" mt-2 flex flex-col  gap-y-5 rounded bg-zinc-700 p-5 text-start text-xl font-bold">
+          <div className=" mt-2 flex flex-col  gap-y-5  p-5 text-start text-xl font-bold">
             <div className="flex flex-col">
               <div className="text-sm">USERNAME</div>
               <div className=""> {user?.username}</div>
@@ -81,7 +81,7 @@ const [hide, setHide] = useState(false);
             </div>
             <div className="flex flex-col">
               <div className="text-sm">MEMBER SINCE</div>
-              <div className=""> {user?.created}</div>
+              <div className=""> {new Date(user?.created!).toLocaleDateString()}</div>
             </div>
           </div>
         </div>

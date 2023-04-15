@@ -11,7 +11,7 @@ const UserAvatar = ({
     <img
       src={avatarUrl}
       alt="User Avatar"
-      className={`rounded-full ${width} ${height} object-cover `}
+      className={`rounded-full ${width} ${height} object-cover shadow-md  `}
     />
   );
 };

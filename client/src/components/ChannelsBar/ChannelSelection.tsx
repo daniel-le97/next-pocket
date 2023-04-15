@@ -102,7 +102,10 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
                         <Dialog.Title
                           as="h3"
                           className="dialog-title"
-                        ></Dialog.Title>
+                        >
+
+                          Edit Channel
+                        </Dialog.Title>
 
                         <EditChannel toggleOpen={toggleOpen} />
 
