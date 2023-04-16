@@ -14,8 +14,6 @@ const EditChannel = ({ toggleOpen }: { toggleOpen: () => void }) => {
   } = useForm({
     defaultValues: {
       members: AppState.activeChannel?.members,
-      messages: AppState.activeChannel?.messages,
-
       title: AppState.activeChannel?.title,
       server: AppState.activeServer?.id,
     },

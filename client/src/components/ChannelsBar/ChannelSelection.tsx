@@ -19,8 +19,6 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
   const user = AppState.user;
   const router = useRouter();
   const { id, channel } = router.query as { id: string; channel: string };
-
-  const [selectedItem, setSelectedItem] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const toggleOpen = () => {
     setIsOpen(false);
@@ -124,23 +122,6 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
                 </div>
               </Dialog>
             </Transition>
-
-            {/* <div className="group relative ">
-              <MyModal
-                buttonIcon={
-                  <Tooltip
-                    content={"Edit Channel"}
-                    color="invert"
-                    className=" font-bold"
-                  >
-                    <FaCog size={15} />
-                  </Tooltip>
-                }
-                title="Edit Channel"
-              >
-                <EditChannel />
-              </MyModal>
-            </div> */}
           </>
         )}
     </div>

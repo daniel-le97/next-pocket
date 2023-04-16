@@ -16,22 +16,20 @@ import { serversService } from "@/services/ServersService";
 import MyModal from "../../GlobalComponents/Modal";
 import { channelsService, messageService } from "@/services";
 import { ChannelsRecord } from "~/PocketBaseTypes";
-const CreateChannel = ({ toggleOpen }) => {
+const CreateChannel = ({ toggleOpen }:{
+  toggleOpen: () => void;
+}) => {
   const [closeModal, setCloseModal] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
     reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
       members: [],
-      messages: [],
-
       title: "",
       server: AppState.activeServer?.id,
     },
@@ -42,14 +40,6 @@ const CreateChannel = ({ toggleOpen }) => {
       await messageService.getMessagesByChannelId(newChannel?.id!);
       setIsOpen(false);
       toggleOpen();
-      // const welcomeMessage = {
-      //   channel: newChannel.id,
-      //   content: "Welcome to the channel",
-      //   user: AppState.user?.id,
-      //   attachments: "",
-      // };
-      //  const defaultWelcomeMessage =   await messageService.sendMessage(welcomeMessage,"");
-
       reset();
     } catch (error) {
       console.error(error);
@@ -57,12 +47,6 @@ const CreateChannel = ({ toggleOpen }) => {
   };
   return (
     <>
-      {/* <div className="flex items-center justify-center">
-        <Tooltip content="Create Server" placement="right" color="invert">
-          <BsPlusCircleFill size={28} />
-        </Tooltip>
-      </div> */}
-
       <button
         className=" server-options-selection"
         onClick={() => {
@@ -141,36 +125,8 @@ const CreateChannel = ({ toggleOpen }) => {
           </div>
         </Dialog>
       </Transition>
-
-      {/* <MyModal
-          buttonIcon={
-            <div className="flex w-full  justify-between">
-              Create Channel
-              <FaPlusCircle size={20} />
-            </div>
-          }
-          title="Create Channel"
-        ></MyModal> */}
     </>
   );
 };
-//  <form onSubmit={handleSubmit(onSubmit)} className="">
-//    <div className="relative">
-//      <input
-//        className=" my-2 pl-8  "
-//        type="text"
-//        placeholder="new-channel"
-//        {...register("title", {
-//          required: true,
-//          minLength: 1,
-//          maxLength: 50,
-//        })}
-//      />
-//      <FaHashtag size="20" className="title-hashtag absolute top-[1.2rem]" />
-//    </div>
 
-//    <button className="btn-primary" type="submit">
-//      Submit
-//    </button>
-//  </form>;
 export default observer(CreateChannel);

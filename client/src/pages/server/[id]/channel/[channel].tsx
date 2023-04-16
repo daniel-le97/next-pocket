@@ -25,8 +25,8 @@ interface IProgressBar{
 const ServerOne: NextPage = () => {
   const router = useRouter();
   const { id, channel } = router.query as { id: string; channel: string };
-  // const serverId = router.query.id as string;
-  // const channelId = router.query.channel as string;
+ 
+
   useEffect(() => {
     if (!id || !channel) {
       return;
@@ -34,13 +34,8 @@ const ServerOne: NextPage = () => {
 
     const fetchServerData = async () => {
       try {
-        // AppState.messages = [];
-        // AppState.messageLikes = [[]];
-
         await channelsService.getChannelsByServerId(id);
-
         await serversService.getMembers(id);
-        // console.log(AppState.messages);
       } catch (error) {
         Pop.error(error);
       }
