@@ -81,6 +81,7 @@ class ServersService {
       .create<ChannelsResponse>(channelData);
     console.log(defaultChannel);
 
+    AppState.activeChannel = defaultChannel;
     await pb.collection(Collections.Messages).create({
       content: `Welcome to ${newServer.name}! Be Respectful and have fun!`,
       user: newServer.owner,

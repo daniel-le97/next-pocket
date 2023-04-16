@@ -51,7 +51,7 @@ const ServerIcon = ({
   const handleClick = async() => {
     AppState.activeServer = server;
     const defaultServer = server.channels[0];
-    console.log(`/server/${server.id}/channel/${defaultServer!.id}`);
+    // console.log(`/server/${server.id}/channel/${defaultServer!.id}`);
 
     await router.push(`/server/${server.id}/channel/${defaultServer!.id}`);
   };

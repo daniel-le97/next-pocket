@@ -15,6 +15,7 @@ import { BsCheck, BsCircleFill } from "react-icons/bs";
 import React from "react";
 import type { Server, ServerWithRelations } from "../../../PocketBaseTypes/utils";
 import { Transition } from "@headlessui/react";
+import { AppState } from "~/AppState";
 const ServerCard = ({ server }: { server: Server}) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
@@ -44,7 +45,7 @@ const ServerCard = ({ server }: { server: Server}) => {
       if (isMember) {
         isMember.new == true ? Pop.success(`Welcome to ${server.name}`) : "";
       }
-      router.push(`/server/${server.id}`);
+      router.push(`/server/${server.id}/channel/${AppState.activeChannel?.id}`);
     } catch (error) {
       Pop.error(error, "Join Server");
     }
