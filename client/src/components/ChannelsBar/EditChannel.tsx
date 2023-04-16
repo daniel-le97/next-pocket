@@ -53,21 +53,23 @@ const EditChannel = ({ toggleOpen }: { toggleOpen: () => void }) => {
         <label className=" block text-sm font-bold text-zinc-300">
           Channel Title:
         </label>
-        <input
-          className="my-2"
-          type="text "
-          {...register("title", {
-            required: true,
-            minLength: 1,
-            maxLength: 100,
-          })}
-        />
+        <div className="flex items-center justify-center space-x-2">
+          <input
+            className="my-2"
+            type="text "
+            {...register("title", {
+              required: true,
+              minLength: 1,
+              maxLength: 100,
+            })}
+          />
 
-        <button type="submit" className="btn-primary">
-          Submit
-        </button>
+          <button type="submit" className="btn-primary">
+           Edit
+          </button>
+        </div>
       </form>
-      <button className=" btn mt-2 flex bg-red-600" onClick={deleteChannel}>
+      <button className=" btn mt-2 flex bg-red-600 items-center" onClick={deleteChannel}>
         Delete Channel
         <FaTrash size={15} className="ml-2" />
       </button>

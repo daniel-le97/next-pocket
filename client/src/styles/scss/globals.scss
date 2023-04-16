@@ -80,7 +80,7 @@
   }
 
   .dialog-title {
-    @apply mb-2 text-lg font-medium leading-6 text-gray-900 dark:text-gray-300;
+    @apply mb-2 text-2xl font-medium leading-6 text-gray-900 dark:text-gray-300;
   }
   .dialog-modal {
     @apply w-full max-w-xl transform overflow-hidden rounded-2xl bg-gray-300  p-6 text-left align-middle shadow-xl transition-all dark:bg-zinc-800   dark:shadow-zinc-800;

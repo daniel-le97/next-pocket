@@ -96,9 +96,12 @@ const CreateChannel = ({ toggleOpen }:{
 
                   <div className="mt-4">
                     <form onSubmit={handleSubmit(onSubmit)} className="">
-                      <div className="relative">
+                      <div className="relative ">
+                        <label className=" block text-sm font-bold text-zinc-300">
+                          Channel Title:
+                        </label>
                         <input
-                          className=" my-2 pl-8  "
+                          className=" my-2   "
                           type="text"
                           placeholder="new-channel"
                           {...register("title", {
@@ -107,10 +110,7 @@ const CreateChannel = ({ toggleOpen }:{
                             maxLength: 50,
                           })}
                         />
-                        <FaHashtag
-                          size="20"
-                          className="title-hashtag absolute top-[1.2rem]"
-                        />
+                       
                       </div>
 
                       <button className="btn-primary" type="submit">

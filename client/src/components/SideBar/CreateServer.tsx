@@ -149,6 +149,7 @@ const CreateServer = () => {
                       <input
                         type="file"
                         name="imageFile"
+                        accept="image/*"
                         onChange={handleFileChange}
                         className="file-upload-input"
                       />

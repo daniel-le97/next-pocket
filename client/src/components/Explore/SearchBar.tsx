@@ -27,19 +27,7 @@ const SearchBar = () => {
   };
 
 
-  const  filterUserServers = async () => {
-    try {
-      const res = await pb
-        .collection(Collections.Servers)
-        .getList<ServersResponse>(1, 9, {
-          filter: `members.id = "${AppState.user?.id}"`,
-          expand: "image,members",
-        });
-      AppState.servers = res.items;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ 
 
  
 
@@ -60,10 +48,7 @@ const SearchBar = () => {
         />
       </div>
 
-      {/* <div className="">
-        <label >Filter Servers Im apart of</label>
-        <input type="checkbox" className="" ref={checkboxRef} onChange={handleChange} />
-      </div> */}
+   
     </div>
   );
 };

@@ -32,7 +32,6 @@ export default class Pop {
         reverseButtons: true,
         confirmButtonColor: "#353dab",
         cancelButtonColor: "#FB542B",
-        background: "#17171a",
        
       } 
    );
