@@ -7,20 +7,15 @@ type ModalProps = {
   buttonIcon: React.ReactNode;
   title: string;
   children: React.ReactNode;
- 
 };
-const MyModal = ({ buttonIcon, title, children}: ModalProps) => {
-
-
+const MyModal = ({ buttonIcon, title, children }: ModalProps) => {
   return (
     <>
       <div className=" flex w-full items-center justify-center">
         <button
           type="button"
           onClick={() => {
-            console.log('hi');
             AppState.modalStatus = true;
-            
           }}
           className="w-full  "
           // className="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
@@ -30,7 +25,11 @@ const MyModal = ({ buttonIcon, title, children}: ModalProps) => {
       </div>
 
       <Transition appear show={AppState.modalStatus} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => AppState.modalStatus = false}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          onClose={() => (AppState.modalStatus = false)}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -69,7 +68,7 @@ const MyModal = ({ buttonIcon, title, children}: ModalProps) => {
                     <button
                       type="button"
                       className="btn-secondary"
-                      onClick={() => AppState.modalStatus = false}
+                      onClick={() => (AppState.modalStatus = false)}
                     >
                       Cancel
                     </button>

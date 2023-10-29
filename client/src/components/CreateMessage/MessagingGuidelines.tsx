@@ -1,14 +1,9 @@
-import { AppState } from "AppState";
+
 import { observer } from "mobx-react";
-import { Bs0CircleFill, BsPlusCircleFill } from "react-icons/bs";
-import { FaPlusCircle, FaQuestionCircle, FaUserMinus } from "react-icons/fa";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { useForm } from "react-hook-form";
-import router from "next/router";
-import { serversService } from "@/services/ServersService";
-import MyModal from "../GlobalComponents/Modal";
 import { Tooltip } from "@nextui-org/react";
+import { FaQuestionCircle } from "react-icons/fa";
 
 const MessagingGuidelines = () => {
   const [isOpen, setIsOpen] = useState(false);

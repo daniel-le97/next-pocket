@@ -5,9 +5,7 @@
 import { AppState } from "AppState";
 import { action } from "mobx";
 import type { LikesRecord } from "PocketBaseTypes";
-import type {
-  LikesWithUser,
-} from "../../PocketBaseTypes/utils";
+import type { LikesWithUser } from "../../PocketBaseTypes/utils";
 import { BaseService } from "./BaseService";
 
 class LikesService extends BaseService {
@@ -68,32 +66,28 @@ class LikesService extends BaseService {
     return;
   }
 
-
-
-
-
-
   async subscribe() {
     //  create a subscription to the likes table
 
     const subscribe = await this.pb.subscribe(
       "*",
       async ({ action, record }) => {
-        console.log(action, record);
-
-    
+        // console.log(action, record);
 
         const _record = record as unknown as LikesWithUser;
         const messageIndex = _record.message as unknown as number;
-   
-        
+
+
         if (action !== "delete") {
+          console.log('creating');
+          
           const like = await this.getOne(record.id);
           this.addLikeOrReplaceToMessage(like, messageIndex);
         }
         if (action === "delete") {
+           console.log("deleting");
           this.filterLikeFromMessage(_record, messageIndex);
-          console.log("likeService.subscribe(delete)", _record);
+          // console.log("likeService.subscribe(delete)", _record);
         }
       }
     );

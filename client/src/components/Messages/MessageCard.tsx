@@ -48,13 +48,7 @@ const MessageCard = ({
   };
 
 
- useEffect(() => {
-   const subscribeToLikes = async () => {
-     await likesService.subscribe();
-   };
 
-   subscribeToLikes();
- }, []);
 
   return (
     <div
@@ -156,12 +150,9 @@ const IsNewestMessage = () => {
 
 const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
 
-  useEffect(()=>{
-    
-  })
   function getLikes(likes: LikesWithUser[]) {
     const length = likes.length;
-     console.log(likes);
+  
      
     if (length > 0) {
       return length;

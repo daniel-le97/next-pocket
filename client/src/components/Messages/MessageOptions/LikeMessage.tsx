@@ -3,6 +3,7 @@ import { likesService } from "@/services/LikesService";
 import { Tooltip } from "@nextui-org/react";
 import { observer } from "mobx-react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { FaThumbsUp } from "react-icons/fa";
 import Pop from "utils/Pop";
 
@@ -19,7 +20,7 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
         await likesService.create(messageId, "directMessage");
         return;
       }
-      console.log(messageId);
+      // console.log(messageId);
 
       await likesService.create(messageId, "message");
 
@@ -28,6 +29,14 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
       Pop.error(error);
     }
   };
+
+   useEffect(() => {
+     const subscribeToLikes = async () => {
+       await likesService.subscribe();
+     };
+
+     subscribeToLikes();
+   }, []);
 
   return (
     <div className="group/item message-options-icon" onClick={likeMessage}>
