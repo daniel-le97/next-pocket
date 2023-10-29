@@ -5,25 +5,22 @@
 import { AppState } from "AppState";
 import { action } from "mobx";
 import type { LikesRecord } from "PocketBaseTypes";
-import { addItemOrReplaceV2, filterStateArray } from "utils/Functions";
-import { logger } from "utils/Logger";
 import type {
   LikesWithUser,
-  MessageWithUser,
 } from "../../PocketBaseTypes/utils";
-import type { IBaseService } from "./BaseService";
 import { BaseService } from "./BaseService";
 
-class LikesService
-  extends BaseService
-  
-{
+class LikesService extends BaseService {
   update(data: LikesRecord): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  async getById(messageId: string, collection: 'directMessage' | 'message'): Promise<LikesWithUser | undefined> {
+
+  async getById(
+    messageId: string,
+    collection: "directMessage" | "message"
+  ): Promise<LikesWithUser | undefined> {
     const userId = AppState.user!.id;
-    // const relation = collection.slice(0,1)
+
     const res = await this.pb.getList(1, 1, {
       filter: `${collection} = "${messageId}" && user = "${userId}"`,
     });
@@ -33,27 +30,35 @@ class LikesService
   async getOne(id: string): Promise<LikesWithUser> {
     return this.pb.getOne(id, { expand: "user" });
   }
+
   getAll(): Promise<LikesWithUser[]> {
     throw new Error("Method not implemented.");
   }
+
   async delete(id: string, likeId: string): Promise<void> {
     const res = await this.pb.delete(likeId);
     console.log("likeService.delete()");
     return;
   }
-  async create(id: string, collection: 'directMessage' | 'message'): Promise<LikesWithUser | undefined> {
-    // console.log("creating");
-    const alreadyReacted = await this.getById(id, collection);
-    if (alreadyReacted) {
-      // console.log(alreadyReacted);
 
+  async create(
+    id: string,
+    collection: "directMessage" | "message"
+  ): Promise<LikesWithUser | undefined> {
+    const alreadyReacted = await this.getById(id, collection);
+
+    if (alreadyReacted) {
+      // If it's already been reacted to delete
       const likeId = alreadyReacted.id;
       await this.delete(id, likeId);
-      // console.log("deleted");
       return;
     }
-    const  data : Partial<LikesRecord> = {user: this.user!.id}
-    collection == 'message' ? data.message = id : data.directMessage = id
+
+    //If it isn't already reacted to Create
+
+    const data: Partial<LikesRecord> = { user: this.user!.id };
+    //Determine if this is on a DM or a Server Message
+    collection == "message" ? (data.message = id) : (data.directMessage = id);
 
     await this.pb.create<LikesWithUser>(data, {
       expand: "user",
@@ -62,19 +67,26 @@ class LikesService
 
     return;
   }
+
+
+
+
+
+
   async subscribe() {
     //  create a subscription to the likes table
+
     const subscribe = await this.pb.subscribe(
       "*",
       async ({ action, record }) => {
-        // an action happened on the likes table sp we need to update state
- 
+        console.log(action, record);
+
+    
+
         const _record = record as unknown as LikesWithUser;
-        const messageIndex = _record.message as unknown as number
-        // const random = btoa(_record.id)
-
-
-        //  action can be create, update, delete
+        const messageIndex = _record.message as unknown as number;
+   
+        
         if (action !== "delete") {
           const like = await this.getOne(record.id);
           this.addLikeOrReplaceToMessage(like, messageIndex);
@@ -105,7 +117,10 @@ class LikesService
     }
   }
 
-  protected filterLikeFromMessage(like: LikesWithUser, likeMessageIndex:  number) {
+  protected filterLikeFromMessage(
+    like: LikesWithUser,
+    likeMessageIndex: number
+  ) {
     const likes = AppState.messageLikes[likeMessageIndex];
     if (likes) {
       action(() => {

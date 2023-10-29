@@ -12,10 +12,11 @@ import { channelsService, messageService, serversService } from "@/services";
 import { withAuth, withMember } from "@/middleware";
 import TopNavigation from "@/components/Messages/TopNavigation";
 import CreateMessage from "@/components/CreateMessage/CreateMessage";
-import type { NextPage } from "next";
+
 import ProgressBar from "@badrap/bar-of-progress";
 import type { UnsubscribeFunc } from "pocketbase";
 import DirectMessageScroll from "../../../../components/GlobalComponents/InfiniteMessageScroll";
+import { NextPage } from "next/types";
 
 
 interface IProgressBar{

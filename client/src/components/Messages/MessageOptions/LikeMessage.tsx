@@ -11,26 +11,26 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
   const isDMPath = router.pathname.includes("DirectMessages");
   const likeMessage = async () => {
     try {
-      // const yes = await Pop.confirm();
-      // if (!yes) {
-      //   return;
-      // }
-      if (isDMPath) {
-        await likesService.create(messageId, 'directMessage');
+      const yes = await Pop.confirm();
+      if (!yes) {
         return;
       }
+      if (isDMPath) {
+        await likesService.create(messageId, "directMessage");
+        return;
+      }
+      console.log(messageId);
 
-      await likesService.create(messageId, 'message');
+      await likesService.create(messageId, "message");
+
+      // await likesService.getAll()
     } catch (error) {
       Pop.error(error);
     }
   };
 
   return (
-    <div
-      className="group/item message-options-icon"
-      onClick={likeMessage}
-    >
+    <div className="group/item message-options-icon" onClick={likeMessage}>
       <Tooltip content="Like" color="invert" placement="top">
         <FaThumbsUp size={22} />
       </Tooltip>

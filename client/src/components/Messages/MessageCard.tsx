@@ -21,6 +21,8 @@ import { AppState } from "AppState";
 import UserAvatar from "../GlobalComponents/UserAvatar";
 import CodeBlock from "utils/CodeBlock";
 import { Tooltip } from "@nextui-org/react";
+import { useEffect } from "react";
+import { likesService } from "@/services/LikesService";
 
 const MessageCard = ({
   message,
@@ -44,6 +46,15 @@ const MessageCard = ({
     navigator.clipboard.writeText(removeBackticks(message.content!));
     Pop.success("Copied To Clipboard");
   };
+
+
+ useEffect(() => {
+   const subscribeToLikes = async () => {
+     await likesService.subscribe();
+   };
+
+   subscribeToLikes();
+ }, []);
 
   return (
     <div
@@ -144,13 +155,20 @@ const IsNewestMessage = () => {
 };
 
 const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
+
+  useEffect(()=>{
+    
+  })
   function getLikes(likes: LikesWithUser[]) {
     const length = likes.length;
+     console.log(likes);
+     
     if (length > 0) {
       return length;
     }
     return 0;
   }
+  getLikes
 
   return (
     <Tooltip
