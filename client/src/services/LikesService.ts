@@ -3,10 +3,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { AppState } from "AppState";
-import { action } from "mobx";
-import type { LikesRecord } from "PocketBaseTypes";
+import { action, reaction } from "mobx";
+import { Collections, type LikesRecord } from "PocketBaseTypes";
 import type { LikesWithUser } from "../../PocketBaseTypes/utils";
 import { BaseService } from "./BaseService";
+import { addItemOrReplaceV2, filterStateArray } from "~/utils/Functions";
 
 class LikesService extends BaseService {
   update(data: LikesRecord): Promise<void> {
@@ -77,15 +78,11 @@ class LikesService extends BaseService {
         const _record = record as unknown as LikesWithUser;
         const messageIndex = _record.message as unknown as number;
 
-
         if (action !== "delete") {
-          console.log('creating');
-          
           const like = await this.getOne(record.id);
           this.addLikeOrReplaceToMessage(like, messageIndex);
         }
         if (action === "delete") {
-           console.log("deleting");
           this.filterLikeFromMessage(_record, messageIndex);
           // console.log("likeService.subscribe(delete)", _record);
         }
@@ -94,12 +91,16 @@ class LikesService extends BaseService {
     return subscribe;
   }
 
+ 
+
   protected addLikeOrReplaceToMessage(
     like: LikesWithUser,
     likeMessageIndex: number
   ) {
     const likes = AppState.messageLikes[likeMessageIndex];
     const likeIndex = likes?.findIndex((_like) => _like.id == like.id);
+    console.log(likeIndex);
+    
     if (likes && likeIndex) {
       action(() => {
         if (likeIndex == -1) {
@@ -108,6 +109,23 @@ class LikesService extends BaseService {
         }
         likes[likeIndex] = like;
       })();
+
+  reaction(
+    () => AppState.messageLikes[likeMessageIndex],
+    (newLikes) => {
+      // Update the DOM or trigger a re-render in your component here
+      console.log("Likes have changed:", newLikes);
+      // You should have the logic to update the DOM or re-render your component here
+    }
+  );
+
+
+
+
+
+
+
+
     }
   }
 
@@ -115,14 +133,18 @@ class LikesService extends BaseService {
     like: LikesWithUser,
     likeMessageIndex: number
   ) {
-    const likes = AppState.messageLikes[likeMessageIndex];
-    if (likes) {
-      action(() => {
-        AppState.messageLikes[likeMessageIndex] = likes.filter(
-          (_like) => _like.id != like.id
-        );
-      })();
-    }
+    action(() => {
+      const likes = AppState.messageLikes[likeMessageIndex];
+      // console.log('likes',likes);
+
+      if (likes) {
+        const filteredLikes = likes.filter((_like) => _like.id !== like.id);
+        AppState.messageLikes[likeMessageIndex] = filteredLikes;
+        // AppState.messageLikes[likeMessageIndex] = likes.filter(
+        //   (_like) => _like.id !== like.id
+        // );
+      }
+    })();
   }
 }
 

@@ -6,16 +6,17 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { FaThumbsUp } from "react-icons/fa";
 import Pop from "utils/Pop";
+import { AppState } from "~/AppState";
 
 const LikeMessage = ({ messageId }: { messageId: string }) => {
   const router = useRouter();
   const isDMPath = router.pathname.includes("DirectMessages");
   const likeMessage = async () => {
     try {
-      const yes = await Pop.confirm();
-      if (!yes) {
-        return;
-      }
+      // const yes = await Pop.confirm();
+      // if (!yes) {
+      //   return;
+      // }
       if (isDMPath) {
         await likesService.create(messageId, "directMessage");
         return;
@@ -24,19 +25,20 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
 
       await likesService.create(messageId, "message");
 
+      
       // await likesService.getAll()
     } catch (error) {
       Pop.error(error);
     }
   };
 
-   useEffect(() => {
-     const subscribeToLikes = async () => {
-       await likesService.subscribe();
-     };
+  useEffect(() => {
+    const subscribeToLikes = async () => {
+      await likesService.subscribe();
+    };
 
-     subscribeToLikes();
-   }, []);
+    subscribeToLikes();
+  }, []);
 
   return (
     <div className="group/item message-options-icon" onClick={likeMessage}>

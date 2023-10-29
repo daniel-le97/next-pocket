@@ -8,7 +8,6 @@ import { ChannelsResponse } from "../../../PocketBaseTypes/pocketbase-types";
 
 import React from "react";
 import { FaCog } from "react-icons/fa";
-import MyModal from "../GlobalComponents/Modal";
 import { Tooltip } from "@nextui-org/react";
 
 import { useRouter } from "next/router";
