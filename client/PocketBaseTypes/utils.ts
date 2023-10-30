@@ -52,7 +52,7 @@ export type Upload = {
 
 export type MessageWithUser = Message;
 export type TMessageWithUser = MessagesResponse & {
-  expand: { "likes(message)": LikesWithUser[]; user: UsersResponse };
+  expand: { "likes": string[]; user: UsersResponse };
 };
 export type LikesWithUser = LikesResponse & {
   expand: { user: UsersResponse };
@@ -101,7 +101,7 @@ export class Message {
   updated: string;
   channel?: string;
   user: UsersResponse;
-  likes: number;
+  // likes: string[];
   attachments: string[];
 
   constructor(data: TMessageWithUser) {
@@ -112,9 +112,7 @@ export class Message {
     this.channel = data.channel;
     this.user = data.expand.user;
     this.attachments = data.attachments || [];
-    this.likes = data.expand["likes(message)"]
-      ? data.expand["likes(message)"].length
-      : 0;
+    // this.likes = data.expand?.['likes(message)']
   }
 }
 

@@ -32,7 +32,8 @@ const MessageCard = ({
   index: number;
 }) => {
   const messageQuery = AppState.messageQuery;
-  const likes = AppState.messageLikes[message.id as unknown as number] ?? [];
+  // const likes = AppState.messageLikes[message.id as unknown as number] ?? [];
+  const likes = message?.expand['likes(message']
   const handleCopyClick = () => {
     function removeBackticks(str: string): string {
       const pattern = /```([\s\S]*)```/;
@@ -47,9 +48,6 @@ const MessageCard = ({
     Pop.success("Copied To Clipboard");
   };
 
-
-
-
   return (
     <div
       className={
@@ -60,13 +58,22 @@ const MessageCard = ({
         <UserAvatar
           width="w-12"
           height="h-12"
-          avatarUrl={message.user?.avatarUrl}
+          avatarUrl={message.expand.user.avatarUrl}
         />
+
+        {/* <UserAvatar
+          width="w-12"
+          height="h-12"
+          avatarUrl={message.user?.avatarUrl}
+        /> */}
         {/* <UserStatus user={message?.expand?.user} /> */}
       </div>
       <div className=" message-content      ">
         <p className=" font-bold  text-red-500">
-          {message.user?.username}
+          {message.expand?.user.username}
+          {/* {message.user?.username} */}
+
+          {/* {JSON.stringify(message.expand["likes(message)"])} */}
           <small className="message-timestamp">
             {
               <TimeAgo
@@ -116,7 +123,13 @@ const MessageCard = ({
           }}
         />
 
-        {likes?.length >= 1 && <MessageLikes likes={likes} />}
+        {/* <div className="">
+          MESSAGE LIKES: {message.expand["likes(message)"]?.length}
+        </div> */}
+
+        {message.expand["likes(message)"]?.length >= 1 && (
+          <MessageLikes likes={message.expand['likes(message)']} />
+        )}
       </div>
       {index === 0 && <IsNewestMessage />}
       <div className="message-options">
@@ -148,18 +161,16 @@ const IsNewestMessage = () => {
   );
 };
 
-const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
-
+const MessageLikes = ({ likes }) => {
   function getLikes(likes: LikesWithUser[]) {
     const length = likes.length;
-  
-     
+
     if (length > 0) {
       return length;
     }
     return 0;
   }
-  getLikes
+  getLikes;
 
   return (
     <Tooltip
@@ -190,7 +201,7 @@ const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
       }
       color="invert"
     >
-      <div className="message-like-container text-sm group/like">
+      <div className="message-like-container group/like text-sm">
         <img
           src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
           alt="Thumbs Up Icon"

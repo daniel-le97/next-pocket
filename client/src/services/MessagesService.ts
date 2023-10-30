@@ -100,15 +100,21 @@ class MessageService {
     // console.log("unMessages", unMessages);
 
     action(() => {
-      AppState.messages = [
-        ...AppState.messages,
-        ...unMessages.map((message) => {
-          const _Message: MessageWithUser = new Message(message);
-          AppState.messageLikes[message.id as unknown as number] = message.expand["likes(message)"] || [];
-          return _Message;
-        }),
-      ];
+      AppState.messages = [...AppState.messages, ...items];
+
+      // console.log(AppState.messages);
+
+      // AppState.messages = [
+      //   ...AppState.messages,
+      //   ...unMessages.map((message) => {
+      //     const _Message: MessageWithUser = new Message(message);
+      //     // AppState.messageLikes[message.id as unknown as number] = message.expand["likes(message)"] || [];
+      //     return _Message;
+      //   }),
+      // ];
       AppState.totalPages = totalPages;
+
+      console.log(AppState.messages);
     })();
   }
 
@@ -132,9 +138,11 @@ class MessageService {
   async getById(id: string) {
     const res = await pb
       .collection(Collections.Messages)
-      .getOne<TMessageWithUser>(id, { expand: "user,likes(message)" });
+      .getOne("tf2gj34udvekq6q", { expand: "user,likes" });
+
+    console.log(res);
+    return res;
     return new Message(res);
-    // console.log(res);
   }
   async deleteMessage(id: string) {
     await pb.collection(Collections.Messages).delete(id);

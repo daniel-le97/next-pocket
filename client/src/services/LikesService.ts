@@ -8,6 +8,8 @@ import { Collections, type LikesRecord } from "PocketBaseTypes";
 import type { LikesWithUser } from "../../PocketBaseTypes/utils";
 import { BaseService } from "./BaseService";
 import { addItemOrReplaceV2, filterStateArray } from "~/utils/Functions";
+import { pb } from "~/utils/pocketBase";
+import { messageService } from "./MessagesService";
 
 class LikesService extends BaseService {
   update(data: LikesRecord): Promise<void> {
@@ -47,37 +49,55 @@ class LikesService extends BaseService {
     const alreadyReacted = await this.getById(id, collection);
 
     if (alreadyReacted) {
-      // If it's already been reacted to delete
       const likeId = alreadyReacted.id;
-
-// console.log(AppState.messages);
-
-
 
       await this.delete(id, likeId);
 
-const message1 = AppState.messages.find((message) => message.id === "tf2gj34udvekq6q");
-  
-console.log(message1);
+      AppState.messages = AppState.messages.map((message) => {
+        if (message.id === id) {
+          // Clone the message to make changes
+          const updatedMessage = { ...message };
 
-      
+          if (updatedMessage.expand["likes(message)"]) {
+            // Filter out the likes associated with the deleted message
+            updatedMessage.expand["likes(message)"] = updatedMessage.expand[
+              "likes(message)"
+            ].filter((like) => like.id !== likeId);
+          }
 
-
+          return updatedMessage; // Return the updated message
+        }
+        return message; // Return unchanged messages
+      });
       return;
     }
 
-    //If it isn't already reacted to Create
-
     const data: Partial<LikesRecord> = { user: this.user!.id };
-    //Determine if this is on a DM or a Server Message
+
     collection == "message" ? (data.message = id) : (data.directMessage = id);
 
-    await this.pb.create<LikesWithUser>(data, {
+    const newLike = await this.pb.create<LikesWithUser>(data, {
       expand: "user",
     });
-    console.log("likeService.create()");
 
-    return;
+    if (newLike) {
+      AppState.messages = AppState.messages.map((message) => {
+        if (message.id === id) {
+          const updatedMessage = { ...message };
+
+          // Check if message.expand is an array, and create one if it doesn't exist
+          if (!Array.isArray(updatedMessage.expand["likes(message)"])) {
+            updatedMessage.expand["likes(message)"] = [];
+          }
+
+          updatedMessage.expand["likes(message)"].push(newLike);
+
+          return updatedMessage;
+        }
+        return message;
+      });
+      return;
+    }
   }
 
   // async subscribe() {
@@ -96,16 +116,14 @@ console.log(message1);
   //         this.addLikeOrReplaceToMessage(like, messageIndex);
   //       }
   //       if (action === "delete") {
-          
-          
+
   //         const findMessage = AppState.messages.find((message) => {
   //           message.id === _record.message;
   //         });
   //         console.log(findMessage);
-          
+
   //         this.filterLikeFromMessage(_record, messageIndex);
-          
-       
+
   //       }
   //     }
   //   );
@@ -140,12 +158,11 @@ console.log(message1);
       // console.log('likes',likes);
       // console.log(AppState.messageLikes);
       console.log(likes);
-      
+
       if (likes) {
         const filteredLikes = likes.filter((_like) => _like.id !== like.id);
         AppState.messageLikes[likeMessageIndex] = filteredLikes;
         console.log(AppState.messageLikes[likeMessageIndex]);
-        
       }
     })();
   }
