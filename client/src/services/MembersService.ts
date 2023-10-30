@@ -40,7 +40,7 @@ class MembersService {
     const server = new Server(
       res.expand?.server as unknown as ServerWithRelations
     );
-    
+
     AppState.userServers = [...AppState.userServers, server];
     AppState.activeServer = server;
     AppState.activeChannel = AppState.activeServer.channels[0];
@@ -68,7 +68,7 @@ class MembersService {
 
     //filter the server from the current userServers Array
     AppState.userServers = AppState.userServers.filter(
-      (s) => s?.id != data.server
+      (s) => s?.id !== data.server
     );
 
     // delete the user from the servers memberships

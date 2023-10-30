@@ -19,6 +19,7 @@ import type {
 } from "../../../PocketBaseTypes/utils";
 import { Transition } from "@headlessui/react";
 import { AppState } from "~/AppState";
+import { serversService } from "@/services";
 const ServerCard = ({ server }: { server: Server }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
@@ -43,10 +44,11 @@ const ServerCard = ({ server }: { server: Server }) => {
       if (!yes) {
         return;
       }
-    await membersService.joinServer(data);
-   
+      await membersService.joinServer(data);
+
 
       router.push(`/server/${server.id}/channel/${AppState.activeChannel?.id}`);
+            await serversService.getServersList(AppState.page);
     } catch (error) {
       Pop.error(error, "Join Server");
     }
@@ -59,8 +61,10 @@ const ServerCard = ({ server }: { server: Server }) => {
   };
 
   useEffect(() => {
+    // console.log('changed');
+
     checkIfMember();
-  }, []);
+  }, [AppState.userServers]);
 
   return (
     <Transition

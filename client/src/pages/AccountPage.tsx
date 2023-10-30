@@ -37,9 +37,9 @@ const [hide, setHide] = useState(false);
     if (hide) {
       return user?.email;
     } else {
-      const index = user?.email!.indexOf("@");
-      const domain = user?.email!.substring(index);
-      const username = user?.email!.substring(0, index);
+      const index = user?.email?.indexOf("@");
+      const domain = user?.email?.substring(index);
+      const username = user?.email?.substring(0, index);
       const maskedUsername = "*".repeat(username.length);
       return `${maskedUsername}${domain}`;
     }

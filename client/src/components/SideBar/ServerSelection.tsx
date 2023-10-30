@@ -40,10 +40,11 @@ const ServerIcon = ({ server }: { server: Server }) => {
   const handleClick = async () => {
     const serverRes = await serversService.getById(server?.id);
     AppState.activeServer = serverRes;
-    console.log(AppState.activeServer);
+    // console.log(AppState.activeServer);
     
     const defaultChannel = serverRes.channels[0];
     await router.push(`/server/${serverRes!.id}/channel/${defaultChannel!.id}`);
+
   };
   useEffect(() => {
     setShowing(!isShowing);

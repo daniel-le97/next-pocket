@@ -16,7 +16,8 @@ import ServerSelection from "./ServerSelection";
 import CreateServer from "./CreateServer";
 import Pop from "../../../utils/Pop";
 import useDarkMode from "../../../hooks/useDarkMode";
-import { authsService } from "@/services";
+import { authsService, serversService } from "@/services";
+import { AppState } from "~/AppState";
 const SideBar = () => {
   const [user, setUser] = useState(null);
 
@@ -68,7 +69,7 @@ const SideBar = () => {
       )}
 
       <div className="flex flex-col items-center justify-center border-t-2  border-t-emerald-500 pb-2">
-        {/* <ThemeIcon /> */}
+        <ThemeIcon />
         <CreateServer />
 
         <img src={logo.src} alt="" width={35} className="rounded-full" />
@@ -158,4 +159,24 @@ const ThemeIcon = () => {
     </span>
   );
 };
+
+// const ExploreIcon = () => {
+//   const handleClick = async () => {
+//     try {
+//       AppState.page = 1;
+//       await serversService.getServersList(AppState.page);
+//     } catch (error) {
+//       Pop.error(error);
+//     }
+//   };
+//   return (
+//     <div className="" onClick={handleClick}>
+//       <SideBarIcon
+//         icon={<FaCompass size="28" />}
+//         text={"Explore Servers"}
+//         router={"/"}
+//       />
+//     </div>
+//   );
+// };
 export default observer(SideBar);

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { serversService } from "@/services";
 import { membersService } from "@/services/MembersService";
 import { AppState } from "AppState";
 import { observer } from "mobx-react";
@@ -37,6 +38,7 @@ const LeaveServer = ({ toggleOpen }: { toggleOpen: () => void }) => {
         return;
       }
       await membersService.leaveServer(data);
+      await serversService.getServersList(AppState.page)
       void router.push("/");
       Pop.success("left Server");
     } catch (error) {

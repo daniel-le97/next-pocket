@@ -16,10 +16,11 @@ import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import { debounce } from "lodash";
 import ServerPagination from "@/components/Explore/ServerPagination";
 import { Server, type ServerWithRelations } from "~/PocketBaseTypes";
-
+import bannerImage from "../assets/banner-image.svg";
 const Explore: NextPage = () => {
   const router = useRouter();
-  const servers = AppState.servers;
+  // const servers = AppState.servers;
+  const [servers, setServers] = useState(AppState.servers);
 
   useEffect(() => {
     const user = pb.authStore.model;
@@ -37,6 +38,9 @@ const Explore: NextPage = () => {
     getServers();
   }, []);
 
+  useEffect(() => {
+    setServers(AppState.servers);
+  }, [AppState.servers]);
   return (
     <>
       <Head>
@@ -67,13 +71,14 @@ const ExploreBanner = () => {
     <div className="explore-banner  ">
       <div className="relative  ">
         <img
-          src="https://img.freepik.com/free-vector/telescope-science-discovery-watching-stars-planets-outer-space_107791-4920.jpg?w=900&t=st=1677706310~exp=1677706910~hmac=1f7b435bec55558f1de8b5bc54632ee088625c1772d5eb3c102107da67f9327a"
-          alt=""
-          className="rounded-xl shadow-md shadow-zinc-900  "
+          src={bannerImage.src}
+          alt="spaceman"
+          width={400}
+          className=" shadow-zinc-900  "
         />
-        <div className=" absolute left-80 top-24 text-2xl  font-bold text-white">
+        {/* <div className=" absolute left-80 top-24 text-2xl  font-bold text-white">
           Find your community
-        </div>
+        </div> */}
       </div>
     </div>
   );

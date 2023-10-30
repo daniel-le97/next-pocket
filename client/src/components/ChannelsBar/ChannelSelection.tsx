@@ -47,7 +47,7 @@ const ChannelSelection = ({ selection }: { selection: ChannelsResponse }) => {
           : () => {}
       }
     >
-      <BsHash size="24" className="text-gray-400" />
+      <BsHash size="24" className="text-gray-100" />
       <h5
         className={`channel-selection-text ${
           selection.title?.length! >= 30 ? " truncate" : ""
