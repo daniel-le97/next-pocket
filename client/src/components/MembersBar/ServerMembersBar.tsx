@@ -150,9 +150,11 @@ const User = ({ user }: { user: MemberUser}) => {
       <UserAvatar height="h-8" width="w-8" avatarUrl={user.expand?.user.avatarUrl} />
 
         <div className="absolute left-8 top-9">
-          {user && (
+          {/* {user && (
             <UserStatus status={user.expand!.user.expand.onlineStatus.status!} />
-          )}
+          )} */}
+
+          STATUS
         </div>
       </div>
       <small className=" font-bold text-rose-600">

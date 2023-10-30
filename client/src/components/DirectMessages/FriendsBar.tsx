@@ -43,10 +43,10 @@ const FriendsBar = () => {
      const sub = friendSubscribe?.();
      const subDm =  friendStatusSubscribe?.();
       if (sub) {
-        console.log('unsubbed from friends records');
+        // console.log('unsubbed from friends records');
       }
       if (subDm) {
-        console.log('unsubbed from dm status');
+        // console.log('unsubbed from dm status');
       }
     }
   }, []);

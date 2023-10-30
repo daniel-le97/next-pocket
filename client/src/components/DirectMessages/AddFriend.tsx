@@ -79,8 +79,8 @@ const AddFriend = () => {
   return (
     <>
       <div className="rounded-md  p-5">
-        <div className=" text-lg font-bold text-zinc-200">Add Friend</div>
-        <div className=" text-zinc-400">
+        <div className=" text-lg font-bold dark:text-zinc-200">Add Friend</div>
+        <div className=" dark:text-zinc-400">
           {addFriendMessage}
           <br />
           beepo#7pav16sqx77dapf
@@ -91,7 +91,7 @@ const AddFriend = () => {
             color="invert"
             content={<strong> Example: TungusTheFungus#d1xf11e03i3mio2</strong>}
           >
-            <FaQuestionCircle size={25} className="text-gray-300" />
+            <FaQuestionCircle size={25} className="dark:text-gray-300" />
           </Tooltip>
           <form
             onSubmit={handleSubmit(onSubmit) as unknown as FormEventHandler}
@@ -134,12 +134,12 @@ const AddFriend = () => {
         </div>
         <hr className="border-gray-500" />
         <div className="">
-          <div className="my-3 text-lg font-bold text-gray-200">
+          <div className="my-3 text-lg font-bold dark:text-gray-200">
             MAKE FRIENDS BY JOINING SERVERS AND CONNECTING
           </div>
           <Link href={"/"}>
             <div className="flex w-1/2  items-center justify-between rounded border border-gray-500 bg-zinc-800/40 py-2 px-4 hover:bg-zinc-500">
-              <div className="flex items-center gap-x-2 text-gray-300">
+              <div className="flex items-center gap-x-2 dark:text-gray-300">
                 <div className="rounded-lg bg-gray-800 p-2">
                   <FaCompass size={30} />
                 </div>
