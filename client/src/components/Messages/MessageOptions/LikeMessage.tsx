@@ -32,13 +32,7 @@ const LikeMessage = ({ messageId }: { messageId: string }) => {
     }
   };
 
-  useEffect(() => {
-    const subscribeToLikes = async () => {
-      await likesService.subscribe();
-    };
-
-    subscribeToLikes();
-  }, []);
+ 
 
   return (
     <div className="group/item message-options-icon" onClick={likeMessage}>

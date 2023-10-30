@@ -49,7 +49,19 @@ class LikesService extends BaseService {
     if (alreadyReacted) {
       // If it's already been reacted to delete
       const likeId = alreadyReacted.id;
+
+console.log(AppState.messages);
+
+
+
       await this.delete(id, likeId);
+
+
+  
+
+      
+
+
       return;
     }
 
@@ -67,31 +79,37 @@ class LikesService extends BaseService {
     return;
   }
 
-  async subscribe() {
-    //  create a subscription to the likes table
+  // async subscribe() {
+  //   //  create a subscription to the likes table
 
-    const subscribe = await this.pb.subscribe(
-      "*",
-      async ({ action, record }) => {
-        // console.log(action, record);
+  //   const subscribe = await this.pb.subscribe(
+  //     "*",
+  //     async ({ action, record }) => {
+  //       // console.log(action, record);
 
-        const _record = record as unknown as LikesWithUser;
-        const messageIndex = _record.message as unknown as number;
+  //       const _record = record as unknown as LikesWithUser;
+  //       const messageIndex = _record.message as unknown as number;
 
-        if (action !== "delete") {
-          const like = await this.getOne(record.id);
-          this.addLikeOrReplaceToMessage(like, messageIndex);
-        }
-        if (action === "delete") {
-          this.filterLikeFromMessage(_record, messageIndex);
-          // console.log("likeService.subscribe(delete)", _record);
-        }
-      }
-    );
-    return subscribe;
-  }
-
- 
+  //       if (action !== "delete") {
+  //         const like = await this.getOne(record.id);
+  //         this.addLikeOrReplaceToMessage(like, messageIndex);
+  //       }
+  //       if (action === "delete") {
+          
+          
+  //         const findMessage = AppState.messages.find((message) => {
+  //           message.id === _record.message;
+  //         });
+  //         console.log(findMessage);
+          
+  //         this.filterLikeFromMessage(_record, messageIndex);
+          
+       
+  //       }
+  //     }
+  //   );
+  //   return subscribe;
+  // }
 
   protected addLikeOrReplaceToMessage(
     like: LikesWithUser,
@@ -99,8 +117,8 @@ class LikesService extends BaseService {
   ) {
     const likes = AppState.messageLikes[likeMessageIndex];
     const likeIndex = likes?.findIndex((_like) => _like.id == like.id);
-    console.log(likeIndex);
-    
+    // console.log(likeIndex);
+
     if (likes && likeIndex) {
       action(() => {
         if (likeIndex == -1) {
@@ -109,23 +127,6 @@ class LikesService extends BaseService {
         }
         likes[likeIndex] = like;
       })();
-
-  reaction(
-    () => AppState.messageLikes[likeMessageIndex],
-    (newLikes) => {
-      // Update the DOM or trigger a re-render in your component here
-      console.log("Likes have changed:", newLikes);
-      // You should have the logic to update the DOM or re-render your component here
-    }
-  );
-
-
-
-
-
-
-
-
     }
   }
 
@@ -136,13 +137,14 @@ class LikesService extends BaseService {
     action(() => {
       const likes = AppState.messageLikes[likeMessageIndex];
       // console.log('likes',likes);
-
+      // console.log(AppState.messageLikes);
+      console.log(likes);
+      
       if (likes) {
         const filteredLikes = likes.filter((_like) => _like.id !== like.id);
         AppState.messageLikes[likeMessageIndex] = filteredLikes;
-        // AppState.messageLikes[likeMessageIndex] = likes.filter(
-        //   (_like) => _like.id !== like.id
-        // );
+        console.log(AppState.messageLikes[likeMessageIndex]);
+        
       }
     })();
   }

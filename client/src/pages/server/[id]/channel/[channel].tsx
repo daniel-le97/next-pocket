@@ -17,6 +17,7 @@ import ProgressBar from "@badrap/bar-of-progress";
 import type { UnsubscribeFunc } from "pocketbase";
 import DirectMessageScroll from "../../../../components/GlobalComponents/InfiniteMessageScroll";
 import { NextPage } from "next/types";
+import { likesService } from "@/services/LikesService";
 
 
 interface IProgressBar{
@@ -79,6 +80,20 @@ const ServerOne: NextPage = () => {
       messageSubscribe ? messageSubscribe() : null;
     }
   }, [channel]);
+
+
+
+
+//  useEffect(() => {
+//    const subscribeToLikes = async () => {
+//      await likesService.subscribe();
+//    };
+
+//    subscribeToLikes();
+//  }, []);
+
+
+
 
   return (
     <>
