@@ -75,7 +75,7 @@ class MessageService {
       .getList<MessageWithUser>(1, 50, {
         filter: `channel = "${AppState.activeChannel.id}"`,
         sort: "-created",
-        expand: "user,likes(message)",
+        expand: "user,likes",
       });
     // console.log("messages", res);
 

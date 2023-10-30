@@ -50,14 +50,15 @@ class LikesService extends BaseService {
       // If it's already been reacted to delete
       const likeId = alreadyReacted.id;
 
-console.log(AppState.messages);
+// console.log(AppState.messages);
 
 
 
       await this.delete(id, likeId);
 
-
+const message1 = AppState.messages.find((message) => message.id === "tf2gj34udvekq6q");
   
+console.log(message1);
 
       
 
