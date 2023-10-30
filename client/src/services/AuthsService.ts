@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { AppState } from "AppState";
-import type { NextRouter} from "next/router";
+import type { NextRouter } from "next/router";
 import Pop from "utils/Pop";
 import { pb } from "../../utils/pocketBase";
-import { usersStatusService} from "./UsersStatusService";
+import { usersStatusService } from "./UsersStatusService";
 import { friendsService } from "./FriendsService";
 import type { UserLogin, UsersResponse } from "~/PocketBaseTypes";
 import { getRedirectOrPath } from "../../utils/Redirect";
-
-
 
 class AuthsService {
   async resetPassword(email: string) {
@@ -18,10 +16,10 @@ class AuthsService {
       console.log(error);
     }
   }
-  async isUserLoggedIn(router: NextRouter){
-    const loggedIn = pb.authStore.model
+  async isUserLoggedIn(router: NextRouter) {
+    const loggedIn = pb.authStore.model;
     if (!loggedIn) {
-      await router.push('/login')
+      await router.push("/login");
     }
   }
 
@@ -29,19 +27,25 @@ class AuthsService {
     const email = data.email;
     const password = data.password;
     await pb.collection("users").authWithPassword(email, password);
-    return getRedirectOrPath()
+    return getRedirectOrPath();
   }
   async signUp(data: UserLogin) {
-    if (data.password != data.passwordConfirm) return "passwords must match";
-    const newUser = await pb.collection("users").create<UsersResponse>(data);
-    await usersStatusService.create(newUser.id)
-    return await this.login(data);
+    try {
+      if (data.password != data.passwordConfirm) return "passwords must match";
+
+      const newUser = await pb.collection("users").create<UsersResponse>(data);
+
+      
+      await usersStatusService.create(newUser.id);
+      return await this.login(data);
+    } catch (error) {
+      console.log(error);
+    }
   }
- 
-   signOut(){
-    pb.authStore.clear()
-    AppState.reset()
-    
+
+  signOut() {
+    pb.authStore.clear();
+    AppState.reset();
   }
 }
 

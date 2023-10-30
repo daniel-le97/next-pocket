@@ -8,7 +8,7 @@ import { authsService } from "../services";
 import type { UserLogin } from "../../PocketBaseTypes";
 import { useForm } from "react-hook-form";
 import Pop from "../../utils/Pop";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
 function Login() {
   const router = useRouter();
@@ -59,9 +59,10 @@ function Login() {
             <button type="submit" className=" btn-primary">Login</button>
           </form>
           
-          <Link href={"/signup"} className=" mt-2 flex gap-2">
-            <FaArrowAltCircleLeft className="text-2xl" />
-            <div>go to signup</div>
+          <Link href={"/signup"} className="  flex gap-2 mt-3 text-xl">
+            <div>No Login? Go to Sign up</div>
+           
+            <FaArrowAltCircleRight className="text-2xl" />
           </Link>
         </div>
         <div className="shape-blob"></div>

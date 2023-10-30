@@ -92,7 +92,14 @@ class UsersStatusService extends BaseT<UsersStatusWithUser> {
     AppState.userStatus = userStatus;
   }
   async create(userId: string) {
-    return await this.pb.create({ user: userId, status: "online" });
+    // console.log(userId) ;
+    // return 
+    
+ const test = await this.pb.create({ user: userId, status: "online" });
+
+ console.log(test);
+ 
+     return;
   }
 
   /**

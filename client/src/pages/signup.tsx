@@ -8,7 +8,7 @@ import { authsService } from "../services";
 import type { UserLogin } from "../../PocketBaseTypes";
 import { useForm } from "react-hook-form";
 import Pop from "../../utils/Pop";
-import { FaArrowAltCircleRight } from "react-icons/fa";
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
 function SignUp() {
   const {
@@ -23,10 +23,16 @@ function SignUp() {
   // const onSubmit: SubmitHandler<UserLogin> = (data) => console.log(data);
   async function onSubmit(data: UserLogin) {
     try {
+
+      // console.log(data);
+      
       if (data.password !== data.passwordConfirm) {
         return Pop.error("Passwords do not match");
       }
       data.avatarUrl = `https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${data.username}`;
+      // console.log(data);
+      // data.emailVisibility=true
+      
       const path = await authsService.signUp(data);
       await router.push(path);
     } catch (error) {
@@ -84,9 +90,9 @@ function SignUp() {
               Sign Up
             </button>
           </form>
-          <Link href="/login" className="mt-2 flex gap-2">
-            <FaArrowAltCircleRight className="text-2xl" />
-            <div>go to signup</div>
+          <Link href="/login" className="mt-3 flex gap-2 text-xl">
+            <FaArrowAltCircleLeft className="text-2xl" />
+            <div>Go to Login</div>
           </Link>
         </div>
         {/* <div className="container flex items-center justify-center">

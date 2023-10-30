@@ -33,6 +33,7 @@
       "eslint.codeActionsOnSave.mode": "all",
       "editor.codeActionsOnSave": {
         "source.fixAll": true
-      }
+      },
+      "nuxt.isNuxtApp": false
     }
   }

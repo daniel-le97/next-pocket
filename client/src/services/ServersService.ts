@@ -22,7 +22,7 @@ class ServersService {
       .getFirstListItem<ServerWithRelations>(`id="${id}"`, {
         expand: "image,members,channels(server)",
       });
-    console.log("server.getById", server);
+    // console.log("server.getById", server);
       const newServer = new Server(server)
     AppState.activeServer = newServer;
     return newServer
@@ -36,7 +36,7 @@ class ServersService {
         sort: `created`,
         filter: "private=false",
       });
-    console.log("servers", res.items);
+    // console.log("servers", res.items);
 
     const servers = res.items.map((s) => new Server(s));
     // add the servers to the global state
