@@ -133,7 +133,7 @@
   }
 
   .server-selection {
-    @apply my-2 flex  
+    @apply mt-2 flex  
          snap-y  flex-col  items-start   justify-start   pl-1.5;
   }
   .server-selection::-webkit-scrollbar {
@@ -150,14 +150,14 @@
   }
 
   .active-server-icon-image {
-    @apply h-12 w-12  rounded-xl border-2 border-white object-cover  transition-all duration-300 ease-linear;
+    @apply h-12 w-12  rounded-xl border-2 border-indigo-500  dark:border-emerald-500 object-cover  transition-all duration-300 ease-linear;
   }
 
   .server-icon-bubble {
     @apply absolute -left-3.5 h-3 w-3 rounded-full bg-white transition-all duration-300   ease-linear;
   }
   .active-server-icon-bubble {
-    @apply absolute -left-3.5 h-10 w-3 rounded-full bg-white transition-all duration-300   ease-linear;
+    @apply absolute -left-3.5 h-10 w-3 rounded-full bg-indigo-500 dark:bg-emerald-500 transition-all duration-300   ease-linear;
   }
 }
 /* Top Navigation */

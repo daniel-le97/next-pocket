@@ -55,19 +55,9 @@ class ChannelsService {
         .getFullList<ChannelsResponse>(100, {
           filter: `server = "${serverId}"`,
         });
-      // console.log('channels', res);
 
       AppState.channels = res;
       AppState.activeChannel = res[0];
-      //TODO NEED TO FIGURE THIS OUT, NEED TO JOIN A CHANNEL  ON REFRESH IF YOU ARE NOT IN THE CHANNEL ALREADY ELSE  SKIP
-      // if (AppState.activeChannel?.id !== AppState.user?.currentChannel) {
-      //   // console.log(activeChannel);
-
-      //   await this.joinChannel({
-      //     memberId: AppState.user?.id!,
-      //     channelId: AppState.activeChannel?.id!,
-      //   });
-      // }
     } catch (error) {
       console.error(error);
       throw new Error("Failed to get channel list");

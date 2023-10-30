@@ -42,7 +42,7 @@ type UserExpand = {
 export type ServerWithRelations = ServersResponse & {
   expand: {
     image: FileUploadsResponse;
-    members: MemberUser[];
+    "members(server)": MemberUser[];
     "channels(server)": ChannelsResponse[];
   };
 };
@@ -81,8 +81,9 @@ export class Server {
     this.private = data.private || false;
     this.owner = data.owner || "";
     this.image = data.expand.image;
-    this.members = data.expand.members;
+    this.members = data.expand["members(server)"] || [];
     this.channels = data.expand["channels(server)"] || [];
+    this.expand
   }
   id: string;
   name: string;
@@ -92,6 +93,7 @@ export class Server {
   image: FileUploadsResponse;
   members: MemberUser[];
   channels: ChannelsResponse[];
+  expand: any
 }
 
 export class Message {

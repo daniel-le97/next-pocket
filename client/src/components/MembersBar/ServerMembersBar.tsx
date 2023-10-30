@@ -15,21 +15,23 @@ import UserAvatar from "../GlobalComponents/UserAvatar";
 // const topics = ["general", "tailwind-css", "react"];
 
 const MembersBar = () => {
-  const users = AppState.members;
+  const users = AppState.activeServer?.members;
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
-  let userStatusSubscribe: UnsubscribeFunc | null
-  (async () => {
-    try {
-       userStatusSubscribe = await usersStatusService.subscribe()
+    // console.log(AppState.activeServer);
+
+    let userStatusSubscribe: UnsubscribeFunc | null;
+    (async () => {
+      try {
+        userStatusSubscribe = await usersStatusService.subscribe();
       } catch (error) {
-        Pop.error(error)
+        Pop.error(error);
       }
-  })();
-  return () => {
-    userStatusSubscribe?.()
-  }
-}, [])
+    })();
+    return () => {
+      userStatusSubscribe?.();
+    };
+  }, []);
   return (
     <>
       <div
@@ -42,7 +44,6 @@ const MembersBar = () => {
         <div className="channel-block">
           <h5 className="channel-block-text">Members</h5>
           <div className=" mx-auto my-2 rounded-3xl  text-gray-500">
-            {" "}
             {collapsed ? (
               <BsArrowRightCircle
                 size={24}
@@ -58,13 +59,13 @@ const MembersBar = () => {
           {users &&
             users.map((user, index) => (
               <div
-                 
                 className="relative cursor-pointer rounded-lg p-2 transition-all duration-200 hover:bg-slate-500"
                 key={index}
               >
                 <User user={user} />
               </div>
             ))}
+
         </div>
       </div>
       {!collapsed && (
@@ -72,7 +73,7 @@ const MembersBar = () => {
           <BsArrowLeftCircle
             size={24}
             onClick={() => setCollapsed(!collapsed)}
-            className="hover:text-emerald-500 cursor-pointer"
+            className="cursor-pointer hover:text-emerald-500"
           />
         </div>
       )}
@@ -80,39 +81,9 @@ const MembersBar = () => {
   );
 };
 
-// // @ts-ignore
-// const Dropdown = ({ header, selections }) => {
-//   const [expanded, setExpanded] = useState(true);
-
-//   return (
-//     <div className="dropdown">
-//       <div onClick={() => setExpanded(!expanded)} className="dropdown-header">
-//         <ChevronIcon expanded={expanded} />
-//         <h5
-//           className={
-//             expanded ? "dropdown-header-text-selected" : "dropdown-header-text"
-//           }
-//         >
-//           {header}
-//         </h5>
-//         <FaPlus
-//           size="12"
-//           className="text-accent my-auto ml-auto text-opacity-80"
-//         />
-//       </div>
-//       {expanded &&
-//         selections &&
-//         selections.map((selection) => (
-//           <ChannelSelection selection={selection} key={selection} />
-//         ))}
-
-//       <div className="mt-10"></div>
-//     </div>
-//   );
-// };
 
 
-const ChevronIcon = ({expanded = false}) => {
+const ChevronIcon = ({ expanded = false }) => {
   const chevClass = "text-accent text-opacity-80 my-auto mr-1";
   return expanded ? (
     <FaChevronDown size="14" className={chevClass} />
@@ -121,23 +92,8 @@ const ChevronIcon = ({expanded = false}) => {
   );
 };
 
-// // @ts-ignore
-
-// const ChannelBlock = () => (
-//   <div className="channel-block">
-//     <h5 className="channel-block-text">Channels</h5>
-//   </div>
-// );
-
-const User = ({ user }: { user: MemberUser}) => {
-
-  //  console.log(user.expand.user.username , user.expand.user.expand.onlineStatus.isOnline);
-  //  console.log(user.expand.user.username , user.expand.user.expand.onlineStatus.isOnline);
-   
-
+const User = ({ user }: { user: MemberUser }) => {
  
-  
-  
   return (
     <div className="user-container flex gap-x-2  ">
       <div className="relative">
@@ -147,13 +103,16 @@ const User = ({ user }: { user: MemberUser}) => {
           width={30}
           className="rounded-full shadow-md shadow-zinc-900"
         /> */}
-      <UserAvatar height="h-8" width="w-8" avatarUrl={user.expand?.user.avatarUrl} />
+        <UserAvatar
+          height="h-8"
+          width="w-8"
+          avatarUrl={user.expand?.user.avatarUrl}
+        />
 
         <div className="absolute left-8 top-9">
           {/* {user && (
             <UserStatus status={user.expand!.user.expand.onlineStatus.status!} />
           )} */}
-
           STATUS
         </div>
       </div>

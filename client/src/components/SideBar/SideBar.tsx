@@ -5,7 +5,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { observer } from "mobx-react";
 import Link from "next/link.js";
-import {Tooltip } from '@nextui-org/react'
+import { Tooltip } from "@nextui-org/react";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
 import logo from "../../assets/LLCLOGO.png";
@@ -29,35 +29,31 @@ const SideBar = () => {
       className="
               sidebar   "
     >
-      <div>
+      <div className="border-b-2 border-b-emerald-500">
         <SideBarIcon
           icon={<FaCompass size="28" />}
           text={"Explore Servers"}
           router={"/"}
         />
-        <hr className="sidebar-hr" />
+        {/* <hr className="sidebar-hr" /> */}
         <SideBarIcon
           icon={<BsMessenger size="28" />}
           text={"Direct Messages"}
           router={"/DirectMessages"}
         />
 
-        <hr className="sidebar-hr" />
+        {/* <hr className="sidebar-hr" /> */}
         <SideBarIcon
           icon={<BsPersonFill size="28" />}
           text={"Account"}
           router={"/AccountPage"}
         />
-
-        <hr className="sidebar-hr" />
+{user  &&   <LogOutIcon />}
+        {/* <hr className="sidebar-hr" /> */}
       </div>
 
       {user ? (
         <>
-          <div>
-            <hr className="sidebar-hr" />
-            <LogOutIcon />
-          </div>
           {/* <UserIcon user={user} /> */}
           <div className=" server-selection overflow-y-scroll ">
             <ServerSelection />
@@ -71,16 +67,18 @@ const SideBar = () => {
         />
       )}
 
-      <div>
-        <ThemeIcon />
+      <div className="flex flex-col items-center justify-center border-t-2  border-t-emerald-500 pb-2">
+        {/* <ThemeIcon /> */}
         <CreateServer />
-        <SideBarIcon
+
+        <img src={logo.src} alt="" width={35} className="rounded-full" />
+        {/* <SideBarIcon
           icon={
-            <img src={logo.src} alt="" width={50} className="rounded-full" />
+            <img src={logo.src} alt="" width={30} className="rounded-full" />
           }
           text={"DevOpporunitiesLLC"}
           router={"/"}
-        />
+        /> */}
       </div>
     </div>
   );
@@ -114,7 +112,7 @@ const LogOutIcon = () => {
     if (!confirmed) {
       return;
     }
-    authsService.signOut()
+    authsService.signOut();
     router.push("/login");
   };
 

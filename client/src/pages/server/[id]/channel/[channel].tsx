@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import Head from "next/head";
 import ChannelsBar from "@/components/ChannelsBar/ChannelsBar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { observer } from "mobx-react";
 import Pop from "utils/Pop";
@@ -15,9 +15,10 @@ import CreateMessage from "@/components/CreateMessage/CreateMessage";
 
 import ProgressBar from "@badrap/bar-of-progress";
 import type { UnsubscribeFunc } from "pocketbase";
-import DirectMessageScroll from "../../../../components/GlobalComponents/InfiniteMessageScroll";
+import InfiniteMessageScroll from "../../../../components/GlobalComponents/InfiniteMessageScroll";
 import { NextPage } from "next/types";
 import { likesService } from "@/services/LikesService";
+import { pb } from "~/utils/pocketBase";
 
 interface IProgressBar {
   start(): void;
@@ -25,6 +26,7 @@ interface IProgressBar {
 }
 const ServerOne: NextPage = () => {
   const router = useRouter();
+  const user = pb.authStore.model;
   const { id, channel } = router.query as { id: string; channel: string };
 
   useEffect(() => {
@@ -34,9 +36,8 @@ const ServerOne: NextPage = () => {
 
     const fetchServerData = async () => {
       try {
-        // console.log(AppState.activeServer);
-
-         await channelsService.getChannelsByServerId(id);
+        // await serversService.getById(id);
+        // await channelsService.getChannelsByServerId(id);
         await serversService.getMembers(id);
       } catch (error) {
         Pop.error(error);
@@ -58,6 +59,7 @@ const ServerOne: NextPage = () => {
         className: "bar-of-progress",
         delay: 100,
       }) as unknown as IProgressBar;
+      
       try {
         progress.start();
         await channelsService.joinChannel({
@@ -78,13 +80,16 @@ const ServerOne: NextPage = () => {
     };
   }, [channel]);
 
-  //  useEffect(() => {
-  //    const subscribeToLikes = async () => {
-  //      await likesService.subscribe();
-  //    };
+  // useEffect(() => {
+  //   const membership = AppState.activeServer?.members.find(
+  //     (member) => member.user === user?.id
+  //   );
 
-  //    subscribeToLikes();
-  //  }, []);
+  //   if (membership) {
+  // // console.log('Not a member');
+  //  router.push('/')
+  //   }
+  // });
 
   return (
     <>
@@ -101,7 +106,7 @@ const ServerOne: NextPage = () => {
             <TopNavigation />
 
             {/* <MessageScroll /> */}
-            <DirectMessageScroll />
+            <InfiniteMessageScroll />
             <CreateMessage />
           </div>
           <ServerMembersBar />
@@ -111,4 +116,5 @@ const ServerOne: NextPage = () => {
   );
 };
 
-export default observer(withAuth(withMember(ServerOne)));
+export default observer(withAuth(ServerOne));
+// export default observer(withAuth(withMember(ServerOne)));

@@ -15,7 +15,7 @@ import SearchBar from "@/components/Explore/SearchBar";
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import { debounce } from "lodash";
 import ServerPagination from "@/components/Explore/ServerPagination";
-import type { ServerWithRelations } from "~/PocketBaseTypes";
+import { Server, type ServerWithRelations } from "~/PocketBaseTypes";
 
 const Explore: NextPage = () => {
   const router = useRouter();
@@ -55,10 +55,7 @@ const Explore: NextPage = () => {
           totalPages={AppState.totalPages}
         />
         <div className="mb-4  flex  flex-wrap    justify-center ">
-          {servers &&
-            servers.map((s) => (
-              <ServerCard server={s} key={s.id} />
-            ))}
+          {servers && servers.map((s) => <ServerCard server={s} key={s.id} />)}
         </div>
       </main>
     </>

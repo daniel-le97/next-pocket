@@ -114,7 +114,7 @@ class MessageService {
       // ];
       AppState.totalPages = totalPages;
 
-      console.log(AppState.messages);
+      // console.log(AppState.messages);
     })();
   }
 
@@ -140,9 +140,9 @@ class MessageService {
       .collection(Collections.Messages)
       .getOne("tf2gj34udvekq6q", { expand: "user,likes" });
 
-    console.log(res);
+    // console.log(res);
     return res;
-    return new Message(res);
+    // return new Message(res);
   }
   async deleteMessage(id: string) {
     await pb.collection(Collections.Messages).delete(id);

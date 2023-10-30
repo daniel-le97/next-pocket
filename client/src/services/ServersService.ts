@@ -20,19 +20,22 @@ class ServersService {
     const server = await pb
       .collection(Collections.Servers)
       .getFirstListItem<ServerWithRelations>(`id="${id}"`, {
-        expand: "image,members,channels(server)",
+        expand: "image,channels(server),members(server).user",
       });
-    // console.log("server.getById", server);
-      const newServer = new Server(server)
-    AppState.activeServer = newServer;
-    return newServer
+
+    const newServer = new Server(server);
+    // console.log(newServer);
+    AppState.activeServer = newServer
+    // console.log(AppState.activeServer);
+
+    return newServer;
   }
   async getServersList(page: number) {
     // get all servers available
     const res = await pb
       .collection(Collections.Servers)
       .getList<ServerWithRelations>(page, 9, {
-        expand: "image,members,channels(server)",
+        expand: "image,members(server),channels(server)",
         sort: `created`,
         filter: "private=false",
       });
@@ -40,7 +43,7 @@ class ServersService {
 
     const servers = res.items.map((s) => new Server(s));
     // add the servers to the global state
-    AppState.servers = servers
+    AppState.servers = servers;
     // console.log("servers", res.items);
     AppState.page = res.page;
     AppState.totalPages = res.totalPages;
@@ -56,7 +59,7 @@ class ServersService {
       .create<ServerWithRelations>(serverData, {
         expand: "image",
       });
-      const server = new Server(newServer)
+    const server = new Server(newServer);
 
     AppState.userServers = [...AppState.userServers, server];
     AppState.servers = [...AppState.servers, server];
@@ -92,7 +95,7 @@ class ServersService {
       serverData.owner!
     );
     await uploadService.updateStatus(serverData.owner!, fileUpload!.id);
-    return {newServer, defaultChannel}
+    return { newServer, defaultChannel };
   }
 
   async getMembers(serverId: string) {

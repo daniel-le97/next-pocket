@@ -5,9 +5,14 @@ import type {
   MembersResponse,
 } from "../../PocketBaseTypes/pocketbase-types";
 import { Collections } from "../../PocketBaseTypes/pocketbase-types";
-import { Server, ServerWithRelations, TServerExpand } from "../../PocketBaseTypes/utils";
+import {
+  Server,
+  ServerWithRelations,
+  TServerExpand,
+} from "../../PocketBaseTypes/utils";
 import { pb } from "../../utils/pocketBase";
 import Pop from "../../utils/Pop";
+import { serversService } from "./ServersService";
 
 class MembersService {
   async joinServer(data: MembersRecord) {
@@ -16,7 +21,6 @@ class MembersService {
       throw new Error("No FormData Sent");
     }
     // return;
-    
 
     // make sure user does not have a Member Record for the server already
     const userMemberRecord = await this.getUserMemberRecord(data);
@@ -29,31 +33,31 @@ class MembersService {
     const res = await pb
       .collection(Collections.Members)
       .create<MembersResponse<TServerExpand<FileUploadsResponse>>>(data, {
-        expand: "server.image, server.channels(server)"
+        expand:
+          "server.image,server.channels(server),server.members(server).user",
       });
-    console.log("joinedServer", res);
-    const server = new Server(res.expand?.server as unknown as ServerWithRelations)
+
+    const server = new Server(
+      res.expand?.server as unknown as ServerWithRelations
+    );
+    
     AppState.userServers = [...AppState.userServers, server];
     AppState.activeServer = server;
-
-    
-    // return the response for use as a "hook"
-    return server
+    AppState.activeChannel = AppState.activeServer.channels[0];
+    return server;
   }
-  async getUserMemberRecord(data: MembersRecord, setMember?:boolean) {
-  
-    
+  async getUserMemberRecord(data: MembersRecord, setMember?: boolean) {
     // get the users membership for the server and return it
     const record = await pb
       .collection(Collections.Members)
       .getList<MembersResponse>(1, 1, {
         filter: `user="${data.user}" && server="${data.server}"`,
       });
-      const membership = record.items[0]
-      if (setMember) {
-        AppState.activeMembership = membership ?? null
-      }
-    return membership
+    const membership = record.items[0];
+    if (setMember) {
+      AppState.activeMembership = membership ?? null;
+    }
+    return membership;
   }
   async leaveServer(data: MembersRecord) {
     // get the memberShip to be deleted
@@ -81,7 +85,10 @@ class MembersService {
     // console.log("userServers", res);
 
     // filter out the servers from the Members records
-    const servers = res.map((member) => new Server(member.expand?.server as unknown as ServerWithRelations));
+    const servers = res.map(
+      (member) =>
+        new Server(member.expand?.server as unknown as ServerWithRelations)
+    );
     // console.log('userServers', servers)
     // return;
 

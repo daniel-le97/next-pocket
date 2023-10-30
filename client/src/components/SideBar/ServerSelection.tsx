@@ -9,16 +9,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AppState } from "../../../AppState";
 import { Server } from "../../../PocketBaseTypes";
-import type {
-  FileUploadsResponse,
-  ServersResponse,
-} from "../../../PocketBaseTypes/pocketbase-types";
-// import { useUser } from "../../../utils/pocketBase";
-import { membersService } from "../../services/MembersService";
-import CreateServer from "./CreateServer";
+import { serversService } from "@/services";
 
 const ServerSelection = () => {
-  
   const user = AppState.user;
   const router = useRouter();
   const servers = AppState.userServers;
@@ -26,8 +19,8 @@ const ServerSelection = () => {
   useEffect(() => {
     // setServers(AppState.userServers);
     if (router.query.id && servers) {
-    const server = servers.find((s) => s.id == router.query.id);
-      AppState.activeServer = server 
+      const server = servers.find((s) => s.id == router.query.id);
+      // AppState.activeServer = server;
       AppState.messages = [];
     }
   }, [servers, router.query.id]);
@@ -40,24 +33,23 @@ const ServerSelection = () => {
   );
 };
 
-const ServerIcon = ({
-  server,
-}: {
-  server: Server
-}) => {
+const ServerIcon = ({ server }: { server: Server }) => {
   const router = useRouter();
   const activeServer = AppState.activeServer;
   const [isShowing, setShowing] = useState(false);
-  const handleClick = async() => {
-    AppState.activeServer = server;
-    const defaultServer = server.channels[0];
-    // console.log(`/server/${server.id}/channel/${defaultServer!.id}`);
-
-    await router.push(`/server/${server.id}/channel/${defaultServer!.id}`);
+  const handleClick = async () => {
+    const serverRes = await serversService.getById(server?.id);
+    AppState.activeServer = serverRes;
+    console.log(AppState.activeServer);
+    
+    const defaultChannel = serverRes.channels[0];
+    await router.push(`/server/${serverRes!.id}/channel/${defaultChannel!.id}`);
   };
   useEffect(() => {
     setShowing(!isShowing);
   }, []);
+
+  
   return (
     <Transition
       show={isShowing}

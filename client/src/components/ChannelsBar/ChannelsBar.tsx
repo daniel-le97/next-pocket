@@ -26,7 +26,7 @@ type ChannelsBarProps = {
 };
 const ChannelsBar = () => {
   const user = AppState.user;
-  const channels = AppState.channels;
+  const channels = AppState.activeServer?.channels
   const [expanded, setExpanded] = useState(true);
   return (
     <div className="channel-bar">

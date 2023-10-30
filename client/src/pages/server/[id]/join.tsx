@@ -25,7 +25,10 @@ const ServerLink : NextPage = () => {
   useEffect(() => {
     if(id){
       const getServer = async () => {
-        await serversService.getById(id);
+      await serversService.getById(id);
+      // console.log(server);
+      
+        
       };
             if (!user) {
               AppState.lastPath = `server/${router.query.id}/join`;

@@ -13,14 +13,18 @@ import Pop from "../../../utils/Pop";
 import { membersService } from "../../services/MembersService";
 import { BsCheck, BsCircleFill } from "react-icons/bs";
 import React from "react";
-import type { Server, ServerWithRelations } from "../../../PocketBaseTypes/utils";
+import type {
+  Server,
+  ServerWithRelations,
+} from "../../../PocketBaseTypes/utils";
 import { Transition } from "@headlessui/react";
 import { AppState } from "~/AppState";
-const ServerCard = ({ server }: { server: Server}) => {
+const ServerCard = ({ server }: { server: Server }) => {
   const [userStatus, setUserStatus] = useState<UsersStatusResponse[]>([]);
   const user = pb.authStore.model;
   const router = useRouter();
   const [isMember, setIsMember] = useState(false);
+
   async function joinServer() {
     try {
       if (!user) {
@@ -39,15 +43,9 @@ const ServerCard = ({ server }: { server: Server}) => {
       if (!yes) {
         return;
       }
-      const isMember = await membersService.joinServer(data);
-      // console.log('isMember',isMember);
+    await membersService.joinServer(data);
+   
 
-      if (isMember) {
-        isMember.new == true ? Pop.success(`Welcome to ${server.name}`) : "";
-      }
-
-
-      
       router.push(`/server/${server.id}/channel/${AppState.activeChannel?.id}`);
     } catch (error) {
       Pop.error(error, "Join Server");
@@ -55,10 +53,11 @@ const ServerCard = ({ server }: { server: Server}) => {
   }
 
   const checkIfMember = () => {
-    if (server.members?.find((m) => m.id == user?.id)) {
+    if (server.members?.find((m) => m.user === user?.id)) {
       setIsMember(true);
     }
   };
+
   useEffect(() => {
     checkIfMember();
   }, []);
@@ -100,12 +99,8 @@ const ServerCard = ({ server }: { server: Server}) => {
           <BsCircleFill size={10} className="text-gray-300" />
           {server.members?.length}
 
-          {/* {server.members.map((m) => (
-          <div className=" ">{JSON.stringify(m)}</div>
-        ))} */}
           <small>Members</small>
         </div>
-        {/* {userStatus.length} */}
       </div>
     </Transition>
   );

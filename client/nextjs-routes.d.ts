@@ -13,6 +13,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/">
     | StaticRoute<"/login">
     | DynamicRoute<"/server/[id]", { "id": string }>
+    | DynamicRoute<"/server/[id]/channel/[channelId]", { "id": string },{'channelId': string}>
     | DynamicRoute<"/server/[id]/join", { "id": string }>;
 
   interface StaticRoute<Pathname> {

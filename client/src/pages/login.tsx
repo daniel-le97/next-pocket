@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import Pop from "../../utils/Pop";
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 import { AppState } from "~/AppState";
+import { useEffect } from "react";
 
 function Login() {
   const router = useRouter();
@@ -33,6 +34,10 @@ function Login() {
       Pop.error(error);
     }
   }
+
+useEffect(()=>{
+  
+})
 
   return (
     <>
