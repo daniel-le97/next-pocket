@@ -15,14 +15,13 @@ import type {
   IBaseMessage,
   LikesWithUser,
   Message,
-  MessageWithUser,
 } from "PocketBaseTypes";
 import { AppState } from "AppState";
 import UserAvatar from "../GlobalComponents/UserAvatar";
 import CodeBlock from "utils/CodeBlock";
 import { Tooltip } from "@nextui-org/react";
-import { useEffect } from "react";
-import { likesService } from "@/services/LikesService";
+import { ReactElement, JSXElementConstructor, ReactFragment, ReactPortal, Key } from "react";
+
 
 const MessageCard = ({
   message,
@@ -33,7 +32,7 @@ const MessageCard = ({
 }) => {
   const messageQuery = AppState.messageQuery;
   // const likes = AppState.messageLikes[message.id as unknown as number] ?? [];
-  const likes = message?.expand['likes(message']
+  // const likes = message?.expand['likes(message']
   const handleCopyClick = () => {
     function removeBackticks(str: string): string {
       const pattern = /```([\s\S]*)```/;
@@ -58,7 +57,7 @@ const MessageCard = ({
         <UserAvatar
           width="w-12"
           height="h-12"
-          avatarUrl={message.expand.user.avatarUrl}
+          avatarUrl={message?.expand?.user?.avatarUrl}
         />
 
         {/* <UserAvatar
@@ -123,10 +122,7 @@ const MessageCard = ({
           }}
         />
 
-        {/* <div className="">
-          MESSAGE LIKES: {message.expand["likes(message)"]?.length}
-        </div> */}
-
+      
         {message.expand["likes(message)"]?.length >= 1 && (
           <MessageLikes likes={message.expand['likes(message)']} />
         )}
@@ -136,7 +132,7 @@ const MessageCard = ({
         <div className="message-options-container">
           {AppState.user?.id == message.user?.id ? (
             <>
-              <EditMessage message={message as IBaseMessage} />
+              <EditMessage message={message as any} />
               <DeleteMessage messageId={message.id} />
             </>
           ) : (
@@ -161,7 +157,7 @@ const IsNewestMessage = () => {
   );
 };
 
-const MessageLikes = ({ likes }) => {
+const MessageLikes = ({ likes }:{likes:any}) => {
   function getLikes(likes: LikesWithUser[]) {
     const length = likes.length;
 
@@ -187,7 +183,7 @@ const MessageLikes = ({ likes }) => {
             </div>
             <div className="flex flex-col overflow-y-scroll  ">
               {likes &&
-                likes.map((l, index) => (
+                likes.map((l: { expand: { user: { username: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }; }; }, index: Key | null | undefined) => (
                   <div
                     className=" hover:text-shadow  my-0.5 rounded p-0.5  transition-all hover:text-gray-100  "
                     key={index}

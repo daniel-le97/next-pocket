@@ -45,6 +45,9 @@ const ServerCard = ({ server }: { server: Server}) => {
       if (isMember) {
         isMember.new == true ? Pop.success(`Welcome to ${server.name}`) : "";
       }
+
+
+      
       router.push(`/server/${server.id}/channel/${AppState.activeChannel?.id}`);
     } catch (error) {
       Pop.error(error, "Join Server");

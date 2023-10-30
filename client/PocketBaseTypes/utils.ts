@@ -52,7 +52,7 @@ export type Upload = {
 
 export type MessageWithUser = Message;
 export type TMessageWithUser = MessagesResponse & {
-  expand: { "likes": string[]; user: UsersResponse };
+  expand: { likes: LikesResponse; user: UsersResponse };
 };
 export type LikesWithUser = LikesResponse & {
   expand: { user: UsersResponse };
@@ -104,6 +104,8 @@ export class Message {
   // likes: string[];
   attachments: string[];
 
+  expand : any
+
   constructor(data: TMessageWithUser) {
     this.id = data.id;
     this.content = data.content;
@@ -111,7 +113,8 @@ export class Message {
     this.updated = data.updated;
     this.channel = data.channel;
     this.user = data.expand.user;
-    this.attachments = data.attachments || [];
+    this.attachments = data.attachments || []
+    this.expand = data.expand
     // this.likes = data.expand?.['likes(message)']
   }
 }
@@ -133,6 +136,7 @@ export class DirectMessage {
     this.created = data.created;
     this.updated = data.updated;
     this.friendRecord = data.friendRecord;
+    this.expand = data.expand
     this.user = data.expand?.user || undefined;
   }
   id: string;
@@ -141,6 +145,7 @@ export class DirectMessage {
   updated: string;
   user: UsersResponse | UserWithStatus | undefined;
 
+  expand:object
   friendRecord: string;
 }
 

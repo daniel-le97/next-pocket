@@ -37,6 +37,8 @@ class AuthsService {
 
       
       await usersStatusService.create(newUser.id);
+
+      
       return await this.login(data);
     } catch (error) {
       console.log(error);

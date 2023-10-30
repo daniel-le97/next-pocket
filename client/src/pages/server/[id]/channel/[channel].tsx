@@ -19,15 +19,13 @@ import DirectMessageScroll from "../../../../components/GlobalComponents/Infinit
 import { NextPage } from "next/types";
 import { likesService } from "@/services/LikesService";
 
-
-interface IProgressBar{
+interface IProgressBar {
   start(): void;
   finish(): void;
 }
 const ServerOne: NextPage = () => {
   const router = useRouter();
   const { id, channel } = router.query as { id: string; channel: string };
- 
 
   useEffect(() => {
     if (!id || !channel) {
@@ -36,7 +34,9 @@ const ServerOne: NextPage = () => {
 
     const fetchServerData = async () => {
       try {
-        await channelsService.getChannelsByServerId(id);
+        // console.log(AppState.activeServer);
+
+         await channelsService.getChannelsByServerId(id);
         await serversService.getMembers(id);
       } catch (error) {
         Pop.error(error);
@@ -46,12 +46,11 @@ const ServerOne: NextPage = () => {
   }, [id]);
 
   useEffect(() => {
-
     if (!id || !channel) {
       return;
     }
     let messageSubscribe: UnsubscribeFunc | null;
-    
+
     (async () => {
       const progress = new ProgressBar({
         size: 2,
@@ -60,7 +59,6 @@ const ServerOne: NextPage = () => {
         delay: 100,
       }) as unknown as IProgressBar;
       try {
-        
         progress.start();
         await channelsService.joinChannel({
           memberId: AppState.user!.id,
@@ -68,8 +66,7 @@ const ServerOne: NextPage = () => {
         });
         await messageService.getMessagesByChannelId(channel);
         progress.finish();
-        messageSubscribe = await messageService.subscribe()
-
+        messageSubscribe = await messageService.subscribe();
       } catch (error) {
         progress.finish();
         Pop.error(error);
@@ -78,22 +75,16 @@ const ServerOne: NextPage = () => {
 
     return () => {
       messageSubscribe ? messageSubscribe() : null;
-    }
+    };
   }, [channel]);
 
+  //  useEffect(() => {
+  //    const subscribeToLikes = async () => {
+  //      await likesService.subscribe();
+  //    };
 
-
-
-//  useEffect(() => {
-//    const subscribeToLikes = async () => {
-//      await likesService.subscribe();
-//    };
-
-//    subscribeToLikes();
-//  }, []);
-
-
-
+  //    subscribeToLikes();
+  //  }, []);
 
   return (
     <>
@@ -110,7 +101,7 @@ const ServerOne: NextPage = () => {
             <TopNavigation />
 
             {/* <MessageScroll /> */}
-            <DirectMessageScroll/>
+            <DirectMessageScroll />
             <CreateMessage />
           </div>
           <ServerMembersBar />

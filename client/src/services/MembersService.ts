@@ -36,6 +36,7 @@ class MembersService {
     AppState.userServers = [...AppState.userServers, server];
     AppState.activeServer = server;
 
+    
     // return the response for use as a "hook"
     return server
   }
