@@ -187,7 +187,7 @@ const CreateServer = () => {
                           />
                         ) : (
                           <FaUnlock
-                            className=" cursor-pointer text-green-500"
+                            className=" cursor-pointer text-emerald-500"
                             size={20}
                             onClick={() => {
                               setIsChecked(true);

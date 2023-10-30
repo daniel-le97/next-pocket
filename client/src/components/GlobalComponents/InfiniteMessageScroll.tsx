@@ -69,13 +69,7 @@ const InfiniteMessageScroll = () => {
         })}
       </InfiniteScroll>
 
-      {AppState.messageQuery == "" && messages.length == 0 && (
-        // <LoaderProgress />
-        <div className=" p-4 text-3xl flex justify-center flex-col  items-center  space-y-4 ">
-     <p > There are Currently No Messages In This Channel</p>
-       <img src={noMessagesImage.src} alt="No Messages Found" width={300} />
-        </div>
-      )}
+ 
       <NoMessagesFoundInSearch />
     </div>
   );

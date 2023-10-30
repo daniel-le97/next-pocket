@@ -72,7 +72,7 @@ const UserProfileBar = ({ user }: { user: UsersResponse }) => {
                   <div className="opacity-0 group-hover/item:opacity-100">
                     <FaCopy
                       size={20}
-                      className={showTooltip ? "text-green-5  00" : ""}
+                      className={showTooltip ? "text-emerald-500  00" : ""}
                     />
                   </div>
                 </div>

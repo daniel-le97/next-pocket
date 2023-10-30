@@ -72,7 +72,7 @@ const MembersBar = () => {
           <BsArrowLeftCircle
             size={24}
             onClick={() => setCollapsed(!collapsed)}
-            className="hover:text-green-500 cursor-pointer"
+            className="hover:text-emerald-500 cursor-pointer"
           />
         </div>
       )}

@@ -168,7 +168,7 @@ const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
           <img
             src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
             alt="Thumbs Up Icon"
-            className="h-10 w-10 rounded-full"
+            className="h-7 w-7 rounded-full"
           />
           <div className="flex flex-col">
             <div className=" w-full text-lg font-bold  text-indigo-400">
@@ -190,11 +190,11 @@ const MessageLikes = ({ likes }: { likes: LikesWithUser[] | null }) => {
       }
       color="invert"
     >
-      <div className="message-like-container group/like">
+      <div className="message-like-container text-sm group/like">
         <img
           src="https://cdn-icons-png.flaticon.com/512/1533/1533908.png"
           alt="Thumbs Up Icon"
-          className="h-6 w-6 rounded-full"
+          className="h-4 w-4 rounded-full"
         />
         {likes?.length}
       </div>

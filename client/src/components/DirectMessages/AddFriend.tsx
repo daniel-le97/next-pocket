@@ -103,7 +103,7 @@ const AddFriend = () => {
                 required: true,
               })}
               className={`add-friend-input ${
-                isValid ? "border-green-400" : ""
+                isValid ? "border-emerald-500" : ""
               }`}
               placeholder="Enter a Username#FriendId "
               onChange={(e) => handleChange(e) as unknown as void}
@@ -127,8 +127,8 @@ const AddFriend = () => {
           {formError !== "" && <div className="text-red-400">{formError}</div>}
           {isValid && (
             <div className="  flex items-center gap-x-2  p-2">
-              <div className="text-green-400">✓</div>
-              <div className="text-green-400">Valid</div>
+              <div className="text-emerald-500">✓</div>
+              <div className="text-emerald-500">Valid</div>
             </div>
           )}
         </div>

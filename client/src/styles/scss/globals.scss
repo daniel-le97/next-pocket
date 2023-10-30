@@ -58,8 +58,8 @@
   }
 
   .login-input {
-    @apply w-full rounded bg-gray-100
-    p-1 pl-1 font-sans font-semibold 
+    @apply w-72 rounded bg-gray-100
+    p-3 pl-2 font-sans font-semibold 
     text-gray-900  placeholder-gray-500
     shadow-lg outline-none;
   }
@@ -123,11 +123,11 @@
     @apply relative   mx-auto mb-2 mt-2 flex 
     h-12 w-12 cursor-pointer   snap-start items-center  
     justify-center rounded-3xl bg-gray-800 
-  dark:text-green-500 shadow-lg
+  dark:text-emerald-500 shadow-lg
   dark:hover:text-white
   text-indigo-500
     transition-all duration-300 
-    ease-linear hover:rounded-xl dark:hover:bg-green-600
+    ease-linear hover:rounded-xl dark:hover:bg-emerald-600
    hover:bg-indigo-600
     hover:text-white dark:bg-gray-800;
   }
@@ -175,7 +175,7 @@
     mr-3 cursor-pointer
     text-gray-500 transition duration-300 
     ease-in-out 
-    hover:text-green-500;
+    hover:text-emerald-500;
   }
 
   .top-navigation-icon:first {
@@ -188,7 +188,7 @@
   }
 
   .channel-room-title {
-    @apply my-auto ml-2 mr-auto truncate bg-gradient-to-r  from-green-400
+    @apply my-auto ml-2 mr-auto truncate bg-gradient-to-r  from-emerald-500
     to-indigo-400 bg-clip-text text-2xl font-bold tracking-wider text-transparent;
   }
 }
@@ -222,13 +222,13 @@
   }
 
   .dropdown-header-text-selected {
-    @apply text-lg font-bold text-blue-500 text-opacity-90;
+    @apply text-lg font-bold text-blue-500 dark:text-emerald-500 text-opacity-90;
   }
   .channel-selection-header {
     @apply cursor-default  text-lg  font-semibold text-gray-500;
   }
   .channel-selection-header-expanded {
-    @apply text-lg font-bold text-indigo-500;
+    @apply text-lg font-bold text-indigo-500 dark:text-emerald-500;
   }
   .channel-selection {
     @apply relative my-0.5 ml-2 mr-auto flex cursor-pointer
@@ -238,7 +238,7 @@
     duration-300 ease-in-out hover:bg-zinc-700;
   }
   .active-channel-selection {
-    @apply channel-selection  rounded-md bg-indigo-500 bg-opacity-70  text-white;
+    @apply channel-selection  rounded-md bg-indigo-500 dark:bg-emerald-500 bg-opacity-70  text-white;
   }
 
   .channel-selection-text {
@@ -388,7 +388,7 @@
     @apply font-semibold text-blue-500 hover:underline;
   }
   .message-like-container {
-    @apply relative mt-2 flex w-16  items-center gap-x-2 rounded-xl border-2 border-indigo-500 p-1 text-xl font-bold text-zinc-300;
+    @apply relative mt-2 flex w-14  items-center gap-x-2  p-1 text-xl font-bold text-zinc-300;
   }
   .message-like-tooltip {
     @include tooltip-arrow("bottom", rgb(24 24 27 / var(--tw-bg-opacity)));

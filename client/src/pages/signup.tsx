@@ -19,20 +19,19 @@ function SignUp() {
   } = useForm<UserLogin>();
   const password = useRef({});
   password.current = watch("password", "");
-   const router = useRouter();
+  const router = useRouter();
   // const onSubmit: SubmitHandler<UserLogin> = (data) => console.log(data);
   async function onSubmit(data: UserLogin) {
     try {
-
       // console.log(data);
-      
+
       if (data.password !== data.passwordConfirm) {
         return Pop.error("Passwords do not match");
       }
       data.avatarUrl = `https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${data.username}`;
       // console.log(data);
       // data.emailVisibility=true
-      
+
       const path = await authsService.signUp(data);
       await router.push(path);
     } catch (error) {
@@ -43,61 +42,60 @@ function SignUp() {
   return (
     <>
       <main className="  dark flex  min-h-screen w-full flex-col  items-center justify-center bg-gray-300 dark:bg-zinc-900">
-        <div className="shadow-grey-900 container z-10  flex w-1/2   flex-col items-center justify-center  rounded-lg bg-gray-200 p-5 shadow-2xl">
-          <h1 className="my-10 text-4xl font-bold ">Create a new Account</h1>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-5"
-          >
-            {/* register your input into the hook by invoking the "register" function */}
-            <input
-              {...register("username", { required: true })}
-              type="text"
-              placeholder={"username"}
-              className="login-input"
-            />
-            {errors.username && <span>This field is required</span>}
-            <input
-              {...register("email", { required: true })}
-              placeholder={"email"}
-              type="email"
-              className="login-input"
-            />
-            {errors.email && <span>This field is required</span>}
-            <input
-              {...register("password", { required: true, minLength: 8 })}
-              type="password"
-              name="password"
-              placeholder={"password"}
-              className="login-input"
-            />
-            {errors.password && <span>This field is required</span>}
-            <input
-              {...register("passwordConfirm", {
-                required: true,
-                minLength: 8,
-                validate: (value) =>
-                  value === password.current || "The passwords do not match",
-              })}
-              className="login-input"
-              type="password"
-              name="passwordConfirm"
-              placeholder={"confirm password"}
-            />
-            {errors.passwordConfirm && <span>This field is required</span>}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="z-50 flex flex-col gap-y-5"
+        >
+          {/* register your input into the hook by invoking the "register" function */}
+          <input
+            {...register("username", { required: true })}
+            type="text"
+            placeholder={"username"}
+            className="login-input"
+          />
+          {errors.username && <span>This field is required</span>}
+          <input
+            {...register("email", { required: true })}
+            placeholder={"email"}
+            type="email"
+            className="login-input"
+          />
+          {errors.email && <span>This field is required</span>}
+          <input
+            {...register("password", { required: true, minLength: 8 })}
+            type="password"
+            name="password"
+            placeholder={"password"}
+            className="login-input"
+          />
+          {errors.password && <span>This field is required</span>}
+          <input
+            {...register("passwordConfirm", {
+              required: true,
+              minLength: 8,
+              validate: (value) =>
+                value === password.current || "The passwords do not match",
+            })}
+            className="login-input"
+            type="password"
+            name="passwordConfirm"
+            placeholder={"confirm password"}
+          />
+          {errors.passwordConfirm && <span>This field is required</span>}
 
-            <button type="submit" className=" btn-primary">
-              Sign Up
-            </button>
-          </form>
-          <Link href="/login" className="mt-3 flex gap-2 text-xl">
-            <FaArrowAltCircleLeft className="text-2xl" />
-            <div>Go to Login</div>
-          </Link>
-        </div>
-        {/* <div className="container flex items-center justify-center">
-          <User user={AppState.user as UsersResponse} />
-        </div> */}
+          <button type="submit" className=" btn-primary">
+            Sign Up
+          </button>
+        </form>
+        <Link
+          href="/login"
+          className="mt-3  flex    items-center justify-center gap-2 text-base "
+        >
+          <FaArrowAltCircleLeft />
+          <div>Go to Login</div>
+        </Link>
+
+        
 
         <div className="shape-blob"></div>
         <div className="shape-blob one"></div>

@@ -73,7 +73,7 @@ const ServerCard = ({ server }: { server: Server}) => {
       <div
         className={`server-card group  ${
           isMember
-            ? "bg-gray-300 from-zinc-900 to-green-400 hover:from-zinc-900 hover:to-green-500"
+            ? "bg-gray-300 from-zinc-900 to-green-400 hover:from-zinc-900 hover:to-emerald-500"
             : "bg-gray-300 from-zinc-900 to-gray-600"
         }`}
       >
@@ -88,7 +88,7 @@ const ServerCard = ({ server }: { server: Server}) => {
                 <span className=" join-button-tooltip">Join</span>
               </button>
             ) : (
-              <FaUserCheck size={20} className="text-green-400" />
+              <FaUserCheck size={20} className="text-emerald-500" />
             )}
           </div>
           <p className="mt-2 pb-10">{server.description}</p>

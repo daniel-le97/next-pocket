@@ -76,8 +76,8 @@ const Search = () => {
           <button className="m-0 pt-1 ">
             <FaSearch
               size={22}
-              className={`     my-auto text-gray-500 hover:text-green-500 ${
-                query !== "" ? "text-green-500" : ""
+              className={`     my-auto text-gray-500 hover:text-emerald-500 ${
+                query !== "" ? "text-emerald-500" : ""
               }`}
             />
           </button>
