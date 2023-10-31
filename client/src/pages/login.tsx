@@ -41,7 +41,7 @@ useEffect(()=>{
 
   return (
     <>
-      <main className="  dark flex  min-h-screen w-full flex-col  items-center justify-center bg-gray-300 dark:bg-zinc-900">
+      <main className="  dark flex  min-h-screen w-full flex-col  items-center justify-center bg-gray-300 ">
        
           <form
             onSubmit={handleSubmit(onSubmit)}
