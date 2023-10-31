@@ -14,7 +14,7 @@ const CreateMessageToolbar = ({
       <div className="flex items-center justify-center space-x-3">
         <div className="  ">
           <Tooltip content="Upload image" color="invert" placement="top">
-            <FaFileImage size={18} className="text-gray-300" />
+            <FaFileImage size={18} className="dark:text-gray-300" />
             <input
               type="file"
               accept="image/*"
@@ -29,7 +29,7 @@ const CreateMessageToolbar = ({
         <div
           id="charLimit"
           className={`  font-semibold  text-sm   ${
-            characterCount <= 2400 ? "text-zinc-300" : "text-red-400"
+            characterCount <= 2400 ? "dark:text-zinc-300" : "text-red-400"
           }`}
         >
           {characterCount}/2400

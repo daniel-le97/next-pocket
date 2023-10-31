@@ -248,20 +248,20 @@
     ease-in-out;
   }
   .user-bar {
-    @apply relative w-full  bg-zinc-900 p-1;
+    @apply relative w-full   dark:bg-zinc-900 p-1;
   }
   .user-bar-container {
-    @apply flex gap-x-2 rounded-md p-1 transition-all ease-linear  hover:bg-zinc-700;
+    @apply flex gap-x-2 rounded-md p-1 transition-all ease-linear   hover:bg-zinc-700;
   }
 
   .user-modal {
-    @apply absolute bottom-12  z-50 m-2 h-96  w-96 min-w-max  origin-bottom-left rounded-md   bg-zinc-900
+    @apply absolute bottom-12  z-50 m-2 h-96  w-96 min-w-max  origin-bottom-left rounded-md  bg-gray-200 dark:bg-zinc-900
     text-xs  
     font-bold text-white 
     shadow-lg shadow-zinc-900 transition-all duration-100;
   }
   .user-modal-banner {
-    @apply rounded-t-md bg-red-100 py-8;
+    @apply rounded-t-md dark:bg-red-100  py-8;
   }
   .user-modal-user-image {
     @apply absolute left-3 top-3 rounded-full border-8 border-zinc-900 shadow-md;
@@ -310,7 +310,7 @@
     @apply absolute -top-2 right-6 rounded border border-zinc-800 opacity-0    shadow group-hover:opacity-100;
   }
   .message-options-container {
-    @apply flex  rounded   bg-zinc-700  shadow-sm transition-all hover:shadow-md hover:shadow-zinc-900;
+    @apply flex  rounded bg-gray-200   dark:bg-zinc-700  shadow-sm transition-all hover:shadow-md hover:shadow-zinc-500 dark:hover:shadow-zinc-800;
   }
   .message-options-icon {
     @apply relative rounded p-1 transition-all ease-linear hover:bg-zinc-600;
@@ -388,7 +388,7 @@
     @apply font-semibold text-blue-500 hover:underline;
   }
   .message-like-container {
-    @apply relative mt-2 flex w-14  items-center gap-x-2  p-1 text-xl font-bold text-zinc-300;
+    @apply relative mt-2 flex w-14  items-center gap-x-2  p-1 text-xl font-bold dark:text-zinc-300;
   }
   .message-like-tooltip {
     @include tooltip-arrow("bottom", rgb(24 24 27 / var(--tw-bg-opacity)));

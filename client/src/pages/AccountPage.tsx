@@ -63,7 +63,7 @@ const [hide, setHide] = useState(false);
   return (
     <main className="  min-h-screen w-full   dark:bg-zinc-800">
       <div className="p-5 ">
-        <div className="text-4xl font-bold text-gray-300 text-center">My Account</div>
+        <div className="text-4xl font-bold dark:text-gray-300 text-center">My Account</div>
         <div className="bg-zinc-700 rounded mt-10 shadow-md flex flex-col items-center justify-center p-5 text-center  text-gray-400 ">
           <UserAvatar avatarUrl={user?.avatarUrl!} width="w-48" height="h-48" />
 

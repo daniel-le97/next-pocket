@@ -69,7 +69,7 @@ const SideBar = () => {
       )}
 
       <div className="flex flex-col items-center justify-center border-t-2  border-t-emerald-500 pb-2">
-        {/* <ThemeIcon /> */}
+        <ThemeIcon />
         <CreateServer />
 
         <img src={logo.src} alt="" width={35} className="rounded-full" />

@@ -63,7 +63,7 @@ const Search = () => {
       onSubmit={handleSubmit}
       className=" relative  flex items-center justify-start  gap-x-2">
       <input
-        className={` pr-10 text-gray-300 transition-all   duration-700 focus:w-72  ${
+        className={` pr-10 dark:text-gray-300 transition-all   duration-700 focus:w-72  ${
           expanded ? "w-full" : ""
         }`}
         type="text"
@@ -76,7 +76,7 @@ const Search = () => {
           <button className="m-0 pt-1 ">
             <FaSearch
               size={22}
-              className={`     my-auto text-gray-500 hover:text-emerald-500 ${
+              className={`     my-auto text-gray-500  hover:text-indigo-500 dark:hover:text-emerald-500 ${
                 query !== "" ? "text-emerald-500" : ""
               }`}
             />

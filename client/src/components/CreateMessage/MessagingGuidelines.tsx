@@ -13,7 +13,7 @@ const MessagingGuidelines = () => {
       <Tooltip content="Messaging GuideLine" color="invert" placement="top">
         <FaQuestionCircle
           size={18}
-          className="text-gray-300"
+          className="dark:text-gray-300"
           onClick={() => setIsOpen(true)}
         />
       </Tooltip>

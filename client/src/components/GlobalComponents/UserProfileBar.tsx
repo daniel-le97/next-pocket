@@ -18,7 +18,7 @@ const UserProfileBar = ({ user }: { user: UsersResponse }) => {
           <div className=" user-bar-container">
             <UserAvatar avatarUrl={user.avatarUrl} height="w-9" width="h-9" />
 
-            <div className=" truncate font-semibold  text-white">
+            <div className=" truncate font-semibold  dark:text-white">
               {user?.username}
             </div>
           </div>
