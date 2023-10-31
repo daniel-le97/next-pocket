@@ -28,51 +28,56 @@ function Login() {
         return Pop.error("please provide an email and password");
       }
       const path = await authsService.login(data);
-      Pop.success(`Welcome back ${AppState.user?.username}!`)
+      Pop.success(`Welcome back ${AppState.user?.username}!`);
       await router.push(path);
     } catch (error) {
       Pop.error(error);
     }
   }
 
-useEffect(()=>{
-  
-})
+  useEffect(() => {});
 
   return (
     <>
       <main className="  dark flex  min-h-screen w-full flex-col  items-center justify-center bg-gray-300 ">
-       
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-5 z-50"
-          >
-            <input
-              {...register("email", { required: true })}
-              placeholder={"email"}
-              type="email"
-              className="login-input"
-            />
-            {errors.email && <span>This field is required</span>}
-            <input
-              {...register("password", { required: true, minLength: 8 })}
-              type="password"
-              name="password"
-              placeholder={"password"}
-              className="login-input"
-            />
-            {errors.password && <span>This field is required</span>}
-            <button type="submit" className=" btn-primary">
-              Login
-            </button>
-          </form>
+        <div className="p-2">
+          <b> Testing Account</b> <br />
+          email: imjustbrowsing@fakemail.com <br />
+          password: qwert12345
+        </div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="z-50 flex flex-col gap-y-5"
+        >
+          <input
+            {...register("email", { required: true })}
+            placeholder={"email"}
+            type="email"
+            className="login-input"
+          />
+          {errors.email && <span>This field is required</span>}
+          <input
+            {...register("password", { required: true, minLength: 8 })}
+            type="password"
+            name="password"
+            placeholder={"password"}
+            className="login-input"
+          />
+          {errors.password && <span>This field is required</span>}
+          <button type="submit" className=" btn-primary">
+            Login
+          </button>
+        </form>
 
-          <Link href={"/signup"} className="  mt-3 flex gap-2 text-base justify-center items-center">
-            <div>Not a member? Sign up now </div>
+        <Link
+          href={"/signup"}
+          className="  mt-3 flex items-center justify-center gap-2 text-base"
+        >
+          <div>Not a member? Sign up now </div>
 
-            <FaArrowAltCircleRight />
-          </Link>
-        
+          <FaArrowAltCircleRight />
+        </Link>
+
         <div className="shape-blob"></div>
         <div className="shape-blob one"></div>
         <div className="shape-blob two"></div>
